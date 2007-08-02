@@ -1,8 +1,5 @@
 <?php
 
-	if ( !defined( "FILTER_META_CHARACTERS" ) )
-		define( "FILTER_META_CHARACTERS", true );
-
 	/**
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
@@ -13,9 +10,9 @@
 	 *     \/___/  \___\/      \      Tier:   Core
 	 *      \   \  /\   \  /\  /      Module: Request
 	 *       \___\/  \___\/  \/       
-	 *         \          \  /        $Rev: 43 $
-	 *          \___    ___\/         $Author: rogier $
-	 *              \   \  /          $Date: 2007-06-02 20:41:54 +0200 (Sat, 02 Jun 2007) $
+	 *         \          \  /        $Rev$
+	 *          \___    ___\/         $Author$
+	 *              \   \  /          $Date$
 	 *               \___\/           
 	 */
 	class CoreRequest extends Konsolidate
