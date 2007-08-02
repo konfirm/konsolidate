@@ -1,0 +1,188 @@
+<?php
+
+	/**
+	 *            ________ ___        
+	 *           /   /   /\  /\       Konsolidate
+	 *      ____/   /___/  \/  \      
+	 *     /           /\      /      http://konsolidate.klof.net
+	 *    /___     ___/  \    /       
+	 *    \  /   /\   \  /    \       Class:  CoreDB
+	 *     \/___/  \___\/      \      Tier:   Core
+	 *      \   \  /\   \  /\  /      Module: DB
+	 *       \___\/  \___\/  \/       
+	 *         \          \  /        $Rev: 37 $
+	 *          \___    ___\/         $Author: rogier $
+	 *              \   \  /          $Date: 2007-05-18 13:41:04 +0200 (Fri, 18 May 2007) $
+	 *               \___\/           
+	 */
+	class CoreDB extends Konsolidate
+	{
+		protected $_pool;
+		protected $_default;
+
+		/**
+		 *  CoreDB constructor
+		 *  @name    CoreDB
+		 *  @type    constructor
+		 *  @access  public
+		 *  @param   object parent object
+		 *  @returns object
+		 *  @syntax  object = &new CoreDB( object parent )
+		 *  @note    This object is constructed by one of Konsolidates modules
+		 */
+		public function __construct( &$oParent )
+		{
+			parent::__construct( $oParent );
+
+			$this->_pool    = Array();
+			$this->_default = false;
+		}
+
+		/**
+		 *  Create a fully prepared database object
+		 *  @name    setConnection
+		 *  @type    method
+		 *  @access  public
+		 *  @returns bool
+		 *  @note    the URI is formatted like: scheme://user:pass@host[:port]/database
+		 *           providing an unique reference provides you to ability to use more than one connection
+		 */
+		public function setConnection( $sReference, $sURI )
+		{
+			$sReference = strToUpper( $sReference );
+			$aURI       = parse_url( $sURI );
+
+			if ( $this->_default === false )
+				$this->_default = $sReference;
+
+			$this->_pool[ $sReference ] = $this->instance( $aURI[ "scheme" ] );
+			if ( is_object( $this->_pool[ $sReference ] ) )
+				return $this->_pool[ $sReference ]->setConnection( $sURI, true );
+			return false;
+		}
+
+		public function &register( $sModule )
+		{
+			$sModule = strToUpper( $sModule );
+			if ( array_key_exists( $sModule, $this->_pool ) )
+				return $this->_pool[ $sModule ];
+			return parent::register( $sModule );
+		}
+
+		/**
+		 *  Connect a database/[scheme] instance
+		 *  @name    connect
+		 *  @type    method
+		 *  @access  public
+		 *  @returns bool
+		 *  @syntax  connect();
+		 */
+		public function connect()
+		{
+			if ( array_key_exists( $this->_default, $this->_pool ) && is_object( $this->_pool[ $this->_default ] ) )
+				return $this->_pool[ $this->_default ]->connect();
+			return false;
+		}
+
+		/**
+		 *  Verify whether a connection is established
+		 *  @name    isConnected
+		 *  @type    method
+		 *  @access  public
+		 *  @param   string reference
+		 *  @returns bool
+		 *  @syntax  isConnected( string reference );
+		 */
+		public function isConnected()
+		{
+			if ( array_key_exists( $this->_default, $this->_pool ) && is_object( $this->_pool[ $this->_default ] ) )
+				return $this->_pool[ $this->_default ]->isConnected();
+			return false;
+		}
+
+		/**
+		 *  Close the connection to a (or all) database(s)
+		 *  @name    disconnect
+		 *  @type    method
+		 *  @access  public
+		 *  @param   string reference (optional, default all)
+		 *  @returns bool
+		 *  @syntax  disconnect( [ string reference ] );
+		 */
+		public function disconnect( $bAll=false )
+		{
+			if ( $bAll )
+			{
+				$bReturn = true;
+				if ( $this->_connected )
+					foreach( $this->_pool as $sKey=>$oDB )
+						$bReturn &= $oDB->disconnect();
+				return $bReturn;
+			}
+
+			if ( array_key_exists( $this->_default, $this->_pool ) && is_object( $this->_pool[ $this->_default ] ) )
+				return $this->_pool[ $this->_default ]->disconnect();
+			return false;
+		}
+
+		/**
+		 *  Execute a query on a database
+		 *  @name    query
+		 *  @type    method
+		 *  @access  public
+		 *  @param   string SQL-query
+		 *  @param   bool   use cache (optional, default true)
+		 *  @returns ResultObject
+		 *  @syntax  query( string SQL [, string reference [, bool cache ] ] );
+		 *  @note    the optional cache is per pageview and in memory only, it merely prevents 
+		 *           executing the exact same query over and over again
+		 */
+		public function query( $sQuery, $bUseCache=true )
+		{
+			if ( $this->_default && array_key_exists( $this->_default, $this->_pool ) && is_object( $this->_pool[ $this->_default ] ) )
+				return $this->_pool[ $this->_default ]->query( $sQuery, $bUseCache );
+			return false;
+		}
+
+		/**
+		 *  Destructor
+		 *  @name    connect
+		 *  @type    method
+		 *  @access  public
+		 */
+		public function __destruct()
+		{
+			$this->disconnect( true );
+		}
+
+		/**
+		 *  Implicit method bridge
+		 *  @name    connect
+		 *  @type    method
+		 *  @access  public
+		 */
+		public function __call( $sCall, $aArgument )
+		{
+			//  Get the first argument, which could be a reference to a pool item
+			$sReference = array_shift( $aArgument );
+
+			//  In case the first argument was not a pool item, put the first argument back in refer to the master
+			if ( !array_key_exists( $sReference, $this->_pool ) )
+			{
+				array_unshift( $aArgument, $sReference );
+				$sReference = $this->_default;
+			}
+
+			if ( method_exists( $this->_pool[ $sReference ], $sCall ) )
+				return call_user_func_array( 
+					Array( 
+						&$this->_pool[ $sReference ], // the database object
+						$sCall                        // the method
+					),
+					$aArgument                        // the arguments
+				);
+			return parent::__call( $sCall, $aArgument );
+		}
+	}
+
+?>
