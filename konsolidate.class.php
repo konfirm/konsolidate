@@ -353,6 +353,9 @@
 						case "_parent": //  
 							$oTraverse = &$oModule->getParent();
 							break;
+						case ".":       //  self
+							$oTraverse = &$this;
+							break;
 						default:        //  child
 							$oTraverse = &$oModule->register( $sSegment );
 							break;
@@ -395,11 +398,11 @@
 		public function __toString()
 		{
 			$sReturn  = "<div style='font-family:\"Lucida Grande\", Verdana, Arial, sans-serif;font-size:11px;color'>";
-			$sReturn .= "<h1>" . get_class( $this ) . "</h1>\n";
+			$sReturn .= "<h3 style='margin:0;padding:0;'>" . get_class( $this ) . "</h3>\n";
 			if ( count( $this->_property ) )
 			{
-				$sReturn .= "<h3>Custom properties</h3>\n";
-				$sReturn .= "<hr />";
+				$sReturn .= "<div style='color:#400;'>\n";
+				$sReturn .= "<em>Custom properties</em>\n";
 				$sReturn .= "<ul>";
 				foreach( $this->_property as $sKey=>$mValue )
 					if ( is_object( $mValue ) )
@@ -411,11 +414,20 @@
 					else
 						$sReturn .= " <li>{$sKey}\t= (" . gettype( $mValue ) . ") {$mValue}</li>\n";
 				$sReturn .= "</ul>";
+				$sReturn .= "</div>";
+			}
+			if ( count( $this->_module ) )
+			{
+				$sReturn .= "<strong>Modules</strong>\n";
+				$sReturn .= "<ul>";
+				foreach( $this->_module as $sKey=>$mValue )
+					$sReturn .= " <li style='list-style-type:square;'>{$sKey}\n<br />{$mValue}</li>";
+				$sReturn .= "</ul>";
 			}
 			$sReturn .= "</div>";
 
-			if ( (bool) ini_get( "html_errors" ) === true )
-				$sReturn = preg_replace( "/\<.*>/U", "", $sReturn );
+//			if ( (bool) ini_get( "html_errors" ) === true )
+//				$sReturn = preg_replace( "/\<.*>/U", "", $sReturn );
 
 			return $sReturn;
 		}

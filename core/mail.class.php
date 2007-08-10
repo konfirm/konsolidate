@@ -3,11 +3,11 @@
 
 	class CoreMail extends Konsolidate
 	{
-		protected	$from;
-		protected	$to;
-		protected	$cc;
-		protected	$bcc;
-		protected	$attachment;
+		protected $from;
+		protected $to;
+		protected $cc;
+		protected $bcc;
+		protected $attachment;
 		
 		public function __construct( $oParent )
 		{

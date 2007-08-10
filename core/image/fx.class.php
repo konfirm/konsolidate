@@ -127,12 +127,12 @@
 		 *  @returns resource image
 		 *  @syntax  Object->greyscale( resource image [, bool humaneye correction ] )
 		 */
-		public function &greyscale( $mImage, $bHumanEyeCorrection=true )
+		public function &greyscale( $mImage, $bHumanEyeCorrection=false )
 		{
 			if ( !is_resource( $mImage ) )
 				$mImage = &$this->call( "../load", $mImage );
 
-			if ( function_exists( "imagefilter" ) )
+			if ( function_exists( "imagefilter" ) && !$bHumanEyeCorrection )
 			{
 				imagefilter( $mImage, IMG_FILTER_GRAYSCALE );
 			}

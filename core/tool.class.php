@@ -58,7 +58,7 @@
 
 		public static function cookieVal( $sKey, $mDefault=null )
 		{
-			return CoreTool::arrVal( $sKey, $_SESSION, $mDefault );
+			return CoreTool::arrVal( $sKey, $_COOKIE, $mDefault );
 		}
 
 		public static function serverVal( $sKey, $mDefault=null )
