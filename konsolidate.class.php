@@ -1,5 +1,20 @@
 <?php
 
+	/**
+	 *            ________ ___        
+	 *           /   /   /\  /\       Konsolidate
+	 *      ____/   /___/  \/  \      
+	 *     /           /\      /      http://konsolidate.klof.net
+	 *    /___     ___/  \    /       
+	 *    \  /   /\   \  /    \       
+	 *     \/___/  \___\/      \      
+	 *      \   \  /\   \  /\  /      
+	 *       \___\/  \___\/  \/       
+	 *         \          \  /        $Rev$
+	 *          \___    ___\/         $Author$
+	 *              \   \  /          $Date$
+	 *               \___\/           
+	 */
 	class Konsolidate
 	{
 		/**
@@ -103,6 +118,15 @@
 			}
 		}
 
+		/**
+		 *  get a property value from a module using a path
+		 *  @name    get
+		 *  @type    method
+		 *  @access  public
+		 *  @param   string   path to the property to set
+		 *  @returns mixed
+		 *  @syntax  Konsolidate->get( string module );
+		 */
 		public function get( $sProperty )
 		{
 			$nSeperator = strrpos( $sProperty, $this->_objectseperator );
@@ -111,6 +135,16 @@
 			return $this->$sProperty;
 		}
 
+		/**
+		 *  set a property in a module using a path
+		 *  @name    set
+		 *  @type    method
+		 *  @access  public
+		 *  @param   string   path to the property to set
+		 *  @param   mixed    value
+		 *  @returns void
+		 *  @syntax  Konsolidate->set( string module, mixed value );
+		 */
 		public function set()
 		{
 			$aArgument  = func_get_args();
@@ -140,7 +174,7 @@
 		 *  @param   string   path to the method to call
 		 *  @param   mixed    [optional] argument
 		 *  @returns mixed
-		 *  @syntax  Konsolidate->call( string module [ mixed argument [, mixed argument, [, ... ] ] ] );
+		 *  @syntax  Konsolidate->call( string module [, mixed argument [, mixed argument, [, ... ] ] ] );
 		 *  @note    One can supply as many arguments as needed
 		 */
 		public function call()

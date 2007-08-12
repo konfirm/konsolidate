@@ -10,9 +10,9 @@
 	 *     \/___/  \___\/      \      Tier:   Core
 	 *      \   \  /\   \  /\  /      Module: Network/Protocol/HTTP
 	 *       \___\/  \___\/  \/       
-	 *         \          \  /        $Rev: 49 $
-	 *          \___    ___\/         $Author: rogier $
-	 *              \   \  /          $Date: 2007-07-09 10:44:23 +0200 (Mon, 09 Jul 2007) $
+	 *         \          \  /        $Rev$
+	 *          \___    ___\/         $Author$
+	 *              \   \  /          $Date$
 	 *               \___\/           
 	 */
 

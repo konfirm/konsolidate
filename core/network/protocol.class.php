@@ -10,9 +10,9 @@
 	 *     \/___/  \___\/      \      Tier:   Core
 	 *      \   \  /\   \  /\  /      Module: Network/Protocol
 	 *       \___\/  \___\/  \/       
-	 *         \          \  /        $Rev: 44 $
-	 *          \___    ___\/         $Author: rogier $
-	 *              \   \  /          $Date: 2007-06-02 20:48:00 +0200 (Sat, 02 Jun 2007) $
+	 *         \          \  /        $Rev$
+	 *          \___    ___\/         $Author$
+	 *              \   \  /          $Date$
 	 *               \___\/           
 	 */
 	class CoreNetworkProtocol extends Konsolidate

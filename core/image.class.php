@@ -10,9 +10,9 @@
 	 *     \/___/  \___\/      \      Tier:   Core
 	 *      \   \  /\   \  /\  /      Module: Image
 	 *       \___\/  \___\/  \/       
-	 *         \          \  /        $Rev: 52 $
-	 *          \___    ___\/         $Author: rogier $
-	 *              \   \  /          $Date: 2007-07-12 09:52:22 +0200 (Thu, 12 Jul 2007) $
+	 *         \          \  /        $Rev$
+	 *          \___    ___\/         $Author$
+	 *              \   \  /          $Date$
 	 *               \___\/           
 	 */
 	class CoreImage extends Konsolidate

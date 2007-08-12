@@ -10,9 +10,9 @@
 	 *     \/___/  \___\/      \      Tier:   Core
 	 *      \   \  /\   \  /\  /      Module: DB
 	 *       \___\/  \___\/  \/       
-	 *         \          \  /        $Rev: 37 $
-	 *          \___    ___\/         $Author: rogier $
-	 *              \   \  /          $Date: 2007-05-18 13:41:04 +0200 (Fri, 18 May 2007) $
+	 *         \          \  /        $Rev$
+	 *          \___    ___\/         $Author$
+	 *              \   \  /          $Date$
 	 *               \___\/           
 	 */
 	class CoreDB extends Konsolidate

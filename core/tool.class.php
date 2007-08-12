@@ -10,9 +10,9 @@
 	 *     \/___/  \___\/      \      Tier:   Core
 	 *      \   \  /\   \  /\  /      Module: Tool (use static, always available when Konsolidate is)
 	 *       \___\/  \___\/  \/       
-	 *         \          \  /        $Rev: 36 $
-	 *          \___    ___\/         $Author: peter $
-	 *              \   \  /          $Date: 2007-05-18 09:46:09 +0200 (Fri, 18 May 2007) $
+	 *         \          \  /        $Rev$
+	 *          \___    ___\/         $Author$
+	 *              \   \  /          $Date$
 	 *               \___\/           
 	 */
 	abstract class CoreTool

@@ -1,8 +1,5 @@
 <?php
 
-	if ( !defined( "LANGUAGE_PATH" ) )
-		define( "LANGUAGE_PATH", realpath( $_SERVER[ "DOCUMENT_ROOT" ] . "/generated" ) );
-
 	/**
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
@@ -13,9 +10,9 @@
 	 *     \/___/  \___\/      \      Tier:   Core
 	 *      \   \  /\   \  /\  /      Module: Language
 	 *       \___\/  \___\/  \/       
-	 *         \          \  /        $Rev: 50 $
-	 *          \___    ___\/         $Author: rogier $
-	 *              \   \  /          $Date: 2007-07-10 21:41:59 +0200 (Tue, 10 Jul 2007) $
+	 *         \          \  /        $Rev$
+	 *          \___    ___\/         $Author$
+	 *              \   \  /          $Date$
 	 *               \___\/           
 	 */
 	class CoreLanguage extends Konsolidate

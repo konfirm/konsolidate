@@ -10,9 +10,9 @@
 	 *     \/___/  \___\/      \      Tier:   Core
 	 *      \   \  /\   \  /\  /      Module: Config/INI
 	 *       \___\/  \___\/  \/       
-	 *         \          \  /        $Rev: 43 $
-	 *          \___    ___\/         $Author: rogier $
-	 *              \   \  /          $Date: 2007-06-02 20:41:54 +0200 (Sat, 02 Jun 2007) $
+	 *         \          \  /        $Rev$
+	 *          \___    ___\/         $Author$
+	 *              \   \  /          $Date$
 	 *               \___\/           
 	 */
 	class CoreConfigINI extends Konsolidate

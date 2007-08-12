@@ -10,9 +10,9 @@
 	 *     \/___/  \___\/      \      Tier:   Core
 	 *      \   \  /\   \  /\  /      Module: Image/FX
 	 *       \___\/  \___\/  \/       
-	 *         \          \  /        $Rev: 35 $
-	 *          \___    ___\/         $Author: rogier $
-	 *              \   \  /          $Date: 2007-05-16 17:17:08 +0200 (Wed, 16 May 2007) $
+	 *         \          \  /        $Rev$
+	 *          \___    ___\/         $Author$
+	 *              \   \  /          $Date$
 	 *               \___\/           
 	 */
 	class CoreImageFX extends Konsolidate

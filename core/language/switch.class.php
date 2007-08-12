@@ -10,9 +10,9 @@
 	 *     \/___/  \___\/      \      Tier:   Core
 	 *      \   \  /\   \  /\  /      Module: Language
 	 *       \___\/  \___\/  \/       
-	 *         \          \  /        $Rev: 51 $
-	 *          \___    ___\/         $Author: rogier $
-	 *              \   \  /          $Date: 2007-07-10 21:56:32 +0200 (Tue, 10 Jul 2007) $
+	 *         \          \  /        $Rev$
+	 *          \___    ___\/         $Author$
+	 *              \   \  /          $Date$
 	 *               \___\/           
 	 */
 	class CoreLanguageSwitch extends Konsolidate
