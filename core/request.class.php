@@ -1,5 +1,8 @@
 <?php
 
+	if ( !defined( "FILTER_META_CHARACTERS" ) )
+		define( "FILTER_META_CHARACTERS", true );
+
 	/**
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
@@ -17,6 +20,9 @@
 	 */
 	class CoreRequest extends Konsolidate
 	{
+		protected $_raw;
+		protected $_xml;
+
 		/**
 		 *  CoreRequest constructor
 		 *  @name    CoreRequest
@@ -30,7 +36,8 @@
 		function __construct( &$oParent )
 		{
 			parent::__construct( $oParent );
-
+			$this->_raw = null;
+			$this->_xml = null;
 			$this->_collect();
 		}
 
@@ -39,18 +46,28 @@
 			return $_SERVER[ "REQUEST_METHOD" ] === "POST";
 		}
 
-		private function _collectFromInput()
+		public function getRawRequest()
 		{
-			$sRequest = trim( file_get_contents( "php://input" ) );
+			return !is_null( $this->_raw ) ? $this->_raw : false;
+		}
 
+		public function getXML()
+		{
+			return !is_null( $this->_xml ) ? $this->_xml : false;
+		}
+
+		private function _collectFromRaw()
+		{
 			//  Try to determine what kind of request triggered this class
-			switch( substr( $sRequest, 0, 1 ) )
+			switch( substr( $this->_raw, 0, 1 ) )
 			{
 				case "<": // XML
 					// in-class for now
-					$oXML = new SimpleXMLElement( $sRequest );
-					foreach( $oXML as $sParam=>$sValue )
-						$this->$sParam = $sValue;
+					$this->_xml = new SimpleXMLElement( $this->_raw );
+
+					foreach( $this->_xml as $sParam=>$sValue )
+						$this->$sParam = (string) $sValue;
+					$this->call( "/Log/write", var_export( $this->_property, true ) );
 					break;
 			}
 		}
@@ -63,12 +80,19 @@
 
 		private function _collect()
 		{
-			if ( $this->isPosted() && !count( $_POST ) )
-				$this->_collectFromInput();
-			else if ( $this->isPosted() )
-				$this->_collectHTTP( $_POST );
+			$this->_raw = trim( file_get_contents( "php://input" ) );
+
+			if ( $this->isPosted() )
+			{
+				if ( !empty( $this->_raw ) )
+					$this->_collectFromRaw();
+				else
+					$this->_collectHTTP( $_POST );
+			}
 			else
+			{
 				$this->_collectHTTP( $_GET );
+			}
 		}
 	}
 
