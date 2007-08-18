@@ -59,14 +59,14 @@
 
 		public function get( $nLength=4096 )
 		{
-			if ( $this->_filepointer !== false )
+			if ( $this->_filepointer !== false && !feof( $this->_filepointer ) )
 				return fgets( $this->_filepointer, $nLength );
 			return false;
 		}
 
 		public function getcsv( $nLength=4096, $sDelimiter=",", $sEnclosure="\"" )
 		{
-			if ( $this->_filepointer !== false )
+			if ( $this->_filepointer !== false && !feof( $this->_filepointer ) )
 				return fgetcsv( $this->_filepointer, $nLength, $sDelimiter, $sEnclosure );
 			return false;
 		}
