@@ -409,7 +409,7 @@
 			return $this->_lookupcache[ $sPath ];
 		}
 
-		// Magic methods
+		// Magic methods.
 		public function __set( $sProperty, $mValue )
 		{
 			$this->_property[ $sProperty ] = $mValue;
