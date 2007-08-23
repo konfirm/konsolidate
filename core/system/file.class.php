@@ -51,7 +51,7 @@
 
 
 
-		public function open( $sFile, $sMode="w" )
+		public function open( $sFile, $sMode="r" )
 		{
 			$this->_filepointer = fopen( $sFile, $sMode );
 			return $this->_filepointer !== false;
@@ -64,13 +64,6 @@
 			return false;
 		}
 
-		public function getcsv( $nLength=4096, $sDelimiter=",", $sEnclosure="\"" )
-		{
-			if ( $this->_filepointer !== false && !feof( $this->_filepointer ) )
-				return fgetcsv( $this->_filepointer, $nLength, $sDelimiter, $sEnclosure );
-			return false;
-		}
-
 		public function put( $sData )
 		{
 			if ( $this->_filepointer !== false )
@@ -78,11 +71,9 @@
 			return false;
 		}
 
-		public function putcsv( $aData, $sDelimiter=",", $sEnclosure="\"" )
+		public function next()
 		{
-			if ( $this->_filepointer !== false )
-				$this->put( $sEnclosure . implode( "{$sEnclosure}{$sDelimiter}{$sEnclosure}", $aData ) . "{$sEnclosure}\n" );
-			return false;
+			return $this->get();
 		}
 
 		public function close()
@@ -90,6 +81,11 @@
 			if ( $this->_filepointer !== false )
 				return fclose( $this->_filepointer );
 			return false;
+		}
+
+		public function getFilePointer()
+		{
+			return $this->_filepointer;
 		}
 	}
 
