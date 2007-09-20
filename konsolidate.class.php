@@ -1,6 +1,6 @@
 <?php
 
-	/**
+	/*
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
@@ -14,6 +14,14 @@
 	 *          \___    ___\/         $Author$
 	 *              \   \  /          $Date$
 	 *               \___\/           
+	 */
+
+
+	/**
+	 *  The konsolidate class, which acts as the 'one ring' being responsible for the proper inner workings of the Konsolidate framework/library
+	 *  @name   Konsolidate
+	 *  @type   class
+	 *  @author Rogier Spieker <rogier@klof.net>
 	 */
 	class Konsolidate
 	{

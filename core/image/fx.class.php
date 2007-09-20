@@ -23,8 +23,9 @@
 		 *  @type    method
 		 *  @access  private
 		 *  @param   resource image (or null to create a new image)
+		 *  @param   integer  amount (optional, default 1)
 		 *  @returns resource image
-		 *  @syntax  Object->blur( resource image )
+		 *  @syntax  Object->blur( resource image, int amount )
 		 */
 		public function &blur( $mImage, $nAmount=1 )
 		{
@@ -160,7 +161,6 @@
 			}
 			return $mImage;
 		}
-
 	}
 
 ?>

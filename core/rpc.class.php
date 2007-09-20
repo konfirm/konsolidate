@@ -1,8 +1,5 @@
 <?php
 
-	if ( !defined( "RPC_CONFIG_PATH" ) )
-		define( "RPC_CONFIG_PATH", realpath( $_SERVER[ "DOCUMENT_ROOT" ] . "/../conf/rpc.ini" ) );
-
 	/**
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
@@ -20,6 +17,7 @@
 	 */
 	class CoreRPC extends Konsolidate
 	{
+		protected $_config;
 		protected $_request;
 
 		/**
@@ -37,16 +35,26 @@
 			parent::__construct( $oParent );
 
 			$this->import( "control.if.php" );
-			$this->_request = &$this->register( "/Request" );
 		}
 
-		public function process()
+		public function loadConfig( $sFile )
 		{
-			$sCommand = $this->_request->command;
-			$aConfig  = $this->call( "/Config/ini/load", RPC_CONFIG_PATH );
+			return $this->_config = $this->call( "/Config/ini/load", $sFile );
+		}
 
-			if ( array_key_exists( "expose", $aConfig ) && array_key_exists( $sCommand, $aConfig[ "expose" ] ) )
-				return $this->call( "Control/process", $aConfig[ "expose" ][ $sCommand ] );
+		public function process( $sConfigFile=null )
+		{
+			if ( !is_null( $sConfigFile ) )
+				$this->loadConfig( $sConfigFile );
+
+			if ( is_array( $this->_config ) )
+			{
+				$this->_request = &$this->register( "/Request" );
+				$sCommand       = $this->_request->command;
+
+				if ( array_key_exists( "rpc", $this->_config ) && array_key_exists( $sCommand, $this->_config[ "rpc" ] ) )
+					return $this->call( "Control/process", $this->_config[ "rpc" ][ $sCommand ] );
+			}
 			return false;
 		}
 	}
