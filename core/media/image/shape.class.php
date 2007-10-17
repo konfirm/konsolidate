@@ -6,16 +6,16 @@
 	 *      ____/   /___/  \/  \      
 	 *     /           /\      /      http://konsolidate.klof.net
 	 *    /___     ___/  \    /       
-	 *    \  /   /\   \  /    \       Class:  CoreImageShape
+	 *    \  /   /\   \  /    \       Class:  CoreMediaImageShape
 	 *     \/___/  \___\/      \      Tier:   Core
-	 *      \   \  /\   \  /\  /      Module: Image/Shape
+	 *      \   \  /\   \  /\  /      Module: Media/Image/Shape
 	 *       \___\/  \___\/  \/       
 	 *         \          \  /        $Rev$
 	 *          \___    ___\/         $Author$
 	 *              \   \  /          $Date$
 	 *               \___\/           
 	 */
-	class CoreImageShape extends Konsolidate
+	class CoreMediaImageShape extends Konsolidate
 	{
 		private $_bottomIsY;
 		private $_focalLength;

@@ -6,16 +6,16 @@
 	 *      ____/   /___/  \/  \      
 	 *     /           /\      /      http://konsolidate.klof.net
 	 *    /___     ___/  \    /       
-	 *    \  /   /\   \  /    \       Class:  CoreImageFX
+	 *    \  /   /\   \  /    \       Class:  CoreMediaImageFX
 	 *     \/___/  \___\/      \      Tier:   Core
-	 *      \   \  /\   \  /\  /      Module: Image/FX
+	 *      \   \  /\   \  /\  /      Module: Media/Image/FX
 	 *       \___\/  \___\/  \/       
 	 *         \          \  /        $Rev$
 	 *          \___    ___\/         $Author$
 	 *              \   \  /          $Date$
 	 *               \___\/           
 	 */
-	class CoreImageFX extends Konsolidate
+	class CoreMediaImageFX extends Konsolidate
 	{
 		/**
 		 *  Blur an image

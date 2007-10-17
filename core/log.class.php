@@ -55,7 +55,7 @@
 		{
 			if ( $nVerbosity <= $this->_verbositylevel )
 			{
-				if ( !$this->_logfile->put( "[" . date( "Y.m.d H:i" ) . " {$_SERVER[ "SCRIPT_NAME" ]} " . "]\t{$sMessage}\n" ) )
+				if ( !$this->_logfile->put( "[" . date( "Y.m.d H:i" ) . " - {$nVerbosity} - {$_SERVER[ "SCRIPT_NAME" ]}]\t\t{$sMessage}\n" ) )
 				{
 					error_log( $sMessage );
 					return false;

@@ -6,16 +6,16 @@
 	 *      ____/   /___/  \/  \      
 	 *     /           /\      /      http://konsolidate.klof.net
 	 *    /___     ___/  \    /       
-	 *    \  /   /\   \  /    \       Class:  CoreImage
+	 *    \  /   /\   \  /    \       Class:  CoreMediaImage
 	 *     \/___/  \___\/      \      Tier:   Core
-	 *      \   \  /\   \  /\  /      Module: Image
+	 *      \   \  /\   \  /\  /      Module: Media/Image
 	 *       \___\/  \___\/  \/       
 	 *         \          \  /        $Rev$
 	 *          \___    ___\/         $Author$
 	 *              \   \  /          $Date$
 	 *               \___\/           
 	 */
-	class CoreImage extends Konsolidate
+	class CoreMediaImage extends Konsolidate
 	{
 		protected $_image;
 

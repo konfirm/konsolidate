@@ -275,8 +275,17 @@
 					break;
 				}
 			}
+
 			if ( !$bConstructed )
-				$oModule = false;
+			{
+				//  create class stubs on the fly
+				$this->call( "/Log/write", "class '{$sClass}' not found in module " . get_class( $this ) . ", creating dynamic stub", 4 );
+				eval( "class {$sClass} extends Konsolidate{ public \$_dynamicStubClass=true; }" );
+				$oModule      = new $sClass( $this );
+				$bConstructed = is_object( $oModule );
+			}
+			
+
 			return $oModule;
 		 }
 
@@ -405,7 +414,7 @@
 
 					if ( !is_object( $oTraverse ) )
 					{
-						$this->call( "/Log/write", "Module '{$sSegment}' not found in module " . get_class( $oModule ) . "!" );
+						$this->call( "/Log/write", "Module '{$sSegment}' not found in module " . get_class( $oModule ) . "!", 3 );
 						return $oTraverse;
 					}
 
@@ -415,6 +424,13 @@
 				$this->_lookupcache[ $sPath ] = &$oModule;
 			}
 			return $this->_lookupcache[ $sPath ];
+		}
+
+		public function getTopAuthoredClass()
+		{
+			if ( property_exists( $this, "_dynamicStubClass" ) )
+				return $this->call( "../getTopAuthoredClass" );
+			return get_class( $this );
 		}
 
 		// Magic methods.
@@ -432,7 +448,11 @@
 
 		public function __call( $sMethod, $aArgument )
 		{
-			throw new Exception( "Call to '" . get_class( $this ) . "::{$sMethod}', which does not exist\n" );
+			$sSelf        = get_class( $this );
+			$sTopAuthored = $this->getTopAuthoredClass();
+			$sMessage     = "Call to unknown method '{$sSelf}::{$sMethod}'" . ( $sTopAuthored != $sSelf ? ", nearest authored class is '{$sTopAuthored}'" : "" );
+			$this->call( "/Log/write", $sMessage, 0 );
+			throw new Exception( $sMessage );
 			return false;
 		}
 
@@ -466,9 +486,6 @@
 				$sReturn .= "</ul>";
 			}
 			$sReturn .= "</div>";
-
-//			if ( (bool) ini_get( "html_errors" ) === true )
-//				$sReturn = preg_replace( "/\<.*>/U", "", $sReturn );
 
 			return $sReturn;
 		}

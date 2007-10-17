@@ -6,16 +6,16 @@
 	 *      ____/   /___/  \/  \      
 	 *     /           /\      /      http://konsolidate.klof.net
 	 *    /___     ___/  \    /       
-	 *    \  /   /\   \  /    \       Class:  CoreImageText
+	 *    \  /   /\   \  /    \       Class:  CoreMediaImageText
 	 *     \/___/  \___\/      \      Tier:   Core
-	 *      \   \  /\   \  /\  /      Module: Image/Text
+	 *      \   \  /\   \  /\  /      Module: Media/Image/Text
 	 *       \___\/  \___\/  \/       
 	 *         \          \  /        $Rev$
 	 *          \___    ___\/         $Author$
 	 *              \   \  /          $Date$
 	 *               \___\/           
 	 */
-	class CoreImageText extends Konsolidate
+	class CoreMediaImageText extends Konsolidate
 	{
 		/**
 		 *  Style configuration
