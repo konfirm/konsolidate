@@ -279,10 +279,13 @@
 			if ( !$bConstructed )
 			{
 				//  create class stubs on the fly
-				$this->call( "/Log/write", "class '{$sClass}' not found in module " . get_class( $this ) . ", creating dynamic stub", 4 );
 				eval( "class {$sClass} extends Konsolidate{ public \$_dynamicStubClass=true; }" );
 				$oModule      = new $sClass( $this );
 				$bConstructed = is_object( $oModule );
+				if ( $bConstructed )
+					$this->call( "/Log/write", "class '{$sClass}' not found in module " . get_class( $this ) . ", dynamic stub created", 0 );
+				else
+					return false;
 			}
 			
 
