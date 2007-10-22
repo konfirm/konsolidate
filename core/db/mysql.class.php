@@ -90,9 +90,13 @@
 
 			if ( $this->connect() )
 			{
-				$this->_cache[ $sCacheKey ] = $this->instance( "Query" );
-				$this->_cache[ $sCacheKey ]->execute( $sQuery, $this->_conn );
-				return $this->_cache[ $sCacheKey ];
+				$oQuery = $this->instance( "Query" );
+				$oQuery->execute( $sQuery, $this->_conn );
+
+				if ( $this->_isCachableQuery( $sQuery ) )
+					$this->_cache[ $sCacheKey ] = $oQuery; 
+
+				return $oQuery;
 			}
 			return false;
 		}
@@ -152,6 +156,11 @@
 		public function rollbackTransaction()
 		{
 			return $this->endTransaction( false );
+		}
+
+		public function _isCachableQuery( $sQuery )
+		{
+			return preg_match( "/^\s*SELECT /i", $sQuery );
 		}
 	}
 

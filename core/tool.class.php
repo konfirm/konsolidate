@@ -15,7 +15,7 @@
 	 *              \   \  /          $Date$
 	 *               \___\/           
 	 */
-	abstract class CoreTool
+	class CoreTool
 	{
 		public static function isPosted()
 		{

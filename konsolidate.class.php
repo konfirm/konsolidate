@@ -23,7 +23,7 @@
 	 *  @type   class
 	 *  @author Rogier Spieker <rogier@klof.net>
 	 */
-	class Konsolidate
+	class Konsolidate implements Iterator
 	{
 		/**
 		 *  The parent Konsolidate object
@@ -171,7 +171,7 @@
 			}
 			$mValue           = array_shift( $aArgument );
 			$this->$sProperty = $mValue;
-			return $this->$sProperty;
+			return $this->$sProperty === $mValue;
 		}
 
 		/**
@@ -322,6 +322,24 @@
 			return $bImported;
 		}
 
+		/**
+		 *  Verify whether given module exists (either for real, or as required stub as per directory structure)
+		 *  @name    import
+		 *  @type    method
+		 *  @access  public
+		 *  @param   string   module
+		 *  @returns &object
+		 *  @syntax  &Konsolidate->checkModuleAvailability( string module );
+		 */
+		public function checkModuleAvailability( $sProperty )
+		{
+			$sProperty = strToLower( $sProperty );
+			foreach ( $this->_path as $sMod=>$sPath )
+				if ( file_exists( "{$sPath}/{$sProperty}.class.php" ) || is_dir( "{$sPath}/{$sProperty}" ) )
+					return true;
+			return false;
+		}
+
 
 		/**
 		 *  Get the root node
@@ -436,9 +454,53 @@
 			return get_class( $this );
 		}
 
+		//  Iterator functionality
+
+		public function key()
+		{
+			return key( $this->_property );
+		}
+		
+		public function current()
+		{
+			return current( $this->_property );
+		}
+		
+		public function next()
+		{
+			return next( $this->_property );
+		}
+		
+		public function rewind()
+		{
+			return reset( $this->_property );
+		}
+		
+		public function valid()
+		{
+			return (bool) $this->current();
+		}
+
+		//  End Iterator functionality
+
+
 		// Magic methods.
 		public function __set( $sProperty, $mValue )
 		{
+/* Experimental Strict Checking on register/available Modules */
+			if ( array_key_exists( strToUpper( $sProperty ), $this->_module ) )
+				throw new Exception( "Trying to overwrite existing module {$sProperty} in " . get_class( $this ) . " with " . gettype( $mValue ) . " {$mValue}" );
+			else if ( $this->checkModuleAvailability( $sProperty ) )
+				throw new Exception( "Trying to set a property " . gettype( $mValue ) . " {$mValue} in " . get_class( $this ) . " where a module is available" );
+			// else 
+				// we've ended up in the situation where we may want to automagically create a stub class but since we 
+				// don't know that at this point, we cannot throw an exception.
+				// Due to Konsolidate's architecture, you end up having both the property AND the module (object) in the 
+				// same tree, where the property now has precendence over the module, rendering the 'get'-ing of a Module
+				// obsolete, since you will get the property.
+				// In short: 'get' of a stub wil work as intended, unless your code has assigned a property with the same name
+				// which let's 'get' return the property and not the stub module.
+/* End Experimental Strict Checking on register/available Modules */
 			$this->_property[ $sProperty ] = $mValue;
 		}
 
@@ -446,6 +508,8 @@
 		{
 			if ( array_key_exists( $sProperty, $this->_property ) )
 				return $this->_property[ $sProperty ];
+			else if ( array_key_exists( strToUpper( $sProperty ), $this->_module ) )
+				return $this->_module[ strToUpper( $sProperty ) ];
 			return null;
 		}
 

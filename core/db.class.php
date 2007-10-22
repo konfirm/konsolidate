@@ -43,6 +43,8 @@
 		 *  @name    setConnection
 		 *  @type    method
 		 *  @access  public
+		 *  @param   string connection reference
+		 *  @param   string connection URI
 		 *  @returns bool
 		 *  @note    the URI is formatted like: scheme://user:pass@host[:port]/database
 		 *           providing an unique reference provides you to ability to use more than one connection
@@ -61,12 +63,21 @@
 			return false;
 		}
 
-		public function &register( $sModule )
+		/**
+		 *  Set the default DB connection, if it exists
+		 *  @name    setDefaultConnection
+		 *  @type    method
+		 *  @access  public
+		 *  @param   string connection reference
+		 *  @returns string reference
+		 *  @note    By default the first connection will be the default connection, a call to the setDefaultConnection 
+		 *           is only required if you want to change this behaviour
+		 */
+		public function &setDefaultConnection( $sReference )
 		{
-			$sModule = strToUpper( $sModule );
-			if ( array_key_exists( $sModule, $this->_pool ) )
-				return $this->_pool[ $sModule ];
-			return parent::register( $sModule );
+			if ( array_key_exists( $this->_default, $this->_pool ) && is_object( $this->_pool[ $this->_default ] ) )
+				return $this->_default = $sReference;
+			return false;
 		}
 
 		/**
@@ -105,13 +116,13 @@
 		 *  @name    disconnect
 		 *  @type    method
 		 *  @access  public
-		 *  @param   string reference (optional, default all)
+		 *  @param   string reference (optional, default only the connection marked as 'default')
 		 *  @returns bool
 		 *  @syntax  disconnect( [ string reference ] );
 		 */
-		public function disconnect( $bAll=false )
+		public function disconnect( $sReference=false )
 		{
-			if ( $bAll )
+			if ( $sReference === true )
 			{
 				$bReturn = true;
 				if ( $this->_connected )
@@ -119,8 +130,10 @@
 						$bReturn &= $oDB->disconnect();
 				return $bReturn;
 			}
+			else if ( $sReference === false )
+				$sReference = $this->_default;
 
-			if ( array_key_exists( $this->_default, $this->_pool ) && is_object( $this->_pool[ $this->_default ] ) )
+			if ( array_key_exists( $this->_default, $this->_pool ) && is_object( $this->_pool[ $sReference ] ) )
 				return $this->_pool[ $this->_default ]->disconnect();
 			return false;
 		}

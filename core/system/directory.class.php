@@ -17,12 +17,24 @@
 	 */
 	class CoreSystemDirectory extends Konsolidate
 	{
-		public function create( $sPath, $nMode=0777, $bRecurse=true,  )
+		public function create( $sPath, $nMode=0777 )
 		{
+			return ( is_dir( $sDir) || @mkdir( $sDir, $nMode, true ) );
 		}
 
 		public function unlink( $sPath, $bRecurse=true )
 		{
+			if ( is_dir( $sPath ) && $dh = opendir( $sPath ) )
+			{
+				while( ( $sEntry = readdir( $dh ) ) !== false )
+					if ( $sEntry{0} != "." )
+						$this->
+			}
+			else
+			{
+				return $this->call( "../File/unlink", $sPath );
+			}
+			return false;
 		}
 	}
 

@@ -36,7 +36,10 @@
 				{
 					$aReturn[ $sPrefix ] = array_key_exists( "default", $aReturn ) ? $aReturn[ "default" ] : Array();
 					foreach( $mValue as $sKey=>$sValue )
+					{
 						$aReturn[ $sPrefix ][ $sKey ] = $sValue;
+						$this->set( "/Config/{$sPrefix}/$sKey", $sValue );
+					}
 				}
 				else
 				{
