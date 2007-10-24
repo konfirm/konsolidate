@@ -162,7 +162,9 @@
 		 */
 		public function storeCookie()
 		{
-			return setCookie( VISITOR_TRACKER_COOKIE, $this->code, time() + ( 60 * 60 * 24 * 30 ), "/" );
+			if ( !headers_sent() )
+				return setCookie( VISITOR_TRACKER_COOKIE, $this->code, time() + ( 60 * 60 * 24 * 30 ), "/" );
+			return false;
 		}
 
 		/**

@@ -211,7 +211,7 @@
 
 				//  include the template, so the PHP code inside is executed and the content is send to the output buffer
 				if ( !file_exists( "{$this->templatepath}/{$sTemplate}" ) )
-					die( "Facade: template not found '{$this->templatepath}/{$sTemplate}'" );
+					throw new Exception( "Template not found '{$this->templatepath}/{$sTemplate}'" );
 				include( "{$this->templatepath}/{$sTemplate}" );
 
 				//  get the buffer contents and convert the request-time PHP tags to normal PHP tags
@@ -221,10 +221,7 @@
 				ob_end_clean();
 
 				if ( !$this->_storeCompilation( $sCacheFile, $sCapture ) )
-					error_log( "Facade: store of compilation has failed for {$sTemplate} in file {$sCacheFile}" );
-
-				//  we don't use a cache version
-				++$this->_cached;
+					$this->call( "/Log/write", "Store of compilation has failed for template {$sTemplate} in file {$sCacheFile}" );
 			}
 
 			ob_start();
@@ -268,10 +265,7 @@
 		 */
 		private function _storeData( $sFile, $sContent )
 		{
-			$rFP = fopen( $sFile, "w" );
-			if ( $rFP )
-				return fputs( $rFP, $sContent, strLen( $sContent ) ) && fclose( $rFP );
-			return false;
+			return $this->call( "/System/File/write", $sFile, $sContent );
 		}
 
 		/**

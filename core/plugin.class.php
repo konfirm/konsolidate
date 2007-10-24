@@ -6,9 +6,9 @@
 	 *      ____/   /___/  \/  \      
 	 *     /           /\      /      http://konsolidate.klof.net
 	 *    /___     ___/  \    /       
-	 *    \  /   /\   \  /    \       Class:  CoreManager
+	 *    \  /   /\   \  /    \       Class:  CorePlugin
 	 *     \/___/  \___\/      \      Tier:   Core
-	 *      \   \  /\   \  /\  /      Module: Manager
+	 *      \   \  /\   \  /\  /      Module: Plugin
 	 *       \___\/  \___\/  \/       
 	 *         \          \  /        $Rev$
 	 *          \___    ___\/         $Author$
@@ -16,12 +16,12 @@
 	 *               \___\/           
 	 *
 	 *  Manage external objects for use within Konsolidate
-	 *  @name    CoreManager
+	 *  @name    CorePlugin
 	 *  @type    class
 	 *  @package Konsolidate
 	 *  @author  Rogier Spieker <rogier@klof.net>
 	 */
-	class CoreManager extends Konsolidate
+	class CorePlugin extends Konsolidate
 	{
 		/**
 		 *  Hook an object as module into the Konsolidate structure
@@ -33,9 +33,9 @@
 		 *  @returns object
 		 *  @syntax  Object->hook( string modulename, object module );
 		 */
-		public function &hook( $sModule, &$oModule )
+		public function hook( $sModule, &$oModule )
 		{
-			return $this->_module[ strToUpper( $sModule ) ] = &$oModule;
+			return $this->_module[ strToUpper( $sModule ) ] = $oModule;
 		}
 
 		/**
@@ -52,7 +52,7 @@
 		 *  @syntax  Object->create( string modulename, object module );
 		 *  @note    You can provide as many arguments as needed to construct the class
 		 */
-		public function &create()
+		public function create()
 		{
 			$aArgument  = func_get_args();
 			$mModule    = array_shift( $aArgument );
