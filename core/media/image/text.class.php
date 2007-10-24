@@ -1,6 +1,6 @@
 <?php
 
-	/**
+	/*
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
@@ -15,6 +15,15 @@
 	 *              \   \  /          $Date$
 	 *               \___\/           
 	 */
+
+
+	/**
+	 *  Add text to images
+	 *  @name    CoreMediaImageText
+	 *  @type    class
+	 *  @package Konsolidate
+	 *  @author  Rogier Spieker <rogier@klof.net>
+	 */
 	class CoreMediaImageText extends Konsolidate
 	{
 		/**
@@ -23,7 +32,6 @@
 		public $_style;
 
 		/**
-		 *  Create a new textlabel
 		 *  Create a new textlabel
 		 *  @name    create
 		 *  @type    method
@@ -56,15 +64,16 @@
 		}
 
 		/**
-		 *  Create a new textlabel
-		 *  @name    create
+		 *  Create a new textlabel based on an style property array
+		 *  @name    _createFromStyle
 		 *  @type    method
 		 *  @access  private
 		 *  @param   resource image (or null to create a new image)
 		 *  @param   string  text
 		 *  @param   array   style definition
 		 *  @returns resource image
-		 *  @syntax  Object->create( resource image, string text, array style )
+		 *  @syntax  CoreMediaImageText->_createFromStyle( resource image, string text, array style )
+		 *  @see     create
 		 */
 		private function &_createFromStyle( $mImage, $sText, $aStyle )
 		{
@@ -162,6 +171,25 @@
 			return $mImage;
 		}
 
+		/**
+		 *  Create a new textlabel based on an style property array
+		 *  @name    create
+		 *  @type    method
+		 *  @access  private
+		 *  @param   resource image (or null to create a new image)
+		 *  @param   string  text
+		 *  @param   string  fontfilelocation
+		 *  @param   int     textsize (optional, default 10)
+		 *  @param   int     X position (optional, default 0)
+		 *  @param   int     Y position (optional, default 0)
+		 *  @param   string  color (optional, default "#000", black)
+		 *  @param   string  background color (optional, default "#fff", white)
+		 *  @param   bool    antialias (optional, default false for text sizes < 24, true otherwise)
+		 *  @param   int     angle of rotation in degrees (optional, default 0)
+		 *  @returns resource image
+		 *  @syntax  CoreMediaImageText->_createFromArgument( resource image, string text, string fontfile [, int textsize [, int X [, int Y [, string color [, string backgroundcolor [, bool antialias [, float angle ] ] ] ] ] ] ] )
+		 *  @see     create
+		 */
 		private function &_createFromArgument( $mImage, $sText, $sFont, $nSize=10, $nX=0, $nY=0, $sColor="#000", $sBGColor="#fff", $bAntiAlias=null, $nAngle=0 )
 		{
 			if ( is_null( $bAntiAlias ) )
@@ -220,7 +248,16 @@
 			return $mImage;
 		}
 
-
+		/**
+		 *  get style from style definition array
+		 *  @name    _getStyle
+		 *  @type    method
+		 *  @access  private
+		 *  @param   string  property
+		 *  @param   string  default (optional, default null)
+		 *  @returns mixed property value
+		 *  @syntax  CoreMediaImageText->_getStyle( string property [, mixed default ] )
+		 */
 		private function _getStyle( $sProperty, $mDefault=null )
 		{
 			if ( array_key_exists( $sProperty, $this->_style ) && $this->_style[ $sProperty ] != "auto" )

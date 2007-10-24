@@ -1,6 +1,6 @@
 <?php
 
-	/**
+	/*
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
@@ -14,6 +14,15 @@
 	 *          \___    ___\/         $Author$
 	 *              \   \  /          $Date$
 	 *               \___\/           
+	 */
+
+
+	/**
+	 *  Site User/Visitor
+	 *  @name    CoreUser
+	 *  @type    class
+	 *  @package Konsolidate
+	 *  @author  Rogier Spieker <rogier@klof.net>
 	 */
 	class CoreUser extends Konsolidate
 	{

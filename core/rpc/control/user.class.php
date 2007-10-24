@@ -1,6 +1,6 @@
 <?php
 
-	/**
+	/*
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
@@ -14,6 +14,16 @@
 	 *          \___    ___\/         $Author$
 	 *              \   \  /          $Date$
 	 *               \___\/           
+	 */
+
+
+	/**
+	 *  Basic user actions for use through an RPC interface
+	 *  @name    CoreRPCControlUser
+	 *  @type    class
+	 *  @package Konsolidate
+	 *  @author  Rogier Spieker <rogier@klof.net>
+	 *  @note    By design, all RPC calls will have to be exposed (activated) 'manually' in your project
 	 */
 	class CoreRPCControlUser extends Konsolidate implements CoreRPCControlInterface
 	{

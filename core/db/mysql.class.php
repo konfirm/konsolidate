@@ -1,6 +1,6 @@
 <?php
 
-	/**
+	/*
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
@@ -14,6 +14,15 @@
 	 *          \___    ___\/         $Author$
 	 *              \   \  /          $Date$
 	 *               \___\/           
+	 */
+
+
+	/**
+	 *  MySQL Connectivity
+	 *  @name    CoreDBMySQL
+	 *  @type    class
+	 *  @package Konsolidate
+	 *  @author  Rogier Spieker <rogier@klof.net>
 	 */
 	class CoreDBMySQL extends Konsolidate
 	{

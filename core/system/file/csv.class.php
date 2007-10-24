@@ -1,6 +1,6 @@
 <?php
 
-	/**
+	/*
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
@@ -14,6 +14,15 @@
 	 *          \___    ___\/         $Author: rogier $
 	 *              \   \  /          $Date: 2007-08-18 11:33:08 +0200 (Sat, 18 Aug 2007) $
 	 *               \___\/           
+	 */
+
+
+	/**
+	 *  CSV (Character Seperated Values) file support
+	 *  @name    CoreSystemFileCSV
+	 *  @type    class
+	 *  @package Konsolidate
+	 *  @author  Rogier Spieker <rogier@klof.net>
 	 */
 	class CoreSystemFileCSV extends Konsolidate
 	{

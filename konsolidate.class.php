@@ -14,11 +14,8 @@
 	 *          \___    ___\/         $Author$
 	 *              \   \  /          $Date$
 	 *               \___\/           
-	 */
-
-
-	/**
-	 *  The konsolidate class, which acts as the 'one ring' being responsible for the proper inner workings of the Konsolidate framework/library
+	 *
+	 *  The konsolidate class, which acts as the 'one ring' being responsible for the proper inner workings of the Konsolidate framework/library/foundation
 	 *  @name   Konsolidate
 	 *  @type   class
 	 *  @author Rogier Spieker <rogier@klof.net>
@@ -131,16 +128,19 @@
 		 *  @name    get
 		 *  @type    method
 		 *  @access  public
-		 *  @param   string   path to the property to set
+		 *  @param   string   path to the property to get
+		 *  @param   mixed    default return value (optional, default null)
 		 *  @returns mixed
-		 *  @syntax  Konsolidate->get( string module );
+		 *  @syntax  Konsolidate->get( string module [, mixed default ] );
+		 *  @note    supplying a default value should be done per call, the default is never stored
 		 */
-		public function get( $sProperty )
+		public function get( $sProperty, $mDefault=null )
 		{
 			$nSeperator = strrpos( $sProperty, $this->_objectseperator );
 			if ( $nSeperator !== false && ( $oModule = &$this->getModule( substr( $sProperty, 0, $nSeperator ) ) ) !== false )
-				return $oModule->get( substr( $sProperty, $nSeperator + 1 ) );
-			return $this->$sProperty;
+				return $oModule->get( substr( $sProperty, $nSeperator + 1 ), $mDefault );
+			$mReturn = $this->$sProperty;
+			return is_null( $mReturn ) ? $mDefault : $mReturn; // can (and will be by default!) still be null
 		}
 
 		/**

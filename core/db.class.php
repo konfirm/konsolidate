@@ -1,6 +1,6 @@
 <?php
 
-	/**
+	/*
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
@@ -14,6 +14,15 @@
 	 *          \___    ___\/         $Author$
 	 *              \   \  /          $Date$
 	 *               \___\/           
+	 */
+
+
+	/**
+	 *  DB Layer for DB connectivity
+	 *  @name    CoreDB
+	 *  @type    class
+	 *  @package Konsolidate
+	 *  @author  Rogier Spieker <rogier@klof.net>
 	 */
 	class CoreDB extends Konsolidate
 	{
@@ -158,8 +167,8 @@
 		}
 
 		/**
-		 *  Destructor
-		 *  @name    connect
+		 *  Magic destructor, disconnects all DB connections
+		 *  @name    __construct
 		 *  @type    method
 		 *  @access  public
 		 */
@@ -169,10 +178,12 @@
 		}
 
 		/**
-		 *  Implicit method bridge
+		 *  Magic __call, implicit method bridge to defined connections
 		 *  @name    connect
 		 *  @type    method
 		 *  @access  public
+		 *  @note    By default all calls which are not defined in this class are bridged to the default connection
+		 *  @see     setDefaultConnection
 		 */
 		public function __call( $sCall, $aArgument )
 		{

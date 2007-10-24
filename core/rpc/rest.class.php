@@ -1,6 +1,6 @@
 <?php
 
-	/**
+	/*
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
@@ -15,8 +15,26 @@
 	 *              \   \  /          $Date$
 	 *               \___\/           
 	 */
+
+
+	/**
+	 *  Support for REST (by accident) protocol, POST/GET only
+	 *  @name    CoreRPCREST
+	 *  @type    class
+	 *  @package Konsolidate
+	 *  @author  Rogier Spieker <rogier@klof.net>
+	 */
 	class CoreRPCREST extends CoreRPC
 	{
+		/**
+		 *  Autonimously process a 'REST' request
+		 *  @name    process
+		 *  @type    method
+		 *  @access  public
+		 *  @param   string configfile (optional, default null)
+		 *  @returns bool
+		 *  @syntax  bool CoreRPCREST( string configfile )
+		 */
 		public function process( $sConfigFile=null )
 		{
 			if ( !is_null( $sConfigFile ) )

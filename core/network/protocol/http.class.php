@@ -1,6 +1,6 @@
 <?php
 
-	/**
+	/*
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
@@ -18,7 +18,12 @@
 
 
 	/**
-	 *  TODO: Make proper use of the Socket class!!
+	 *  Basic implementation of the HTTP protocol
+	 *  @name    CoreNetworkProtocolHTTP
+	 *  @type    class
+	 *  @package Konsolidate
+	 *  @author  Rogier Spieker <rogier@klof.net>
+	 *  @todo    Make proper use of the CoreNetworkSocket class, cURL fallback (for ease and performance) and implement HTTPS support
 	 */
 	class CoreNetworkProtocolHTTP extends Konsolidate
 	{
@@ -122,8 +127,6 @@
 				$this->storage[ $mVariable ] = $mValue;
 				return( $this->storage[ $mVariable ] == $mValue );
 			}
-			var_dump( $this->storage );
-			die();
 			return false;
 		}
 	

@@ -1,6 +1,6 @@
 <?php
 
-	/**
+	/*
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
@@ -14,6 +14,15 @@
 	 *          \___    ___\/         $Author$
 	 *              \   \  /          $Date$
 	 *               \___\/           
+	 */
+
+
+	/**
+	 *  Creation and manipulation of Images
+	 *  @name    CoreMediaImage
+	 *  @type    class
+	 *  @package Konsolidate
+	 *  @author  Rogier Spieker <rogier@klof.net>
 	 */
 	class CoreMediaImage extends Konsolidate
 	{
@@ -97,9 +106,7 @@
 			if ( $nSH <= 0 )
 				$nSH = imagesy( $mSource ) - $nSY;
 
-//			imagealphablending( $this->_image, true );
 			imagecopyresampled( $this->_image, $mSource, $nDX, $nDY, $nSX, $nSY, $nSW, $nSH, $nSW, $nSH );
-//			imagecopymerge( $this->_image, $mSource, $nDX, $nDY, $nSX, $nSY, $nSW, $nSH, $nPercentage );
 
 			return $this->_image;
 		}
@@ -134,7 +141,6 @@
 				$nSH = imagesy( $mSource ) - $nSY;
 
 			if ( imageistruecolor( $mImage ) )
-//				imagecopyresampled( $this->_image, $mSource, $nDX, $nDY, $nSX, $nSY, $nSW, $nSH, $nSW, $nSH );
 				imagecopymerge( $this->_image, $mSource, $nDX, $nDY, $nSX, $nSY, $nSW, $nSH, 100 );
 			else
 				imagecopy( $this->_image, $mSource, $nDX, $nDY, $nSX, $nSY, $nSW, $nSH );
@@ -196,9 +202,7 @@
 				$nHeight = imagesy( $mImage ) - ( abs( $nHeight ) + $nY );
 
 			$this->create( $nWidth, $nHeight );
-			//  imagecopyresampled does maintain transparency while imagecopymerge does not
 			imagecopyresampled( $this->_image, $mImage, 0, 0, $nX, $nY, $nWidth, $nHeight, $nWidth, $nHeight );
-//			imagecopymerge( $this->_image, $mImage, 0, 0, $nX, $nY, $nWidth, $nHeight, 100 );
 
 			return $this->_image;
 		}

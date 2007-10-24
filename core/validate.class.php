@@ -11,7 +11,7 @@
 	define( "BIGINT_MIN", -9223372036854775808 ); // for future reference
 	define( "BIGINT_MAX", 9223372036854775807 );  // for future reference
 
-	/**
+	/*
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
@@ -25,6 +25,15 @@
 	 *          \___    ___\/         $Author$
 	 *              \   \  /          $Date$
 	 *               \___\/           
+	 */
+
+
+	/**
+	 *  Basic validation
+	 *  @name    CoreValidate
+	 *  @type    class
+	 *  @package Konsolidate
+	 *  @author  Rogier Spieker <rogier@klof.net>
 	 */
 	class CoreValidate extends Konsolidate
 	{

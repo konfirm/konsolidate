@@ -1,6 +1,6 @@
 <?php
 
-	/**
+	/*
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
@@ -14,6 +14,15 @@
 	 *          \___    ___\/         $Author$
 	 *              \   \  /          $Date$
 	 *               \___\/           
+	 */
+
+
+	/**
+	 *  Standard processor for use with RPC-Controller Modules
+	 *  @name    CoreRPCControl
+	 *  @type    class
+	 *  @package Konsolidate
+	 *  @author  Rogier Spieker <rogier@klof.net>
 	 */
 	class CoreRPCControl extends Konsolidate
 	{
@@ -38,7 +47,18 @@
 			$this->_format  = $this->_request->_format;
 		}
 
-		private function feedback( $bError=true, $sMessage="", $mContent="" )
+		/**
+		 *  Send/assign feedback based on preferred format
+		 *  @name    _feedback
+		 *  @type    method
+		 *  @access  private
+		 *  @param   bool   error during processing (optional, default true, we assume the worst)
+		 *  @param   string message to display (optional, default empty)
+		 *  @param   mixed  content, either a string with additional message, or an array containing arrays, strings or numbers (optional, default empty)
+		 *  @returns void
+		 *  @syntax  void CoreRPCControl->_feedback()
+		 */
+		private function _feedback( $bError=true, $sMessage="", $mContent="" )
 		{
 			if ( $this->_format == "xml" )
 			{
@@ -53,6 +73,15 @@
 			}
 		}
 
+		/**
+		 *  Process the RPC request
+		 *  @name    process
+		 *  @type    method
+		 *  @access  public
+		 *  @param   string command
+		 *  @returns void
+		 *  @syntax  void CoreRPCControl->process( string command )
+		 */
 		function process( $sCommand )
 		{
 			$nMethodStart = strrpos( $sCommand, $this->_objectseperator );

@@ -1,6 +1,6 @@
 <?php
 
-	/**
+	/*
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
@@ -15,10 +15,19 @@
 	 *              \   \  /          $Date$
 	 *               \___\/           
 	 */
+
+
+	/**
+	 *  Read ini files and store ini-sections/variables for re-use in the Config Module
+	 *  @name    CoreConfigINI
+	 *  @type    class
+	 *  @package Konsolidate
+	 *  @author  Rogier Spieker <rogier@klof.net>
+	 */
 	class CoreConfigINI extends Konsolidate
 	{
 		/**
-		 *  Load and parse an inifile
+		 *  Load and parse an inifile and store it's sections/variables in the Config Module
 		 *  @name    load
 		 *  @type    method
 		 *  @access  public
@@ -44,6 +53,7 @@
 				else
 				{
 					$aReturn[ $sPrefix ] = $mValue;
+					$this->set( "/Config/{$sPrefix}", $mValue );
 				}
 			}
 

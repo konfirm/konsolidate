@@ -3,7 +3,7 @@
 	if ( !defined( "VISITOR_TRACKER_COOKIE" ) )
 		define( "VISITOR_TRACKER_COOKIE", "KONSOLIDATETRACKER" );
 
-	/**
+	/*
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
@@ -17,6 +17,15 @@
 	 *          \___    ___\/         $Author$
 	 *              \   \  /          $Date$
 	 *               \___\/           
+	 */
+
+
+	/**
+	 *  User tracking
+	 *  @name    CoreUserTracker
+	 *  @type    class
+	 *  @package Konsolidate
+	 *  @author  Rogier Spieker <rogier@klof.net>
 	 */
 	class CoreUserTracker extends Konsolidate
 	{

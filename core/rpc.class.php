@@ -1,6 +1,6 @@
 <?php
 
-	/**
+	/*
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
@@ -14,6 +14,16 @@
 	 *          \___    ___\/         $Author$
 	 *              \   \  /          $Date$
 	 *               \___\/           
+	 */
+
+
+	/**
+	 *  Support class for easy RPC (e.g. Ajax) interfaces
+	 *  @name    CoreRPC
+	 *  @type    class
+	 *  @package Konsolidate
+	 *  @author  Rogier Spieker <rogier@klof.net>
+	 *  @note    By design, all RPC calls will have to be exposed (activated) 'manually' in your project
 	 */
 	class CoreRPC extends Konsolidate
 	{

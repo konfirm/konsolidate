@@ -1,6 +1,6 @@
 <?php
 
-	/**
+	/*
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
@@ -15,24 +15,22 @@
 	 *              \   \  /          $Date$
 	 *               \___\/           
 	 */
+
+
+	/**
+	 *  Abstracted functionality often used in- and outside Konsolidate
+	 *  @name    CoreTool
+	 *  @type    class
+	 *  @package Konsolidate
+	 *  @author  Rogier Spieker <rogier@klof.net>
+	 *  @note    This class is always available as soon as Konsolidate (and its extends) is instanced
+	 */
 	class CoreTool
 	{
 		public static function isPosted()
 		{
 			return array_key_exists( "REQUEST_METHOD", $_SERVER ) && $_SERVER[ "REQUEST_METHOD" ] === "POST";
 		}
-
-		/* Moved to Request object
-		public static function param( $sKey, $mDefault=null, $sCollection=null )
-		{
-			if ( is_null( $sCollection ) )
-				$sCollection = CoreTool::isPosted() ? "POST" : "GET";
-			$sCollection = strToUpper( "_{$sCollection}" );
-			if ( is_array( $$sCollection ) && array_key_exists( $sKey, $$sCollection ) )
-				return $$sCollection[ $sKey ];
-			return $mDefault;
-		}
-		*/
 
 		public static function arrVal( $mKey, $mCollection, $mDefault=null )
 		{

@@ -1,6 +1,6 @@
 <?php
 
-	/**
+	/*
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
@@ -14,7 +14,10 @@
 	 *          \___    ___\/         $Author$
 	 *              \   \  /          $Date$
 	 *               \___\/           
-	 *
+	 */
+
+
+	/**
 	 *  Manage external objects for use within Konsolidate
 	 *  @name    CorePlugin
 	 *  @type    class
