@@ -398,7 +398,7 @@
 		 *  @type    method
 		 *  @access  private
 		 *  @param   string filename
-		 *  @returns resource image
+		 *  @returns resource image (bool false on error)
 		 *  @syntax  Object->_load( string filename );
 		 */
 		private function _load( $sFile )
@@ -407,6 +407,12 @@
 			if ( file_exists( $sFile ) )
 			{
 				$aFile = getimagesize( $sFile );
+
+				//  if getimagesize wasn't able to do its deed, return false
+				if ( $aFile === false )
+					return false;
+
+				$this->adjustMemoryUsage( $aFile[ 0 ], $aFile[ 1 ] );
 				switch( $aFile[ 2 ] )
 				{
 					case IMAGETYPE_GIF:
