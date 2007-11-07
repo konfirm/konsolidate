@@ -157,6 +157,25 @@
 		}
 
 		/**
+		 *  Aet a variable to the template engine in order to make it known inside the template
+		 *  @name    set
+		 *  @type    method
+		 *  @access  public
+		 *  @param   mixed   either a variable name or an array with name=>value pairs
+		 *  @param   mixed   the value to set, ignored if 'variable' is an array [optional]
+		 *  @param   bool    should the variable overwrite or extend (append) existing values?
+		 *  @returns void
+		 *  @syntax  Object->set( mixed variable [, mixed value [, bool append ] ] );
+		 */
+		public function set( $mVariable, $mValue=null, $bAppend=false )
+		{
+			if ( $bAppend === true )
+				$this->append( $mVariable, $mValue );
+			else
+				parent::set( $mVariable, $mValue );
+		}
+
+		/**
 		 *  Checks whether one (or more) of the dependencies has been updated after the precompilation cache has been built
 		 *  @name    isUpdated
 		 *  @type    method

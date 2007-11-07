@@ -94,7 +94,7 @@
 		 *  @access  public
 		 *  @param   array   array with the paths to load the modules from (the order of the paths is the order in which to look up modules)
 		 *  @returns object
-		 *  @syntax  object = &new Konsolidate( array path )
+		 *  @syntax  object = new Konsolidate( array path )
 		 *  @note    The syntax described is the syntax the implementor of Konsolidate should use, all childnodes constructed by Konsolidate
 		 *           are handled by the internals of Konsolidate.
 		 */
@@ -283,7 +283,7 @@
 				$oModule      = new $sClass( $this );
 				$bConstructed = is_object( $oModule );
 				if ( $bConstructed )
-					$this->call( "/Log/write", "class '{$sClass}' not found in module " . get_class( $this ) . ", dynamic stub created", 0 );
+					$this->call( "/Log/write", "class '{$sClass}' not found in module " . get_class( $this ) . ", dynamic stub created", 4 );
 				else
 					return false;
 			}
@@ -403,9 +403,9 @@
 		 *  @access  public
 		 *  @param   string  module path
 		 *  @returns mixed
-		 *  @syntax  &Konsolidate->getModule( string path );
+		 *  @syntax  Konsolidate->getModule( string path );
 		 */
-		public function &getModule( $sCall )
+		public function getModule( $sCall )
 		{
 			$sPath = strToUpper( $sCall );
 			if ( !array_key_exists( $sPath, $this->_lookupcache ) )

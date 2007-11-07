@@ -32,7 +32,7 @@
 		 *  1	- Severe
 		 *  2   - Warning
 		 *  3   - Info
-		 *  4   - Debug (Should not occur in any of the stable Core tier modules!)
+		 *  4   - Debug
 		 */
 		protected $_verbositylevel;
 		private   $_logfile;

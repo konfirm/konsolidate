@@ -104,7 +104,7 @@
 			$nTextWidth  = max( $aPoint[ 2 ], $aPoint[ 4 ] ) - min( $aPoint[ 0 ], $aPoint[ 6 ] );
 			$nRatio      = $nSize / $nBaseSize;
 			$nNewWidth   = !empty( $nWidth ) ? $nWidth : ceil( ( $nTextWidth + 8 ) * $nRatio );
-			$nNewHeight  = !empty( $nHeight ) ? $nHeight : ceil( ( $nTextHeight + 4 ) * $nRatio );
+			$nNewHeight  = !empty( $nHeight ) ? $nHeight : ceil( ( $nTextHeight + 6 ) * $nRatio );
 
 			if ( empty( $nWidth ) )
 				$nWidth = $nTextWidth + 8;

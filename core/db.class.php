@@ -67,6 +67,7 @@
 				$this->_default = $sReference;
 
 			$this->_pool[ $sReference ] = $this->instance( $aURI[ "scheme" ] );
+
 			if ( is_object( $this->_pool[ $sReference ] ) )
 				return $this->_pool[ $sReference ]->setConnection( $sURI, true );
 			return false;
@@ -82,9 +83,10 @@
 		 *  @note    By default the first connection will be the default connection, a call to the setDefaultConnection 
 		 *           is only required if you want to change this behaviour
 		 */
-		public function &setDefaultConnection( $sReference )
+		public function setDefaultConnection( $sReference )
 		{
-			if ( array_key_exists( $this->_default, $this->_pool ) && is_object( $this->_pool[ $this->_default ] ) )
+			$sReference = strToUpper( $sReference );
+			if ( array_key_exists( $sReference, $this->_pool ) && is_object( $this->_pool[ $sReference ] ) )
 				return $this->_default = $sReference;
 			return false;
 		}
@@ -164,6 +166,24 @@
 			if ( $this->_default && array_key_exists( $this->_default, $this->_pool ) && is_object( $this->_pool[ $this->_default ] ) )
 				return $this->_pool[ $this->_default ]->query( $sQuery, $bUseCache );
 			return false;
+		}
+
+		/**
+		 *  Return a DB-Scheme instance by it's name as it was set with setConnection, if not found in the pool, step back to the 
+		 *  default behaviour of returning (stub) objects
+		 *  @name    register
+		 *  @type    method
+		 *  @access  public
+		 *  @param   string module/connection
+		 *  @returns Object
+		 *  @note    this method is an override to Konsolidates default behaviour
+		 */
+		public function register( $sModule )
+		{
+			$sReference = strToUpper( $sModule );
+			if ( is_array( $this->_pool ) && array_key_exists( $sReference, $this->_pool ) && is_object( $this->_pool[ $sReference ] ) )
+				return $this->_pool[ $sReference ];
+			return parent::register( $sModule );
 		}
 
 		/**
