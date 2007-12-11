@@ -43,7 +43,7 @@
 		{
 			parent::__construct( $oParent );
 
-			$this->_request = &$this->register( "/Request" );
+			$this->_request = &$this->get( "/Request" );
 			$this->_format  = $this->_request->_format;
 		}
 
@@ -92,9 +92,9 @@
 			if ( is_object( $oProcessor ) )
 			{
 				$oProcessor->$sMethod();
-				return $this->feedback( !$oProcessor->getStatus(), $oProcessor->getMessage(), $oProcessor->getContent() );
+				return $this->_feedback( !$oProcessor->getStatus(), $oProcessor->getMessage(), $oProcessor->getContent() );
 			}
-			return $this->feedback();
+			return $this->_feedback();
 		}
 	}
 

@@ -41,7 +41,7 @@
 		public function __construct( &$oParent )
 		{
 			parent::__construct( $oParent );
-			$this->_anticipation = defined( "USERDATA_ANTICIPATION" ) && (bool) USERDATA_ANTICIPATION;
+			$this->_anticipation = $this->get( "/Config/UserData/anticipation" ) == 1;
 		}
 
 		/**
@@ -71,20 +71,7 @@
 								udsmodifiedts=NOW()";
 				$oResult = $this->call( "/DB/query", $sQuery );
 
-				//  retrieve the requested variable
-				$nID     = $this->call( "../get", "id" );
-				$sQuery  = "SELECT usdproperty,
-							       usdvalue
-							  FROM userdata
-							 WHERE usrid={$nID}
-							   AND usdproperty=" . $this->call( "/DB/quote", $sProperty );
-				$oResult = $this->call( "/DB/query", $sQuery );
-				if ( is_object( $oResult ) && $oResult->errno <= 0 )
-				{
-					//  store internally
-					while( $oRecord = $oResult->next() )
-						$this->_property[ $oRecord->usdproperty ] = $oRecord->usdvalue;
-				}
+				$this->load();
 			}
 			return parent::__get( $sProperty );
 		}
@@ -114,10 +101,7 @@
 			if ( is_object( $oResult ) && $oResult->errno <= 0 )
 			{
 				while( $oRecord = $oResult->next() )
-				{
-					var_dump( "CoreUserData::load(): {$oRecord->usdproperty} = {$oRecord->usdvalue}<br />" );
 					$this->_property[ $oRecord->usdproperty ] = $oRecord->usdvalue;
-				}
 				return true;
 			}
 			return false;
@@ -146,11 +130,7 @@
 						       usdmodifiedts=NOW()";
 			$oResult = $this->call( "/DB/query", $sQuery );
 			if ( is_object( $oResult ) && $oResult->errno <= 0 )
-			{
-				var_dump( "CoreUserData stored it's properties properly" );
 				return true;
-			}
-			var_dump( "CoreUserData couldn't store it's properties!!" );
 			return false;
 		}
 
