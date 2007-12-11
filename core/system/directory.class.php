@@ -30,6 +30,18 @@
 		{
 			return ( is_dir( $sPath) || @mkdir( $sPath, $nMode, true ) ) && chmod( $sPath, $nMode );
 		}
+
+		public function getList( $sPath, $bPrependPath=true )
+		{
+			$aReturn = Array();
+			foreach( new DirectoryIterator( $sPath ) as $nIndex=>$oItem )
+			{
+				$sName = $oItem->getFilename();
+				if ( $sName{0} != "." )
+					array_push( $aReturn, ( $bPrependPath ? "{$sPath}/" : "" ) . $sName );
+			}
+			return $aReturn;
+		}
 	}
 
 ?>

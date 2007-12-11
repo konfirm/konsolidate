@@ -238,9 +238,11 @@
 				ob_start();
 
 				//  include the template, so the PHP code inside is executed and the content is send to the output buffer
-				if ( !file_exists( "{$this->templatepath}/{$sTemplate}" ) )
-					throw new Exception( "Template not found '{$this->templatepath}/{$sTemplate}'" );
-				include( "{$this->templatepath}/{$sTemplate}" );
+				if ( $sTemplate{0} != "/" )
+					$sTemplate = "{$this->templatepath}/{$sTemplate}";
+				if ( !file_exists( $sTemplate ) )
+					throw new Exception( "Template not found '$sTemplate'" );
+				include( $sTemplate );
 
 				//  get the buffer contents and convert the request-time PHP tags to normal PHP tags
 				$sCapture = strtr( ob_get_contents(), Array( "<!?"=>"<?", "?!>"=>"?>" ) );

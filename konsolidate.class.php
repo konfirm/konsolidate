@@ -100,7 +100,7 @@
 		 */
 		public function __construct( &$mPath )
 		{
-			$this->_debug       = true;
+			$this->_debug       = false;
 			$this->_module      = Array();
 			$this->_property    = Array();
 			$this->_lookupcache = Array();
@@ -506,7 +506,9 @@
 
 		public function __get( $sProperty )
 		{
-			if ( array_key_exists( $sProperty, $this->_property ) )
+			if ( $sProperty == "modules" )
+				return $this->_module;
+			else if ( array_key_exists( $sProperty, $this->_property ) )
 				return $this->_property[ $sProperty ];
 			else if ( array_key_exists( strToUpper( $sProperty ), $this->_module ) )
 				return $this->_module[ strToUpper( $sProperty ) ];
@@ -556,7 +558,6 @@
 
 			return $sReturn;
 		}
-
 	}
 
 ?>
