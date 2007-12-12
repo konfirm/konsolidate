@@ -84,7 +84,6 @@
 			$sPasswordConfirm = trim( $this->_request->passwordconfirm );
 			$sAgree           = trim( $this->_request->agree );
 			$sOptIn           = trim( $this->_request->optin );
-			$sTrack           = trim( $this->_request->track );
 
 			if ( !$this->call( "/Validate/isEmail", $sEmail ) )
 				array_push( $aError, Array(
@@ -118,13 +117,6 @@
 					"message"=>"we need to be able to send you e-mail"
 				) );
 
-			//  track?
-			if ( (bool) $sTrack === false )
-				array_push( $aError, Array( 
-					"fieldname"=>"track", 
-					"message"=>"we will track your movements anyway, so you must agree"
-				) );
-
 			if ( count( $aError ) == 0 )
 			{
 				if ( $this->get( "/User/registered" ) )
@@ -134,7 +126,7 @@
 				}
 				else
 				{
-					if ( $this->call( "/User/create", $sEmail, $sPassword, (bool) $sAgree, (bool) $sOptIn, (bool) $sTrack ) )
+					if ( $this->call( "/User/create", $sEmail, $sPassword, (bool) $sAgree, (bool) $sOptIn )
 					{
 						$this->_status  = true;
 						$this->_message = "Your user account was created succesfully. You will be redirected to your 'final destination' in a moment.";
