@@ -157,7 +157,7 @@
 						 WHERE ustid={$this->id}";
 			$oResult = $this->call( "/DB/query", $sQuery );
 			if ( is_object( $oResult ) && $oResult->errno <= 0 )
-				return $this->storeCookie();
+				return $this->storeCookie( false );
 			return false;
 		}
 
@@ -169,10 +169,14 @@
 		 *  @returns bool
 		 *  @syntax  Object->storeCookie();
 		 */
-		public function storeCookie()
+		public function storeCookie( $bClearFirst=true )
 		{
 			if ( !headers_sent() )
+			{
+				if ( $bClearFirst )
+					$_COOKIE[ VISITOR_TRACKER_COOKIE  ] = $this->code;
 				return setCookie( VISITOR_TRACKER_COOKIE, $this->code, time() + ( 60 * 60 * 24 * 30 ), "/" );
+			}
 			return false;
 		}
 

@@ -126,7 +126,7 @@
 				}
 				else
 				{
-					if ( $this->call( "/User/create", $sEmail, $sPassword, (bool) $sAgree, (bool) $sOptIn )
+					if ( $this->call( "/User/create", $sEmail, $sPassword, (bool) $sAgree, (bool) $sOptIn ) )
 					{
 						$this->_status  = true;
 						$this->_message = "Your user account was created succesfully. You will be redirected to your 'final destination' in a moment.";

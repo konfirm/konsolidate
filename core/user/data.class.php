@@ -59,44 +59,45 @@
 
 		public function __get( $sProperty )
 		{
-			if ( !array_key_exists( $sProperty, $this->_property ) && $this->_anticipation )
+			if ( !array_key_exists( $sProperty, $this->_property ) )
 			{
-				//  store the requested property in the database with the current scope
-				$sQuery  = "INSERT INTO userdatascope ( usdproperty, udsscope, udscreatedts ) VALUES ( 
-								" . $this->call( "/DB/quote", $sProperty ) . ", 
-								" . $this->call( "/DB/quote", $this->_anticipationScope() ) . ",
-								NOW() )
-							ON DUPLICATE KEY UPDATE 
-								udscount=udscount+1,
-								udsmodifiedts=NOW()";
-				$oResult = $this->call( "/DB/query", $sQuery );
+				$nID = $this->get( "/User/id" );
+				if ( $this->_anticipation )
+				{
+					$sQuery  = "SELECT usd.usdproperty,
+								       usd.usdvalue
+								  FROM userdatascope uds
+								 INNER JOIN userdata usd ON usd.usdproperty=uds.usdproperty AND usd.usrid={$nID}
+								 WHERE uds.udsscope=" . $this->call( "/DB/quote", $this->_anticipationScope() );
+				}
+				else
+				{
+					$sQuery  = "SELECT usdproperty,
+								       usdvalue
+								  FROM userdata
+								 WHERE usrid={$nID}";
+				}
 
-				$this->load();
+				$oResult = $this->call( "/DB/query", $sQuery );
+				if ( is_object( $oResult ) && $oResult->errno <= 0 && $oResult->rows > 0 )
+					while( $oRecord = $oResult->next() )
+						$this->_property[ $oRecord->usdproperty ] = $oRecord->usdvalue;
 			}
+
 			return parent::__get( $sProperty );
 		}
 
 		public function load( $nID=null )
 		{
+			$this->_property = Array();
+
 			if ( is_null( $nID ) )
-				$nID = $this->get( "../id" );
+				$nID = $this->get( "/User/id" );
 
-			if ( $this->_anticipation )
-			{
-				$sQuery  = "SELECT usd.usdproperty,
-							       usd.usdvalue
-							  FROM userdatascope uds
-							 INNER JOIN userdata usd ON usd.usdproperty=uds.usdproperty AND usd.usrid={$nID}
-							 WHERE uds.udsscope=" . $this->call( "/DB/quote", $this->_anticipationScope() );
-			}
-			else
-			{
-				$sQuery  = "SELECT usdproperty,
-							       usdvalue
-							  FROM userdata
-							 WHERE usrid={$nID}";
-			}
-
+			$sQuery  = "SELECT usdproperty,
+						       usdvalue
+						  FROM userdata
+						 WHERE usrid={$nID}";
 			$oResult = $this->call( "/DB/query", $sQuery );
 			if ( is_object( $oResult ) && $oResult->errno <= 0 )
 			{
@@ -117,11 +118,29 @@
 		 */
 		public function __destruct()
 		{
-			$nID       = $this->get( "../id" );
-			$sProperty = "";
+			$nID         = $this->get( "../id" );
+			$sProperty   = "";
+			$sAnticipate = "";
+			$sScope      = $this->call( "/DB/quote", $this->_anticipationScope() );
 
 			foreach( $this->_property as $sKey=>$mValue )
-				$sProperty .= ( !empty( $sProperty ) ? "," : "" ) . "( {$nID}, " . $this->call( "/DB/quote", $sKey ) . ", " . $this->call( "/DB/quote", $mValue ) . ", NOW() )";
+			{
+				$sKey         = $this->call( "/DB/quote", $sKey );
+				$sProperty   .= ( !empty( $sProperty ) ? "," : "" ) . "( {$nID}, {$sKey}, " . $this->call( "/DB/quote", $mValue ) . ", NOW() )";
+				$sAnticipate .= ( !empty( $sAnticipate ) ? "," : "" ) . "( {$sKey}, {$sScope}, NOW() )";
+			}
+
+			if ( $this->_anticipation )
+			{
+				
+				//  store the requested property in the database with the current scope
+				$sQuery  = "INSERT INTO userdatascope ( usdproperty, udsscope, udscreatedts ) 
+							VALUES {$sAnticipate}
+							ON DUPLICATE KEY UPDATE 
+								udscount=udscount+1,
+								udsmodifiedts=NOW()";
+				$oResult = $this->call( "/DB/query", $sQuery );	
+			}
 
 			$sQuery  = "INSERT INTO userdata ( usrid, usdproperty, usdvalue, usdcreatedts )
 						VALUES {$sProperty}
@@ -131,6 +150,7 @@
 			$oResult = $this->call( "/DB/query", $sQuery );
 			if ( is_object( $oResult ) && $oResult->errno <= 0 )
 				return true;
+
 			return false;
 		}
 

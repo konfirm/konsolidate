@@ -139,6 +139,8 @@
 			$nSeperator = strrpos( $sProperty, $this->_objectseperator );
 			if ( $nSeperator !== false && ( $oModule = &$this->getModule( substr( $sProperty, 0, $nSeperator ) ) ) !== false )
 				return $oModule->get( substr( $sProperty, $nSeperator + 1 ), $mDefault );
+			else if ( $this->checkModuleAvailability( $sProperty ) )
+				return $this->register( $sProperty );
 			$mReturn = $this->$sProperty;
 			return is_null( $mReturn ) ? $mDefault : $mReturn; // can (and will be by default!) still be null
 		}
@@ -331,11 +333,11 @@
 		 *  @returns &object
 		 *  @syntax  &Konsolidate->checkModuleAvailability( string module );
 		 */
-		public function checkModuleAvailability( $sProperty )
+		public function checkModuleAvailability( $sModule )
 		{
-			$sProperty = strToLower( $sProperty );
+			$sModule = strToLower( $sModule );
 			foreach ( $this->_path as $sMod=>$sPath )
-				if ( file_exists( "{$sPath}/{$sProperty}.class.php" ) || is_dir( "{$sPath}/{$sProperty}" ) )
+				if ( file_exists( "{$sPath}/{$sModule}.class.php" ) || is_dir( "{$sPath}/{$sModule}" ) )
 					return true;
 			return false;
 		}

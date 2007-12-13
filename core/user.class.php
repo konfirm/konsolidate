@@ -237,6 +237,7 @@
 								       usrlogincount=usrlogincount+1
 								 WHERE usremail=" . $this->call( "/DB/quote", $sEmail );
 					$this->call( "/DB/query", $sQuery ); // we trust this one to operate just fine and therefor don't check the result
+					$this->load();
 					return $oRecord->ustcode;
 				}
 			}
