@@ -127,6 +127,35 @@
 		}
 
 		/**
+		 *  Verify whether a user exists
+		 *  @name    isRegistered
+		 *  @type    method
+		 *  @access  public
+		 *  @param   string email, the email to be checked for occurance in the user table [optional, default check the current visitor by its tracker id]
+		 *  @returns bool
+		 *  @syntax  Object->isRegistered( [string email] );
+		 */
+		public function isRegistered( $sEmail=null )
+		{
+			if ( is_null( $sEmail ) )
+			{
+				if ( $this->_loaded === false )
+					$this->load();
+				return is_integer( $this->id );
+			}
+			else
+			{
+				$sQuery  = "SELECT usrid
+							  FROM user
+							 WHERE usremail=" . $this->call( "/DB/quote", $sEmail );
+				$oResult = $this->call( "/DB/query", $sQuery );
+				if ( is_object( $oResult ) && $oResult->errno <= 0 && $oResult->rows > 0 )
+					return true;
+			}
+			return false;
+		}
+
+		/**
 		 *  Create a user data record
 		 *  @name    create
 		 *  @type    method
@@ -219,7 +248,7 @@
 		 *  @returns bool
 		 *  @syntax  Object->login();
 		 */
-		public function login( $sEmail, $sPassword )
+		public function login( $sEmail, $sPassword, $bAutoLogin=true )
 		{
 			$sQuery  = "SELECT ust.ustcode
 						  FROM user u
@@ -230,7 +259,7 @@
 			if ( is_object( $oResult ) && $oResult->errno <= 0 && $oResult->rows >= 1 )
 			{
 				$oRecord = $oResult->next();
-				if ( !empty( $oRecord->ustcode ) && $this->call( "Tracker/login", $oRecord->ustcode ) )
+				if ( !empty( $oRecord->ustcode ) && $this->call( "Tracker/login", $oRecord->ustcode, $bAutoLogin ) )
 				{
 					$sQuery  = "UPDATE user
 								   SET usrlastlogints=NOW(),

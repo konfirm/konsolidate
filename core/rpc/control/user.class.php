@@ -119,7 +119,7 @@
 
 			if ( count( $aError ) == 0 )
 			{
-				if ( $this->get( "/User/registered" ) )
+				if ( $this->call( "/User/isRegistered", $sEmail ) )
 				{
 					$bError   = true;
 					$sMessage = "You already seem to have an account on this website. Please log in using that account.";

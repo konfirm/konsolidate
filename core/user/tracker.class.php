@@ -169,13 +169,14 @@
 		 *  @returns bool
 		 *  @syntax  Object->storeCookie();
 		 */
-		public function storeCookie( $bClearFirst=true )
+		public function storeCookie( $bClearFirst=true, $bAutoLogin=true )
 		{
 			if ( !headers_sent() )
 			{
 				if ( $bClearFirst )
 					$_COOKIE[ VISITOR_TRACKER_COOKIE  ] = $this->code;
-				return setCookie( VISITOR_TRACKER_COOKIE, $this->code, time() + ( 60 * 60 * 24 * 30 ), "/" );
+				$mAutoLogin = $bAutoLogin ? time() + ( 60 * 60 * 24 * 30 ) : null;
+				return setCookie( VISITOR_TRACKER_COOKIE, $this->code, $mAutoLogin, "/" );
 			}
 			return false;
 		}
@@ -200,12 +201,12 @@
 		}
 
 
-		public function login( $sCode=false )
+		public function login( $sCode=false, $bAutoLogin=true )
 		{
 			if ( $sCode !== false )
 			{
 				$this->code = $sCode;
-				return $this->storeCookie();
+				return $this->storeCookie( true, $bAutoLogin );
 			}
 			return false;
 		}
