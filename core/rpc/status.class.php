@@ -53,14 +53,14 @@
 		 *  @returns string
 		 *  @syntax  Object->_flattenArray( array source );
 		 */
-		private function _flattenArray( $aSource )
+		private function _flattenArray( $aSource, $sNumericKey="item" )
 		{
 			$sReturn = "";
 			foreach( $aSource as $sKey=>$mValue )
 			{
 				if ( is_numeric( $sKey ) )
-					$sKey = "_{$sKey}";
-				$sReturn .= "<{$sKey}>" . ( is_array( $mValue ) ? $this->_flattenArray( $mValue ) : $this->_cdata( $mValue ) ) . "</{$sKey}>";
+					$sKey = $sNumericKey;
+				$sReturn .= "<{$sKey}>" . ( is_array( $mValue ) ? $this->_flattenArray( $mValue, $sKey ) : $this->_cdata( $mValue ) ) . "</{$sKey}>";
 			}
 			return "{$sReturn}";
 		}
