@@ -30,25 +30,25 @@
 		 *  Was the user (and it's data) loaded
 		 *  @name    _loaded
 		 *  @type    bool
-		 *  @access  private
+		 *  @access  protected
 		 */
-		private $_loaded;
+		protected $_loaded;
 
 		/**
 		 *  Is the user object currently in the process of filling it's properties
 		 *  @name    _init
 		 *  @type    bool
-		 *  @access  private
+		 *  @access  protected
 		 */
-		private $_init;
+		protected $_init;
 
 		/**
 		 *  Was the user (data) changed
 		 *  @name    _updated
 		 *  @type    bool
-		 *  @access  private
+		 *  @access  protected
 		 */
-		private $_updated;
+		protected $_updated;
 
 		/**
 		 *  Should the data (if any updates took place) be saved automatically?
