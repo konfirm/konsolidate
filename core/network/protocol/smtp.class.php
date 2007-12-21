@@ -86,7 +86,7 @@
 		public function helo( $sDomain=null )
 		{
 			if ( empty( $sDomain ) )
-				$sDomain = $$_SERVER[ "SERVER_NAME" ];
+				$sDomain = $_SERVER[ "SERVER_NAME" ];
 			return ( $this->_command( "HELO {$sDomain}" ) == 250 || $this->_command( "EHLO {$sDomain}" ) == 250 );
 		}
 
