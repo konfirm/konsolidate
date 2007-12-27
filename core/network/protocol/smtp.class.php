@@ -66,14 +66,12 @@
 		private function _getResponseStatus()
 		{
 			$sResponse = trim( $this->_socket->read( 512 ) );
-			var_dump( "<< {$sResponse}" );
 			list( $this->_status, $this->_message ) = explode( " ", $sResponse, 2 );
 			return (int) $this->_status;
 		}
 
 		private function _command( $sCommand )
 		{
-			var_dump( ">> {$sCommand}" );
 			if ( $this->_socket->write( "{$sCommand}\r\n" ) )
 				return $this->_getResponseStatus();
 			return false;
