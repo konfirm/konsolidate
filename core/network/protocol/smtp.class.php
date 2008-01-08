@@ -26,7 +26,7 @@
 	 */
 	class CoreNetworkProtocolSMTP extends Konsolidate
 	{
-		private $_validheader  = Array( "to", "cc", "bcc", "from", "date", "subject" );
+		private $_validheader  = Array( "to", "cc", "bcc", "from", "date", "subject", "reply-to", "return-path", "message-id", "mime-version", "content-type", "charset" );
 		private $_noautoheader = Array( "to", "from", "server", "domain", "port", "sender", "recipient", "body" );
 		private $_socket;
 		private $_error;
@@ -39,9 +39,9 @@
 			parent::__construct( $oParent );
 
 			$this->_header = Array();
-			$this->server  = $_SERVER[ "SERVER_NAME" ];
+			$this->server  = ini_get( "SMTP" );
 			$this->port    = 25;
-			$this->from    = "konsolidate@{$_SERVER["SERVER_NAME"]}";
+			$this->from    = "konsolidate@{$this->server}";
 			$this->subject = "No subject";
 			$this->mailer  = "Konsolidate (" . get_class( $this ) . ")";
 			$this->date    = gmdate( "r" );
@@ -84,7 +84,7 @@
 		public function helo( $sDomain=null )
 		{
 			if ( empty( $sDomain ) )
-				$sDomain = $_SERVER[ "SERVER_NAME" ];
+				$sDomain = CoreTool::arrVal( "SERVER_NAME", $_SERVER, $this->server );
 			return ( $this->_command( "HELO {$sDomain}" ) == 250 || $this->_command( "EHLO {$sDomain}" ) == 250 );
 		}
 
@@ -111,6 +111,11 @@
 			return $nStatus == 250 || $nStatus == 251;
 		}
 
+		protected function _headerSort( $sA, $sB )
+		{
+			return array_search( strToLower( $sA ), $this->_validheader ) > array_search( strToLower( $sB ), $this->_validheader ) ? 1 : -1;
+		}
+
 		/**
 		 *  TODO:  - wrap content to be max 998 chars 'wide' (excluding CR/LF)
 		 *         - wrap content in such way that it leaves HTML intact
@@ -119,8 +124,11 @@
 		{
 			if ( $this->_command( "DATA" ) == 354 )
 			{
+				uksort( $this->_header, Array( $this, "_headerSort" ) );
+
 				foreach( $this->_header as $sKey=>$sValue )
 					$this->_socket->write( "{$sKey}: {$sValue}\r\n" );
+
 				$this->_socket->write( "\r\n{$sData}\r\n" );
 				return $this->_command( "." ) == 250;
 			}
