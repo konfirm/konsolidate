@@ -19,7 +19,7 @@
 
 	/**
 	 *  Phrase translation class, based on locales
-	 *  @name    CoreKey
+	 *  @name    CoreLanguage
 	 *  @type    class
 	 *  @package Konsolidate
 	 *  @author  Rogier Spieker <rogier@klof.net>

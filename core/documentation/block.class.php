@@ -42,7 +42,7 @@
 
 		/**
 		 *  CoreDocumentationBlock constructor
-		 *  @name    CoreDocumentationBlock
+		 *  @name    __construct
 		 *  @type    constructor
 		 *  @access  public
 		 *  @param   object parent object

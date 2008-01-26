@@ -31,7 +31,7 @@
 
 		/**
 		 *  CoreDB constructor
-		 *  @name    CoreDB
+		 *  @name    __construct
 		 *  @type    constructor
 		 *  @access  public
 		 *  @param   object parent object
