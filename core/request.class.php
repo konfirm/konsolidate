@@ -1,8 +1,5 @@
 <?php
 
-	if ( !defined( "FILTER_META_CHARACTERS" ) )
-		define( "FILTER_META_CHARACTERS", true );
-
 	/*
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
@@ -97,7 +94,7 @@
 		 *  @returns void
 		 *  @syntax  bool CoreRequest->_collectFromRaw()
 		 */
-		private function _collectFromRaw()
+		protected function _collectFromRaw()
 		{
 			//  Try to determine what kind of request triggered this class
 			switch( substr( $this->_raw, 0, 1 ) )
@@ -121,10 +118,15 @@
 		 *  @returns void
 		 *  @syntax  bool CoreRequest->_collectHTTP()
 		 */
-		private function _collectHTTP( &$aCollection )
+		protected function _collectHTTP( $aCollection )
 		{
-			foreach( $aCollection as $sParam=>$mValue )
-				$this->$sParam = $mValue;
+			if ( is_array( $aCollection ) && (bool) count( $aCollection ) )
+			{
+				foreach( $aCollection as $sParam=>$mValue )
+					$this->$sParam = $mValue;
+				return true;
+			}
+			return false;
 		}
 
 		/**
@@ -135,16 +137,14 @@
 		 *  @returns void
 		 *  @syntax  bool CoreRequest->_collect()
 		 */
-		private function _collect()
+		protected function _collect()
 		{
 			$this->_raw = trim( file_get_contents( "php://input" ) );
-
+		
 			if ( $this->isPosted() )
 			{
-				if ( !empty( $this->_raw ) )
+				if ( !$this->_collectHTTP( $_POST ) )
 					$this->_collectFromRaw();
-				else
-					$this->_collectHTTP( $_POST );
 			}
 			else
 			{

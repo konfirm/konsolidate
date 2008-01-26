@@ -1,8 +1,5 @@
 <?php
 
-	if ( !defined( "VISITOR_TRACKER_COOKIE" ) )
-		define( "VISITOR_TRACKER_COOKIE", "KONSOLIDATETRACKER" );
-
 	/*
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
@@ -57,9 +54,11 @@
 		public function __construct( &$oParent )
 		{
 			parent::__construct( $oParent );
-			$this->id         = null;
-			$this->code       = null;
-			$this->last       = null;
+			$this->id           = null;
+			$this->code         = null;
+			$this->last         = null;
+			$this->cookiename   = $this->get( "/Config/Cookie/name", "KONSOLIDATETRACKER" );
+			$this->cookiedomain = $this->get( "/Config/Cookie/domain", $_SERVER[ "HTTP_HOST" ] );
 		}
 
 		/**
@@ -98,7 +97,7 @@
 		 */
 		public function loadFromCookie()
 		{
-			$this->code = array_key_exists( VISITOR_TRACKER_COOKIE, $_COOKIE ) ? $_COOKIE[ VISITOR_TRACKER_COOKIE ] : false;
+			$this->code = array_key_exists( $this->cookiename, $_COOKIE ) ? $_COOKIE[ $this->cookiename ] : false;
 			if ( $this->code === false )
 				return false;
 			$sQuery  = "SELECT ustid,
@@ -174,9 +173,9 @@
 			if ( !headers_sent() )
 			{
 				if ( $bClearFirst )
-					$_COOKIE[ VISITOR_TRACKER_COOKIE  ] = $this->code;
+					$_COOKIE[ $this->cookiename  ] = $this->code;
 				$mAutoLogin = $bAutoLogin ? time() + ( 60 * 60 * 24 * 30 ) : null;
-				return setCookie( VISITOR_TRACKER_COOKIE, $this->code, $mAutoLogin, "/" );
+				return setCookie( $this->cookiename, $this->code, $mAutoLogin, "/", $this->cookiedomain );
 			}
 			return false;
 		}

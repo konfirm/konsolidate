@@ -26,18 +26,18 @@
 	 */
 	class CoreRPCStatus extends Konsolidate
 	{
-		private $_version = "1.0.8";
+		protected $_version = "1.0.8";
 
 		/**
 		 *  Encapsulate a value in a CDATA string
 		 *  @name    _cdata
 		 *  @type    method
-		 *  @access  private
+		 *  @access  protected
 		 *  @param   string value
 		 *  @returns string
 		 *  @syntax  Object->_cdata( string value );
 		 */
-		private function _cdata( $sValue )
+		protected function _cdata( $sValue )
 		{
 			if ( !empty( $sValue ) )
 				return "<![CDATA[{$sValue}]]>";
@@ -48,12 +48,12 @@
 		 *  Write out an array into a multi-node XML string
 		 *  @name    _flattenArray
 		 *  @type    method
-		 *  @access  private
+		 *  @access  protected
 		 *  @param   array source
 		 *  @returns string
 		 *  @syntax  Object->_flattenArray( array source );
 		 */
-		private function _flattenArray( $aSource, $sNumericKey="item" )
+		protected function _flattenArray( $aSource, $sNumericKey="item" )
 		{
 			$sReturn = "";
 			foreach( $aSource as $sKey=>$mValue )
