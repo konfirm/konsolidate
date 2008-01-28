@@ -102,7 +102,7 @@
 				$oQuery = $this->instance( "Query" );
 				$oQuery->execute( $sQuery, $this->_conn );
 
-				if ( $this->_isCachableQuery( $sQuery ) )
+				if ( $bUseCache && $this->_isCachableQuery( $sQuery ) )
 					$this->_cache[ $sCacheKey ] = $oQuery; 
 
 				return $oQuery;
