@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://konsolidate.klof.net
+	 *     /           /\      /      http://www.konsolidate.net
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       
 	 *     \/___/  \___\/      \      
@@ -18,7 +18,7 @@
 	 *  The konsolidate class, which acts as the 'one ring' being responsible for the proper inner workings of the Konsolidate framework/library/foundation
 	 *  @name   Konsolidate
 	 *  @type   class
-	 *  @author Rogier Spieker <rogier@klof.net>
+	 *  @author Rogier Spieker <rogier@konsolidate.net>
 	 */
 	class Konsolidate implements Iterator
 	{
@@ -98,7 +98,7 @@
 		 *  @note    The syntax described is the syntax the implementor of Konsolidate should use, all childnodes constructed by Konsolidate
 		 *           are handled by the internals of Konsolidate.
 		 */
-		public function __construct( &$mPath )
+		public function __construct( $mPath )
 		{
 			$this->_debug       = false;
 			$this->_module      = Array();
@@ -108,14 +108,14 @@
 			
 			if ( is_object( $mPath ) && ( is_subclass_of( $mPath, "Konsolidate" ) || $mPath instanceof Konsolidate ) )
 			{
-				$this->_parent          = &$mPath;
+				$this->_parent          = $mPath;
 				$this->_path            = $this->getFilePath();
 				$this->_objectseperator = $this->_parent->_objectseperator;
 			}
 			else if ( is_array( $mPath ) )  //  We are the Root instance
 			{
 				$this->_parent          = false;
-				$this->_path            = &$mPath;
+				$this->_path            = $mPath;
 				$this->_objectseperator = isset( $this->_objectseperator ) && !empty( $this->_objectseperator ) ? $this->_objectseperator : "/";
 	
 				//  We always want access to our static tools
@@ -137,7 +137,7 @@
 		public function get( $sProperty, $mDefault=null )
 		{
 			$nSeperator = strrpos( $sProperty, $this->_objectseperator );
-			if ( $nSeperator !== false && ( $oModule = &$this->getModule( substr( $sProperty, 0, $nSeperator ) ) ) !== false )
+			if ( $nSeperator !== false && ( $oModule = $this->getModule( substr( $sProperty, 0, $nSeperator ) ) ) !== false )
 				return $oModule->get( substr( $sProperty, $nSeperator + 1 ), $mDefault );
 			else if ( $this->checkModuleAvailability( $sProperty ) )
 				return $this->register( $sProperty );
@@ -160,12 +160,12 @@
 			$aArgument  = func_get_args();
 			$sProperty  = array_shift( $aArgument );
 			$nSeperator = strrpos( $sProperty, $this->_objectseperator );
-			if ( $nSeperator !== false && ( $oModule = &$this->getModule( substr( $sProperty, 0, $nSeperator ) ) ) !== false )
+			if ( $nSeperator !== false && ( $oModule = $this->getModule( substr( $sProperty, 0, $nSeperator ) ) ) !== false )
 			{
 				array_unshift( $aArgument, substr( $sProperty, $nSeperator + 1 ) );
 				return call_user_func_array( 
 					Array( 
-						&$oModule, // the object
+						$oModule, // the object
 						"set"      // the method
 					),
 					$aArgument     // the arguments
@@ -195,12 +195,12 @@
 
 			if ( $nSeperator !== false )
 			{
-				$oModule = &$this->getModule( substr( $sCall, 0, $nSeperator ) );
+				$oModule = $this->getModule( substr( $sCall, 0, $nSeperator ) );
 				$sMethod = substr( $sCall, $nSeperator + 1 );
 			}
 			else
 			{
-				$oModule = &$this;
+				$oModule = $this;
 				$sMethod = $sCall;
 			}
 
@@ -212,7 +212,7 @@
 
 			return call_user_func_array(
 				Array( 
-					&$oModule, // the object
+					$oModule,  // the object
 					$sMethod   // the method
 				),
 				$aArgument     // the arguments
@@ -225,22 +225,22 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string   modulename
-		 *  @returns &object
-		 *  @syntax  &Konsolidate->register( string module );
+		 *  @returns object
+		 *  @syntax  Konsolidate->register( string module );
 		 *  @note    register only create a single (unique) instance and always returns the same instance
 		 *           use the instance method to create different instances of the same class
 		 */
-		public function &register( $sModule )
+		public function register( $sModule )
 		{
 			$sModule = strToUpper( $sModule );
 			if ( !array_key_exists( $sModule, $this->_module ) )
 			{
-				$oModule = &$this->instance( $sModule );
+				$oModule = $this->instance( $sModule );
 
 				if ( $oModule === false )
 					return $oModule;
 
-				$this->_module[ $sModule ] = &$oModule;
+				$this->_module[ $sModule ] = $oModule;
 			}
 			return $this->_module[ $sModule ];
 		}
@@ -251,16 +251,16 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string   modulename
-		 *  @returns &object
-		 *  @syntax  &Konsolidate->instance( string module );
+		 *  @returns object
+		 *  @syntax  Konsolidate->instance( string module );
 		 *  @note    instance creates an instance every time you call it, if you require a single instance which
 		 *           is always returned, use the register method
 		 */
-		public function &instance( $sModule )
+		public function instance( $sModule )
 		{
 			//  In case we request an instance of a remote node, we verify it here and leave the instancing to the instance parent
 			$nSeperator = strrpos( $sModule, $this->_objectseperator );
-			if ( $nSeperator !== false && ( $oModule = &$this->getModule( substr( $sModule, 0, $nSeperator ) ) ) !== false )
+			if ( $nSeperator !== false && ( $oModule = $this->getModule( substr( $sModule, 0, $nSeperator ) ) ) !== false )
 				return $oModule->instance( substr( $sModule, $nSeperator + 1 ) );
 
 			$this->import( "{$sModule}.class.php" );
@@ -300,13 +300,13 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string   filename
-		 *  @returns &object
-		 *  @syntax  &Konsolidate->import( string file );
+		 *  @returns object
+		 *  @syntax  Konsolidate->import( string file );
 		 */
 		public function import( $sFile )
 		{
 			$nSeperator = strrpos( $sFile, $this->_objectseperator );
-			if ( $nSeperator !== false && ( $oModule = &$this->getModule( substr( $sFile, 0, $nSeperator ) ) ) !== false )
+			if ( $nSeperator !== false && ( $oModule = $this->getModule( substr( $sFile, 0, $nSeperator ) ) ) !== false )
 				return $oModule->import( substr( $sFile, $nSeperator + 1 ) );
 
 			//  include all imported files (if they exist) bottom up, this solves the implementation classes having to know core paths
@@ -330,8 +330,8 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string   module
-		 *  @returns &object
-		 *  @syntax  &Konsolidate->checkModuleAvailability( string module );
+		 *  @returns object
+		 *  @syntax  Konsolidate->checkModuleAvailability( string module );
 		 */
 		public function checkModuleAvailability( $sModule )
 		{
@@ -349,9 +349,9 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @returns mixed
-		 *  @syntax  &Konsolidate->getRoot();
+		 *  @syntax  Konsolidate->getRoot();
 		 */
-		public function &getRoot()
+		public function getRoot()
 		{
 			if ( $this->_parent !== false )
 				return $this->_parent->getRoot();
@@ -364,9 +364,9 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @returns mixed
-		 *  @syntax  &Konsolidate->getParent();
+		 *  @syntax  Konsolidate->getParent();
 		 */
-		function &getParent()
+		function getParent()
 		{
 			if ( $this->_parent !== false )
 				return $this->_parent;
@@ -379,9 +379,9 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @returns mixed
-		 *  @syntax  &Konsolidate->getFilePath();
+		 *  @syntax  Konsolidate->getFilePath();
 		 */
-		public function &getFilePath()
+		public function getFilePath()
 		{
 			if ( is_array( $this->_path ) )
 			{
@@ -413,7 +413,7 @@
 			if ( !array_key_exists( $sPath, $this->_lookupcache ) )
 			{
 				$aPath   = explode( $this->_objectseperator, $sPath );
-				$oModule = &$this;
+				$oModule = $this;
 				while( is_object( $oModule ) && count( $aPath ) )
 				{
 					$sSegment = array_shift( $aPath );
@@ -421,17 +421,17 @@
 					{
 						case "":        //  root
 						case "_root":   
-							$oTraverse = &$oModule->getRoot();
+							$oTraverse = $oModule->getRoot();
 							break;
 						case "..":      //  parent
 						case "_parent": //  
-							$oTraverse = &$oModule->getParent();
+							$oTraverse = $oModule->getParent();
 							break;
 						case ".":       //  self
-							$oTraverse = &$this;
+							$oTraverse = $this;
 							break;
 						default:        //  child
-							$oTraverse = &$oModule->register( $sSegment );
+							$oTraverse = $oModule->register( $sSegment );
 							break;
 					}
 
@@ -441,10 +441,10 @@
 						return $oTraverse;
 					}
 
-					$oModule =& $oTraverse;
+					$oModule = $oTraverse;
 				}
 
-				$this->_lookupcache[ $sPath ] = &$oModule;
+				$this->_lookupcache[ $sPath ] = $oModule;
 			}
 			return $this->_lookupcache[ $sPath ];
 		}
