@@ -284,12 +284,10 @@
 				eval( "class {$sClass} extends Konsolidate{ public \$_dynamicStubClass=true; }" );
 				$oModule      = new $sClass( $this );
 				$bConstructed = is_object( $oModule );
-				if ( $bConstructed )
-					$this->call( "/Log/write", "class '{$sClass}' not found in module " . get_class( $this ) . ", dynamic stub created", 4 );
-				else
+
+				if ( !$bConstructed )
 					return false;
 			}
-			
 
 			return $oModule;
 		 }
