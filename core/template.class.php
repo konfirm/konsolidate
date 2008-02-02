@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://konsolidate.klof.net
+	 *     /           /\      /      http://www.konsolidate.net
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreTemplate
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,44 +22,53 @@
 	 *  @name    CoreTemplate
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@klof.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.net>
 	 */
 	class CoreTemplate extends Konsolidate
 	{
 		/**
 		 *  Where to look for templates
-		 *  @name    templatepath
+		 *  @name    _templatepath
 		 *  @type    variable
-		 *  @access  public
+		 *  @access  protected
 		 */
-		var $templatepath;
+		protected $_templatepath;
 
 		/**
 		 *  Where to store the compiled templates
-		 *  @name    compilepath
+		 *  @name    _compilepath
 		 *  @type    variable
-		 *  @access  public
+		 *  @access  protected
 		 */
-		var $compilepath;
+		protected $_compilepath;
 
 		/**
 		 *  How long ago was the document compiled
-		 *  @name    compiletime
+		 *  @name    _compiletime
 		 *  @type    variable
-		 *  @access  private
+		 *  @access  protected
 		 */
-		var $_compiletime;
+		protected $_compiletime;
 
 
-		function __construct( &$oParent )
+		/**
+		 *  constructor
+		 *  @name    __construct
+		 *  @type    constructor
+		 *  @access  public
+		 *  @param   object parent object
+		 *  @returns object
+		 *  @syntax  object = &new CoreTemplate( object parent )
+		 *  @note    This object is constructed by one of Konsolidates modules
+		 */
+		public function __construct( $oParent )
 		{
 			parent::__construct( $oParent );
 
-			$this->templatepath = realpath( ( defined( "TEMPLATE_PATH" ) ? TEMPLATE_PATH : "./templates" ) );
-			$this->compilepath  = realpath( ( defined( "COMPILE_PATH" ) ? COMPILE_PATH : "./compile" ) );
-			ini_set( "include_path", ini_get( "include_path" ) . ":" . $this->templatepath );
+			$this->_templatepath = $this->get( "/Config/Path/template", realpath( ( defined( "TEMPLATE_PATH" ) ? TEMPLATE_PATH : "./templates" ) ) );
+			$this->_compilepath  = $this->get( "/Config/Path/compile", realpath( ( defined( "COMPILE_PATH" ) ? COMPILE_PATH : "./compile" ) ) );
+			ini_set( "include_path", ini_get( "include_path" ) . ":" . $this->_templatepath );
 		}
-
 
 		/**
 		 *  Fetch the built template output
@@ -108,7 +117,7 @@
 			if ( is_array( $mVariable ) )
 			{
 				foreach( $mVariable as $sVariable=>$mValue )
-					$this->assign( $sVariable, $mValue );
+					$this->append( $sVariable, $mValue );
 			}
 			else
 			{
@@ -167,8 +176,14 @@
 		 *  @returns void
 		 *  @syntax  Object->set( mixed variable [, mixed value [, bool append ] ] );
 		 */
-		public function set( $mVariable, $mValue=null, $bAppend=false )
+		public function set()
 		{
+			//  in order to achieve compatiblity with Konsolidates set method in strict mode, the params are read 'manually'
+ 			$aParam    = func_get_args();
+			$mVariable = array_shift( $aParam );
+			$mValue    = (bool) count( $aParam ) ? array_shift( $aParam ) : null;
+			$bAppend   = (bool) count( $aParam ) ? array_shift( $aParam ) : false;
+
 			if ( $bAppend === true )
 				$this->append( $mVariable, $mValue );
 			else
@@ -189,7 +204,7 @@
 		{
 			$sCacheFile   = $this->_getCompileName( $sTemplate, $sReference );
 			$nLastCompile = $this->_getCompileUpdateTime( $sCacheFile );
-			if ( file_exists( "{$this->compilepath}/{$sCacheFile}" ) )
+			if ( file_exists( "{$this->_compilepath}/{$sCacheFile}" ) )
 				if ( $nLastCompile > $this->_getDependencyUpdateTime( $sCacheFile ) )
 					return false;
 			return true;
@@ -239,7 +254,7 @@
 
 				//  include the template, so the PHP code inside is executed and the content is send to the output buffer
 				if ( $sTemplate{0} != "/" )
-					$sTemplate = "{$this->templatepath}/{$sTemplate}";
+					$sTemplate = "{$this->_templatepath}/{$sTemplate}";
 				if ( !file_exists( $sTemplate ) )
 					throw new Exception( "Template not found '$sTemplate'" );
 				include( $sTemplate );
@@ -255,7 +270,7 @@
 			}
 
 			ob_start();
-			include( "{$this->compilepath}/{$sCacheFile}" );
+			include( "{$this->_compilepath}/{$sCacheFile}" );
 
 			$sCapture = ob_get_contents();
 			ob_end_clean();
@@ -275,11 +290,11 @@
 		 */
 		private function _storeCompilation( $sCacheFile, $sSource )
 		{
-			if ( !is_dir( "{$this->compilepath}/dep/" ) )
-				mkdir( "{$this->compilepath}/dep/" );
+			if ( !is_dir( "{$this->_compilepath}/dep/" ) )
+				mkdir( "{$this->_compilepath}/dep/" );
 			return ( 
-				$this->_storeData( "{$this->compilepath}/dep/" . md5( $sCacheFile ), serialize( get_included_files() ) ) && 
-				$this->_storeData( "{$this->compilepath}/{$sCacheFile}", $sSource, 1 )
+				$this->_storeData( "{$this->_compilepath}/dep/" . md5( $sCacheFile ), serialize( get_included_files() ) ) && 
+				$this->_storeData( "{$this->_compilepath}/{$sCacheFile}", $sSource, 1 )
 			);
 		}
 
@@ -325,9 +340,9 @@
 		 */
 		private function _getDependencyUpdateTime( $sCacheFile )
 		{
-			if ( !file_exists( "{$this->compilepath}/dep/" . md5( $sCacheFile ) ) )
+			if ( !file_exists( "{$this->_compilepath}/dep/" . md5( $sCacheFile ) ) )
 				return time();
-			$aDependency = unserialize( file_get_contents( "{$this->compilepath}/dep/" . md5( $sCacheFile ) ) );
+			$aDependency = unserialize( file_get_contents( "{$this->_compilepath}/dep/" . md5( $sCacheFile ) ) );
 			$nLatest     = 0;
 			foreach( $aDependency as $sFileName )
 				$nLatest = max( $nLatest, filemtime( $sFileName ) );
@@ -345,9 +360,9 @@
 		 */
 		private function _getCompileUpdateTime( $sCacheFile )
 		{
-			if ( !file_exists( "{$this->compilepath}/{$sCacheFile}" ) )
+			if ( !file_exists( "{$this->_compilepath}/{$sCacheFile}" ) )
 				return false;
-			$this->_compiletime = filemtime( "{$this->compilepath}/{$sCacheFile}" );
+			$this->_compiletime = filemtime( "{$this->_compilepath}/{$sCacheFile}" );
 			return $this->_compiletime;
 		}
 	}

@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://konsolidate.klof.net
+	 *     /           /\      /      http://www.konsolidate.net
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreSystemFile
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreSystemFile
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@klof.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.net>
 	 */
 	class CoreSystemFile extends Konsolidate
 	{
@@ -150,17 +150,28 @@
 		 *  @name    get
 		 *  @type    method
 		 *  @access  public
-		 *  @param   int    length (optional, default 4096 bytes)
-		 *  @returns string data
+		 *  @param   mixed  int length [optional, default 4096 bytes], or string property
+		 *  @returns mixed  data
 		 *  @syntax  string [object]->get( [ int bytes ] );
-		 *  @note    Warning: Since you cannot know if your code is the only code currently accessing any file
+		 *           mixed  [object]->get( string property );
+		 *  @note    If a string property is provided, the property value is returned, otherwise the next line of the opened file is returned.
+		 *           Warning: Since you cannot know if your code is the only code currently accessing any file
 		 *           you can best create a unique instance to use this method, obtained through: [KonsolidateObject]->instance( "/System/File" );
 		 */
-		public function get( $nLength=4096 )
+		public function get()
 		{
-			if ( $this->_filepointer !== false && !feof( $this->_filepointer ) )
-				return fgets( $this->_filepointer, $nLength );
-			return false;
+			//  in order to achieve compatiblity with Konsolidates set method in strict mode, the params are read 'manually'
+			$aArgument  = func_get_args();
+			$mLength    = (bool) count( $aArgument ) ? array_shift( $aArgument ) : 4096;
+			$mDefault   = (bool) count( $aArgument ) ? array_shift( $aArgument ) : null;
+
+			if ( is_integer( $mLength ) )
+			{
+				if ( $this->_filepointer !== false && !feof( $this->_filepointer ) )
+					return fgets( $this->_filepointer, $mLength );
+				return false;
+			}
+			return parent::get( $mLength, $mDefault );
 		}
 
 		/**

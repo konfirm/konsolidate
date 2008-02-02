@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://konsolidate.klof.net
+	 *     /           /\      /      http://www.konsolidate.net
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreLog
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,20 +22,26 @@
 	 *  @name    CoreLog
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@klof.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.net>
 	 */
 	class CoreLog extends Konsolidate
 	{
 		/**
-		 *  The level of verbosity to apply to log messages
-		 *  0	- Critical
-		 *  1	- Severe
-		 *  2   - Warning
-		 *  3   - Info
-		 *  4   - Debug
+		 *  The verbositylevel you wish to log
+		 *  0 (Critical), 1 (Severe), 2 (Warning), 3 (Info), 4 (Debug)
+		 *  @name    _verbositylevel
+		 *  @type    int
+		 *  @access  protected
 		 */
 		protected $_verbositylevel;
-		private   $_logfile;
+
+		/**
+		 *  The logfile object to which to write the log data
+		 *  @name    _logfile
+		 *  @type    object
+		 *  @access  protected
+		 */
+		protected $_logfile;
 
 		/**
 		 *  constructor

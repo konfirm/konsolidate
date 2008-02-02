@@ -134,8 +134,12 @@
 		 *  @syntax  Konsolidate->get( string module [, mixed default ] );
 		 *  @note    supplying a default value should be done per call, the default is never stored
 		 */
-		public function get( $sProperty, $mDefault=null )
+		public function get()
 		{
+			$aArgument  = func_get_args();
+			$sProperty  = array_shift( $aArgument );
+			$mDefault   = (bool) count( $aArgument ) ? array_shift( $aArgument ) : null;
+
 			$nSeperator = strrpos( $sProperty, $this->_objectseperator );
 			if ( $nSeperator !== false && ( $oModule = $this->getModule( substr( $sProperty, 0, $nSeperator ) ) ) !== false )
 				return $oModule->get( substr( $sProperty, $nSeperator + 1 ), $mDefault );
