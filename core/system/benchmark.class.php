@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://konsolidate.klof.net
+	 *     /           /\      /      http://www.konsolidate.net
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreSystemBenchmark
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,22 +22,31 @@
 	 *  @name    CoreSystemBenchmark
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@klof.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.net>
 	 */
 	class CoreSystemBenchmark extends Konsolidate
 	{
-		protected $_starttime;
-		protected $_endtime;
+		protected $_timer;
+
+		public function __construct( $oParent )
+		{
+			parent::__construct( $oParent );
+			$this->_timer = Array();
+		}
 
 		public function start()
 		{
-			$this->_starttime = microtime( true );
+			$this->_timer[] = microtime( true );
+			return count( $this->_timer ) - 1;
 		}
 
-		public function stop()
+		public function stop( $nTimer=null )
 		{
-			$this->_endtime = microtime( true );
-			return $this->_endtime - $this->_starttime;
+			if ( empty( $nTimer ) )
+				$nTimer = count( $this->_timer ) - 1;
+			if ( $nTimer < 0 || $nTimer >= count( $this->_timer ) )
+				return false;
+			return microtime( true ) - $this->_timer[ $nTimer ];
 		}
 	}
 
