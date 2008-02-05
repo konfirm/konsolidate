@@ -84,7 +84,7 @@
 		 */
 		function process( $sCommand )
 		{
-			$nMethodStart = strrpos( $sCommand, $this->_objectseperator );
+			$nMethodStart = strrpos( $sCommand, $this->_objectseparator );
 			$sModule      = substr( $sCommand, 0, $nMethodStart );
 			$sMethod      = substr( $sCommand, $nMethodStart + 1 );
 
