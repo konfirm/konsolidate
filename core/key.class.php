@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://konsolidate.klof.net
+	 *     /           /\      /      http://www.konsolidate.net
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreKey
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,19 +22,60 @@
 	 *  @name    CoreKey
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@klof.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.net>
 	 */
 	class CoreKey extends Konsolidate
 	{
 		const CHAR    = "abcdefghijklmnopqrstuvwxyz";
 		const NUMERIC = "0123456789";
 
-		private $_salt;
-		private $_exclude;
-		private $_lowercase;
-		private $_uppercase;
-		private $_numeric;
-		private $_format;
+		/**
+		 *  The salt used
+		 *  @name    _salt
+		 *  @type    string
+		 *  @access  protected
+		 */
+		protected $_salt;
+
+		/**
+		 *  Character that shouldn't be in the output
+		 *  @name    _exclude
+		 *  @type    string
+		 *  @access  protected
+		 */
+		protected $_exclude;
+
+		/**
+		 *  use lowercase characters
+		 *  @name    _lowercase
+		 *  @type    bool
+		 *  @access  protected
+		 */
+		protected $_lowercase;
+
+		/**
+		 *  use uppercase characters
+		 *  @name    _uppercase
+		 *  @type    bool
+		 *  @access  protected
+		 */
+		protected $_uppercase;
+
+		/**
+		 *  use numeric characters
+		 *  @name    _numeric
+		 *  @type    bool
+		 *  @access  protected
+		 */
+		protected $_numeric;
+
+		/**
+		 *  The default format to use
+		 *  @name    _format
+		 *  @type    bool
+		 *  @access  protected
+		 */
+		protected $_format;
 
 		/**
 		 *  constructor
@@ -79,11 +120,11 @@
 		 *  Create the 'salt' (string of characters) to use in generated keys
 		 *  @name    _createSalt
 		 *  @type    method
-		 *  @access  private
+		 *  @access  protected
 		 *  @returns void
 		 *  @syntax  void CoreKey->_createSalt()
 		 */
-		private function _createSalt()
+		protected function _createSalt()
 		{
 			$this->_salt  = $this->_lowercase ? self::CHAR : "";
 			$this->_salt .= $this->_uppercase ? strToUpper( self::CHAR ) : "";
@@ -97,7 +138,7 @@
 		 *  magic __set, set the rules on which the 'salt' (string of characters) is based
 		 *  @name    _createSalt
 		 *  @type    method
-		 *  @access  private
+		 *  @access  public
 		 *  @returns void
 		 *  @syntax  void CoreKey->[string property] = mixed value
 		 *  @note    reserved properties which actually change the 'salt' are: lowercase, uppercase, numeric, exclude and format and are treated as boolean values

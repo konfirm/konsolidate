@@ -4,11 +4,11 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://konsolidate.klof.net
 	 *    /___     ___/  \    /       
-	 *    \  /   /\   \  /    \       Class:  CoreDBMySQLException
+	 *    \  /   /\   \  /    \       Class:  CoreDBSQLiteException
 	 *     \/___/  \___\/      \      Tier:   Core
-	 *      \   \  /\   \  /\  /      Module: DB/MySQL/Exception
+	 *      \   \  /\   \  /\  /      Module: DB/SQLite/Exception
 	 *       \___\/  \___\/  \/       
 	 *         \          \  /        $Rev$
 	 *          \___    ___\/         $Author$
@@ -19,12 +19,12 @@
 
 	/**
 	 *  MySQL specific Exception class
-	 *  @name    CoreDBMySQLException
+	 *  @name    CoreDBSQLiteException
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@klof.net>
 	 */
-	class CoreDBMySQLException extends Exception
+	class CoreDBSQLiteException extends Exception
 	{
 		/**
 		 *  The error message
@@ -47,15 +47,16 @@
 		 *  @name    __construct
 		 *  @type    constructor
 		 *  @access  public
-		 *  @param   resource connection
+		 *  @param   string error
+		 *  @param   int    errornumber
 		 *  @returns object
-		 *  @syntax  object = &new CoreDBMySQLException( resource connection )
-		 *  @note    This object is constructed by CoreDBMySQL as 'status report'
+		 *  @syntax  object = &new CoreDBSQLiteException( string error, int errornumber )
+		 *  @note    This object is constructed by CoreDBSQLite as 'status report'
 		 */
-		public function __construct( &$rConnection )
+		public function __construct( $nError )
 		{
-			$this->error = is_resource( $rConnection ) ? mysql_error( $rConnection ) : mysql_error();
-			$this->errno = is_resource( $rConnection ) ? mysql_errno( $rConnection ) : mysql_errno();
+			$this->error = sqlite_error_string( $nError );
+			$this->errno = $nError;
 		}
 	}
 

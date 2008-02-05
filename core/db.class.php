@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://konsolidate.klof.net
+	 *     /           /\      /      http://www.konsolidate.net
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreDB
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,11 +22,24 @@
 	 *  @name    CoreDB
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@klof.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.net>
 	 */
 	class CoreDB extends Konsolidate
 	{
+		/**
+		 *  The database/connection pool
+		 *  @name    _pool
+		 *  @type    array
+		 *  @access  protected
+		 */
 		protected $_pool;
+
+		/**
+		 *  The default connection (usually the first connection defined)
+		 *  @name    _default
+		 *  @type    string
+		 *  @access  protected
+		 */
 		protected $_default;
 
 		/**
@@ -188,7 +201,7 @@
 
 		/**
 		 *  Magic destructor, disconnects all DB connections
-		 *  @name    __construct
+		 *  @name    __destruct
 		 *  @type    method
 		 *  @access  public
 		 */
@@ -199,7 +212,7 @@
 
 		/**
 		 *  Magic __call, implicit method bridge to defined connections
-		 *  @name    connect
+		 *  @name    __call
 		 *  @type    method
 		 *  @access  public
 		 *  @note    By default all calls which are not defined in this class are bridged to the default connection

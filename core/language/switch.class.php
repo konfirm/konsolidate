@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://konsolidate.klof.net
+	 *     /           /\      /      http://www.konsolidate.net
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreLanguageSwitch
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,12 +22,17 @@
 	 *  @name    CoreKey
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@klof.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.net>
 	 */
 	class CoreLanguageSwitch extends Konsolidate
 	{
-		private $_request;
-		private $_usage;
+		/**
+		 *  Array containg all used phrases
+		 *  @name    _usage
+		 *  @type    array
+		 *  @access  protected
+		 */
+		protected $_usage;
 
 		/**
 		 *  translate a phrase using the locale set in the (Core)Language module

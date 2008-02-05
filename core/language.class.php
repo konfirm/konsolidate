@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://konsolidate.klof.net
+	 *     /           /\      /      http://www.konsolidate.net
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreLanguage
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,12 +22,25 @@
 	 *  @name    CoreLanguage
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@klof.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.net>
 	 */
 	class CoreLanguage extends Konsolidate
 	{
-		private $_locale;
-		private $_engine;
+		/**
+		 *  The locale to translate to
+		 *  @name    _locale
+		 *  @type    string
+		 *  @access  protected
+		 */
+		protected $_locale;
+
+		/**
+		 *  The translation engine to use (default is 'switch')
+		 *  @name    _engine
+		 *  @type    string
+		 *  @access  protected
+		 */
+		protected $_engine;
 
 		/**
 		 *  constructor

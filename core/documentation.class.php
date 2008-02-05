@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://konsolidate.klof.net
+	 *     /           /\      /      http://www.konsolidate.net
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreDocumentation
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,11 +22,11 @@
 	 *  @name    CoreDocumentation
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@klof.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.net>
 	 */
 	class CoreDocumentation extends Konsolidate
 	{
-		private $_collect;
+		protected $_collect;
 
 		/**
 		 *  constructor
@@ -38,7 +38,7 @@
 		 *  @syntax  object = &new CoreDocumentation( object parent )
 		 *  @note    This object is constructed by one of Konsolidates modules
 		 */
-		function __construct( &$oParent )
+		public function __construct( &$oParent )
 		{
 			parent::__construct( $oParent );
 			$this->_collect = Array();
@@ -54,7 +54,7 @@
 		 *  @syntax  array CoreDocumentation->collect( string filename )
 		 *  @note    the return array contains a single Documentation/Block instance per comment block in the 'collected' file
 		 */
-		function collect( $sFile )
+		public function collect( $sFile )
 		{
 			$sBody = file_get_contents( $sFile );
 
@@ -85,7 +85,7 @@
 		 *  @syntax  array CoreDocumentation->fetch( bool skipempty )
 		 *  @returns array of Documentation/Block instances
 		 */
-		function fetch( $bOmitEmpty=false )
+		public function fetch( $bOmitEmpty=false )
 		{
 			$aReturn = Array();
 			foreach( $this->_collect as $oDocBlock )

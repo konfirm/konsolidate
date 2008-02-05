@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://konsolidate.klof.net
+	 *     /           /\      /      http://www.konsolidate.net
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreMediaImageShape
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,15 +22,49 @@
 	 *  @name    CoreMediaImageShape
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@klof.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.net>
 	 */
 	class CoreMediaImageShape extends Konsolidate
 	{
-		private $_bottomIsY;
-		private $_focalLength;
-		private $_rotationX;
-		private $_rotationY;
-		private $_rotationZ;
+		/**
+		 *  Swap Y=0 from top to bottom (flip vertical)
+		 *  @name    _bottomIsY
+		 *  @type    bool
+		 *  @access  protected
+		 */
+		protected $_bottomIsY;
+
+		/**
+		 *  The focal length
+		 *  @name    _focalLength
+		 *  @type    int
+		 *  @access  protected
+		 */
+		protected $_focalLength;
+
+		/**
+		 *  The amount to rotate over the X-axis
+		 *  @name    _rotationX
+		 *  @type    bool
+		 *  @access  protected
+		 */
+		protected $_rotationX;
+
+		/**
+		 *  The amount to rotate over the Y-axis
+		 *  @name    _rotationY
+		 *  @type    bool
+		 *  @access  protected
+		 */
+		protected $_rotationY;
+
+		/**
+		 *  The amount to rotate over the Z-axis
+		 *  @name    _rotationZ
+		 *  @type    bool
+		 *  @access  protected
+		 */
+		protected $_rotationZ;
 				
 		/**
 		 *  constructor
@@ -184,7 +218,7 @@
 		 *  draw all defined shapes
 		 *  @name    _draw
 		 *  @type    method
-		 *  @access  private
+		 *  @access  protected
 		 *  @param   resource image
 		 *  @param   array points
 		 *  @param   string bordercolor (optional, default null)
@@ -192,7 +226,7 @@
 		 *  @returns bool
 		 *  @syntax  string CoreMediaImageShape->_draw( resource image, array points [, string bordercolor [, string fillcolor ] ] )
 		 */
-		private function _draw( $mImage, $aPoint, $sBorderColor=null, $sFillColor=null )
+		protected function _draw( $mImage, $aPoint, $sBorderColor=null, $sFillColor=null )
 		{
 			if ( $this->_rotationX != 0 || $this->_rotationY != 0 || $this->_rotationZ != 0 )
 				return $this->_draw3D( $mImage, $aPoint, $sBorderColor, $sFillColor );
@@ -203,7 +237,7 @@
 		 *  draw shapes as flat 2D image
 		 *  @name    _draw3D
 		 *  @type    method
-		 *  @access  private
+		 *  @access  protected
 		 *  @param   resource image
 		 *  @param   array points
 		 *  @param   string bordercolor (optional, default null)
@@ -211,7 +245,7 @@
 		 *  @returns bool
 		 *  @syntax  string CoreMediaImageShape->_draw2D( resource image, array points [, string bordercolor [, string fillcolor ] ] )
 		 */
-		private function _draw2D( $mImage, $aPoint, $sBorderColor=null, $sFillColor=null )
+		protected function _draw2D( $mImage, $aPoint, $sBorderColor=null, $sFillColor=null )
 		{
 			if ( !is_resource( $mImage ) )
 				$mImage = &$this->call( "../load", $mImage );
@@ -241,7 +275,7 @@
 		 *  draw shapes as 3D image
 		 *  @name    _draw3D
 		 *  @type    method
-		 *  @access  private
+		 *  @access  protected
 		 *  @param   resource image
 		 *  @param   array points
 		 *  @param   string bordercolor (optional, default null)
@@ -250,7 +284,7 @@
 		 *  @syntax  string CoreMediaImageShape->_draw3D( resource image, array points [, string bordercolor [, string fillcolor ] ] )
 		 *  @note    drawing 3D image is considered experimental (and ugly)
 		 */
-		private function _draw3D( $mImage, $aPoint, $sBorderColor=null, $sFillColor=null )
+		protected function _draw3D( $mImage, $aPoint, $sBorderColor=null, $sFillColor=null )
 		{
 			$aBack = Array();
 			for ( $i = 0; $i < count( $aPoint ); ++$i )
@@ -276,7 +310,7 @@
 		 *  calculate several points based on a circle
 		 *  @name    _calculateRing
 		 *  @type    method
-		 *  @access  private
+		 *  @access  protected
 		 *  @param   int x
 		 *  @param   int y
 		 *  @param   int inner radius
@@ -285,7 +319,7 @@
 		 *  @returns array points
 		 *  @syntax  array CoreMediaImageShape->_calculateRing( int x, int y, int innerradiuas, int outerradius [, int angle ] )
 		 */
-		private function _calculateRing( $nX, $nY, $nRadius, $nSegment, $nRotation=0 )
+		protected function _calculateRing( $nX, $nY, $nRadius, $nSegment, $nRotation=0 )
 		{
 			$nCycle    = deg2rad( 360 / $nSegment );
 			$nRotation = deg2rad( $nRotation );
@@ -303,14 +337,14 @@
 		 *  create a point 'object' (array)
 		 *  @name    _point
 		 *  @type    method
-		 *  @access  private
+		 *  @access  protected
 		 *  @param   int x
 		 *  @param   int y
 		 *  @param   int z (optional, default 0)
 		 *  @returns array point
 		 *  @syntax  array CoreMediaImageShape->_point( int x, int y [, int z ] )
 		 */
-		private function _point( $nX, $nY, $nZ=0 )
+		protected function _point( $nX, $nY, $nZ=0 )
 		{
 			return Array( $nX, $nY, $nZ );
 		}
@@ -319,13 +353,13 @@
 		 *  convert points to 3D space
 		 *  @name    _resolvePoints
 		 *  @type    method
-		 *  @access  private
+		 *  @access  protected
 		 *  @param   array points
 		 *  @param   resource image (optional, only used in case the image is build bottomUp)
 		 *  @returns array points
 		 *  @syntax  array CoreMediaImageShape->_resolvePoints( array points [, resource image ] )
 		 */
-		private function _resolvePoints( $aPoint, $mImage=null )
+		protected function _resolvePoints( $aPoint, $mImage=null )
 		{
 			if ( $this->_bottomIsY && is_resource( $mImage ) )
 				$nHeight = imagesy( $mImage );
@@ -342,7 +376,7 @@
 		 *  applyRotation to a point
 		 *  @name    _applyRotation
 		 *  @type    method
-		 *  @access  private
+		 *  @access  protected
 		 *  @param   array point
 		 *  @param   int X (optional, default 0)
 		 *  @param   int Y (optional, default 0)
@@ -350,7 +384,7 @@
 		 *  @returns array point
 		 *  @syntax  array CoreMediaImageShape->_applyRotation( array point [, int X [, int Y [, int Z ] ] ] )
 		 */
-		private function _applyRotation( $aPoint, $nRotationX=0, $nRotationY=0, $nRotationZ=0 )
+		protected function _applyRotation( $aPoint, $nRotationX=0, $nRotationY=0, $nRotationZ=0 )
 		{
 			$aReturn = Array();
 			$nSX = sin( deg2rad( $this->_rotationX ) );

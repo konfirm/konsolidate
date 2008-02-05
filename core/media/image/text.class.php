@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://konsolidate.klof.net
+	 *     /           /\      /      http://www.konsolidate.net
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreMediaImageText
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,14 +22,17 @@
 	 *  @name    CoreMediaImageText
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@klof.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.net>
 	 */
 	class CoreMediaImageText extends Konsolidate
 	{
 		/**
-		 *  Style configuration
+		 *  Style information
+		 *  @name    _focalLength
+		 *  @type    int
+		 *  @access  protected
 		 */
-		public $_style;
+		protected $_style;
 
 		/**
 		 *  Create a new textlabel
@@ -67,7 +70,7 @@
 		 *  Create a new textlabel based on an style property array
 		 *  @name    _createFromStyle
 		 *  @type    method
-		 *  @access  private
+		 *  @access  protected
 		 *  @param   resource image (or null to create a new image)
 		 *  @param   string  text
 		 *  @param   array   style definition
@@ -75,7 +78,7 @@
 		 *  @syntax  CoreMediaImageText->_createFromStyle( resource image, string text, array style )
 		 *  @see     create
 		 */
-		private function &_createFromStyle( $mImage, $sText, $aStyle )
+		protected function _createFromStyle( $mImage, $sText, $aStyle )
 		{
 			$this->_style = $aStyle;
 			$bAntiAlias   = $this->_getStyle( "anti-alias" );
@@ -126,7 +129,7 @@
 				}
 				else
 				{
-					$mImage = &$this->call( "../copy", $mImage, $rTile );
+					$mImage = $this->call( "../copy", $mImage, $rTile );
 				}
 			}
 			elseif ( !is_resource( $mImage ) )
@@ -173,9 +176,9 @@
 
 		/**
 		 *  Create a new textlabel based on an style property array
-		 *  @name    create
+		 *  @name    _create
 		 *  @type    method
-		 *  @access  private
+		 *  @access  protected
 		 *  @param   resource image (or null to create a new image)
 		 *  @param   string  text
 		 *  @param   string  fontfilelocation
@@ -190,7 +193,7 @@
 		 *  @syntax  CoreMediaImageText->_createFromArgument( resource image, string text, string fontfile [, int textsize [, int X [, int Y [, string color [, string backgroundcolor [, bool antialias [, float angle ] ] ] ] ] ] ] )
 		 *  @see     create
 		 */
-		private function &_createFromArgument( $mImage, $sText, $sFont, $nSize=10, $nX=0, $nY=0, $sColor="#000", $sBGColor="#fff", $bAntiAlias=null, $nAngle=0 )
+		protected function _createFromArgument( $mImage, $sText, $sFont, $nSize=10, $nX=0, $nY=0, $sColor="#000", $sBGColor="#fff", $bAntiAlias=null, $nAngle=0 )
 		{
 			if ( is_null( $bAntiAlias ) )
 				$bAntiAlias = $nSize > 24;
@@ -252,13 +255,13 @@
 		 *  get style from style definition array
 		 *  @name    _getStyle
 		 *  @type    method
-		 *  @access  private
+		 *  @access  protected
 		 *  @param   string  property
 		 *  @param   string  default (optional, default null)
 		 *  @returns mixed property value
 		 *  @syntax  CoreMediaImageText->_getStyle( string property [, mixed default ] )
 		 */
-		private function _getStyle( $sProperty, $mDefault=null )
+		protected function _getStyle( $sProperty, $mDefault=null )
 		{
 			if ( array_key_exists( $sProperty, $this->_style ) && $this->_style[ $sProperty ] != "auto" )
 				return $this->_style[ $sProperty ];

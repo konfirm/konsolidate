@@ -68,7 +68,7 @@
 		 *  @type    array
 		 *  @access  protected
 		 */
-		protected $_objectseperator;
+		protected $_objectseparator;
 
 		/**
 		 *  Module reference cache, making lookups faster
@@ -110,13 +110,13 @@
 			{
 				$this->_parent          = $mPath;
 				$this->_path            = $this->getFilePath();
-				$this->_objectseperator = $this->_parent->_objectseperator;
+				$this->_objectseparator = $this->_parent->_objectseparator;
 			}
 			else if ( is_array( $mPath ) )  //  We are the Root instance
 			{
 				$this->_parent          = false;
 				$this->_path            = $mPath;
-				$this->_objectseperator = isset( $this->_objectseperator ) && !empty( $this->_objectseperator ) ? $this->_objectseperator : "/";
+				$this->_objectseparator = isset( $this->_objectseparator ) && !empty( $this->_objectseparator ) ? $this->_objectseparator : "/";
 	
 				//  We always want access to our static tools
 				$this->import( "tool.class.php" );
@@ -140,7 +140,7 @@
 			$sProperty  = array_shift( $aArgument );
 			$mDefault   = (bool) count( $aArgument ) ? array_shift( $aArgument ) : null;
 
-			$nSeperator = strrpos( $sProperty, $this->_objectseperator );
+			$nSeperator = strrpos( $sProperty, $this->_objectseparator );
 			if ( $nSeperator !== false && ( $oModule = $this->getModule( substr( $sProperty, 0, $nSeperator ) ) ) !== false )
 				return $oModule->get( substr( $sProperty, $nSeperator + 1 ), $mDefault );
 			else if ( $this->checkModuleAvailability( $sProperty ) )
@@ -163,7 +163,7 @@
 		{
 			$aArgument  = func_get_args();
 			$sProperty  = array_shift( $aArgument );
-			$nSeperator = strrpos( $sProperty, $this->_objectseperator );
+			$nSeperator = strrpos( $sProperty, $this->_objectseparator );
 			if ( $nSeperator !== false && ( $oModule = $this->getModule( substr( $sProperty, 0, $nSeperator ) ) ) !== false )
 			{
 				array_unshift( $aArgument, substr( $sProperty, $nSeperator + 1 ) );
@@ -195,7 +195,7 @@
 		{
 			$aArgument  = func_get_args();
 			$sCall      = array_shift( $aArgument );
-			$nSeperator = strrpos( $sCall, $this->_objectseperator );
+			$nSeperator = strrpos( $sCall, $this->_objectseparator );
 
 			if ( $nSeperator !== false )
 			{
@@ -263,7 +263,7 @@
 		public function instance( $sModule )
 		{
 			//  In case we request an instance of a remote node, we verify it here and leave the instancing to the instance parent
-			$nSeperator = strrpos( $sModule, $this->_objectseperator );
+			$nSeperator = strrpos( $sModule, $this->_objectseparator );
 			if ( $nSeperator !== false && ( $oModule = $this->getModule( substr( $sModule, 0, $nSeperator ) ) ) !== false )
 				return $oModule->instance( substr( $sModule, $nSeperator + 1 ) );
 
@@ -307,7 +307,7 @@
 		 */
 		public function import( $sFile )
 		{
-			$nSeperator = strrpos( $sFile, $this->_objectseperator );
+			$nSeperator = strrpos( $sFile, $this->_objectseparator );
 			if ( $nSeperator !== false && ( $oModule = $this->getModule( substr( $sFile, 0, $nSeperator ) ) ) !== false )
 				return $oModule->import( substr( $sFile, $nSeperator + 1 ) );
 
@@ -414,7 +414,7 @@
 			$sPath = strToUpper( $sCall );
 			if ( !array_key_exists( $sPath, $this->_lookupcache ) )
 			{
-				$aPath   = explode( $this->_objectseperator, $sPath );
+				$aPath   = explode( $this->_objectseparator, $sPath );
 				$oModule = $this;
 				while( is_object( $oModule ) && count( $aPath ) )
 				{

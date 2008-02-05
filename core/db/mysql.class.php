@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://konsolidate.klof.net
+	 *     /           /\      /      http://www.konsolidate.net
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreDBMySQL
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,17 +22,69 @@
 	 *  @name    CoreDBMySQL
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@klof.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.net>
 	 */
 	class CoreDBMySQL extends Konsolidate
 	{
-		private $_URI;
-		private $_conn;
-		private $_cache;
-		private $_forceConnection;
-		private $_transaction;
+		/**
+		 *  The connection URI (parsed url)
+		 *  @name    _URI
+		 *  @type    array
+		 *  @access  protected
+		 */
+		protected $_URI;
+
+		/**
+		 *  The connection resource
+		 *  @name    _conn
+		 *  @type    resource
+		 *  @access  protected
+		 */
+		protected $_conn;
+
+		/**
+		 *  The query cache
+		 *  @name    _cache
+		 *  @type    array
+		 *  @access  protected
+		 */
+		protected $_cache;
+
+		/**
+		 *  Whether or not to enforce a new connection to the same database
+		 *  @name    _forceConnection
+		 *  @type    bool
+		 *  @access  protected
+		 */
+		protected $_forceConnection;
+
+		/**
+		 *  Wether or not a transaction is going on
+		 *  @name    _transaction
+		 *  @type    bool
+		 *  @access  protected
+		 */
+		protected $_transaction;
+
+		/**
+		 *  The error object (Exception which isn't thrown)
+		 *  @name    error
+		 *  @type    object
+		 *  @access  public
+		 */
 		public  $error;
 
+
+		/**
+		 *  constructor
+		 *  @name    __construct
+		 *  @type    constructor
+		 *  @access  public
+		 *  @param   object parent object
+		 *  @returns object
+		 *  @syntax  object = &new CoreDBMySQL( object parent )
+		 *  @note    This object is constructed by one of Konsolidates modules
+		 */
 		public function __construct( &$oParent )
 		{
 			parent::__construct( $oParent );
@@ -44,6 +96,16 @@
 			$this->_transaction     = false;
 		}
 
+		/**
+		 *  Assign the connection DSN
+		 *  @name    setConnection
+		 *  @type    method
+		 *  @access  public
+		 *  @param   string DSN URI
+		 *  @param   bool   force new link [optional, default false]
+		 *  @returns bool
+		 *  @syntax  bool CoreDBMySQL->setConnection( string DSN [, bool newlink ] )
+		 */
 		public function setConnection( $sURI, $bForceConnection=false )
 		{
 			assert( is_string( $sURI ) );
@@ -54,6 +116,15 @@
 			return true;
 		}
 
+		/**
+		 *  Connect to the database
+		 *  @name    connect
+		 *  @type    method
+		 *  @access  public
+		 *  @returns bool
+		 *  @syntax  bool CoreDBMySQL->connect()
+		 *  @note    An explicit call to this method is not required, since the query method will create the connection if it isn't connected
+		 */
 		public function connect()
 		{
 			if ( !$this->isConnected() )
@@ -76,6 +147,14 @@
 			return true;
 		}
 
+		/**
+		 *  Disconnect from the database
+		 *  @name    disconnect
+		 *  @type    method
+		 *  @access  public
+		 *  @returns bool
+		 *  @syntax  bool CoreDBMySQL->disconnect()
+		 */
 		public function disconnect()
 		{
 			if ( $this->isConnected() )
@@ -83,11 +162,29 @@
 			return true;
 		}
 
+		/**
+		 *  Check to see whether a connection is established
+		 *  @name    isConnected
+		 *  @type    method
+		 *  @access  public
+		 *  @returns bool
+		 *  @syntax  bool CoreDBMySQL->isConnected()
+		 */
 		public function isConnected()
 		{
 			return is_resource( $this->_conn );
 		}
 
+		/**
+		 *  Query the database
+		 *  @name    query
+		 *  @type    method
+		 *  @access  public
+		 *  @param   string query
+		 *  @paran   bool   usecache [optional, default true]
+		 *  @returns object result
+		 *  @syntax  object CoreDBMySQL->query( string query [, bool usecache ] )
+		 */
 		public function query( $sQuery, $bUseCache=true )
 		{
 			$sCacheKey = md5( $sQuery );
@@ -110,6 +207,14 @@
 			return false;
 		}
 
+		/**
+		 *  get the ID of the last inserted record
+		 *  @name    lastInsertID
+		 *  @type    method
+		 *  @access  public
+		 *  @returns int id
+		 *  @syntax  int CoreDBMySQLQuery->lastInsertID()
+		 */
 		public function lastInsertID()
 		{
 			if ( $this->isConnected() )
@@ -117,21 +222,57 @@
 			return false;
 		}
 
+		/**
+		 *  get the ID of the last inserted record
+		 *  @name    lastId
+		 *  @type    method
+		 *  @access  public
+		 *  @returns int id
+		 *  @syntax  int CoreDBMySQLQuery->lastId()
+		 *  @note    alias for lastInsertID
+		 *  @see     lastInsertID
+		 */
 		public function lastId()
 		{
 			return $this->lastInsertID();
 		}
 
+		/**
+		 *  Properly escape a string
+		 *  @name    escape
+		 *  @type    method
+		 *  @access  public
+		 *  @param   string input
+		 *  @returns string escaped input
+		 *  @syntax  string CoreDBMySQLQuery->escape( string input )
+		 */
 		public function escape( $sString )
 		{
 			return mysql_escape_string( $sString );
 		}
 
+		/**
+		 *  Quote and escape a string
+		 *  @name    quote
+		 *  @type    method
+		 *  @access  public
+		 *  @param   string input
+		 *  @returns string quoted escaped input
+		 *  @syntax  string CoreDBMySQLQuery->quote( string input )
+		 */
 		public function quote( $sString )
 		{
 			return "'" . $this->escape( $sString ) . "'";
 		}
 
+		/**
+		 *  Start transaction
+		 *  @name    startTransaction
+		 *  @type    method
+		 *  @access  public
+		 *  @returns bool success
+		 *  @syntax  bool CoreDBMySQLQuery->startTransaction()
+		 */
 		public function startTransaction()
 		{
 			if ( !$this->_transaction )
@@ -143,6 +284,16 @@
 			return $this->_transaction;
 		}
 
+		/**
+		 *  End transaction by sending 'COMMIT' or 'ROLLBACK'
+		 *  @name    startTransaction
+		 *  @type    method
+		 *  @access  public
+		 *  @param   bool commit [optional, default true]
+		 *  @returns bool success
+		 *  @syntax  bool CoreDBMySQLQuery->endTransaction( bool commit )
+		 *  @note    if argument 'commit' is true, 'COMMIT' is sent, 'ROLLBACK' otherwise
+		 */
 		public function endTransaction( $bSuccess=true )
 		{
 			if ( $this->_transaction )
@@ -157,19 +308,46 @@
 			return $this->_transaction;
 		}
 
+		/**
+		 *  Commit a transaction
+		 *  @name    commitTransaction
+		 *  @type    method
+		 *  @access  public
+		 *  @returns bool success
+		 *  @syntax  bool CoreDBMySQLQuery->commitTransaction()
+		 *  @note    same as endTransaction( true );
+		 */
 		public function commitTransaction()
 		{
 			return $this->endTransaction( true );
 		}
 
+		/**
+		 *  Rollback a transaction
+		 *  @name    rollbackTransaction
+		 *  @type    method
+		 *  @access  public
+		 *  @returns bool success
+		 *  @syntax  bool CoreDBMySQLQuery->rollbackTransaction()
+		 *  @note    same as endTransaction( false );
+		 */
 		public function rollbackTransaction()
 		{
 			return $this->endTransaction( false );
 		}
 
-		public function _isCachableQuery( $sQuery )
+		/**
+		 *  Determine whether a query should be cached (this applies only to 'SELECT' queries)
+		 *  @name    _isCachableQuery
+		 *  @type    method
+		 *  @access  protected
+		 *  @param   string query
+		 *  @returns bool   success
+		 *  @syntax  bool CoreDBMySQLQuery->_isCachableQuery( string query )
+		 */
+		protected function _isCachableQuery( $sQuery )
 		{
-			return preg_match( "/^\s*SELECT /i", $sQuery );
+			return (bool) preg_match( "/^\s*SELECT /i", $sQuery );
 		}
 	}
 

@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://konsolidate.klof.net
+	 *     /           /\      /      http://www.konsolidate.net
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreDocumentationBlock
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,22 +22,22 @@
 	 *  @name    CoreDocumentationBlock
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@klof.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.net>
 	 */
 	class CoreDocumentationBlock extends Konsolidate
 	{
-		var $_instruct;
-		var $name;
-		var $type;
-		var $access;
-		var $param;
-		var $syntax;
-		var $reference;
-		var $package;
-		var $author;
-		var $returns;
-		var $description;
-		var $note;
+		protected $_instruct;
+		public $name;
+		public $type;
+		public $access;
+		public $param;
+		public $syntax;
+		public $reference;
+		public $package;
+	 	public $author;
+		public $returns;
+		public $description;
+		public $note;
 
 
 		/**
@@ -50,7 +50,7 @@
 		 *  @syntax  object = &new CoreDocumentationBlock( object parent )
 		 *  @note    This object is constructed by one of Konsolidates modules
 		 */
-		function __construct( &$oParent )
+		function __construct( $oParent )
 		{
 			parent::__construct( $oParent );
 
@@ -77,7 +77,7 @@
 		 *  @returns void
 		 *  @syntax  void CoreDocumentationBlock->append( string text )
 		 */
-		function append( $sPart )
+		public function append( $sPart )
 		{
 			$sPart = trim( $sPart );
 			if ( empty( $sPart ) )
@@ -128,7 +128,7 @@
 		 *  @returns array instructions
 		 *  @syntax  array CoreDocumentationBlock->fetch( bool skipempty )
 		 */
-		function fetch( $bOmitEmpty=false )
+		public function fetch( $bOmitEmpty=false )
 		{
 			$aReturn = get_object_vars( $this );
 			foreach( $aReturn as $sKey=>$sValue )

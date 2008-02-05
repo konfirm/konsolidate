@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://konsolidate.klof.net
+	 *     /           /\      /      http://www.konsolidate.net
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreMediaImage
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,10 +22,16 @@
 	 *  @name    CoreMediaImage
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@klof.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.net>
 	 */
 	class CoreMediaImage extends Konsolidate
 	{
+		/**
+		 *  The image resource
+		 *  @name    _image
+		 *  @type    resrouce
+		 *  @access  protected
+		 */
 		protected $_image;
 
 		/**
@@ -55,7 +61,7 @@
 		 *  @returns resource image
 		 *  @syntax  Object->create( int width, int height [, string backgroundcolor ] );
 		 */
-		public function &create( $nWidth, $nHeight, $sBGColor=null )
+		public function create( $nWidth, $nHeight, $sBGColor=null )
 		{
 			$this->_image = $this->_create( $nWidth, $nHeight, $sBGColor );
 			return $this->_image;
@@ -70,7 +76,7 @@
 		 *  @returns resource image
 		 *  @syntax  Object->load(string filename );
 		 */
-		public function &load( $sFile )
+		public function load( $sFile )
 		{
 			$this->_image = $this->_load( $sFile );
 			return $this->_image;
@@ -93,7 +99,7 @@
 		 *  @returns resource image
 		 *  @syntax  Object->merge( mixed destination, mixed source [, int destX [, int destY [, int srcX [, int srcY [, int srcWidth [, int srcHeight [, int transparency ] ] ] ] ] ] ] );
 		 */
-		public function &merge( $mDestination, $mSource, $nDX=0, $nDY=0, $nSX=0, $nSY=0, $nSW=0, $nSH=0, $nPercentage=100 )
+		public function merge( $mDestination, $mSource, $nDX=0, $nDY=0, $nSX=0, $nSY=0, $nSW=0, $nSH=0, $nPercentage=100 )
 		{
 			if ( !is_resource( $mSource ) )
 				$mSource = $this->_load( $mSource );
@@ -127,7 +133,7 @@
 		 *  @returns resource image
 		 *  @syntax  Object->copy( mixed destination, mixed source [, int destX [, int destY [, int srcX [, int srcY [, int srcWidth [, int srcHeight ] ] ] ] ] ] );
 		 */
-		public function &copy( $mDestination, $mSource, $nDX=0, $nDY=0, $nSX=0, $nSY=0, $nSW=0, $nSH=0 )
+		public function copy( $mDestination, $mSource, $nDX=0, $nDY=0, $nSX=0, $nSY=0, $nSW=0, $nSH=0 )
 		{
 			if ( !is_resource( $mDestination ) )
 				$this->load( $mDestination );
@@ -159,7 +165,7 @@
 		 *  @returns resource image
 		 *  @syntax  Object->resize( mixed image [, int width [, int height ] ] );
 		 */
-		public function &resize( $mImage, $nWidth=0, $nHeight=0 )
+		public function resize( $mImage, $nWidth=0, $nHeight=0 )
 		{
 			if ( !is_resource( $mImage ) )
 				$mImage = $this->load( $mImage );
@@ -187,7 +193,7 @@
 		 *  @returns resource image
 		 *  @syntax  Object->crop( mixed image, int offsetX, int offsetY, int width, int height );
 		 */
-		public function &crop( $mImage, $nX, $nY, $nWidth, $nHeight )
+		public function crop( $mImage, $nX, $nY, $nWidth, $nHeight )
 		{
 			if ( !is_resource( $mImage ) )
 				$mImage = $this->load( $mImage );
@@ -306,8 +312,7 @@
 		 *  @param   int      height [optional, default 0]
 		 *  @returns int      array( "width"=>W, "height"=>H );
 		 *  @syntax  Object->getScaleDimension( resource image, int width, int height )
-		 *  @note    provide 0 for either the width or the height to obtain it's constrained counterpart,
-		 *           provide 0 for both to obtain the current dimensions
+		 *  @note    provide 0 for either the width or the height to obtain it's constrained counterpart, provide 0 for both to obtain the current dimensions
 		 */
 		public function getScaleDimension( $mImage, $nWidth=0, $nHeight=0 )
 		{
@@ -362,14 +367,14 @@
 		 *  Create a new image
 		 *  @name    _create
 		 *  @type    method
-		 *  @access  private
+		 *  @access  protected
 		 *  @param   int    width
 		 *  @param   int    height
 		 *  @param   string hex backgroundcolor [optional]
 		 *  @returns resource image
 		 *  @syntax  Object->_create( int width, int height [, string backgroundcolor ] );
 		 */
-		private function _create( $nWidth, $nHeight, $sBGColor=null )
+		protected function _create( $nWidth, $nHeight, $sBGColor=null )
 		{
 			$this->adjustMemoryUsage( $nWidth, $nHeight );
 
@@ -396,12 +401,12 @@
 		 *  Load an existing image
 		 *  @name    _load
 		 *  @type    method
-		 *  @access  private
+		 *  @access  protected
 		 *  @param   string filename
 		 *  @returns resource image (bool false on error)
 		 *  @syntax  Object->_load( string filename );
 		 */
-		private function _load( $sFile )
+		protected function _load( $sFile )
 		{
 			$oImage = null;
 			if ( file_exists( $sFile ) )

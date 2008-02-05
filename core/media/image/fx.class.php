@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://konsolidate.klof.net
+	 *     /           /\      /      http://www.konsolidate.net
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreMediaImageFX
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreMediaImageFX
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@klof.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.net>
 	 */
 	class CoreMediaImageFX extends Konsolidate
 	{
@@ -30,16 +30,16 @@
 		 *  Blur an image
 		 *  @name    blur
 		 *  @type    method
-		 *  @access  private
+		 *  @access  public
 		 *  @param   resource image (or null to create a new image)
 		 *  @param   integer  amount (optional, default 1)
 		 *  @returns resource image
 		 *  @syntax  Object->blur( resource image, int amount )
 		 */
-		public function &blur( $mImage, $nAmount=1 )
+		public function blur( $mImage, $nAmount=1 )
 		{
 			if ( !is_resource( $mImage ) )
-				$mImage = &$this->call( "../load", $mImage );
+				$mImage = $this->call( "../load", $mImage );
 
 			if ( function_exists( "imagefilter" ) )
 			{
@@ -93,15 +93,15 @@
 		 *  Invert colors of an image
 		 *  @name    invert
 		 *  @type    method
-		 *  @access  private
+		 *  @access  public
 		 *  @param   resource image (or null to create a new image)
 		 *  @returns resource image
 		 *  @syntax  Object->invert( resource image )
 		 */
-		public function &invert( $mImage )
+		public function invert( $mImage )
 		{
 			if ( !is_resource( $mImage ) )
-				$mImage = &$this->call( "../load", $mImage );
+				$mImage = $this->call( "../load", $mImage );
 
 			if ( function_exists( "imagefilter" ) )
 			{
@@ -131,16 +131,16 @@
 		 *  Convert an image to greyscale
 		 *  @name    greyscale
 		 *  @type    method
-		 *  @access  private
+		 *  @access  public
 		 *  @param   resource image (or null to create a new image)
 		 *  @param   bool     correct for the human eye
 		 *  @returns resource image
 		 *  @syntax  Object->greyscale( resource image [, bool humaneye correction ] )
 		 */
-		public function &greyscale( $mImage, $bHumanEyeCorrection=false )
+		public function greyscale( $mImage, $bHumanEyeCorrection=false )
 		{
 			if ( !is_resource( $mImage ) )
-				$mImage = &$this->call( "../load", $mImage );
+				$mImage = $this->call( "../load", $mImage );
 
 			if ( function_exists( "imagefilter" ) && !$bHumanEyeCorrection )
 			{
