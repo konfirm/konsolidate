@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://konsolidate.klof.net
+	 *     /           /\      /      http://www.konsolidate.net
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreUserTracker
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreUserTracker
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@klof.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.net>
 	 */
 	class CoreUserTracker extends Konsolidate
 	{
@@ -200,6 +200,16 @@
 		}
 
 
+		/**
+		 *  Log in a user
+		 *  @name    login
+		 *  @type    method
+		 *  @access  public
+		 *  @param   string  code
+		 *  @param   bool    autologin [optional, default true]
+		 *  @returns bool
+		 *  @syntax  Object->login( string code [, bool autologin ] );
+		 */
 		public function login( $sCode=false, $bAutoLogin=true )
 		{
 			if ( $sCode !== false )
@@ -215,7 +225,7 @@
 		 *  @name    removeUnregisteredVisitors
 		 *  @type    method
 		 *  @access  public
-		 *  @param   integer   timestamp before which the unused records will be removed [optional] (defaults to a week before now)
+		 *  @param   integer   timestamp before which the unused records will be removed [optional, defaults to a week before now]
 		 *  @returns bool
 		 *  @syntax  Object->removeUnregisteredVisitors( [ int createdbefore ]);
 		 */

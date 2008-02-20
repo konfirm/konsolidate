@@ -292,11 +292,9 @@
 
 		function __set( $sProperty, $mValue )
 		{
-			if ( $this->$sProperty !== $mValue )
-			{
-				parent::__set( $sProperty, $mValue );
+			if ( array_key_exists( $sProperty, $this->_property ) && $this->$sProperty !== $mValue )
 				$this->_updated = true;
-			}
+			parent::__set( $sProperty, $mValue );
 		}
 
 		function __destruct()

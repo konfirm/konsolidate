@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://konsolidate.klof.net
+	 *     /           /\      /      http://www.konsolidate.net
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreUserData
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,11 +22,11 @@
 	 *  @name    CoreUserData
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@klof.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.net>
 	 */
 	class CoreUserData extends Konsolidate
 	{
-		public $_anticipation;
+		protected $_anticipation;
 
 		/**
 		 *  CoreUserData constructor
@@ -45,14 +45,29 @@
 		}
 
 		/**
+		 *  Determine the table to retrieve the userdata from
+		 *  @name    _determineDataTable
+		 *  @type    method
+		 *  @access  protected
+		 *  @param   int  userid
+		 *  @returns string datatable
+		 *  @syntax  CoreuserData->_determineDataTable( [ int userid ] );
+		 */
+		protected function _determineDataTable( $nUserID=null )
+		{
+			return "userdata";
+		}
+
+		/**
 		 *  Enable/disable anticipation of userdata
 		 *  @name    useAnticipation
 		 *  @type    method
 		 *  @access  public
+		 *  @param   bool   enable [optional, default true]
 		 *  @returns array
 		 *  @syntax  Object->useAnticipation( bool enable );
 		 */
-		public function useAnticipation( $bEnable )
+		public function useAnticipation( $bEnable=true )
 		{
 			$this->_anticipation = $bEnable;
 		}
@@ -67,14 +82,14 @@
 					$sQuery  = "SELECT usd.usdproperty,
 								       usd.usdvalue
 								  FROM userdatascope uds
-								 INNER JOIN userdata usd ON usd.usdproperty=uds.usdproperty AND usd.usrid={$nID}
+								 INNER JOIN " . $this->_determineDataTable( $nID ) . " usd ON usd.usdproperty=uds.usdproperty AND usd.usrid={$nID}
 								 WHERE uds.udsscope=" . $this->call( "/DB/quote", $this->_anticipationScope() );
 				}
 				else
 				{
 					$sQuery  = "SELECT usdproperty,
 								       usdvalue
-								  FROM userdata
+								  FROM " . $this->_determineDataTable( $nID ) . "
 								 WHERE usrid={$nID}";
 				}
 
@@ -96,7 +111,7 @@
 
 			$sQuery  = "SELECT usdproperty,
 						       usdvalue
-						  FROM userdata
+						  FROM " . $this->_determineDataTable( $nID ) . "
 						 WHERE usrid={$nID}";
 			$oResult = $this->call( "/DB/query", $sQuery );
 			if ( is_object( $oResult ) && $oResult->errno <= 0 )
@@ -142,7 +157,7 @@
 				$oResult = $this->call( "/DB/query", $sQuery );	
 			}
 
-			$sQuery  = "INSERT INTO userdata ( usrid, usdproperty, usdvalue, usdcreatedts )
+			$sQuery  = "INSERT INTO " . $this->_determineDataTable( $nID ) . " ( usrid, usdproperty, usdvalue, usdcreatedts )
 						VALUES {$sProperty}
 						    ON DUPLICATE KEY
 						UPDATE usdvalue=VALUES( usdvalue ),
@@ -162,7 +177,7 @@
 		 *  @returns bool
 		 *  @syntax  Object->_anticipationScope();
 		 */
-		private function _anticipationScope()
+		protected function _anticipationScope()
 		{
 			$aParam  = array_keys( $_REQUEST );
 			sort( $aParam );
