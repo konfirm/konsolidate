@@ -110,7 +110,7 @@
 					$sEnclosure = $this->enclosure;
 
 				if ( $this->_filepointer !== false && !feof( $this->_filepointer ) )
-					return fgetcsv( $this->_filepointer, $nLength, $mDelimiter, $sEnclosure );
+					return fgetcsv( $this->_filepointer, $mLength, $mDelimiter, $sEnclosure );
 				return false;
 			}
 			return parent::get( $mLength, $mDelimiter );

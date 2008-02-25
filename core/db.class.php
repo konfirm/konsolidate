@@ -221,7 +221,7 @@
 		public function __call( $sCall, $aArgument )
 		{
 			//  Get the first argument, which could be a reference to a pool item
-			$sReference = array_shift( $aArgument );
+			$sReference = (string) array_shift( $aArgument );
 
 			//  In case the first argument was not a pool item, put the first argument back in refer to the master
 			if ( !array_key_exists( $sReference, $this->_pool ) )

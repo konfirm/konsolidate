@@ -248,7 +248,13 @@
 		 */
 		public function escape( $sString )
 		{
-			return mysql_escape_string( $sString );
+			if ( $this->connect() )
+				return mysql_real_escape_string( $sString, $this->_conn );
+			else if ( function_exists( "mysql_escape_string" ) )
+				return mysql_escape_string( $sString );
+
+			$this->call( "/Log/write", get_class( $this ) . "::escape, could not escape string" );
+			return false;
 		}
 
 		/**
