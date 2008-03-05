@@ -232,14 +232,14 @@
 		 *  Builds the template
 		 *  @name    _compose
 		 *  @type    method
-		 *  @access  private
+		 *  @access  protected
 		 *  @param   string template
 		 *  @param   string reference [optional]
 		 *  @param   bool   force [optional]
 		 *  @returns string document
 		 *  @syntax  Object->_compose( string template [, string reference [, bool force ] ] );
 		 */
-		private function _compose( $sTemplate, $sReference="", $bForce=false )
+		protected function _compose( $sTemplate, $sReference="", $bForce=false )
 		{
 			$sCacheFile = $this->_getCompileName( $sTemplate, $sReference );
 
@@ -282,13 +282,13 @@
 		 *  Prepare paths and save compiled data to the filesystem
 		 *  @name    _storeCompilation
 		 *  @type    method
-		 *  @access  private
+		 *  @access  protected
 		 *  @param   string filename
 		 *  @param   string content
 		 *  @returns void
 		 *  @syntax  Object->_storeCompilation( string cachefile, string content );
 		 */
-		private function _storeCompilation( $sCacheFile, $sSource )
+		protected function _storeCompilation( $sCacheFile, $sSource )
 		{
 			if ( !is_dir( "{$this->_compilepath}/dep/" ) )
 				mkdir( "{$this->_compilepath}/dep/" );
@@ -302,13 +302,13 @@
 		 *  Write data to files
 		 *  @name    _storeData
 		 *  @type    method
-		 *  @access  private
+		 *  @access  protected
 		 *  @param   string filename
 		 *  @param   string content
 		 *  @returns bool success
 		 *  @syntax  Object->_storeData( string file, string content );
 		 */
-		private function _storeData( $sFile, $sContent )
+		protected function _storeData( $sFile, $sContent )
 		{
 			return $this->call( "/System/File/write", $sFile, $sContent );
 		}
@@ -317,13 +317,13 @@
 		 *  get the name of the compiled resource
 		 *  @name    _getCompileName
 		 *  @type    method
-		 *  @access  private
+		 *  @access  protected
 		 *  @param   string template
 		 *  @param   string reference [optional]
 		 *  @returns string compiled name
 		 *  @syntax  Object->_getCompileName( string template [, string reference ] );
 		 */
-		private function _getCompileName( $sTemplate, $sReference="" )
+		protected function _getCompileName( $sTemplate, $sReference="" )
 		{
 			$sBase = basename( $sTemplate );
 			return md5( "{$sTemplate}/{$sReference}-" . substr( $sBase, 0, strPos( $sBase, "." ) ) ) . ( !empty( $sReference ) ? "-{$sReference}" : "" ) . ".gen.php";
@@ -333,12 +333,12 @@
 		 *  get the latest update timestamp from all dependencies
 		 *  @name    _getDependencyUpdateTime
 		 *  @type    method
-		 *  @access  private
+		 *  @access  protected
 		 *  @param   string filename
 		 *  @returns number timestamp
 		 *  @syntax  Object->_getDependencyUpdateTime( string cachefile );
 		 */
-		private function _getDependencyUpdateTime( $sCacheFile )
+		protected function _getDependencyUpdateTime( $sCacheFile )
 		{
 			if ( !file_exists( "{$this->_compilepath}/dep/" . md5( $sCacheFile ) ) )
 				return time();
@@ -353,12 +353,12 @@
 		 *  get the timestamp of the compilation
 		 *  @name    _getCompileUpdateTime
 		 *  @type    method
-		 *  @access  private
+		 *  @access  protected
 		 *  @param   string filename
 		 *  @returns number timestamp
 		 *  @syntax  Object->_getCompileUpdateTime( string cachefile );
 		 */
-		private function _getCompileUpdateTime( $sCacheFile )
+		protected function _getCompileUpdateTime( $sCacheFile )
 		{
 			if ( !file_exists( "{$this->_compilepath}/{$sCacheFile}" ) )
 				return false;
