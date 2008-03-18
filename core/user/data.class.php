@@ -77,6 +77,7 @@
 			if ( !array_key_exists( $sProperty, $this->_property ) )
 			{
 				$nID = $this->get( "/User/id" );
+
 				if ( $this->_anticipation )
 				{
 					$sQuery  = "SELECT usd.usdproperty,
@@ -84,19 +85,24 @@
 								  FROM userdatascope uds
 								 INNER JOIN " . $this->_determineDataTable( $nID ) . " usd ON usd.usdproperty=uds.usdproperty AND usd.usrid={$nID}
 								 WHERE uds.udsscope=" . $this->call( "/DB/quote", $this->_anticipationScope() );
+					$oResult = $this->call( "/DB/query", $sQuery );
+					if ( is_object( $oResult ) && $oResult->errno <= 0 && $oResult->rows > 0 )
+						while( $oRecord = $oResult->next() )
+							$this->_property[ $oRecord->usdproperty ] = $oRecord->usdvalue;
+					$this->_anticipation = false;
 				}
-				else
+
+				if ( !array_key_exists( $sProperty, $this->_property ) )
 				{
 					$sQuery  = "SELECT usdproperty,
 								       usdvalue
 								  FROM " . $this->_determineDataTable( $nID ) . "
 								 WHERE usrid={$nID}";
+					$oResult = $this->call( "/DB/query", $sQuery );
+					if ( is_object( $oResult ) && $oResult->errno <= 0 && $oResult->rows > 0 )
+						while( $oRecord = $oResult->next() )
+							$this->_property[ $oRecord->usdproperty ] = $oRecord->usdvalue;
 				}
-
-				$oResult = $this->call( "/DB/query", $sQuery );
-				if ( is_object( $oResult ) && $oResult->errno <= 0 && $oResult->rows > 0 )
-					while( $oRecord = $oResult->next() )
-						$this->_property[ $oRecord->usdproperty ] = $oRecord->usdvalue;
 			}
 
 			return parent::__get( $sProperty );
