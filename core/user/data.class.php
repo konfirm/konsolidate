@@ -88,20 +88,22 @@
 					$oResult = $this->call( "/DB/query", $sQuery );
 					if ( is_object( $oResult ) && $oResult->errno <= 0 && $oResult->rows > 0 )
 						while( $oRecord = $oResult->next() )
-							$this->_property[ $oRecord->usdproperty ] = $oRecord->usdvalue;
+							if ( !array_key_exists( $oRecord->usdproperty, $this->_property ) )
+								$this->_property[ $oRecord->usdproperty ] = $oRecord->usdvalue;
 				}
 
 				if ( !array_key_exists( $sProperty, $this->_property ) )
 				{
-					$sQuery  = "SELECT usdproperty,
-								       usdvalue
+					$sQuery  = "SELECT usdvalue
 								  FROM " . $this->_determineDataTable( $nID ) . "
-								 WHERE usrid={$nID}";
+								 WHERE usrid={$nID}
+								   AND usdproperty=" . $this->call( "/DB/quote", $sProperty );
 					$oResult = $this->call( "/DB/query", $sQuery );
 					if ( is_object( $oResult ) && $oResult->errno <= 0 && $oResult->rows > 0 )
-						while( $oRecord = $oResult->next() )
-							if ( !array_key_exists( $sProperty, $this->_property ) )
-								$this->_property[ $oRecord->usdproperty ] = $oRecord->usdvalue;
+					{
+						$oRecord = $oResult->next();
+						$this->_property[ $sProperty ] = $oRecord->usdvalue;
+					}
 				}
 			}
 
