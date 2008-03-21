@@ -100,7 +100,8 @@
 					$oResult = $this->call( "/DB/query", $sQuery );
 					if ( is_object( $oResult ) && $oResult->errno <= 0 && $oResult->rows > 0 )
 						while( $oRecord = $oResult->next() )
-							$this->_property[ $oRecord->usdproperty ] = $oRecord->usdvalue;
+							if ( !array_key_exists( $sProperty, $this->_property ) )
+								$this->_property[ $oRecord->usdproperty ] = $oRecord->usdvalue;
 				}
 			}
 
