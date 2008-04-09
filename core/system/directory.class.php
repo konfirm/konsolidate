@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://konsolidate.klof.net
+	 *     /           /\      /      http://www.konsolidate.net
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreSystemDirectory
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,15 +22,35 @@
 	 *  @name    CoreSystemDirectory
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@klof.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.net>
 	 */
 	class CoreSystemDirectory extends Konsolidate
 	{
+		/**
+		 *  Create a directory
+		 *  @name    create
+		 *  @type    method
+		 *  @access  public
+		 *  @param   string path
+		 *  @param   oct    mode [optional, default 0777]
+		 *  @returns bool
+		 *  @syntax  bool CoreSystemDirectory->create( string path [, oct mode ] );
+		 */
 		public function create( $sPath, $nMode=0777 )
 		{
 			return ( is_dir( $sPath) || @mkdir( $sPath, $nMode, true ) ) && chmod( $sPath, $nMode );
 		}
 
+		/**
+		 *  Get the directory contents
+		 *  @name    getList
+		 *  @type    method
+		 *  @access  public
+		 *  @param   string path
+		 *  @param   bool   prependpath [optional, default true]
+		 *  @returns array
+		 *  @syntax  array CoreSystemDirectory->getList( string path [, bool prependpath ] );
+		 */
 		public function getList( $sPath, $bPrependPath=true )
 		{
 			$aReturn = Array();
