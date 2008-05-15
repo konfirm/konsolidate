@@ -482,7 +482,7 @@
 		
 		public function valid()
 		{
-			return (bool) $this->current();
+			return !is_null( $this->key() );
 		}
 
 		//  End Iterator functionality
