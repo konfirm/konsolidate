@@ -284,7 +284,7 @@
 			if ( !$this->_transaction )
 			{
 				$oResult = $this->query( "START TRANSACTION" );
-				if ( is_object( $oResult ) && $oResult->error->errno <= 0 )
+				if ( is_object( $oResult ) && $oResult->errno <= 0 )
 					$this->_transaction = true;
 			}
 			return $this->_transaction;
@@ -305,7 +305,7 @@
 			if ( $this->_transaction )
 			{
 				$oResult = $this->query( $bSuccess ? "COMMIT" : "ROLLBACK" );
-				if ( is_object( $oResult ) && $oResult->error->errno <= 0 )
+				if ( is_object( $oResult ) && $oResult->errno <= 0 )
 				{
 					$this->_transaction = false;
 					return true;
