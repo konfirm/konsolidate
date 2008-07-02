@@ -182,11 +182,11 @@
 		 */
 		public static function getIP( $mDefault="0.0.0.0" )
 		{
-			if ( $sReturn = CoreTool::envVal( "HTTP_CLIENT_IP" ) )
+			if ( $sReturn = CoreTool::serverVal( "HTTP_CLIENT_IP" ) )
 				return $sReturn;
-			if ( $sReturn = CoreTool::envVal( "HTTP_X_FORWARDED_FOR" ) )
+			if ( $sReturn = CoreTool::serverVal( "HTTP_X_FORWARDED_FOR" ) )
 				return $sReturn;
-			if ( $sReturn = CoreTool::envVal( "REMOTE_ADDR" ) )
+			if ( $sReturn = CoreTool::serverVal( "REMOTE_ADDR" ) )
 				return $sReturn;
 			return $mDefault;
 		}
