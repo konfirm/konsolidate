@@ -141,6 +141,17 @@
 		}
 
 		/**
+		 *
+		 */
+		protected function _createRecipientList( $aCollection )
+		{
+			$sReturn = "";
+			foreach( $aCollection as $sEmail=>$sName )
+				$sReturn .= ( !empty( $sReturn ) ? "," : "" ) . ( !is_null( $sName ) ? "{$sName}<{$sEmail}>" : $sEmail );
+			return $sReturn;
+		}
+
+		/**
 		 *  Send a command string to the SMTP server
 		 *  @name    _command
 		 *  @type    method
@@ -206,10 +217,13 @@
 		 *  @syntax  void CoreNetworkProtocolSMTP->rcptTo( string email [, string name ] )
 		 *  @note    use the status/message properties for reporting/checking/logging
 		 */
-		public function rcptTo( $sEmail, $sName=null )
+		public function rcptTo( $aCollection, $sHeaderName="To" )
 		{
-			$this->addHeader( "To", ( !is_null( $sName ) ? "{$sName} <{$sEmail}>" : $sEmail ) );
-			return $this->_command( "RCPT TO: {$sEmail}" ) == 250;
+			$this->addHeader( $sHeaderName, $this->_createRecipientList( $aCollection ) );
+			$bReturn = true;
+			foreach( $aCollection as $sEmail=>$sName )
+				$bReturn &= $this->_command( "RCPT TO: {$sEmail}" ) == 250;
+			return $bReturn;
 		} 
 
 		/**
@@ -251,6 +265,7 @@
 					$this->_socket->write( "{$sKey}: {$sValue}\r\n" );
 
 				$this->_socket->write( "\r\n{$sData}\r\n" );
+
 				return $this->_command( "." ) == 250;
 			}
 			return false;
@@ -319,9 +334,10 @@
 						$sHeader = "";
 						foreach( $mValue as $sValue )
 							$sHeader .= ( !empty( $sHeader ) ? ", " : "" ) . $sValue;
-						$this->addHeader( $sKey, $sHeader );
+						if ( !empty( $sHeader ) )
+							$this->addHeader( $sKey, $sHeader );
 					}
-					else
+					elseif ( !empty( $mValue ) )
 					{
 						$this->addHeader( $sKey, $mValue );
 					}
@@ -336,8 +352,12 @@
 			if ( !$this->mailFrom( $this->from, $this->sender ) )
 				return false;
 
-			if ( !$this->rcptTo( $this->to, $this->recipient ) )
-				return false;
+			foreach( Array( "to", "cc", "bcc" ) as $sType )
+			{
+				$mValue = $this->$sType;
+				if ( !empty( $mValue ) && !$this->rcptTo( $mValue, $sType ) )
+					return false;
+			}
 
 			if ( !$this->data( $this->body ) )
 				return false;

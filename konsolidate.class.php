@@ -488,23 +488,68 @@
 		//  End Iterator functionality
 
 
+
+		/**
+		 *  Throw exceptions
+		 *  @name    exception
+		 *  @type    method
+		 *  @access  public
+		 *  @param   string  message (option)
+		 *  @param   int     code (option)
+		 *  @returns void
+		 *  @syntax  Konsolidate->exception( [ string message [, int code ] ] );
+		 *  @note    Exception classes must be an extend of PHP's built-in Exception class, if the exception method is called and the calling module does not
+		 *           have an exception class, Konsolidate will generate one dynamically.
+		 *  @note    Exception classname use the same structure as normal Konsolidated classnames, but they must omit the tiername, e.g. you have a module
+		 *           'Example' in the tier 'Demo' (class DemoExample in example.class.php), its exception class name should be (or will be generated dynamically)
+		 *           'ExampleException' and be located in the file example/exception.class.php.
+		 */
+		public function exception( $sMessage=null, $nCode=0 )
+		{
+			$this->import( "exception.class.php" );
+
+			$sThrowClass     = str_replace( array_keys( $this->getRoot()->getFilePath() ), "", get_class( $this ) . "Exception" );
+			$sExceptionClass = "";
+			foreach ( $this->_path as $sMod=>$sPath )
+			{
+				$sClass  = "{$sMod}Exception";
+				if ( class_exists( $sClass ) )
+				{
+					$sExceptionClass = $sClass;
+					break;
+				}
+			}
+
+			$aTrace = debug_backtrace();
+			$sFile  = "";
+			$sLine  = "";
+			if ( count( $aTrace ) >= 4 && isset( $aTrace[ 3 ] ) )
+			{
+				//  The origin of species
+				$sFile = $aTrace[ 3 ][ "file" ];
+				$sLine = $aTrace[ 3 ][ "line" ];
+			}
+
+			if ( empty( $sExceptionClass ) )
+				$sExceptionClass = "Exception";
+
+			//  Create tierless Exception on the fly if the requested Exception does not exist
+			if ( !class_exists( $sThrowClass ) )
+				eval( "class {$sThrowClass} extends {$sExceptionClass}{public function __construct(\$s=null,\$c=0){parent::__construct(\$s,\$c);\$this->file='{$sFile}';\$this->line={$sLine};}}" );
+
+			if ( class_exists( $sThrowClass ) )
+				throw new $sThrowClass( $sMessage, $nCode );
+			throw new Exception( $sMessage, $nCode );
+		}
+
+
 		// Magic methods.
 		public function __set( $sProperty, $mValue )
 		{
-/* Experimental Strict Checking on register/available Modules */
 			if ( array_key_exists( strToUpper( $sProperty ), $this->_module ) )
 				throw new Exception( "Trying to overwrite existing module {$sProperty} in " . get_class( $this ) . " with " . gettype( $mValue ) . " {$mValue}" );
 			else if ( $this->checkModuleAvailability( $sProperty ) )
 				throw new Exception( "Trying to set a property " . gettype( $mValue ) . " {$mValue} in " . get_class( $this ) . " where a module is available" );
-			// else 
-				// we've ended up in the situation where we may want to automagically create a stub class but since we 
-				// don't know that at this point, we cannot throw an exception.
-				// Due to Konsolidate's architecture, you end up having both the property AND the module (object) in the 
-				// same tree, where the property now has precendence over the module, rendering the 'get'-ing of a Module
-				// obsolete, since you will get the property.
-				// In short: 'get' of a stub wil work as intended, unless your code has assigned a property with the same name
-				// which let's 'get' return the property and not the stub module.
-/* End Experimental Strict Checking on register/available Modules */
 			$this->_property[ $sProperty ] = $mValue;
 		}
 

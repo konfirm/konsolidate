@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://konsolidate.klof.net
+	 *     /           /\      /      http://www.konsolidate.net
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreNetworkProtocolHTTP
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,63 +22,79 @@
 	 *  @name    CoreNetworkProtocolHTTP
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@klof.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.net>
 	 *  @todo    Make proper use of the CoreNetworkSocket class, cURL fallback (for ease and performance) and implement HTTPS support
 	 */
 	class CoreNetworkProtocolHTTP extends Konsolidate
 	{
 		/**
 		 *  The class version
-		 *  @var string $version
+		 *  @name    version
+		 *  @type    string
+		 *  @access  public
 		 */
 		public $version;
 	
 		/**
 		 *  The array containing all prepared data
-		 *  @var array $storage
+		 *  @name    _storage
+		 *  @type    string
+		 *  @access  protected
 		 */
-		protected $storage;
+		protected $_storage;
 	
 		/**
 		 *  The array containing all prepared files
-		 *  @var array $filestorage
+		 *  @name    _filestorage
+		 *  @type    string
+		 *  @access  protected
 		 */
-		protected $filestorage;
+		protected $_filestorage;
 	
 		/**
 		 *  A boolean describing whether or not to use multipart/form-data
-		 *  @var bool $multiform
+		 *  @name    _multiform
+		 *  @type    string
+		 *  @access  protected
 		 */
-		protected $multiform;
+		protected $_multiform;
 	
 		/**
 		 *  The useragent to use
-		 *  @var string $useragent
+		 *  @name    _useragent
+		 *  @type    string
+		 *  @access  protected
 		 */
-		protected $useragent;
+		protected $_useragent;
 	
 		/**
 		 *  An array containing status handlers
-		 *  @var array $statushandler
+		 *  @name    _statushandler
+		 *  @type    string
+		 *  @access  protected
 		 */
-		protected $statushandler;
+		protected $_statushandler;
 	
 		/**
 		 *  An array containing the result headers that were send back after a request
-		 *  @var $requestheader
+		 *  @name    _requestheader
+		 *  @type    string
+		 *  @access  protected
 		 */
-		protected $requestheader;
+		protected $_requestheader;
 	
 		/**
 		 *  An array containing the result headers that are added to all requests
-		 *  @var $headerdata
+		 *  @name    _headerdata
+		 *  @type    string
+		 *  @access  protected
 		 */
-		protected $headerdata;
+		protected $_headerdata;
 	
 	
 		/**
-		 *  CoreNetHTTP constructor
-		 *  @name    CoreNetHTTP
+		 *  CoreNetworkProtocolHTTP constructor
+		 *  @name    CoreNetworkProtocolHTTP
 		 *  @type    constructor
 		 *  @access  public
 		 *  @param   object parent object
@@ -86,26 +102,28 @@
 		 *  @syntax  object = &new CoreNetHTTP( object parent )
 		 *  @note    This object is constructed by one of Konsolidates modules
 		 */
-		function __construct( &$oParent )
+		public function __construct( $oParent )
 		{
 			parent::__construct( $oParent );
-			$this->version       = "1.0.6";
-			$this->storage       = Array();
-			$this->filestorage   = Array();
-			$this->multiform     = false;
-			$this->useragent     = "";
-			$this->statushandler = Array();
-			$this->headerdata    = Array();
+			$this->version        = "1.0.7";
+			$this->_storage       = Array();
+			$this->_filestorage   = Array();
+			$this->_multiform     = false;
+			$this->_useragent     = "";
+			$this->_statushandler = Array();
+			$this->_headerdata    = Array();
 		}
 
 		/**
 		 *  Assign variables to the upcoming request
+		 *  @name   prepareData
+		 *  @type   method
 		 *  @access public
 		 *  @param  mixed  $mVariable    either an array containing key=>value pairs, which will be prepared as variables, or a string with the variable name
 		 *  @param  mixed  $mValue       the value to set, note that $mValue will not be processed if you have provided an array as first variable
 		 *  @return bool
 		 */
-		function prepareData( $mVariable, $mValue=false )
+		public function prepareData( $mVariable, $mValue=false )
 		{
 			$bSuccess = true;
 			if ( is_array( $mVariable ) )
@@ -124,22 +142,23 @@
 			{
 				if ( is_object( $mValue ) )
 					$mValue = serialize( $mValue );
-				$this->storage[ $mVariable ] = $mValue;
-				return( $this->storage[ $mVariable ] == $mValue );
+				$this->_storage[ $mVariable ] = $mValue;
+				return( $this->_storage[ $mVariable ] == $mValue );
 			}
 			return false;
 		}
 	
 		/**
 		 *  Add files to the upcoming request
-		 *  (NOTE: requires the request to be of type 'POST')
-		 *  (NOTE: one additional variable will be added to the request. The variable is called 'http_filecount' and contains the number of files being POSTed)
+		 *  @name   prepareFile
+		 *  @type   method
 		 *  @access public
 		 *  @param  string $sFile    The filename (including path) of the file that ought to be uploaded
 		 *  @param  string $sMime    The mime-type to use for the file [optional, defaults to 'application/octet-stream' which works for most files]
 		 *  @return bool
+		 *  @note   requires the request to be of type 'POST'), one additional variable will be added to the request. The variable is called 'http_filecount' and contains the number of files being POSTed)
 		 */
-		function prepareFile( $sFile, $sMime="" )
+		public function prepareFile( $sFile, $sMime="" )
 		{
 			if ( file_exists( $sFile ) )
 			{
@@ -154,14 +173,14 @@
 						$sData .= fgets( $fpFile, fileSize( $sFile ) );
 					fclose( $fpFile );
 	
-					$this->filestorage[] = Array(
+					$this->_filestorage[] = Array(
 						"name"=>$sFile,
 						"data"=>$sData,
 						"mime"=>$sMime
 					);
 					if ( strLen( $sData ) > 0 )
 					{
-						$this->multiform = true;
+						$this->_multiform = true;
 						return true;
 					}
 				}
@@ -174,68 +193,76 @@
 		 *  bind a statushandler function to a status code
 		 *  (NOTE: the function may receive up to two arguments, the first the status code (so you _can_ write a catchAll/catchMulti function),
 		 *   the second being the HTTPRequest object itself, hint: make it a reference if you need it)
+		 *  @name   setStatusHandler
+		 *  @type   method
 		 *  @access public
 		 *  @param  number  $nStatus   The status code to respond on
 		 *  @param  string  $sFunction The function to call if status equals $nStatus
 		 *  @return void
 		 */
-		function setStatusHandler( $nStatus, $sFunction )
+		public function setStatusHandler( $nStatus, $sFunction )
 		{
-			$this->statushandler[ $nStatus ] = $sFunction;
+			$this->_statushandler[ $nStatus ] = $sFunction;
 		}
 	
 		/**
 		 *  Trigger a specific status handler (if it's defined)
-		 *  @access private
+		 *  @name   _triggerStatusHandler
+		 *  @type   method
+		 *  @access protected
 		 *  @param  number $nStatus The status number
 		 *  @return void
 		 */
-		function triggerStatusHandler( $nStatus )
+		protected function _triggerStatusHandler( $nStatus )
 		{
-			if ( CoreTool::arrVal( $this->statushandler, $nStatus, false ) )
-				$this->statushandler[ $nStatus ]( $nStatus, $this );
+			if ( CoreTool::arrVal( $this->_statushandler, $nStatus, false ) )
+				$this->_statushandler[ $nStatus ]( $nStatus, $this );
 		}
 	
 		/**
 		 *  Get the response line of the last request
-		 *  @see getResponseStatus(), getResponseInfo(), getResponseProtocol()
+		 *  @name   getResponse
+		 *  @type   method
 		 *  @access public
 		 *  @return string
 		 */
-		function getResponse()
+		public function getResponse()
 		{
 			return $this->getHeader( "response" );
 		}
 	
 		/**
 		 *  Get the response status of the last request
-		 *  @see getResponse(), getResponseInfo(), getResponseProtocol()
+		 *  @name   getResponseStatus
+		 *  @type   method
 		 *  @access public
 		 *  @return string
 		 */
-		function getResponseStatus()
+		public function getResponseStatus()
 		{
 			return $this->getHeader( "status" );
 		}
 	
 		/**
 		 *  Get the response info-text of the last requests status
-		 *  @see getResponseStatus(), getResponse(), getResponseProtocol()
+		 *  @name   getResponseInfo
+		 *  @type   method
 		 *  @access public
 		 *  @return string
 		 */
-		function getResponseInfo()
+		public function getResponseInfo()
 		{
 			return $this->getHeader( "statusinfo" );
 		}
 	
 		/**
 		 *  Get the response protocol of the last request
-		 *  @see getResponseStatus(), getResponseInfo(), getResponse()
+		 *  @name   getResponseProtocol
+		 *  @type   method
 		 *  @access public
 		 *  @return string
 		 */
-		function getResponseProtocol()
+		public function getResponseProtocol()
 		{
 			return $this->getHeader( "protocol" );
 		}
@@ -246,12 +273,12 @@
 		 *  @param  string $sHeader  The header you wish to read [optional, returns all headers in an array if ommited)
 		 *  @return string|array|bool
 		 */
-		function getHeader( $sHeader="" )
+		public function getHeader( $sHeader="" )
 		{
 			if ( empty( $sHeader ) )
-				return $this->requestheader;
-			else if ( array_key_exists( $sHeader, $this->requestheader ) )
-				return $this->requestheader[ $sHeader ];
+				return $this->_requestheader;
+			else if ( array_key_exists( $sHeader, $this->_requestheader ) )
+				return $this->_requestheader[ $sHeader ];
 			return false;
 		}
 	
@@ -264,7 +291,7 @@
 		 *                             if the value is ommited or empty (0/false/'') the header will not be send
 		 *  @return void
 		 */
-		function setHeader( $mHeader, $mValue=false )
+		public function setHeader( $mHeader, $mValue=false )
 		{
 			$bSuccess = true;
 			if ( is_array( $mHeader ) )
@@ -275,25 +302,25 @@
 			}
 			elseif ( is_string( $mHeader ) )
 			{
-				$this->headerdata[ $mHeader ] = $mValue;
-				return( $this->headerdata[ $mHeader ] == $mValue );
+				$this->_headerdata[ $mHeader ] = $mValue;
+				return( $this->_headerdata[ $mHeader ] == $mValue );
 			}
 			return false;
 		}
 	
 		/**
 		 *  store the headers seperatly
-		 *  @access private
+		 *  @access protected
 		 *  @param  array $aHeader The Array of headers
 		 *  @return void
 		 */
-		function parseHeader( $aHeader )
+		protected function _parseHeader( $aHeader )
 		{
 			for ( $i = 0; $i < count( $aHeader ); ++$i )
 				if ( $i == 0 ) // the status reply (also starts a new array, which prevents mixing previous header info
 				{
 					$aHeaderPart = explode( " ", $aHeader[ $i ], 3 );
-					$this->requestheader = Array(
+					$this->_requestheader = Array(
 						"response"=>$aHeader[ $i ],
 						"protocol"=>$aHeaderPart[ 0 ],
 						"status"=>$aHeaderPart[ 1 ],
@@ -303,21 +330,21 @@
 				else // other headers
 				{
 					$aHeaderPart = explode( ":", $aHeader[ $i ], 2 );
-					$this->requestheader[ $aHeaderPart[ 0 ] ] = trim( $aHeaderPart[ 1 ] );
+					$this->_requestheader[ $aHeaderPart[ 0 ] ] = trim( $aHeaderPart[ 1 ] );
 				}
 		}
 	
 		/**
 		 *  get all required information from the path provided to a request
-		 *  @access private
+		 *  @access protected
 		 *  @param  string $sURL  The URL to parse
 		 *  @return void
 		 */
-		function parseURL( $sURL )
+		protected function _parseURL( $sURL )
 		{
 			if ( !strPos( $sURL, "://" ) )
 				$sURL = "http://{$sURL}";
-			$aURL         = parse_url( $sURL );
+			$aURL          = parse_url( $sURL );
 			$this->host   = CoreTool::arrVal( $aURL, "host", $_SERVER[ "HTTP_HOST" ] );
 			$this->path   = CoreTool::arrVal( $aURL, "path", "/" );
 			$this->scheme = CoreTool::arrVal( $aURL, "scheme", "http" );
@@ -326,23 +353,23 @@
 	
 		/**
 		 *  Build up the actual data transportation string
-		 *  @access private
+		 *  @access protected
 		 *  @param  string $sMethod   The request method to use
 		 *  @param  string $sBoundary The boundary to use to seperate variables/files from eachother
 		 *  @return string
 		 */
-		function buildDataString( $sMethod="GET", $sBoundary="++HTTPRequest++" )
+		protected function _buildDataString( $sMethod="GET", $sBoundary="++HTTPRequest++" )
 		{
 			//  If we are sending files, add a variable telling the receiving end how many files are being transmitted
-			if ( strToUpper( $sMethod ) == "POST" && count( $this->filestorage ) > 0 )
-				$aStorage = array_merge( $this->storage, Array( "http_filecount"=>count( $this->filestorage ) ) );
+			if ( strToUpper( $sMethod ) == "POST" && count( $this->_filestorage ) > 0 )
+				$aStorage = array_merge( $this->_storage, Array( "http_filecount"=>count( $this->_filestorage ) ) );
 			else
-				$aStorage = $this->storage;
+				$aStorage = $this->_storage;
 	
 			$sData  = "";
 			foreach( $aStorage as $sKey=>$sValue )
 			{
-				if ( $this->multiform )
+				if ( $this->_multiform )
 				{
 					$sData .= "--{$sBoundary}\n";
 					$sData .= "Content-Disposition: form-data; name=\"{$sKey}\"\n";
@@ -355,19 +382,19 @@
 				}
 			}
 	
-			if ( strToUpper( $sMethod ) == "POST" && count( $this->filestorage ) > 0 )
+			if ( strToUpper( $sMethod ) == "POST" && count( $this->_filestorage ) > 0 )
 			{
-				for ( $i = 0; $i < count( $this->filestorage ); ++$i )
+				for ( $i = 0; $i < count( $this->_filestorage ); ++$i )
 				{
 					$sKey   = $i + 1;
 					$sData .= ( $i > 0 ? "\n" : "" ) . "--{$sBoundary}\n";
-					$sData .= "Content-Disposition: form-data; name=\"file{$sKey}\"; filename=\"{$this->filestorage[$i]["name"]}\"\n";
-					$sData .= "Content-Type: {$this->filestorage[$i]["mime"]}\n";
+					$sData .= "Content-Disposition: form-data; name=\"file{$sKey}\"; filename=\"{$this->_filestorage[$i]["name"]}\"\n";
+					$sData .= "Content-Type: {$this->_filestorage[$i]["mime"]}\n";
 					$sData .= "\n";
-					$sData .= "{$this->filestorage[$i]["data"]}";
+					$sData .= "{$this->_filestorage[$i]["data"]}";
 				}
 			}
-			if ( $this->multiform )
+			if ( $this->_multiform )
 				$sData .= "--{$sBoundary}--";
 	
 			return $sData;
@@ -375,36 +402,36 @@
 	
 		/**
 		 *  Build up the entire request
-		 *  @access private
+		 *  @access protected
 		 *  @param  string $sMethod   The request method to use
 		 *  @param  mixed  $mReferer  The referer to provide
 		 *  @return string
 		 */
-		function buildRequestString( $sMethod="GET", $mReferer=false )
+		protected function _buildRequestString( $sMethod="GET", $mReferer=false )
 		{
 			$sBoundary = str_pad( substr( md5( time() ), 0, 12 ), 40, "-", STR_PAD_LEFT );
 			$sMethod   = strToUpper( $sMethod );
-			$sData     = $this->buildDataString( $sMethod, $sBoundary );
+			$sData     = $this->_buildDataString( $sMethod, $sBoundary );
 	
 			// Set or override headers
 			$this->setHeader( 
 				Array(
 					"Host"=>$this->host,
-					"User-Agent"=>( !empty( $this->useragent ) ? "{$this->useragent} " : "" ) . "HTTPRequest/{$this->version} (PHP Class; klof++ 2005)",
+					"User-Agent"=>( !empty( $this->_useragent ) ? "{$this->_useragent} " : "" ) . "HTTPRequest/{$this->version} (PHP Class; klof++ 2005)",
 					"Referer"=>( !empty( $mReferer ) ? $mReferer : "http://{$_SERVER[ "HTTP_HOST" ]}{$_SERVER["REQUEST_URI"]}" ),
 					"Connection"=>"close"
 				)
 			);
 			$sRequest  = "{$sMethod} {$this->path}" . ( $sMethod == "GET" && !empty( $sData ) ? "?$sData" : "" ) . " HTTP/1.1\n";
 	
-			if ( count( $this->headerdata ) > 0 )
-				foreach( $this->headerdata as $sKey=>$sValue )
+			if ( count( $this->_headerdata ) > 0 )
+				foreach( $this->_headerdata as $sKey=>$sValue )
 					if ( !empty( $sValue ) )
 						$sRequest .= "{$sKey}: {$sValue}\n";
 	
 			if ( $sMethod == "POST" )
 			{
-				$sRequest .= "Content-type: " . ( $this->multiform ? "multipart/form-data; boundary={$sBoundary}" : "application/x-www-form-urlencoded" ) . "\n";
+				$sRequest .= "Content-type: " . ( $this->_multiform ? "multipart/form-data; boundary={$sBoundary}" : "application/x-www-form-urlencoded" ) . "\n";
 				$sRequest .= "Content-length: " . strlen( $sData ) . "\r\n\r\n";
 				$sRequest .= "{$sData}";
 			}
@@ -415,27 +442,27 @@
 	
 		/**
 		 *  prepare and perform an actual request
-		 *  @access private
+		 *  @access public
 		 *  @param  string $sMethod   The request method to use
 		 *  @param  string $sURL      The URL to request
 		 *  @param  array  $aData     additional paramaters to send (use key=>value pairs)
 		 *  @param  mixed  $mReferer  The referer to provide
 		 *  @return string
 		 */
-		function request( $sMethod, $sURL, $aData=Array(), $mReferer=false )
+		public function request( $sMethod, $sURL, $aData=Array(), $mReferer=false )
 		{
 			//  Files cannot be transmitted with a GET request, so even if files were added, we do not use multipart/form-data		
-			if ( strToUpper( $sMethod ) == "GET" && $this->multiform )
-				$this->multiform = false;
+			if ( strToUpper( $sMethod ) == "GET" && $this->_multiform )
+				$this->_multiform = false;
 	
 			//  Prepare all request URL requirements
-			$this->parseURL( $sURL );
+			$this->_parseURL( $sURL );
 	
 			//  Prepare all data (NOTE: variables set with PostRequest::prepare will be overwritten by variables provided in $aData if they carry the same name!)
 			$this->prepareData( $aData );
 	
 			//  Prepare the actual request
-			$sRequest = $this->buildRequestString( $sMethod, $mReferer );
+			$sRequest = $this->_buildRequestString( $sMethod, $mReferer );
 	
 			//  Open the connection, post the data and read the feedback
 			$fpConn = @fsockopen( $this->host, $this->port );
@@ -459,7 +486,7 @@
 					if ( empty( $sTrim ) && $bHeader ) // determine wether or not the header has ended (this empty line is not added to either the header or the content)
 					{
 						$bHeader = false;
-						$this->parseHeader( $aResult[ "header" ] );
+						$this->_parseHeader( $aResult[ "header" ] );
 	
 						if ( $this->getHeader( "status" ) != 200 )
 						{
@@ -498,7 +525,7 @@
 				}
 	
 				fclose( $fpConn );
-				$this->triggerStatusHandler( $this->getResponseStatus() );
+				$this->_triggerStatusHandler( $this->getResponseStatus() );
 
 				return $aResult[ "content" ];
 			}
@@ -514,7 +541,7 @@
 		 *  @param  mixed  $mReferer  The referer to provide
 		 *  @return string
 		 */
-		function post( $sURL, $aData=Array(), $mReferer=false )
+		public function post( $sURL, $aData=Array(), $mReferer=false )
 		{
 			return $this->request( "post", $sURL, $aData, $mReferer );
 		}
@@ -527,7 +554,7 @@
 		 *  @param  mixed  $mReferer  The referer to provide
 		 *  @return string
 		 */
-		function get( $sURL, $aData=Array(), $mReferer=false )
+		public function get( $sURL, $aData=Array(), $mReferer=false )
 		{
 			return $this->request( "get", $sURL, $aData, $mReferer );
 		}
@@ -540,7 +567,7 @@
 		 *  @param  mixed  $mReferer  The referer to provide
 		 *  @return string
 		 */
-		function head( $sURL, $aData=Array(), $mReferer=false )
+		public function head( $sURL, $aData=Array(), $mReferer=false )
 		{
 			return $this->request( "head", $sURL, $aData, $mReferer );
 		}
@@ -551,7 +578,7 @@
 		 *  @param  string $sURL      The URL to request
 		 *  @return string
 		 */
-		function options( $sURL )
+		public function options( $sURL )
 		{
 			return $this->request( "options", $sURL );
 		}
@@ -562,7 +589,7 @@
 		 *  @param  string $sURL      The URL to request
 		 *  @return string
 		 */
-		function trace( $sURL )
+		public function trace( $sURL )
 		{
 			return $this->request( "trace", $sURL );
 		}

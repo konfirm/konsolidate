@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://konsolidate.klof.net
+	 *     /           /\      /      http://www.konsolidate.net
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreNetworkSocket
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,12 +22,12 @@
 	 *  @name    CoreNetworkSocket
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@klof.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.net>
 	 */
 	class CoreNetworkSocket extends Konsolidate
 	{
-		private $_conn;
-		private $_timeout;
+		protected $_conn;
+	 	protected $_timeout;
 
 		public  $error;
 
