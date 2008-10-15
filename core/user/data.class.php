@@ -27,6 +27,7 @@
 	class CoreUserData extends Konsolidate
 	{
 		protected $_anticipation;
+		protected $_anticipated;
 
 		/**
 		 *  CoreUserData constructor
@@ -42,6 +43,7 @@
 		{
 			parent::__construct( $oParent );
 			$this->_anticipation = $this->get( "/Config/UserData/anticipation" ) == 1;
+			$this->_anticipated  = false;
 		}
 
 		/**
@@ -78,7 +80,7 @@
 			{
 				$nID = $this->get( "/User/id" );
 
-				if ( $this->_anticipation )
+				if ( $this->_anticipation && !$this->_anticipated )
 				{
 					$sQuery  = "SELECT usd.usdproperty,
 								       usd.usdvalue
@@ -90,6 +92,7 @@
 						while( $oRecord = $oResult->next() )
 							if ( !array_key_exists( $oRecord->usdproperty, $this->_property ) )
 								$this->_property[ $oRecord->usdproperty ] = $oRecord->usdvalue;
+					$this->_anticipated = true;
 				}
 
 				if ( !array_key_exists( $sProperty, $this->_property ) )
@@ -155,7 +158,6 @@
 
 			if ( $this->_anticipation )
 			{
-				
 				//  store the requested property in the database with the current scope
 				$sQuery  = "INSERT INTO userdatascope ( usdproperty, udsscope, udscreatedts ) 
 							VALUES {$sAnticipate}

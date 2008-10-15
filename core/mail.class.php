@@ -785,11 +785,6 @@
 				if ( !$this->_loading || ( $this->_loading && empty( $this->{"_{$sProperty}"} ) ) )
 					switch( strToLower( $sProperty ) )
 					{
-						case "job":
-							$this->_loading = true;
-							$this->call( "Content/load", $mValue );
-							$this->_loading = false;
-							// no break, we still want the property to be set
 						case "to":
 						case "cc":
 						case "bcc":
@@ -797,6 +792,11 @@
 							$this->_flushRecipientType( strToLower( $sProperty ) );
 							$this->_addRecipient( $mValue, strToLower( $sProperty ) );
 							break;
+						case "job":
+							$this->_loading = true;
+							$this->call( "Content/load", $mValue );
+							$this->_loading = false;
+							// no break, we still want the property to be set
 						default:
 							$this->{"_{$sProperty}"} = $mValue;
 							break;

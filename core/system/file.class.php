@@ -250,7 +250,7 @@
 		 *  @access  public
 		 *  @returns void
 		 */
-		public function __desctruct()
+		public function __destruct()
 		{
 			if ( !is_null( $this->_filepointer ) && $this->_filepointer !== false )
 				$this->close();
