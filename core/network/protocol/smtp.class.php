@@ -264,7 +264,8 @@
 				foreach( $this->_header as $sKey=>$sValue )
 					$this->_socket->write( "{$sKey}: {$sValue}\r\n" );
 
-				$this->_socket->write( "\r\n{$sData}\r\n" );
+				//  The SMTP protocol removes any dot which is the first character on a line, this is resolved by simply adding a dot.
+				$this->_socket->write( str_replace( "\n.", "\n..", "\r\n{$sData}\r\n" ) );
 
 				return $this->_command( "." ) == 250;
 			}

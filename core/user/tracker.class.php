@@ -27,31 +27,14 @@
 	class CoreUserTracker extends Konsolidate
 	{
 		/**
-		 *  The visitor id
-		 *  @name    id
-		 *  @type    int
-		 *  @access  public
+		 *  Whether or not to use autologin
+		 *  @name    _autologin
+		 *  @type    boolean
+		 *  @access  protected
 		 */
-		public $id;
+		protected $_autologin;
 
-		/**
-		 *  The visitor code
-		 *  @name    code
-		 *  @type    string (32 characters)
-		 *  @access  public
-		 */
-		public $code;
-
-		/**
-		 *  The unix timestamp of the last visit (pageview)
-		 *  @name    last
-		 *  @type    int (unix timestamp)
-		 *  @access  public
-		 */
-		public $last;
-
-
-		public function __construct( &$oParent )
+		public function __construct( $oParent )
 		{
 			parent::__construct( $oParent );
 			$this->id           = null;
@@ -59,6 +42,7 @@
 			$this->last         = null;
 			$this->cookiename   = $this->get( "/Config/Cookie/name", "KONSOLIDATETRACKER" );
 			$this->cookiedomain = $this->get( "/Config/Cookie/domain", $_SERVER[ "HTTP_HOST" ] );
+			$this->_autologin   = $this->get( "/Config/Tracker/autologin", true );
 		}
 
 		/**
@@ -66,10 +50,10 @@
 		 *  @name    load
 		 *  @type    method
 		 *  @access  public
-		 *  @returns bool
-		 *  @syntax  Object->load();
+		 *  @returns int  tracker id
+		 *  @syntax  int CoreUserTracker->load();
 		 *  @note    The visitor is loaded from the cookie data set by the create method, if there was no cookie found, a new visitor id/code will be created
-		 *           Should the create call return false, 4 retries will be done to make sure a new visitor can be created
+		 *           Should the create call return false, a total of 5 attempts will be done to try to make sure a new visitor can be created
 		 */
 		public function load()
 		{
@@ -93,7 +77,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @returns bool
-		 *  @syntax  Object->loadFromCookie();
+		 *  @syntax  bool CoreUserTracker->loadFromCookie();
 		 */
 		public function loadFromCookie()
 		{
@@ -126,7 +110,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @returns bool
-		 *  @syntax  Object->create();
+		 *  @syntax  bool CoreUserTracker->create();
 		 */
 		function create()
 		{
@@ -136,7 +120,7 @@
 			if ( is_object( $oResult ) && $oResult->errno <= 0 && $oResult->rows == 1 )
 			{
 				$this->id = $this->call( "/DB/lastId" );
-				return $this->storeCookie();
+				return $this->storeCookie( true, $this->_autologin );
 			}
 			return false;
 		}
@@ -147,7 +131,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @returns bool
-		 *  @syntax  Object->storeCookie();
+		 *  @syntax  bool CoreUserTracker->storeCookie();
 		 */
 		public function updateVisit()
 		{
@@ -156,7 +140,7 @@
 						 WHERE ustid={$this->id}";
 			$oResult = $this->call( "/DB/query", $sQuery );
 			if ( is_object( $oResult ) && $oResult->errno <= 0 )
-				return $this->storeCookie( false );
+				return $this->storeCookie( false, $this->_autologin );
 			return false;
 		}
 
@@ -166,15 +150,21 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @returns bool
-		 *  @syntax  Object->storeCookie();
+		 *  @syntax  bool CoreUserTracker->storeCookie();
+		 *  @note    Providing a value other than the default for 'autologin' only applies within 
+		 *           the current script execution scope! When entering a new page (script execution) 
+		 *           all behaviour is set to default.
 		 */
-		public function storeCookie( $bClearFirst=true, $bAutoLogin=true )
+		public function storeCookie( $bClearFirst=true, $bAutoLogin=null )
 		{
+			if ( !is_null( $bAutoLogin ) )
+				$this->_autologin = (bool) $bAutoLogin;
+
 			if ( !headers_sent() )
 			{
 				if ( $bClearFirst )
 					$_COOKIE[ $this->cookiename  ] = $this->code;
-				$mAutoLogin = $bAutoLogin ? time() + ( 60 * 60 * 24 * 30 ) : null;
+				$mAutoLogin = $this->_autologin ? time() + ( 60 * 60 * 24 * 30 ) : null;
 				return setCookie( $this->cookiename, $this->code, $mAutoLogin, "/", $this->cookiedomain );
 			}
 			return false;
@@ -186,7 +176,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @returns bool
-		 *  @syntax  Object->createCode();
+		 *  @syntax  bool CoreUserTracker->createCode();
 		 */
 		public function createCode()
 		{
@@ -208,14 +198,20 @@
 		 *  @param   string  code
 		 *  @param   bool    autologin [optional, default true]
 		 *  @returns bool
-		 *  @syntax  Object->login( string code [, bool autologin ] );
+		 *  @syntax  bool CoreUserTracker->login( string code [, bool autologin ] );
+		 *  @note    Providing a value other than the default for 'autologin' only applies within 
+		 *           the current script execution scope! When entering a new page (script execution) 
+		 *           all behaviour is set to default.
 		 */
-		public function login( $sCode=false, $bAutoLogin=true )
+		public function login( $sCode=false, $bAutoLogin=null )
 		{
+			if ( !is_null( $bAutoLogin ) )
+				$this->_autologin = (bool) $bAutoLogin;
+
 			if ( $sCode !== false )
 			{
 				$this->code = $sCode;
-				return $this->storeCookie( true, $bAutoLogin );
+				return $this->storeCookie( true, $this->_autologin );
 			}
 			return false;
 		}
@@ -227,7 +223,7 @@
 		 *  @access  public
 		 *  @param   integer   timestamp before which the unused records will be removed [optional, defaults to a week before now]
 		 *  @returns bool
-		 *  @syntax  Object->removeUnregisteredVisitors( [ int createdbefore ]);
+		 *  @syntax  bool CoreUserTracker->removeUnregisteredVisitors( [ int createdbefore ]);
 		 */
 		public function removeUnregisteredTrackers( $nCreatedBeforeTS=false )
 		{

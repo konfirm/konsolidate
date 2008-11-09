@@ -66,10 +66,10 @@
 		 *  @access  public
 		 *  @param   object parent object
 		 *  @returns object
-		 *  @syntax  object = &new CoreUser( object parent )
+		 *  @syntax  object = new CoreUser( object parent )
 		 *  @note    This object is constructed by one of Konsolidates modules
 		 */
-		public function __construct( &$oParent )
+		public function __construct( $oParent )
 		{
 			parent::__construct( $oParent );
 			$this->_loaded   = false;
@@ -85,7 +85,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @returns bool
-		 *  @syntax  Object->load();
+		 *  @syntax  bool CoreUser->load();
 		 */
 		public function load()
 		{
@@ -133,7 +133,7 @@
 		 *  @access  public
 		 *  @param   string email, the email to be checked for occurance in the user table [optional, default check the current visitor by its tracker id]
 		 *  @returns bool
-		 *  @syntax  Object->isRegistered( [string email] );
+		 *  @syntax  bool CoreUser->isRegistered( [string email] );
 		 */
 		public function isRegistered( $sEmail=null )
 		{
@@ -167,7 +167,7 @@
 		 *  @param   bool      opt in [optional]
 		 *  @param   bool      track [optional]
 		 *  @returns bool
-		 *  @syntax  Object->create( integer userid, string email [, string password [, bool agree [, bool optin [, bool track ] ] ] ] );
+		 *  @syntax  bool CoreUser->create( integer userid, string email [, string password [, bool agree [, bool optin [, bool track ] ] ] ] );
 		 */
 		public function create( $sEmail, $sPassword=false, $bAgree=false, $bOptIn=false, $bTrack=true )
 		{
@@ -218,16 +218,16 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @returns bool
-		 *  @syntax  Object->store();
+		 *  @syntax  bool CoreUser->store();
 		 *  @note    Calls to store expect a load to have taken place first
 		 */
-		public function store()
+		public function store( $bForceEmptyPassword=false )
 		{
 			if ( $this->_loaded && is_integer( $this->id ) && $this->id > 0 )
 			{
 				$sQuery  = "UPDATE user
 							   SET usremail=" . $this->call( "/DB/quote", $this->email ) . ",
-							       usrpassword=" . $this->call( "/DB/quote", $this->password ) . ",
+							       " . ( $bForceEmptyPassword || !is_null( $this->password ) ? "usrpassword=" . $this->call( "/DB/quote", $this->password ) . "," : "" ) . "
 							       usragree=" . ( (int) $this->agree ) . ",
 							       usroptin=" . ( (int) $this->optin ) . ",
 							       usrtrack=" . ( (int) $this->track ) . ",
@@ -235,7 +235,10 @@
 							 WHERE usrid={$this->id}";
 				$oResult = $this->call( "/DB/query", $sQuery );
 				if ( is_object( $oResult ) && $oResult->errno <= 0 )
+				{
+					$this->_updated = false;
 					return true;
+				}
 			}
 			return false;
 		}
@@ -245,8 +248,8 @@
 		 *  @name    login
 		 *  @type    method
 		 *  @access  public
-		 *  @returns bool
-		 *  @syntax  Object->login();
+		 *  @returns string usertracker code (or bool false on error)
+		 *  @syntax  stirng CoreUser->login();
 		 */
 		public function login( $sEmail, $sPassword, $bAutoLogin=true )
 		{
@@ -260,17 +263,28 @@
 			{
 				$oRecord = $oResult->next();
 				if ( !empty( $oRecord->ustcode ) && $this->call( "Tracker/login", $oRecord->ustcode, $bAutoLogin ) )
-				{
-					$sQuery  = "UPDATE user
-								   SET usrlastlogints=NOW(),
-								       usrlogincount=usrlogincount+1
-								 WHERE usremail=" . $this->call( "/DB/quote", $sEmail );
-					$this->call( "/DB/query", $sQuery ); // we trust this one to operate just fine and therefor don't check the result
-					$this->load();
-					return $oRecord->ustcode;
-				}
+					return $this->_updateLoginCount( $sEmail );
 			}
 			return false;
+		}
+
+		/**
+		 *  Increase the number of logins for the user
+		 *  @name    _updateLoginCount
+		 *  @type    method
+		 *  @access  public
+		 *  @returns string email address
+		 *  @syntax  string CoreUser->_updateLoginCount();
+		 */
+		protected function _updateLoginCount( $sEmail )
+		{
+			$sQuery  = "UPDATE user
+						   SET usrlastlogints=NOW(),
+							   usrlogincount=usrlogincount+1
+						 WHERE usremail=" . $this->call( "/DB/quote", $sEmail );
+			$this->call( "/DB/query", $sQuery ); // we trust this one to operate just fine and therefor don't check the result
+			$this->load();
+			return $oRecord->ustcode;
 		}
 
 		/**
@@ -280,7 +294,7 @@
 		 *  @access  public
 		 *  @param   string   property name
 		 *  @returns mixed
-		 *  @syntax  &Object->get( string property );
+		 *  @syntax  mixed CoreUser->get( string property );
 		 */
 		public function __get( $sProperty )
 		{
@@ -292,7 +306,7 @@
 
 		function __set( $sProperty, $mValue )
 		{
-			if ( array_key_exists( $sProperty, $this->_property ) && $this->_property[ $sProperty ] !== $mValue )
+			if ( $sProperty == "password" || ( array_key_exists( $sProperty, $this->_property ) && $this->_property[ $sProperty ] !== $mValue ) )
 				$this->_updated = true;
 			parent::__set( $sProperty, $mValue );
 		}
