@@ -167,7 +167,7 @@
 
 			if ( is_integer( $mLength ) )
 			{
-				if ( $this->_filepointer !== false && !feof( $this->_filepointer ) )
+				if ( is_resource( $this->_filepointer ) && !feof( $this->_filepointer ) )
 					return fgets( $this->_filepointer, $mLength );
 				return false;
 			}
@@ -187,7 +187,7 @@
 		 */
 		public function put( $sData )
 		{
-			if ( $this->_filepointer !== false )
+			if ( is_resource( $this->_filepointer ) )
 				return fputs( $this->_filepointer, $sData, strlen( $sData ) );
 			return false;
 		}
@@ -221,7 +221,7 @@
 		 */
 		public function close()
 		{
-			if ( $this->_filepointer !== false )
+			if ( is_resource( $this->_filepointer ) )
 				return fclose( $this->_filepointer );
 			return false;
 		}
@@ -252,7 +252,7 @@
 		 */
 		public function __destruct()
 		{
-			if ( !is_null( $this->_filepointer ) && $this->_filepointer !== false )
+			if ( !is_null( $this->_filepointer ) && is_resource( $this->_filepointer ) )
 				$this->close();
 		}
 	}
