@@ -7,7 +7,7 @@
 	 *     /           /\      /      http://www.konsolidate.net
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreMail
-	 *     \/___/  \___\/      \      Tier:   CoreDev
+	 *     \/___/  \___\/      \      Tier:   Dev
 	 *      \   \  /\   \  /\  /      Module: Mail
 	 *       \___\/  \___\/  \/       
 	 *         \          \  /        $Rev$
@@ -314,7 +314,7 @@
 			else
 			{
 				//  Plain text content
-				$sMailBody = $this->_content;
+				$sMailBody = $this->_substitute( $this->_content );
 			}
 
 			//  Attachments

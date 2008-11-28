@@ -248,8 +248,11 @@
 		 *  @name    login
 		 *  @type    method
 		 *  @access  public
+		 *  @param   string email address
+		 *  @param   string password
+		 *  @param   bool   autologin [default true]
 		 *  @returns string usertracker code (or bool false on error)
-		 *  @syntax  stirng CoreUser->login();
+		 *  @syntax  stirng CoreUser->login( string email, string password [, bool autologin ] );
 		 */
 		public function login( $sEmail, $sPassword, $bAutoLogin=true )
 		{
@@ -262,8 +265,11 @@
 			if ( is_object( $oResult ) && $oResult->errno <= 0 && $oResult->rows >= 1 )
 			{
 				$oRecord = $oResult->next();
-				if ( !empty( $oRecord->ustcode ) && $this->call( "Tracker/login", $oRecord->ustcode, $bAutoLogin ) )
-					return $this->_updateLoginCount( $sEmail );
+				if ( !empty( $oRecord->ustcode ) && $this->call( "Tracker/login", $oRecord->ustcode, $bAutoLogin ) && $this->_updateLoginCount( $sEmail ) )
+				{
+					$this->load();
+					return $oRecord->ustcode;
+				}
 			}
 			return false;
 		}
@@ -273,8 +279,9 @@
 		 *  @name    _updateLoginCount
 		 *  @type    method
 		 *  @access  public
-		 *  @returns string email address
-		 *  @syntax  string CoreUser->_updateLoginCount();
+		 *  @param   string email address
+		 *  @returns bool   succes
+		 *  @syntax  bool   CoreUser->_updateLoginCount( string email );
 		 */
 		protected function _updateLoginCount( $sEmail )
 		{
@@ -282,9 +289,8 @@
 						   SET usrlastlogints=NOW(),
 							   usrlogincount=usrlogincount+1
 						 WHERE usremail=" . $this->call( "/DB/quote", $sEmail );
-			$this->call( "/DB/query", $sQuery ); // we trust this one to operate just fine and therefor don't check the result
-			$this->load();
-			return $oRecord->ustcode;
+			$oResult = $this->call( "/DB/query", $sQuery );
+			return is_object( $oResult ) && $oResult->errno <= 0;
 		}
 
 		/**
