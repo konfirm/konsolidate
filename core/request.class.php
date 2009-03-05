@@ -96,6 +96,8 @@
 		 */
 		protected function _collectFromRaw()
 		{
+			$this->_raw = trim( file_get_contents( "php://input" ) );
+
 			//  Try to determine what kind of request triggered this class
 			switch( substr( $this->_raw, 0, 1 ) )
 			{
@@ -139,8 +141,6 @@
 		 */
 		protected function _collect()
 		{
-			$this->_raw = trim( file_get_contents( "php://input" ) );
-		
 			if ( $this->isPosted() )
 			{
 				if ( !$this->_collectHTTP( $_POST ) )
