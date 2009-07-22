@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://konsolidate.klof.net
+	 *     /           /\      /      http://www.konsolidate.net
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreRPCControlMaintenance
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,15 +22,15 @@
 	 *  @name    CoreRPCControlMaintenance
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@klof.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.net>
 	 *  @note    By design, all RPC calls will have to be exposed (activated) 'manually' in your project
 	 */
 	class CoreRPCControlMaintenance extends Konsolidate implements CoreRPCControlInterface
 	{
-		private $_request;
-		private $_message;
-		private $_content;
-		private $_status;
+		protected $_request;
+		protected $_message;
+		protected $_content;
+		protected $_status;
 
 		/*  Interface requirements  */
 
@@ -83,11 +83,11 @@
 		 *  load Request object
 		 *  @name    _loadRequest
 		 *  @type    method
-		 *  @access  private
+		 *  @access  protected
 		 *  @returns void
 		 *  @syntax  void CoreRPCControlMaintenance->_loadRequest()
 		 */
-		private function loadRequest()
+		protected function loadRequest()
 		{
 			if ( !isset( $this->_request ) )
 				$this->_request = &$this->register( "/Request" );
@@ -97,12 +97,12 @@
 		 *  unlink all files/folders from provided location
 		 *  @name    _recursiveUnlink
 		 *  @type    method
-		 *  @access  private
+		 *  @access  protected
 		 *  @param   string path
 		 *  @returns bool
 		 *  @syntax  bool CoreRPCControlMaintenance->_recursiveUnlink( string path )
 		 */
-		private function _recursiveUnlink( $sPath )
+		protected function _recursiveUnlink( $sPath )
 		{
 			if ( is_dir( $sPath ) )
 			{

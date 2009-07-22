@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://konsolidate.klof.net
+	 *     /           /\      /      http://www.konsolidate.net
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreRPCControlUser
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,15 +22,15 @@
 	 *  @name    CoreRPCControlUser
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@klof.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.net>
 	 *  @note    By design, all RPC calls will have to be exposed (activated) 'manually' in your project
 	 */
 	class CoreRPCControlUser extends Konsolidate implements CoreRPCControlInterface
 	{
-		private $_request;
-		private $_message;
-		private $_content;
-		private $_status;
+		protected $_request;
+		protected $_message;
+		protected $_content;
+		protected $_status;
 
 
 		/*  Interface requirements  */
@@ -51,7 +51,7 @@
 
 
 		/*  Controls  */
-		private function loadRequest()
+		protected function loadRequest()
 		{
 			if ( !isset( $this->_request ) )
 				$this->_request = &$this->register( "/Request" );

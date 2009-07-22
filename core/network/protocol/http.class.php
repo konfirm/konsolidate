@@ -277,7 +277,7 @@
 		{
 			if ( empty( $sHeader ) )
 				return $this->_requestheader;
-			else if ( array_key_exists( $sHeader, $this->_requestheader ) )
+			else if ( is_array( $this->_requestheader ) && array_key_exists( $sHeader, $this->_requestheader ) )
 				return $this->_requestheader[ $sHeader ];
 			return false;
 		}
@@ -482,17 +482,13 @@
 				{
 					$sResult = fgets( $fpConn, $nReadBytes );
 					$sTrim   = trim( $sResult );
-	
+
 					if ( empty( $sTrim ) && $bHeader ) // determine wether or not the header has ended (this empty line is not added to either the header or the content)
 					{
 						$bHeader = false;
 						$this->_parseHeader( $aResult[ "header" ] );
-	
-						if ( $this->getHeader( "status" ) != 200 )
-						{
-							return false;
-						}
-						else if ( $this->getHeader( "Transfer-Encoding" ) == "chunked" ) // if the content is delivered in chunks, we need to handle the content slightly different
+
+						if ( $this->getHeader( "Transfer-Encoding" ) == "chunked" ) // if the content is delivered in chunks, we need to handle the content slightly different
 						{
 							$bChunkedTranfer = true;
 							$bBeginChunk     = true;
@@ -510,6 +506,8 @@
 							{
 								$bBeginChunk = false;
 								$nReadBytes  = hexdec( $sTrim ); // chunk sizes are provided as HEX values
+								if ( $nReadBytes == 0 )
+									break;
 								unset( $sResult ); // clear sResult
 							}
 							else if ( is_numeric( $sTrim ) && $sTrim == 0 ) // the end of the chunk has been reached
@@ -554,8 +552,13 @@
 		 *  @param  mixed  $mReferer  The referer to provide
 		 *  @return string
 		 */
-		public function get( $sURL, $aData=Array(), $mReferer=false )
+		public function get()
 		{
+			$aArgument = func_get_args();
+			$sURL      = array_shift( $aArgument );
+			$aData     = (bool) count( $aArgument ) ? array_shift( $aArgument ) : Array();
+			$mReferer  = (bool) count( $aArgument ) ? array_shift( $aArgument ) : false;
+
 			return $this->request( "get", $sURL, $aData, $mReferer );
 		}
 	

@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://konsolidate.klof.net
+	 *     /           /\      /      http://www.konsolidate.net
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreRPCStatus
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreRPCStatus
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@klof.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.net>
 	 */
 	class CoreRPCStatus extends Konsolidate
 	{

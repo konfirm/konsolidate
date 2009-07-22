@@ -26,8 +26,11 @@
 	 */
 	class CoreRequest extends Konsolidate
 	{
+		protected $_order;
 		protected $_raw;
 		protected $_xml;
+		protected $_file;
+		protected $_filereference;
 
 		/**
 		 *  magic __construct, CoreRequest constructor
@@ -42,8 +45,12 @@
 		function __construct( &$oParent )
 		{
 			parent::__construct( $oParent );
-			$this->_raw = null;
-			$this->_xml = null;
+
+			$this->_order         = $this->get( "/Config/Request/variableorder" );
+			$this->_raw           = null;
+			$this->_xml           = null;
+			$this->_file          = null;
+			$this->_filereference = null;
 			$this->_collect();
 		}
 
@@ -66,7 +73,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @returns string (bool false, if no raw data is available)
-		 *  @syntax  bool CoreRequest->getRawRequest()
+		 *  @syntax  string CoreRequest->getRawRequest()
 		 */
 		public function getRawRequest()
 		{
@@ -79,7 +86,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @returns SimpleXMLElement (bool false, if no xml data is available)
-		 *  @syntax  bool CoreRequest->getXML()
+		 *  @syntax  SimpleXMLElement CoreRequest->getXML()
 		 */
 		public function getXML()
 		{
@@ -90,9 +97,9 @@
 		 *  retrieve variables from a raw data request
 		 *  @name    _collectFromRaw
 		 *  @type    method
-		 *  @access  private
+		 *  @access  protected
 		 *  @returns void
-		 *  @syntax  bool CoreRequest->_collectFromRaw()
+		 *  @syntax  void CoreRequest->_collectFromRaw()
 		 */
 		protected function _collectFromRaw()
 		{
@@ -116,9 +123,9 @@
 		 *  retrieve variables from a HTTP request (POST/GET only)
 		 *  @name    _collectFromRaw
 		 *  @type    method
-		 *  @access  private
+		 *  @access  protected
 		 *  @returns void
-		 *  @syntax  bool CoreRequest->_collectHTTP()
+		 *  @syntax  void CoreRequest->_collectHTTP()
 		 */
 		protected function _collectHTTP( $aCollection )
 		{
@@ -135,21 +142,148 @@
 		 *  retrieve variables and assign them to the Request module
 		 *  @name    _collect
 		 *  @type    method
-		 *  @access  private
+		 *  @access  protected
 		 *  @returns void
-		 *  @syntax  bool CoreRequest->_collect()
+		 *  @syntax  void CoreRequest->_collect()
 		 */
 		protected function _collect()
 		{
-			if ( $this->isPosted() )
+			//  gather variables and if request method is post and it failed to gather variables, try to collect data from raw input.
+			if ( !$this->_collectHTTP( $this->_getCollection() ) && $this->isPosted() )
+				$this->_collectFromRaw();
+
+			// if the request method is post and the appear to be (one or more) files attached, prepare those aswel
+			if ( $this->isPosted() && is_array( $_FILES ) && (bool) count( $_FILES ) )
+				$this->_collectFiles();
+		}
+
+
+		/**
+		 *  Determine the proper variable processing order
+		 *  @name    _getCollection
+		 *  @type    method
+		 *  @access  protected
+		 *  @returns array     if no order is specified, _GET or _POST global, merged result of the desired order otherwise
+		 *  @syntax  array CoreRequest->_getCollection()
+		 *  @note    By default _getCollection module will distinguish between GET and POST requests, they will not be processed both!
+		 *           You can override this behaviour by setting the variable order (EGPCS, like the variables_order php.ini setting) to /Config/Request/variableorder
+		 *           E.g. $this->set( "/Config/Request/variableorder", "GP" ); // combine GET and POST variables
+		 */
+		protected function _getCollection()
+		{
+			if ( !is_null( $this->_order ) )
 			{
-				if ( !$this->_collectHTTP( $_POST ) )
-					$this->_collectFromRaw();
+				$aReturn = Array();
+				for( $i = 0; $i < strlen( $this->_order ); ++$i )
+					switch( strToUpper( $this->_order{$i} ) )
+					{
+						case "G": $aReturn = array_merge( $aReturn, $_GET );    break;
+						case "P": $aReturn = array_merge( $aReturn, $_POST );   break;
+						case "C": $aReturn = array_merge( $aReturn, $_COOKIE ); break;
+						case "R": $aReturn = array_merge( $aReturn, $_REQUEST ); break;
+						case "E": $aReturn = array_merge( $aReturn, $_ENV );    break;
+						case "S": $aReturn = array_merge( $aReturn, $_SERVER ); break;
+					}
+				return $aReturn;
 			}
-			else
-			{
-				$this->_collectHTTP( $_GET );
-			}
+			return $this->isPosted() ? $_POST : $_GET;
+		}
+
+		/**
+		 *  Gather file information attached to the (POST only) request
+		 *  @name    _collectFiles
+		 *  @type    method
+		 *  @access  protected
+		 *  @returns void
+		 *  @syntax  void CoreRequest->_collectFiles()
+		 */
+		protected function _collectFiles()
+		{
+			$this->_file          = Array();
+			$this->_filereference = Array();
+			foreach( $_FILES as $sFieldName=>$aFile )
+ 				if ( isset( $aFile[ "error" ] ) ) // we have one or more file
+ 				{
+ 					if ( is_array( $aFile[ "error" ] ) ) // multiple files
+ 					{
+ 						$mFile = Array();
+ 						foreach( $aFile[ "error" ] as $sKey=>$mValue )
+ 						{
+ 							$oFile = $this->_createFileInstance( $aFile, $sFieldName, $sKey );
+ 							array_push( $this->_file, $oFile );
+ 							array_push( $mFile, $oFile );
+ 						}
+ 					}
+ 					else // single file
+ 					{
+						$mFile = $this->_createFileInstance( $aFile, $sFieldName );
+ 						array_push( $this->_file, $mFile );
+ 					}
+					$this->_filereference[ $sFieldName ] = $mFile;
+ 				}
+		}
+
+		/**
+		 *  Create and populate an (unique) instance of the Request/File module
+		 *  @name    _createFileInstance
+		 *  @type    method
+		 *  @access  protected
+		 *  @param   array   _FILES record
+		 *  @param   string  fieldname
+		 *  @param   string  reference (only when multiple files are uploaded)
+		 *  @returns void
+		 *  @syntax  void CoreRequest->_collectFiles()
+		 */
+		protected function _createFileInstance( $aFile, $sVariable, $sReference=null )
+		{
+			$oTMP = $this->instance( "File" );
+			$oTMP->variable = $sVariable;
+			foreach( $aFile as $sProperty=>$mValue )
+				$oTMP->{$sProperty} = is_null( $sReference ) ? $mValue : $mValue[ $sReference ];
+			return $oTMP;
+		}
+
+		/**
+		 *  Does the request have files attached?
+		 *  @name    hasFiles
+		 *  @type    method
+		 *  @access  public
+		 *  @returns void
+		 *  @syntax  bool CoreRequest->hasFiles()
+		 */
+		public function hasFiles()
+		{
+			return is_array( $this->_file ) && (bool) count( $this->_file );
+		}
+
+
+		/**
+		 *  Obtain the array of files
+		 *  @name    getFiles
+		 *  @type    method
+		 *  @access  public
+		 *  @param   bool  referenced array (non referenced array containing variable names)
+		 *  @returns array files
+		 *  @syntax  array CoreRequest->getFiles()
+		 */
+		public function getFiles( $bReference=false )
+		{
+			return $bReference ? $this->_filereference : $this->_file;
+		}
+
+
+		/**
+		 *  Obtain a specific filereference (formfield)
+		 *  @name    getFileByReference
+		 *  @type    method
+		 *  @access  public
+		 *  @param   string reference name
+		 *  @returns mixed  file object, array of file objects or false if reference does not exist
+		 *  @syntax  array CoreRequest->getFileByReference( string reference )
+		 */
+		public function getFileByReference( $sReference )
+		{
+			return array_key_exists( $sReference, $this->_filereference ) ? $this->_filereference[ $sReference ] : false;
 		}
 	}
 

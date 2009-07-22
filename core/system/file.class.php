@@ -26,7 +26,7 @@
 	 */
 	class CoreSystemFile extends Konsolidate
 	{
-		private $_filepointer;
+		protected $_filepointer;
 
 		/**
 		 *  Read an entire file and return the contents

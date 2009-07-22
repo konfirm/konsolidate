@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://konsolidate.klof.net
+	 *     /           /\      /      http://www.konsolidate.net
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreRPCControl
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,12 +22,12 @@
 	 *  @name    CoreRPCControl
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@klof.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.net>
 	 */
 	class CoreRPCControl extends Konsolidate
 	{
-		private $_request;
-		private $_format;
+		protected $_request;
+		protected $_format;
 
 		/**
 		 *  CoreRPCControl constructor
@@ -51,14 +51,14 @@
 		 *  Send/assign feedback based on preferred format
 		 *  @name    _feedback
 		 *  @type    method
-		 *  @access  private
+		 *  @access  protected
 		 *  @param   bool   error during processing (optional, default true, we assume the worst)
 		 *  @param   string message to display (optional, default empty)
 		 *  @param   mixed  content, either a string with additional message, or an array containing arrays, strings or numbers (optional, default empty)
 		 *  @returns void
 		 *  @syntax  void CoreRPCControl->_feedback()
 		 */
-		private function _feedback( $bError=true, $sMessage="", $mContent="" )
+		protected function _feedback( $bError=true, $sMessage="", $mContent="" )
 		{
 			if ( $this->_format == "xml" )
 			{

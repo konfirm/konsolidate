@@ -146,7 +146,7 @@
 			if ( $nSH <= 0 )
 				$nSH = imagesy( $mSource ) - $nSY;
 
-			if ( imageistruecolor( $mImage ) )
+			if ( imageistruecolor( $this->_image ) && imageistruecolor( $mSource ) )
 				imagecopymerge( $this->_image, $mSource, $nDX, $nDY, $nSX, $nSY, $nSW, $nSH, 100 );
 			else
 				imagecopy( $this->_image, $mSource, $nDX, $nDY, $nSX, $nSY, $nSW, $nSH );

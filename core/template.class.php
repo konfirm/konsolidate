@@ -50,6 +50,13 @@
 		 */
 		protected $_compiletime;
 
+		/**
+		 *  Does the server support short PHP open tags
+		 *  @name    _shortopentag
+		 *  @type    boolean
+		 *  @access  protected
+		 */
+		protected $_shortopentag;
 
 		/**
 		 *  constructor
@@ -67,6 +74,7 @@
 
 			$this->_templatepath = $this->get( "/Config/Path/template", realpath( ( defined( "TEMPLATE_PATH" ) ? TEMPLATE_PATH : "./templates" ) ) );
 			$this->_compilepath  = $this->get( "/Config/Path/compile", realpath( ( defined( "COMPILE_PATH" ) ? COMPILE_PATH : "./compile" ) ) );
+			$this->_shortopentag = (bool) ini_get( "short_open_tag" );
 			ini_set( "include_path", ini_get( "include_path" ) . ":" . $this->_templatepath );
 		}
 
@@ -242,7 +250,6 @@
 		protected function _compose( $sTemplate, $sReference="", $bForce=false )
 		{
 			$sCacheFile = $this->_getCompileName( $sTemplate, $sReference );
-
 			//  prepare variables in the current scope
 			foreach( $this->_property as $sVariable=>$sValue )
 				$$sVariable = $sValue;
@@ -264,6 +271,13 @@
 
 				// end and clean the output buffer
 				ob_end_clean();
+
+				if ( !$this->_shortopentag )
+				{
+					//  The captured output may require a bit of rewriting
+					$sCapture = preg_replace( "/<\?=\s*/", "<?php echo ", $sCapture );
+					$sCapture = preg_replace( "/<\?[^php]/", "<?php", $sCapture );
+				}
 
 				if ( !$this->_storeCompilation( $sCacheFile, $sCapture ) )
 					$this->call( "/Log/write", "Store of compilation has failed for template {$sTemplate} in file {$sCacheFile}" );

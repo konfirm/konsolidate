@@ -19,7 +19,7 @@
 
 	/**
 	 *  Language engine based on DB interaction
-	 *  @name    CoreKey
+	 *  @name    CoreLanguageSwitch
 	 *  @type    class
 	 *  @package Konsolidate
 	 *  @author  Rogier Spieker <rogier@konsolidate.net>
@@ -56,13 +56,13 @@
 		 *  get translate phrase based on locale
 		 *  @name    _getPhraseByLocale
 		 *  @type    method
-		 *  @access  private
+		 *  @access  protected
 		 *  @param   string phrase
 		 *  @param   string locale
 		 *  @returns string translation
 		 *  @syntax  string CoreLanguageSwitch->_getPhraseByLocale( string phrase )
 		 */
-		private function _getPhraseByLocale( $sPhrase, $sLocale )
+		protected function _getPhraseByLocale( $sPhrase, $sLocale )
 		{
 			$sQuery  = "SELECT lsp.lspphrase AS phrase,
 						       lst.lsttranslation AS translation
@@ -83,12 +83,12 @@
 		 *  keep track of used translations, making overviewing translations in a CMS easy
 		 *  @name    _trackPhrase
 		 *  @type    method
-		 *  @access  private
+		 *  @access  protected
 		 *  @param   string phrase
 		 *  @returns void
 		 *  @syntax  void CoreLanguageSwitch->_trackPhrase( string phrase )
 		 */
-		private function _trackPhrase( $sPhrase )
+		protected function _trackPhrase( $sPhrase )
 		{
 			if ( !is_array( $this->_usage ) )
 				$this->_usage = Array();
