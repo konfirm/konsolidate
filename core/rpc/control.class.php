@@ -26,27 +26,6 @@
 	 */
 	class CoreRPCControl extends Konsolidate
 	{
-		protected $_request;
-		protected $_format;
-
-		/**
-		 *  CoreRPCControl constructor
-		 *  @name    __construct
-		 *  @type    constructor
-		 *  @access  public
-		 *  @param   object parent object
-		 *  @returns object
-		 *  @syntax  object = &new CoreRPCControl( object parent )
-		 *  @note    This object is constructed by one of Konsolidates modules
-		 */
-		public function __construct( &$oParent )
-		{
-			parent::__construct( $oParent );
-
-			$this->_request = &$this->get( "/Request" );
-			$this->_format  = $this->_request->_format;
-		}
-
 		/**
 		 *  Send/assign feedback based on preferred format
 		 *  @name    _feedback
@@ -60,9 +39,10 @@
 		 */
 		protected function _feedback( $bError=true, $sMessage="", $mContent="" )
 		{
-			if ( $this->_format == "xml" )
+			if ( $this->get( "/Request/_format" ) == "xml" )
 			{
-				$this->call( "/RPC/Status/send", $bError, $sMessage, $mContent );
+				if ( $this->call( "/RPC/Status/send", $bError, $sMessage, $mContent ) )
+					exit;
 			}
 			else
 			{
@@ -88,8 +68,8 @@
 			$sModule      = substr( $sCommand, 0, $nMethodStart );
 			$sMethod      = substr( $sCommand, $nMethodStart + 1 );
 
-			$oProcessor = &$this->register( $sModule );
-			if ( is_object( $oProcessor ) )
+			$oProcessor = $this->get( $sModule );
+			if ( is_object( $oProcessor ) && method_exists( $oProcessor, $sMethod ) )
 			{
 				$oProcessor->$sMethod();
 				return $this->_feedback( !$oProcessor->getStatus(), $oProcessor->getMessage(), $oProcessor->getContent() );

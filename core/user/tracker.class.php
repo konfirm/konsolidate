@@ -181,9 +181,9 @@
 		public function createCode()
 		{
 			return md5(
-				$_SERVER[ "HTTP_USER_AGENT" ] . 
-				$_SERVER[ "REMOTE_ADDR" ] .
-				$_SERVER[ "REMOTE_PORT" ] . 
+				$this->call( "/Tool/arrVal", $_SERVER, "HTTP_USER_AGENT", microtime( true ) ) . 
+				$this->call( "/Tool/arrVal", $_SERVER, "REMOTE_ADDR", rand( 0, pow( 2, 32 ) ) ) .
+				$this->call( "/Tool/arrVal", $_SERVER, "REMOTE_PORT", rand( 0, pow( 2, 16 ) ) ) . 
 				time() . 
 				rand( 0, 10000 )
 			);

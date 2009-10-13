@@ -75,8 +75,7 @@
 			$this->_templatepath = $this->get( "/Config/Path/template", realpath( ( defined( "TEMPLATE_PATH" ) ? TEMPLATE_PATH : "./templates" ) ) );
 			$this->_compilepath  = $this->get( "/Config/Path/compile", realpath( ( defined( "COMPILE_PATH" ) ? COMPILE_PATH : "./compile" ) ) );
 			$this->_shortopentag = (bool) ini_get( "short_open_tag" );
-			ini_set( "include_path", ini_get( "include_path" ) . ":" . $this->_templatepath );
-		}
+			ini_set( "include_path", $this->_templatepath . PATH_SEPARATOR . ini_get( "include_path" ) );		}
 
 		/**
 		 *  Fetch the built template output

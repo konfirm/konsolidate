@@ -166,17 +166,19 @@
 		 *  @syntax  void CoreSession->register( [ string variable [, string variable [, ... ] ] ] );
 		 *  @note    Variables can also be assigned to a CoreSession directly using Konsolidate->set( "/Session/variable", "value" );
 		 */
-		public function register()
+		public function register( $sModule )
 		{
+			$aRegister = func_get_args();
+			if ( count( $aRegister ) == 1 && is_string( $sModule ) )
+				if ( $this->checkModuleAvailability( $sModule ) || !array_key_exists( $sModule, $GLOBALS ) )
+					return parent::register( $sModule );
+
 			if ( $this->start() )
-			{
-				$aRegister = func_get_args();
 				foreach( $aRegister as $mVariable )
 					if ( is_array( $mVariable ) )
 						call_user_func_array( Array( &$this, "register" ), $mVariable );
 					else
 						$this->$mVariable = $GLOBALS[ $mVariable ];
-			}
 		}
 
 		/**
@@ -235,7 +237,7 @@
 		 */
 		protected function _getSessionCookie()
 		{
-			return CoreTool::cookieVal( $this->_sessionname, false );
+			return $this->call( "/Tool/cookieVal", $this->_sessionname, false );
 		}
 
 		/**
@@ -335,7 +337,7 @@
 
 		function __set( $sProperty, $mValue )
 		{
-			if ( $this->start() && ( !array_key_exists( $sProperty, $this->_property ) || ( array_key_exists( $sProperty, $this->_property ) && $this->$sProperty !== $mValue ) ) )
+			if ( ( !array_key_exists( $sProperty, $this->_property ) || ( array_key_exists( $sProperty, $this->_property ) && $this->$sProperty !== $mValue ) ) )
 				$this->_updated = true;
 			parent::__set( $sProperty, $mValue );
 		}

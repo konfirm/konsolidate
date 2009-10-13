@@ -82,9 +82,10 @@
 				// 0 = $sURI
 				// 1 = scheme
 				// 2 = path (the remainder string)
-				
-				$sDBPath = realpath( ( defined( "DOCUMENT_ROOT" ) ? DOCUMENT_ROOT : array_key_exists( "DOCUMENT_ROOT", $_SERVER ) ? $_SERVER[ "DOCUMENT_ROOT" ] : "" ) . "/" . dirname( $aParse[ 2 ] ) );
-				$sDBFile = basename( $aParse[ 2 ] );
+
+				$sBasePath = $this->get( "/Config/SQLite/basepath" );
+				$sDBPath   = realpath( substr( $aParse[ 2 ], 0, 1 ) == "/" ? dirname( $aParse[ 2 ] ) : ( !empty( $sBasePath ) ? $sBasePath : ( defined( "DOCUMENT_ROOT" ) ? DOCUMENT_ROOT : ( array_key_exists( "DOCUMENT_ROOT", $_SERVER ) ? $_SERVER[ "DOCUMENT_ROOT" ] : "" ) ) ) . "/" . dirname( $aParse[ 2 ] ) );
+				$sDBFile   = basename( $aParse[ 2 ] );
 				$this->_URI = Array(
 					"scheme"=>$aParse[ 1 ],
 					"path"=>( $sDBPath ? "{$sDBPath}/{$sDBFile}" : false )
@@ -104,7 +105,7 @@
 		 */
 		public function connect()
 		{
-			if ( !$this->isConnected() )
+			if ( !$this->isConnected() && $this->_URI[ "path" ] )
 			{
 				$this->_conn = @sqlite_open( $this->_URI[ "path" ], 0766, $sMessage );
 

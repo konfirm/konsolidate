@@ -93,7 +93,7 @@
 			if ( is_resource( $this->_result ) )
 				$this->rows = mysql_num_rows( $this->_result );
 			else if ( $this->_result === true )
-				$this->rows = mysql_affected_rows();
+				$this->rows = mysql_affected_rows( $this->_conn );
 
 			//  We want the exception object to tell us everything is going extremely well, don't throw it!
 			$this->import( "../exception.class.php" );

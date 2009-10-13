@@ -25,7 +25,7 @@
 	 *  @author  Rogier Spieker <rogier@konsolidate.net>
 	 *  @note    This class is always available as soon as Konsolidate (and its extends) is instanced (and the Core tier is available)
 	 */
-	class CoreTool
+	class CoreTool extends Konsolidate
 	{
 		/**
 		 *  Determine whether the script is access from a POST request

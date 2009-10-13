@@ -59,8 +59,7 @@
 
 			if ( is_array( $this->_config ) )
 			{
-				$this->_request = &$this->register( "/Request" );
-				$sCommand       = $this->_request->command;
+				$sCommand = $this->get( "/Request/command" );
 
 				if ( array_key_exists( "rpc", $this->_config ) && array_key_exists( $sCommand, $this->_config[ "rpc" ] ) )
 					return $this->call( "Control/process", $this->_config[ "rpc" ][ $sCommand ] );

@@ -43,7 +43,7 @@
 		 *  @param   string original unit
 		 *  @param   number conversion direction (from or to)
 		 *  @returns number value
-		 *  @syntax  bool   CoreUnitLength->load( number value, string unit [ number direction ] )
+		 *  @syntax  bool   CoreUnitLength->_convert( number value, string unit [ number direction ] )
 		 */
 		protected function _convert( $nValue, $sUnit, $nDirection=1 )
 		{
