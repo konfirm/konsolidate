@@ -46,7 +46,7 @@
 		{
 			parent::__construct( $oParent );
 
-			$this->_order         = $this->get( "/Config/Request/variableorder" );
+			$this->_order         = $this->get( "/Config/Request/variableorder", "r" );
 			$this->_raw           = null;
 			$this->_xml           = null;
 			$this->_file          = null;
@@ -114,7 +114,7 @@
 
 					foreach( $this->_xml as $sParam=>$sValue )
 						$this->$sParam = (string) $sValue;
-					$this->call( "/Log/write", var_export( $this->_property, true ) );
+					$this->call( "/Log/write", var_export( $this->_property, true ), 4 );
 					break;
 			}
 		}

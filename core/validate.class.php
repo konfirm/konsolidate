@@ -140,7 +140,7 @@
 		 */
 		function isFilled( $mValue )
 		{
-			return ( !ereg( "^$", $mValue ) );
+			return ( !preg_match( "/^$/", $mValue ) );
 		}
 
 		/**
@@ -155,7 +155,7 @@
 		 */
 		function isEmail( $mValue )
 		{
-			return eregi( "^[_a-z0-9-]+([a-z0-9\.\+_-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3}|.info)$", $mValue );
+			return preg_match( "/^[_a-z0-9-]+([a-z0-9\.\+_-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3}|.info)$/i", $mValue );
 		}
 	}
 

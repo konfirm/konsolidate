@@ -255,8 +255,9 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string   modulename
+		 *  @param   mixed    param N
 		 *  @returns object
-		 *  @syntax  Konsolidate->instance( string module );
+		 *  @syntax  Konsolidate->instance( string module [, mixed param1 [, mixed param2 [, mixed param N ] ] ] );
 		 *  @note    instance creates an instance every time you call it, if you require a single instance which
 		 *           is always returned, use the register method
 		 */
@@ -265,7 +266,20 @@
 			//  In case we request an instance of a remote node, we verify it here and leave the instancing to the instance parent
 			$nSeperator = strrpos( $sModule, $this->_objectseparator );
 			if ( $nSeperator !== false && ( $oModule = $this->getModule( substr( $sModule, 0, $nSeperator ) ) ) !== false )
-				return $oModule->instance( substr( $sModule, $nSeperator + 1 ) );
+			{
+				$aArgument = func_get_args();
+				if ( count( $aArgument ) )
+				{
+					$aArgument[ 0 ] = substr( $aArgument[ 0 ], $nSeperator + 1 );
+					return call_user_func_array( 
+						Array( 
+							$oModule,
+							"instance"
+						),
+						$aArgument
+					);
+				}
+			}
 
 			$this->import( "{$sModule}.class.php" );
 
@@ -276,7 +290,18 @@
 				$sClass  = "{$sMod}" . ucFirst( strToLower( $sModule ) );
 				if ( class_exists( $sClass ) )
 				{
-					$oModule      = new $sClass( $this );
+					$aArgument = func_get_args();
+					array_shift( $aArgument );  //  the first argument is always the module to instance, we discard it
+					if ( (bool) count( $aArgument ) )
+					{
+						array_unshift( $aArgument, $this ); //  inject the 'parent reference', as Konsolidate dictates
+						$oModule = new ReflectionClass( $sClass ); 
+						$oModule = $oModule->newInstanceArgs( $aArgument );
+    				}
+					else
+					{
+						$oModule = new $sClass( $this );
+					}
 					$bConstructed = is_object( $oModule );
 					break;
 				}
@@ -395,7 +420,8 @@
 				$sClass      = str_replace( array_keys( $aParentPath ), "", get_class( $this ) );
 				$aPath       = Array();
 				foreach ( $aParentPath as $sTier=>$sPath )
-					$aPath[ "{$sTier}{$sClass}" ] = $sPath . "/" . strToLower( $sClass );
+					if ( realpath( $sPath ) )
+						$aPath[ "{$sTier}{$sClass}" ] = $sPath . "/" . strToLower( $sClass );
 				return $aPath;
 			}
 		}
@@ -561,6 +587,8 @@
 				return $this->_property[ $sProperty ];
 			else if ( array_key_exists( strToUpper( $sProperty ), $this->_module ) )
 				return $this->_module[ strToUpper( $sProperty ) ];
+			else if ( $this->checkModuleAvailability( $sProperty ) )
+				return $this->get( $sProperty );
 			return null;
 		}
 
@@ -572,6 +600,29 @@
 			$this->call( "/Log/write", $sMessage, 0 );
 			throw new Exception( $sMessage );
 			return false;
+		}
+
+		/**
+		 *  Allow modules to be called as 'call' methods
+		 *  @name    __invoke
+		 *  @type    method
+		 *  @access  public
+		 *  @param   mixed   arg N
+		 *  @returns mixed
+		 *  @syntax  Konsolidate( [ mixed arg N ] );
+		 *  @note    __invoke only works in PHP 5.3+
+		 *  @note    You can now effectively leave out the '->call' part when calling on methods, e.g. $oK( "/DB/query", "SHOW TABLES" ) instead of $oK->call( "/DB/query", "SHOW TABLES" );
+		 *  @see     call
+		 */
+		public function __invoke()
+		{
+			return call_user_func_array(
+				Array( 
+					$this,       // the object
+					"call"       // the method
+				),
+				func_get_args()  // the arguments
+			);
 		}
 
 		public function __toString()

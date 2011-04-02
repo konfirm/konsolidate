@@ -36,12 +36,13 @@
 		protected $_verbositylevel;
 
 		/**
-		 *  The logfile object to which to write the log data
+		 *  The logfile to which to write the log data
 		 *  @name    _logfile
-		 *  @type    object
+		 *  @type    string
 		 *  @access  protected
 		 */
 		protected $_logfile;
+
 
 		/**
 		 *  constructor
@@ -56,26 +57,9 @@
 		public function __construct( $oParent )
 		{
 			parent::__construct( $oParent );
-			$sFilename = $this->get( "/Config/konsolidate/log", "/tmp/konsolidate.log" );
 
-			$this->_logfile = $this->instance( "/System/File" );
-			$this->_logfile->open( realPath( $sFilename ), "a" );
-
-			$this->setVerbosity();
-		}
-
-		/**
-		 *  magic __destruct, close connection/filepointer to the logfile
-		 *  @name    __destruct
-		 *  @type    method
-		 *  @access  public
-		 *  @returns void
-		 *  @syntax  void CoreLog->__destruct()
-		 */
-		public function __destruct()
-		{
-			if ( $this->_logfile )
-				$this->_logfile->close();
+			$this->_logfile = $this->get( "/Config/konsolidate/log", ini_get( "error_log" ) );
+			$this->setVerbosity( $this->get( "/Config/konsolidate/loglevel" ) );
 		}
 
 		/**
@@ -83,13 +67,44 @@
 		 *  @name    setVerbosity
 		 *  @type    method
 		 *  @access  public
-		 *  @param   int level
+		 *  @param   int level (default matching error_reporting ini directive)
 		 *  @returns void
-		 *  @syntax  void CoreLog->setVerbosity( int level )
+		 *  @syntax  void CoreLog->setVerbosity( [int level] )
 		 */
-		public function setVerbosity( $nLevel=3 )
+		public function setVerbosity( $nLevel=null )
 		{
+			if ( $nLevel === null )
+				$nLevel = $this->_determineVerbosity();
 			$this->_verbositylevel = $nLevel;
+		}
+
+		/**
+		 *  Output messages according to preferences in the php.ini (override in Konsolidate Config)
+		 *  @name    message
+		 *  @type    method
+		 *  @access  public
+		 *  @param   string message
+		 *  @param   int    level
+		 *  @returns bool
+		 *  @syntax  bool CoreLog->message( string message [, int level ] )
+		 *  @note    Configuration options: display_errors (Config/Log/displayerrors), log_errors (Config/Log/logerrors)
+		 */
+		public function message( $sMessage, $nVerbosity=3 )
+		{
+			if ( $nVerbosity <= $this->_verbositylevel )
+			{
+				if ( (bool) ini_get( "display_errors" ) )
+				{
+					if ( (bool) ini_get( "html_errors" ) )
+						print $this->_formatMessage( $sMessage, $nVerbosity, true );
+					else
+						print $this->_formatMessage( $sMessage, $nVerbosity ) . "\n";
+				}
+				if ( (bool) ini_get( "log_errors" ) )
+				{
+					$this->write( $sMessage, $nVerbosity );
+				}
+			}
 		}
 
 		/**
@@ -107,7 +122,7 @@
 		{
 			if ( $nVerbosity <= $this->_verbositylevel )
 			{
-				if ( !$this->_logfile->put( "[" . date( "Y.m.d H:i" ) . " - {$nVerbosity} - {$_SERVER[ "SCRIPT_NAME" ]}]\t\t{$sMessage}\n" ) )
+				if ( !error_log( $this->_formatMessage( $sMessage, $nVerbosity ) . "\n", 0, $this->_logfile ) )
 				{
 					error_log( $sMessage );
 					return false;
@@ -115,6 +130,73 @@
 				return true;
 			}
 			return false;
+		}
+
+		/**
+		 *  Translate the verbosity level int to a more readable string
+		 *  @name    _translate
+		 *  @type    method
+		 *  @access  protected
+		 *  @param   int    level
+		 *  @param   bool   uppercase (default true)
+		 *  @returns bool
+		 *  @syntax  bool CoreLog->_translate( int level [, bool uppercase ] )
+		 */
+		protected function _translate( $nVerbosity, $bUpperCase=true )
+		{
+			switch( (int) $nVerbosity )
+			{
+		 		case 0:  $sReturn = "Critical"; break;
+		 		case 1:  $sReturn = "Severe";   break;
+		 		case 2:  $sReturn = "Warning";  break;
+		 		case 3:  $sReturn = "Info";     break;
+		 		case 4:  $sReturn = "Debug";    break;
+		 		default: $sReturn = "Unknown";
+			}
+			return $bUpperCase ? strtoupper( $sReturn ) : $sReturn;
+		}
+
+		/**
+		 *  Determine the verbosity level based on the error_reporting directive
+		 *  @name    _determineVerbosity
+		 *  @type    method
+		 *  @access  protected
+		 *  @returns int  level
+		 *  @syntax  bool CoreLog->_determineVerbosity()
+		 */
+		protected function _determineVerbosity()
+		{
+			$nReporting = ini_get( "error_reporting" );
+			if ( E_STRICT & $nReporting )
+				return 4; //  Debug - Very strict, al lot of information
+			else if ( E_ALL & $nReporting )
+				return 3; //  All - A lot of information
+			else if ( E_NOTICE & $nReporting )
+				return 2; //  Info - Much information
+			else if ( E_WARNING & $nReporting )
+				return 1; // Only warnings - less informative
+			else if ( E_ERROR & $nReporting )
+				return 0; // Only critial information - least informative
+
+			return 3;
+		}
+
+		/**
+		 *  Format the log message
+		 *  @name    _formatMessage
+		 *  @type    method
+		 *  @access  protected
+		 *  @param   string message
+		 *  @param   int    level
+		 *  @param   bool   html
+		 *  @returns int  level
+		 *  @syntax  bool CoreLog->_formatMessage( string message, int level [, bool html ] )
+		 */
+		protected function _formatMessage( $sMessage, $nVerbosity, $bHTML=false )
+		{
+			if ( $bHTML )
+				return "<div class='konsolidate_error konsolidate_" . strToLower( $this->_translate( $nVerbosity ) ) . "'><span class='konsolidate_time'>" . date( "r" ) . "</span> <span class='konsolidate_level'>" . $this->_translate( $nVerbosity ) . "</span> <span class='konsolidate_script'>{$_SERVER[ "SCRIPT_NAME" ]}</span> <span class='konsolidate_message'>{$sMessage}</span></div>";
+			return "[" . $this->_translate( $nVerbosity ) . "] - {$_SERVER[ "SCRIPT_NAME" ]}]: {$sMessage}";
 		}
 	}
 
