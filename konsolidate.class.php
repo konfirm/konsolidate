@@ -625,6 +625,42 @@
 			);
 		}
 
+		/**
+		 *  Allow isset/empty tests on inaccessible properties
+		 *  @name    __isset
+		 *  @type    method
+		 *  @access  public
+		 *  @param   string property
+		 *  @returns bool isset
+		 *  @syntax  isset(Konsolidate->property), empty(Konsolidate->property);
+		 *  @note    __isset only works in PHP 5.1+
+		 */
+		public function __isset( $sProperty )
+		{
+			return isset($this->_property[ $sProperty ]);
+		}
+
+		/**
+		 *  Allow unsetting of inaccessible properties
+		 *  @name    __unset
+		 *  @type    method
+		 *  @access  public
+		 *  @param   string property
+		 *  @syntax  unset(Konsolidate->property);
+		 *  @note    __unset only works in PHP 5.1+
+		 */
+		public function __unset( $sProperty )
+		{
+			unset($this->_property[ $sProperty ]);
+		}
+
+		/**
+		 *  Create a string representing the Konsolidate instance
+		 *  @name    __toString
+		 *  @type    method
+		 *  @access  public
+		 *  @syntax  print Konsolidate();
+		 */
 		public function __toString()
 		{
 			$sReturn  = "<div style='font-family:\"Lucida Grande\", Verdana, Arial, sans-serif;font-size:11px;color'>";
