@@ -44,7 +44,7 @@
 				{
 					$sDestination = realpath( $sDestination ) . "/" . ( $bSafeName ? $this->sanitizedname : $this->name );
 				}
-				else if ( !strstr( basename( $sDestionation ), "." ) ) //  assuming a dot in every filename... possible weird side effects?
+				else if ( !strstr( basename( $sDestination ), "." ) ) //  assuming a dot in every filename... possible weird side effects?
 				{
 					mkdir( $sDestination, 0777, true );
 					$sDestination = realpath( $sDestination ) . "/" . ( $bSafeName ? $this->sanitizedname : $this->name );
