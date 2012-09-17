@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreMediaImage
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreMediaImage
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreMediaImage extends Konsolidate
 	{
@@ -230,26 +230,23 @@
 			{
 				case "GIF":
 				case IMAGETYPE_GIF:
-					if ( !headers_sent() )
+					if ( is_null( $sFile ) && !headers_sent() )
 						header( "Content-type: image/gif" );
-					if ( !is_null( $sFile ) )
-						@imagegif( $this->_image, $sFile );
-					@imagegif( $this->_image );
+					
+					@imagegif( $this->_image, $sFile );
 					break;
 				case "PNG":
 				case IMAGETYPE_PNG:
-					if ( !headers_sent() )
+					if ( is_null( $sFile ) && !headers_sent() )
 						header( "Content-type: image/png" );
-					if ( !is_null( $sFile ) )
-						@imagepng( $this->_image, $sFile, round( ( 9 / 100 ) * $nQuality ) );
-					@imagepng( $this->_image, null, round( ( 9 / 100 ) * $nQuality ) );
+					
+					@imagepng( $this->_image, $sFile, round( ( 9 / 100 ) * $nQuality ) );
 					break;
 				default:
-					if ( !headers_sent() )
+					if ( is_null( $sFile ) && !headers_sent() )
 						header( "Content-type: image/jpeg" );
-					if ( !is_null( $sFile ) )
-						@imagejpeg( $this->_image, $sFile, $nQuality );
-					@imagejpeg( $this->_image, null, $nQuality );
+					
+					@imagejpeg( $this->_image, $sFile, $nQuality );
 					break;
 			}
 
@@ -258,7 +255,7 @@
 
 			return false;
 		}
-
+		
 		/**
 		 *  Fill an image with one solid color
 		 *  @name    fill
