@@ -51,7 +51,7 @@
 		{
 			$nMin = $bUnsigned ? 0 : INT_MIN;
 			$nMax = $bUnsigned ? INT_MAX + ( -INT_MIN ) : INT_MAX; 
-			if ( is_null( $mValue ) || ( !ereg( "^[0-9]+$", abs( $mValue ) ) ) || $mValue < $nMin || $mValue > $nMax )
+			if ( is_null( $mValue ) || ( !preg_match( "/^[0-9]+$/", abs( $mValue ) ) ) || $mValue < $nMin || $mValue > $nMax )
 				return false;
 			return true;
 		}
