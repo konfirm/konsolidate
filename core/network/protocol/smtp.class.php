@@ -141,7 +141,10 @@
 		}
 
 		/**
-		 *
+		 *  @name    _createRecipientList
+		 *  @type    method
+		 *  @access  protected
+		 *  @returns string
 		 */
 		protected function _createRecipientList( $aCollection )
 		{
@@ -167,10 +170,9 @@
 			return false;
 		}
 
-		/**
-		 *  SMTP Command wrappers
-		 *  NOTE: RFC 821 only partially implemented!!
-		 */
+
+//		  SMTP Command wrappers
+//		  NOTE: RFC 821 only partially implemented!!
 
 		/**
 		 *  Send 'HELO'/'EHLO' (handshake) command to the SMTP server
