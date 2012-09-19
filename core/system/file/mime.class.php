@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreSystemFileMIME
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -21,7 +21,7 @@
 	 *  @name    CoreSystemFileMIME
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreSystemFileMIME extends Konsolidate
 	{
@@ -95,7 +95,7 @@
 		 */
 		protected function _determineTypeByFileInfo( $sFile )
 		{
-			$finfo    = finfo_open( FILEINFO_MIME );
+			$finfo    = finfo_open( FILEINFO_MIME, $this->get( "/Config/finfo_open/magic_file", null )  );
 			$mimetype = finfo_file( $finfo, $sFile );
 			finfo_close( $finfo );
 			return $mimetype;

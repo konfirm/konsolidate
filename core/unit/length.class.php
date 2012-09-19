@@ -36,7 +36,7 @@
 
 		/**
 		 *  Convert non-SI units to SI units (meters)
-		 *  @name    load
+		 *  @name    _convert
 		 *  @type    method
 		 *  @access  protected
 		 *  @param   number original value

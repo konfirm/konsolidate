@@ -121,7 +121,7 @@
 
 		/**
 		 *  retrieve variables from a HTTP request (POST/GET only)
-		 *  @name    _collectFromRaw
+		 *  @name    _collectHTTP
 		 *  @type    method
 		 *  @access  protected
 		 *  @returns void

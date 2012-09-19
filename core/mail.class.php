@@ -95,7 +95,7 @@
 
 		/**
 		 *  The e-mail address to which the mail should be CC'd
-		 *  @name    _to
+		 *  @name    _cc
 		 *  @type    bool
 		 *  @access  protected
 		 *  @note    this property is set implicitly using __set (without the preceeding '_')
@@ -258,7 +258,7 @@
 
 		/**
 		 *  send the prepared e-mail
-		 *  @name    send
+		 *  @name    _send
 		 *  @type    method
 		 *  @access  protected
 		 *  @returns bool

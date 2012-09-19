@@ -136,7 +136,7 @@
 
 		/**
 		 *  magic __set, set the rules on which the 'salt' (string of characters) is based
-		 *  @name    _createSalt
+		 *  @name    __set
 		 *  @type    method
 		 *  @access  public
 		 *  @returns void
