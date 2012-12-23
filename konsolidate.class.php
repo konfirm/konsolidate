@@ -1,19 +1,19 @@
 <?php
 
 	/*
-	 *            ________ ___        
+	 *            ________ ___
 	 *           /   /   /\  /\       Konsolidate
-	 *      ____/   /___/  \/  \      
+	 *      ____/   /___/  \/  \
 	 *     /           /\      /      http://www.konsolidate.net
-	 *    /___     ___/  \    /       
-	 *    \  /   /\   \  /    \       
-	 *     \/___/  \___\/      \      
-	 *      \   \  /\   \  /\  /      
-	 *       \___\/  \___\/  \/       
+	 *    /___     ___/  \    /
+	 *    \  /   /\   \  /    \
+	 *     \/___/  \___\/      \
+	 *      \   \  /\   \  /\  /
+	 *       \___\/  \___\/  \/
 	 *         \          \  /        $Rev$
 	 *          \___    ___\/         $Author$
 	 *              \   \  /          $Date$
-	 *               \___\/           
+	 *               \___\/
 	 *
 	 *  The konsolidate class, which acts as the 'one ring' being responsible for the proper inner workings of the Konsolidate framework/library/foundation
 	 *  @name   Konsolidate
@@ -79,13 +79,20 @@
 		protected $_lookupcache;
 
 		/**
+		 *  Module lookup cache, making lookups faster for checkModuleAvailability
+		 *  @name    _modulecheck
+		 *  @type    array
+		 *  @access  protected
+		 */
+		protected $_modulecheck;
+
+		/**
 		 *  Error traces
 		 *  @name    _tracelog
 		 *  @type    array
 		 *  @access  protected
 		 */
 		protected $_tracelog;
-
 
 		/**
 		 *  Konsolidate constructor
@@ -105,7 +112,8 @@
 			$this->_property    = Array();
 			$this->_lookupcache = Array();
 			$this->_tracelog    = Array();
-			
+			$this->_modulecheck = Array();
+
 			if ( is_object( $mPath ) && ( is_subclass_of( $mPath, "Konsolidate" ) || $mPath instanceof Konsolidate ) )
 			{
 				$this->_parent          = $mPath;
@@ -117,7 +125,7 @@
 				$this->_parent          = false;
 				$this->_path            = $mPath;
 				$this->_objectseparator = isset( $this->_objectseparator ) && !empty( $this->_objectseparator ) ? $this->_objectseparator : "/";
-	
+
 				//  We always want access to our static tools
 				$this->import( "tool.class.php" );
 			}
@@ -167,8 +175,8 @@
 			if ( $nSeperator !== false && ( $oModule = $this->getModule( substr( $sProperty, 0, $nSeperator ) ) ) !== false )
 			{
 				array_unshift( $aArgument, substr( $sProperty, $nSeperator + 1 ) );
-				return call_user_func_array( 
-					Array( 
+				return call_user_func_array(
+					Array(
 						$oModule, // the object
 						"set"      // the method
 					),
@@ -215,7 +223,7 @@
 			}
 
 			return call_user_func_array(
-				Array( 
+				Array(
 					$oModule,  // the object
 					$sMethod   // the method
 				),
@@ -271,8 +279,8 @@
 				if ( count( $aArgument ) )
 				{
 					$aArgument[ 0 ] = substr( $aArgument[ 0 ], $nSeperator + 1 );
-					return call_user_func_array( 
-						Array( 
+					return call_user_func_array(
+						Array(
 							$oModule,
 							"instance"
 						),
@@ -292,10 +300,11 @@
 				{
 					$aArgument = func_get_args();
 					array_shift( $aArgument );  //  the first argument is always the module to instance, we discard it
+
 					if ( (bool) count( $aArgument ) )
 					{
 						array_unshift( $aArgument, $this ); //  inject the 'parent reference', as Konsolidate dictates
-						$oModule = new ReflectionClass( $sClass ); 
+						$oModule = new ReflectionClass( $sClass );
 						$oModule = $oModule->newInstanceArgs( $aArgument );
     				}
 					else
@@ -342,7 +351,7 @@
 			foreach ( $aPath as $sPath )
 			{
 				$sCurrentFile = "{$sPath}/" . strToLower( $sFile );
-				if ( file_exists( $sCurrentFile ) )
+				if ( realpath( $sCurrentFile ) )
 				{
 					include_once( $sCurrentFile );
 					$bImported = true;
@@ -363,10 +372,17 @@
 		public function checkModuleAvailability( $sModule )
 		{
 			$sModule = strToLower( $sModule );
-			foreach ( $this->_path as $sMod=>$sPath )
-				if ( file_exists( "{$sPath}/{$sModule}.class.php" ) || is_dir( "{$sPath}/{$sModule}" ) )
-					return true;
-			return false;
+			if (!isset($this->_modulecheck[$sModule]))
+			{
+				$this->_modulecheck[$sModule] = false;
+				foreach ( $this->_path as $sMod=>$sPath )
+					if ( realpath( "{$sPath}/{$sModule}.class.php" ) || is_dir( "{$sPath}/{$sModule}" ) )
+					{
+						$this->_modulecheck[$sModule] = true;
+						break;
+					}
+			}
+			return $this->_modulecheck[$sModule];
 		}
 
 
@@ -448,11 +464,11 @@
 					switch( strToLower( $sSegment ) )
 					{
 						case "":        //  root
-						case "_root":   
+						case "_root":
 							$oTraverse = $oModule->getRoot();
 							break;
 						case "..":      //  parent
-						case "_parent": //  
+						case "_parent": //
 							$oTraverse = $oModule->getParent();
 							break;
 						case ".":       //  self
@@ -490,22 +506,22 @@
 		{
 			return key( $this->_property );
 		}
-		
+
 		public function current()
 		{
 			return current( $this->_property );
 		}
-		
+
 		public function next()
 		{
 			return next( $this->_property );
 		}
-		
+
 		public function rewind()
 		{
 			return reset( $this->_property );
 		}
-		
+
 		public function valid()
 		{
 			return !is_null( $this->key() );
@@ -561,7 +577,9 @@
 
 			//  Create tierless Exception on the fly if the requested Exception does not exist
 			if ( !class_exists( $sThrowClass ) )
-				eval( "class {$sThrowClass} extends {$sExceptionClass}{public function __construct(\$s=null,\$c=0){parent::__construct(\$s,\$c);\$this->file='{$sFile}';\$this->line={$sLine};}}" );
+			{
+				eval( "class {$sThrowClass} extends {$sExceptionClass}{public function __construct(\$s=null,\$c=0){parent::__construct(\$s,\$c);\$this->file='{$sFile}';\$this->line= (int) '{$sLine}';}}" );
+			}
 
 			if ( class_exists( $sThrowClass ) )
 				throw new $sThrowClass( $sMessage, $nCode );
@@ -617,7 +635,7 @@
 		public function __invoke()
 		{
 			return call_user_func_array(
-				Array( 
+				Array(
 					$this,       // the object
 					"call"       // the method
 				),
