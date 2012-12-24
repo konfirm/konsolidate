@@ -84,7 +84,7 @@
 		 *  @type    array
 		 *  @access  protected
 		 */
-		protected $_modulecheck;
+		static protected $_modulecheck;
 
 		/**
 		 *  Error traces
@@ -371,18 +371,23 @@
 		 */
 		public function checkModuleAvailability( $sModule )
 		{
-			$sModule = strToLower( $sModule );
-			if (!isset($this->_modulecheck[$sModule]))
-			{
-				$this->_modulecheck[$sModule] = false;
+			$sModule = strtolower($sModule);
+			$sClass  = get_class($this);
+
+			//  lookahead to submodules
+			if (!isset($this::$_modulecheck[$sClass]))
+				$this->_indexModuleAvailability();
+
+			//  if we are dealing with a submodule pattern which is not in our cache by default, test for it
+			if (strpos($sModule, $this->_objectseparator) !== false)
 				foreach ( $this->_path as $sMod=>$sPath )
-					if ( realpath( "{$sPath}/{$sModule}.class.php" ) || is_dir( "{$sPath}/{$sModule}" ) )
+					if ( realpath( "{$sPath}/{$sModule}.class.php" ) || realpath( "{$sPath}/{$sModule}" ) )
 					{
-						$this->_modulecheck[$sModule] = true;
+						$this::$_modulecheck[$sClass][$sModule] = true;
 						break;
 					}
-			}
-			return $this->_modulecheck[$sModule];
+
+			return isset($this::$_modulecheck[$sClass][$sModule]) ? $this::$_modulecheck[$sClass][$sModule] : false;
 		}
 
 
@@ -711,6 +716,30 @@
 			$sReturn .= "</div>";
 
 			return $sReturn;
+		}
+
+		/**
+		 *  Look ahead at all available submodules and cache the availability
+		 *  @name    _indexModuleAvailability
+		 *  @type    method
+		 *  @access  protected
+		 *  @returns void
+		 *  @syntax  Konsolidate->_indexModuleAvailability();
+		 */
+		protected function _indexModuleAvailability()
+		{
+			if (!is_array($this::$_modulecheck))
+				$this::$_modulecheck = Array();
+
+			$class = get_class($this);
+			if (!isset($this::$_modulecheck[$class]))
+			{
+				$list = Array();
+				foreach ($this->_path as $tier=>$path)
+					foreach (glob($path . '/*') as $item)
+						$list[strtolower(basename($item, '.class.php'))] = true;
+				$this::$_modulecheck[$class] = $list;
+			}
 		}
 	}
 
