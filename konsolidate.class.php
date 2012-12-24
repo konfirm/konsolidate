@@ -112,7 +112,6 @@
 			$this->_property    = Array();
 			$this->_lookupcache = Array();
 			$this->_tracelog    = Array();
-			$this->_modulecheck = Array();
 
 			if ( is_object( $mPath ) && ( is_subclass_of( $mPath, "Konsolidate" ) || $mPath instanceof Konsolidate ) )
 			{
