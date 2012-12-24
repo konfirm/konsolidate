@@ -735,9 +735,10 @@
 			if (!isset($this::$_modulecheck[$class]))
 			{
 				$list = Array();
-				foreach ($this->_path as $tier=>$path)
-					foreach (glob($path . '/*') as $item)
-						$list[strtolower(basename($item, '.class.php'))] = true;
+				if (is_array($this->_path))
+					foreach ($this->_path as $tier=>$path)
+						foreach (glob($path . '/*') as $item)
+							$list[strtolower(basename($item, '.class.php'))] = true;
 				$this::$_modulecheck[$class] = $list;
 			}
 		}
