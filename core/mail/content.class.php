@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreMailContent
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -21,7 +21,7 @@
 	 *  @name    CoreMailContent
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreMailContent extends Konsolidate
 	{
@@ -31,7 +31,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string job name
-		 *  @returns bool   success
+		 *  @return  bool   success
 		 *  @syntax  bool   CoreMailContent->load( string job )
 		 */
 		public function load( $sJob )

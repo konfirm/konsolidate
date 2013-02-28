@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreUnitSI
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -21,7 +21,7 @@
 	 *  @name    CoreUnitSI
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 *  @author  Marco Balk <marco@uniqweb.nl>
 	 */
 	class CoreUnitSI extends Konsolidate
@@ -49,7 +49,7 @@
 		 *  @param   number original value
 		 *  @param   string original unit
 		 *  @param   number conversion direction (from or to)
-		 *  @returns number value
+		 *  @return  number value
 		 *  @syntax  bool   CoreUnitSI->_convert( number value, string unit [ number direction ] )
 		 */
 		protected function _convert( $nBase, $sFix="", $nDirection=1 )
@@ -72,7 +72,7 @@
 		 *  @access  public
 		 *  @param   string original value+unit
 		 *  @param   string original unit
-		 *  @returns mixed  value
+		 *  @return  mixed  value
 		 *  @syntax  bool   CoreUnitLength->toBase( string value [, string unit ] )
 		 */
 		public function baseToPrefix( $nBase, $sFix="" )
@@ -87,7 +87,7 @@
 		 *  @access  public
 		 *  @param   string original value+unit
 		 *  @param   string original unit
-		 *  @returns mixed  value
+		 *  @return  mixed  value
 		 *  @syntax  bool   CoreUnitSI->prefixToBase( string value [, string unit ] )
 		 */
 		public function prefixToBase( $nBase, $sFix="" )

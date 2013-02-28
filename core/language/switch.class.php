@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreLanguageSwitch
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreLanguageSwitch
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreLanguageSwitch extends Konsolidate
 	{
@@ -40,7 +40,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string phrase
-		 *  @returns string translation
+		 *  @return  string translation
 		 *  @syntax  string CoreLanguageSwitch->translate( string phrase )
 		 */
 		public function translate( $sPhrase )
@@ -59,7 +59,7 @@
 		 *  @access  protected
 		 *  @param   string phrase
 		 *  @param   string locale
-		 *  @returns string translation
+		 *  @return  string translation
 		 *  @syntax  string CoreLanguageSwitch->_getPhraseByLocale( string phrase )
 		 */
 		protected function _getPhraseByLocale( $sPhrase, $sLocale )
@@ -85,7 +85,7 @@
 		 *  @type    method
 		 *  @access  protected
 		 *  @param   string phrase
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  void CoreLanguageSwitch->_trackPhrase( string phrase )
 		 */
 		protected function _trackPhrase( $sPhrase )
@@ -100,7 +100,7 @@
 		 *  @name    __destruct
 		 *  @type    method
 		 *  @access  public
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  void CoreLanguageSwitch->__destruct()
 		 */
 		public function __destruct()

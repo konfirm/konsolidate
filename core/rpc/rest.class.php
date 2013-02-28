@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreRPCREST
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreRPCREST
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreRPCREST extends CoreRPC
 	{
@@ -32,7 +32,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string configfile (optional, default null)
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreRPCREST( string configfile )
 		 */
 		public function process( $sConfigFile=null )

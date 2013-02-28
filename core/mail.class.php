@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreMail
 	 *     \/___/  \___\/      \      Tier:   Dev
@@ -21,7 +21,7 @@
 	 *  @name    CoreMail
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreMail extends Konsolidate
 	{
@@ -190,7 +190,7 @@
 		 *  @type    constructor
 		 *  @access  public
 		 *  @param   object parent object
-		 *  @returns object
+		 *  @return  object
 		 *  @syntax  object = &new CoreMail( object parent )
 		 *  @note    This object is constructed by one of Konsolidates modules
 		 */
@@ -207,7 +207,7 @@
 		 *  @name    reset
 		 *  @type    method
 		 *  @access  public
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  void CoreMail->reset()
 		 */
 		public function reset()
@@ -236,7 +236,7 @@
 		 *  @access  public
 		 *  @param   bool allow empty content [optional, default true]
 		 *  @param   bool allow empty subject [optional, default true]
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreMail->send( [ bool empty content [, bool empty subject ] ] )
 		 */
 		public function send( $bAllowEmptyContent=true, $bAllowEmptySubject=true )
@@ -261,7 +261,7 @@
 		 *  @name    _send
 		 *  @type    method
 		 *  @access  protected
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreMail->_send()
 		 */
 		protected function _send()
@@ -386,7 +386,7 @@
 		 *  @param   mixed  filepath    string filepath or an instance of 'Mail/Attachment'
 		 *  @param   string mime        [optional, tried to be determined by default]
 		 *  @param   string disposition [optional, value can be eithe 'attachment' or 'inline', default 'attachment']
-		 *  @returns bool   success
+		 *  @return  bool   success
 		 *  @syntax  bool CoreMail->attach( string file [, string mimetype [, string disposition ] ] )
 		 *  @note    In case data needs to be attached which is not available on the filesystem (e.g. some generated 
 		 *           text or an image), you can create an instance of 'Mail/Attachment' and set the name and data properties
@@ -422,7 +422,7 @@
 		 *  @param   string data
 		 *  @param   string encoding
 		 *  @param   int    linelength (default 75 for quoted-printable, 76 for base64)
-		 *  @returns string
+		 *  @return  string
 		 *  @syntax  string CoreMail->_applyEncoding( string data, string encoding [, int length ] )
 		 */
 		protected function _applyEncoding( $sData, $sEncoding, $nLength=null )
@@ -454,7 +454,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   bool   multiboundary [optional, default false (outer boundary)]
-		 *  @returns string boundary
+		 *  @return  string boundary
 		 *  @syntax  string CoreMail->getBoundary( [bool multiboundary] )
 		 */
 		public function getBoundary( $bMultiBoundary=false )
@@ -469,7 +469,7 @@
 		 *  @access  protected
 		 *  @param   object SMTP instance
 		 *  @param   bool   use extra boundary
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreMail->send()
 		 */
 		protected function _setMultiPartHeader( $oMail, $bMultiBoundary=false, $bMixedContent=false )
@@ -486,7 +486,7 @@
 		 *  @access  protected
 		 *  @param   bool  closing boundary
 		 *  @param   bool  multiboundary
-		 *  @returns string
+		 *  @return  string
 		 *  @syntax  string CoreMail->_createBoundary( [ bool closing [, bool multi ] ] )
 		 */
 		protected function _createBoundary( $bClosingBoundary=false, $bMultiBoundary=false )
@@ -500,7 +500,7 @@
 		 *  @type    method
 		 *  @access  protected
 		 *  @param   array  param
-		 *  @returns string meta-data
+		 *  @return  string meta-data
 		 *  @syntax  string CoreMail->_createContentType( array param )
 		 *  @note    param is an associative array, consisting of the following keys:
 		 *           type:        the mime-type                         [optional, default 'application/octect-stream'],
@@ -528,7 +528,7 @@
 		 *  @type    method
 		 *  @access  protected
 		 *  @param   array  param
-		 *  @returns string meta-data
+		 *  @return  string meta-data
 		 *  @syntax  string CoreMail->_createContentTransferEncoding( array param )
 		 *  @note    param is an associative array, consisting of the following keys:
 	 	 *           encoding:    the encoding type                     [optional, left out of ommited]
@@ -546,7 +546,7 @@
 		 *  @type    method
 		 *  @access  protected
 		 *  @param   array  param
-		 *  @returns string meta-data
+		 *  @return  string meta-data
 		 *  @syntax  string CoreMail->_createContentDisposition( array param )
 		 *  @note    param is an associative array, consisting of the following keys:
 	 	 *           disposition: the content disposition               [optional, left out of ommited]
@@ -567,7 +567,7 @@
 		 *  @type    method
 		 *  @access  protected
 		 *  @param   array  param
-		 *  @returns string meta-data
+		 *  @return  string meta-data
 		 *  @syntax  string CoreMail->_createContentID( array param )
 		 *  @note    param is an associative array, consisting of the following keys:
 		 *           filename:    the name of the file being announced  [optional, left out of ommited]
@@ -589,7 +589,7 @@
 		 *  @param   string data
 		 *  @param   array  param
 		 *  @param   bool   use multiboundary
-		 *  @returns string datablock
+		 *  @return  string datablock
 		 *  @syntax  string CoreMail->_createDataSegment( string data, array param [, bool multiboundary [, bool boundary ] ] )
 		 *  @note    param is an associative array, consisting of the following keys:
 		 *           type:        the mime-type                         [optional, default 'application/octect-stream'],
@@ -618,7 +618,7 @@
 		 *  @type    method
 		 *  @access  protected
 		 *  @param   string data
-		 *  @returns string
+		 *  @return  string
 		 *  @syntax  string CoreMail->_substitute( string data )
 		 */
 		protected function _substitute( $sValue )
@@ -637,7 +637,7 @@
 		 *  @param   string email
 		 *  @param   string name
 		 *  @param   string type (one of: 'to', 'cc', 'bcc'. all others are silently discarded)
-		 *  @returns string
+		 *  @return  string
 		 *  @syntax  string CoreMail->addRecipient( string email [, string name [, string type ] ] )
 		 */
 		public function addRecipient( $sEmail, $sName=null, $sType="to" )
@@ -653,7 +653,7 @@
 		 *  @access  public
 		 *  @param   string email
 		 *  @param   string name
-		 *  @returns string
+		 *  @return  string
 		 *  @syntax  string CoreMail->addTo( string email [, string name ] )
 		 */
 		public function addTo( $sEmail, $sName=null )
@@ -668,7 +668,7 @@
 		 *  @access  public
 		 *  @param   string email
 		 *  @param   string name
-		 *  @returns string
+		 *  @return  string
 		 *  @syntax  string CoreMail->addCC( string email [, string name ] )
 		 */
 		public function addCC( $sEmail, $sName=null )
@@ -683,7 +683,7 @@
 		 *  @access  public
 		 *  @param   string email
 		 *  @param   string name
-		 *  @returns string
+		 *  @return  string
 		 *  @syntax  string CoreMail->addBCC( string email [, string name ] )
 		 */
 		public function addBCC( $sEmail, $sName=null )
@@ -698,7 +698,7 @@
 		 *  @access  protected
 		 *  @param   mixed  email (string "email", string "Pretty Name <email>", Array( "email" ), Array( "email"=>"Pretty Name" ) )
 		 *  @param   string type (one of: 'to', 'cc', 'bcc'. all others are silently discarded)
-		 *  @returns string
+		 *  @return  string
 		 *  @syntax  string CoreMail->_addRecipient( mixed email, string type )
 		 */
 		protected function _addRecipient( $mValue, $sType )
@@ -742,7 +742,7 @@
 		 *  @type    method
 		 *  @access  protected
 		 *  @param   string type (one of: 'to', 'cc', 'bcc'. all others are silently discarded)
-		 *  @returns string
+		 *  @return  string
 		 *  @syntax  string CoreMail->_flushRecipientType( string type )
 		 */
 		protected function _flushRecipientType( $sType )
@@ -756,7 +756,7 @@
 		 *  @name    _requireBoundary
 		 *  @type    method
 		 *  @access  protected
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreMail->_requireBoundary()
 		 */
 		protected function _requireBoundary()
@@ -775,7 +775,7 @@
 		 *  @access  public
 		 *  @param   string property
 		 *  @param   mixed  value
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  void CoreMail->(string property) = mixed variable
 		 */
 		public function __set( $sProperty, $mValue )
@@ -814,7 +814,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string property
-		 *  @returns mixed  value
+		 *  @return  mixed  value
 		 *  @syntax  mixed = CoreMail->(string property);
 		 */
 		public function __get( $sProperty )

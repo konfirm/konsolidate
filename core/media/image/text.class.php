@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreMediaImageText
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreMediaImageText
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreMediaImageText extends Konsolidate
 	{
@@ -39,7 +39,7 @@
 		 *  @name    create
 		 *  @type    method
 		 *  @access  public
-		 *  @returns resource image
+		 *  @return  resource image
 		 *  @note    this method examines the provided input and bridges the call to the most approproate method avaiable 
 		 *           to handle your request based on the provided parameters. Refer to the method calls of _createFromStyle and _createFromArgument
 		 *           for an overview of possible arguments (the calls cannot be mixed, use either one of the calls)
@@ -74,7 +74,7 @@
 		 *  @param   resource image (or null to create a new image)
 		 *  @param   string  text
 		 *  @param   array   style definition
-		 *  @returns resource image
+		 *  @return  resource image
 		 *  @syntax  CoreMediaImageText->_createFromStyle( resource image, string text, array style )
 		 *  @see     create
 		 */
@@ -189,7 +189,7 @@
 		 *  @param   string  background color (optional, default "#fff", white)
 		 *  @param   bool    antialias (optional, default false for text sizes < 24, true otherwise)
 		 *  @param   int     angle of rotation in degrees (optional, default 0)
-		 *  @returns resource image
+		 *  @return  resource image
 		 *  @syntax  CoreMediaImageText->_createFromArgument( resource image, string text, string fontfile [, int textsize [, int X [, int Y [, string color [, string backgroundcolor [, bool antialias [, float angle ] ] ] ] ] ] ] )
 		 *  @see     create
 		 */
@@ -258,7 +258,7 @@
 		 *  @access  protected
 		 *  @param   string  property
 		 *  @param   string  default (optional, default null)
-		 *  @returns mixed property value
+		 *  @return  mixed property value
 		 *  @syntax  CoreMediaImageText->_getStyle( string property [, mixed default ] )
 		 */
 		protected function _getStyle( $sProperty, $mDefault=null )

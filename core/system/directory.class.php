@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreSystemDirectory
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreSystemDirectory
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreSystemDirectory extends Konsolidate
 	{
@@ -33,7 +33,7 @@
 		 *  @access  public
 		 *  @param   string path
 		 *  @param   oct    mode [optional, default 0777]
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreSystemDirectory->create( string path [, oct mode ] );
 		 */
 		public function create( $sPath, $nMode=0777 )
@@ -48,7 +48,7 @@
 		 *  @access  public
 		 *  @param   string path
 		 *  @param   bool   prependpath [optional, default true]
-		 *  @returns array
+		 *  @return  array
 		 *  @syntax  array CoreSystemDirectory->getList( string path [, bool prependpath ] );
 		 */
 		public function getList( $sPath, $bPrependPath=true )

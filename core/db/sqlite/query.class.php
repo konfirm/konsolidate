@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreDBSQLiteQuery
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreDBSQLiteQuery
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreDBSQLiteQuery extends Konsolidate
 	{
@@ -57,7 +57,7 @@
 		 *  @access  public
 		 *  @param   string   query
 		 *  @param   resource connection
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  void CoreDBSQLiteQuery->execute( string query, resource connection )
 		 */
 		public function execute( $sQuery, &$rConnection )
@@ -84,7 +84,7 @@
 		 *  @name    rewind
 		 *  @type    method
 		 *  @access  public
-		 *  @returns bool success
+		 *  @return  bool success
 		 *  @syntax  bool CoreDBSQLiteQuery->rewind()
 		 */
 		public function rewind()
@@ -99,7 +99,7 @@
 		 *  @name    next
 		 *  @type    method
 		 *  @access  public
-		 *  @returns object resultrow
+		 *  @return  object resultrow
 		 *  @syntax  object CoreDBSQLiteQuery->next()
 		 */
 		public function next()
@@ -114,7 +114,7 @@
 		 *  @name    lastInsertID
 		 *  @type    method
 		 *  @access  public
-		 *  @returns int id
+		 *  @return  int id
 		 *  @syntax  int CoreDBSQLiteQuery->lastInsertID()
 		 */
 		public function lastInsertID()
@@ -127,7 +127,7 @@
 		 *  @name    lastInsertID
 		 *  @type    method
 		 *  @access  public
-		 *  @returns int id
+		 *  @return  int id
 		 *  @syntax  int CoreDBSQLiteQuery->lastId()
 		 *  @note    alias for lastInsertID
 		 *  @see     lastInsertID
@@ -142,7 +142,7 @@
 		 *  @name    fetchAll
 		 *  @type    method
 		 *  @access  public
-		 *  @returns array result
+		 *  @return  array result
 		 *  @syntax  array CoreDBSQLiteQuery->fetchAll()
 		 */
 		public function fetchAll()

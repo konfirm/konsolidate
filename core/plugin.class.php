@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CorePlugin
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CorePlugin
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CorePlugin extends Konsolidate
 	{
@@ -33,7 +33,7 @@
 		 *  @access  public
 		 *  @param   string modulename
 		 *  @param   object module
-		 *  @returns object
+		 *  @return  object
 		 *  @syntax  Object->hook( string modulename, object module );
 		 */
 		public function hook( $sModule, &$oModule )
@@ -51,7 +51,7 @@
 		 *  @param   mixed  class argument1
 		 *  @param   mixed  class argument2
 		 *  @param   mixed  class argument...
-		 *  @returns object
+		 *  @return  object
 		 *  @syntax  Object->create( string modulename, object module );
 		 *  @note    You can provide as many arguments as needed to construct the class
 		 */

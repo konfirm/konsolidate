@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreRPCControlMaintenance
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreRPCControlMaintenance
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 *  @note    By design, all RPC calls will have to be exposed (activated) 'manually' in your project
 	 */
 	class CoreRPCControlMaintenance extends Konsolidate implements CoreRPCControlInterface
@@ -39,7 +39,7 @@
 		 *  @name    getMessage
 		 *  @type    method
 		 *  @access  public
-		 *  @returns string
+		 *  @return  string
 		 *  @syntax  string CoreRPCControlMaintenance->getMessage()
 		 *  @note    This method is required by the interface
 		 */
@@ -53,7 +53,7 @@
 		 *  @name    getContent
 		 *  @type    method
 		 *  @access  public
-		 *  @returns mixed
+		 *  @return  mixed
 		 *  @syntax  mixed CoreRPCControlMaintenance->getContent()
 		 *  @note    This method is required by the interface
 		 */
@@ -67,7 +67,7 @@
 		 *  @name    getStatus
 		 *  @type    method
 		 *  @access  public
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreRPCControlMaintenance->getStatus()
 		 *  @note    This method is required by the interface
 		 */
@@ -84,7 +84,7 @@
 		 *  @name    _loadRequest
 		 *  @type    method
 		 *  @access  protected
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  void CoreRPCControlMaintenance->_loadRequest()
 		 */
 		protected function loadRequest()
@@ -99,7 +99,7 @@
 		 *  @type    method
 		 *  @access  protected
 		 *  @param   string path
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreRPCControlMaintenance->_recursiveUnlink( string path )
 		 */
 		protected function _recursiveUnlink( $sPath )
@@ -130,7 +130,7 @@
 		 *  @name    clearCache
 		 *  @type    method
 		 *  @access  public
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  void CoreRPCControlMaintenance->clearCache()
 		 */
 		public function clearCache()

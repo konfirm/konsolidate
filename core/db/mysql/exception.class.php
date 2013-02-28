@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreDBMySQLException
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreDBMySQLException
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreDBMySQLException extends Exception
 	{
@@ -48,7 +48,7 @@
 		 *  @type    constructor
 		 *  @access  public
 		 *  @param   resource connection
-		 *  @returns object
+		 *  @return  object
 		 *  @syntax  object = &new CoreDBMySQLException( resource connection )
 		 *  @note    This object is constructed by CoreDBMySQL as 'status report'
 		 */

@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreSystemFile
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreSystemFile
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreSystemFile extends Konsolidate
 	{
@@ -34,7 +34,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string filename
-		 *  @returns string file contents (bool false on error)
+		 *  @return  string file contents (bool false on error)
 		 *  @syntax  bool [object]->read( string filename )
 		 */
 		public static function read( $sFile )
@@ -51,7 +51,7 @@
 		 *  @access  public
 		 *  @param   string filename
 		 *  @param   string data
-		 *  @returns bool success
+		 *  @return  bool success
 		 *  @syntax  bool [object]->write( string filename, string data )
 		 */
 		public static function write( $sFile, $sData )
@@ -66,7 +66,7 @@
 		 *  @access  public
 		 *  @param   string filename
 		 *  @param   number mode
-		 *  @returns bool success
+		 *  @return  bool success
 		 *  @syntax  bool [object]->mode( string file, number mode )
 		 *  @note    mode needs be an octal number, eg 0777
 		 */
@@ -81,7 +81,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string filename
-		 *  @returns bool success
+		 *  @return  bool success
 		 *  @syntax  bool [object]->unlink( string filename )
 		 */
 		public static function unlink( $sFile )
@@ -95,7 +95,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string filename
-		 *  @returns bool success
+		 *  @return  bool success
 		 *  @syntax  bool [object]->delete( string filename )
 		 *  @see     unlink
 		 *  @note    an alias method for unlink
@@ -113,7 +113,7 @@
 		 *  @param   string filename
 		 *  @param   string newfilename
 		 *  @param   bool   force (optional, default false)
-		 *  @returns bool success
+		 *  @return  bool success
 		 *  @syntax  bool [object]->rename( string filename, string newfilename [, bool force ] )
 		 */
 		public static function rename( $sFile, $sNewFile, $bForce=false )
@@ -134,7 +134,7 @@
 		 *  @access  public
 		 *  @param   string filename
 		 *  @param   string mode (optional, default "r" (read access))
-		 *  @returns bool success
+		 *  @return  bool success
 		 *  @syntax  bool [object]->open( string filename [, string mode ] );
 		 *  @note    Warning: Since you cannot know if your code is the only code currently accessing any file
 		 *           you can best create a unique instance to use this method, obtained through: [KonsolidateObject]->instance( "/System/File" );
@@ -151,7 +151,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   mixed  int length [optional, default 4096 bytes], or string property
-		 *  @returns mixed  data
+		 *  @return  mixed  data
 		 *  @syntax  string [object]->get( [ int bytes ] );
 		 *           mixed  [object]->get( string property );
 		 *  @note    If a string property is provided, the property value is returned, otherwise the next line of the opened file is returned.
@@ -180,7 +180,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string data
-		 *  @returns bool success
+		 *  @return  bool success
 		 *  @syntax  bool [object]->put( string data );
 		 *  @note    Warning: Since you cannot know if your code is the only code currently accessing any file
 		 *           you can best create a unique instance to use this method, obtained through: [KonsolidateObject]->instance( "/System/File" );
@@ -197,7 +197,7 @@
 		 *  @name    next
 		 *  @type    method
 		 *  @access  public
-		 *  @returns string data
+		 *  @return  string data
 		 *  @syntax  string [object]->next();
 		 *  @see     get
 		 *  @note    Alias of get, relying on the default amount of bytes
@@ -214,7 +214,7 @@
 		 *  @name    close
 		 *  @type    method
 		 *  @access  public
-		 *  @returns bool success
+		 *  @return  bool success
 		 *  @syntax  bool [object]->close
 		 *  @note    Warning: Since you cannot know if your code is the only code currently accessing any file
 		 *           you can best create a unique instance to use this method, obtained through: [KonsolidateObject]->instance( "/System/File" );
@@ -231,7 +231,7 @@
 		 *  @name    getFilePointer
 		 *  @type    method
 		 *  @access  public
-		 *  @returns resource filepointer
+		 *  @return  resource filepointer
 		 *  @syntax  resource [object]->getFilePointer()
 		 *  @note    Warning: Since you cannot know if your code is the only code currently accessing any file
 		 *           you can best create a unique instance to use this method, obtained through: [KonsolidateObject]->instance( "/System/File" );
@@ -248,7 +248,7 @@
 		 *  @name    __destruct
 		 *  @type    method
 		 *  @access  public
-		 *  @returns void
+		 *  @return  void
 		 */
 		public function __destruct()
 		{

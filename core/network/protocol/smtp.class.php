@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreNetworkProtocolSMTP
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreNetworkProtocolSMTP
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreNetworkProtocolSMTP extends Konsolidate
 	{
@@ -67,7 +67,7 @@
 		 *  @type    constructor
 		 *  @access  public
 		 *  @param   object parent object
-		 *  @returns object
+		 *  @return  object
 		 *  @syntax  object = &new CoreNetworkProtocolSMTP( object parent )
 		 *  @note    This object is constructed by one of Konsolidates modules
 		 */
@@ -95,7 +95,7 @@
 		 *  @access  public
 		 *  @param   string headername
 		 *  @param   string headervalue
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  void CoreNetworkProtocolSMTP->addHeader( string headername, string headervalue )
 		 */
 		public function addHeader( $sKey, $sValue )
@@ -111,7 +111,7 @@
 		 *  @param   string hostname     [optional, default 'localhost']
 		 *  @param   int    portnumber   [optional, default 25]
 		 *  @param   int    timeout (ms) [optional, default 30]
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  void CoreNetworkProtocolSMTP->connect( [ string hostname [, int portnumber [, int timeout ] ] ] )
 		 */
 		public function connect( $sHost="localhost", $nPort=25, $nTimeout=30 )
@@ -130,7 +130,7 @@
 		 *  @name    _getResponseStatus
 		 *  @type    method
 		 *  @access  protected
-		 *  @returns int statuscode
+		 *  @return  int statuscode
 		 *  @syntax  void CoreNetworkProtocolSMTP->_getReponseStatus()
 		 */
 		protected function _getResponseStatus()
@@ -144,7 +144,7 @@
 		 *  @name    _createRecipientList
 		 *  @type    method
 		 *  @access  protected
-		 *  @returns string
+		 *  @return  string
 		 */
 		protected function _createRecipientList( $aCollection )
 		{
@@ -160,7 +160,7 @@
 		 *  @type    method
 		 *  @access  protected
 		 *  @param   string command
-		 *  @returns mixed      int statuscode or bool if failed
+		 *  @return  mixed      int statuscode or bool if failed
 		 *  @syntax  void CoreNetworkProtocolSMTP->_command( string command )
 		 */
 		protected function _command( $sCommand )
@@ -180,7 +180,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string domain [optional, default $_SERVER[ 'SERVER_NAME' ] or $this->server]
-		 *  @returns bool success
+		 *  @return  bool success
 		 *  @syntax  void CoreNetworkProtocolSMTP->helo( [ string domain ] )
 		 *  @note    use the status/message properties for reporting/checking/logging
 		 */
@@ -198,7 +198,7 @@
 		 *  @access  public
 		 *  @param   string senderemail
 		 *  @param   string sendername [optional, omitted if empty]
-		 *  @returns bool success
+		 *  @return  bool success
 		 *  @syntax  void CoreNetworkProtocolSMTP->mailFrom( string email [, string name ] )
 		 *  @note    use the status/message properties for reporting/checking/logging
 		 */
@@ -215,7 +215,7 @@
 		 *  @access  public
 		 *  @param   string recipientemail
 		 *  @param   string recipientname [optional, omitted if empty]
-		 *  @returns bool success
+		 *  @return  bool success
 		 *  @syntax  void CoreNetworkProtocolSMTP->rcptTo( string email [, string name ] )
 		 *  @note    use the status/message properties for reporting/checking/logging
 		 */
@@ -234,7 +234,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string recipientemail
-		 *  @returns bool success
+		 *  @return  bool success
 		 *  @syntax  void CoreNetworkProtocolSMTP->vrfy( string email )
 		 *  @note    use the status/message properties for reporting/checking/logging
 		 *           Don't rely on this method!
@@ -253,7 +253,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string data
-		 *  @returns bool success
+		 *  @return  bool success
 		 *  @syntax  void CoreNetworkProtocolSMTP->data( string data )
 		 *  @note    use the status/message properties for reporting/checking/logging
 		 */
@@ -279,7 +279,7 @@
 		 *  @name    data
 		 *  @type    method
 		 *  @access  public
-		 *  @returns bool success
+		 *  @return  bool success
 		 *  @syntax  void CoreNetworkProtocolSMTP->quit()
 		 *  @note    use the status/message properties for reporting/checking/logging
 		 */
@@ -297,7 +297,7 @@
 		 *  @access  public
 		 *  @param   string email
 		 *  @param   bool   useVRFY [optional, default false]
-		 *  @returns bool success
+		 *  @return  bool success
 		 *  @syntax  void CoreNetworkProtocolSMTP->verify( string email [, bool useVRFY ] )
 		 *  @see     vrfy
 		 */
@@ -323,7 +323,7 @@
 		 *  @name    send
 		 *  @type    method
 		 *  @access  public
-		 *  @returns bool success
+		 *  @return  bool success
 		 *  @syntax  void CoreNetworkProtocolSMTP->send()
 		 *  @note    use the status/message properties for reporting/checking/logging
 		 */
@@ -375,7 +375,7 @@
 		 *  @access  protected
 		 *  @param   string A
 		 *  @param   string B
-		 *  @returns int  order
+		 *  @return  int  order
 		 *  @syntax  void CoreNetworkProtocolSMTP->_headerSort( string A, string B )
 		 *  @note    used as array sort function
 		 */

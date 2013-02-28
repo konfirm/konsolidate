@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreDB
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreDB
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreDB extends Konsolidate
 	{
@@ -48,7 +48,7 @@
 		 *  @type    constructor
 		 *  @access  public
 		 *  @param   object parent object
-		 *  @returns object
+		 *  @return  object
 		 *  @syntax  object = &new CoreDB( object parent )
 		 *  @note    This object is constructed by one of Konsolidates modules
 		 */
@@ -67,7 +67,7 @@
 		 *  @access  public
 		 *  @param   string connection reference
 		 *  @param   string connection URI
-		 *  @returns bool
+		 *  @return  bool
 		 *  @note    the URI is formatted like: scheme://user:pass@host[:port]/database
 		 *           providing an unique reference provides you to ability to use more than one connection
 		 */
@@ -92,7 +92,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string connection reference
-		 *  @returns string reference
+		 *  @return  string reference
 		 *  @note    By default the first connection will be the default connection, a call to the setDefaultConnection 
 		 *           is only required if you want to change this behaviour
 		 */
@@ -109,7 +109,7 @@
 		 *  @name    connect
 		 *  @type    method
 		 *  @access  public
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  connect();
 		 */
 		public function connect()
@@ -125,7 +125,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string reference
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  isConnected( string reference );
 		 */
 		public function isConnected()
@@ -141,7 +141,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string reference (optional, default only the connection marked as 'default')
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  disconnect( [ string reference ] );
 		 */
 		public function disconnect( $sReference=false )
@@ -169,7 +169,7 @@
 		 *  @access  public
 		 *  @param   string SQL-query
 		 *  @param   bool   use cache (optional, default true)
-		 *  @returns ResultObject
+		 *  @return  ResultObject
 		 *  @syntax  query( string SQL [, string reference [, bool cache ] ] );
 		 *  @note    the optional cache is per pageview and in memory only, it merely prevents 
 		 *           executing the exact same query over and over again
@@ -188,7 +188,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string module/connection
-		 *  @returns Object
+		 *  @return  Object
 		 *  @note    this method is an override to Konsolidates default behaviour
 		 */
 		public function register( $sModule )

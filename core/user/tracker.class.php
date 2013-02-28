@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreUserTracker
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreUserTracker
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreUserTracker extends Konsolidate
 	{
@@ -50,7 +50,7 @@
 		 *  @name    load
 		 *  @type    method
 		 *  @access  public
-		 *  @returns int  tracker id
+		 *  @return  int  tracker id
 		 *  @syntax  int CoreUserTracker->load();
 		 *  @note    The visitor is loaded from the cookie data set by the create method, if there was no cookie found, a new visitor id/code will be created
 		 *           Should the create call return false, a total of 5 attempts will be done to try to make sure a new visitor can be created
@@ -76,7 +76,7 @@
 		 *  @name    loadFromCookie
 		 *  @type    method
 		 *  @access  public
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreUserTracker->loadFromCookie();
 		 */
 		public function loadFromCookie()
@@ -109,7 +109,7 @@
 		 *  @name    create
 		 *  @type    method
 		 *  @access  public
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreUserTracker->create();
 		 */
 		function create()
@@ -130,7 +130,7 @@
 		 *  @name    storeCookie
 		 *  @type    method
 		 *  @access  public
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreUserTracker->storeCookie();
 		 */
 		public function updateVisit()
@@ -149,7 +149,7 @@
 		 *  @name    storeCookie
 		 *  @type    method
 		 *  @access  public
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreUserTracker->storeCookie();
 		 *  @note    Providing a value other than the default for 'autologin' only applies within 
 		 *           the current script execution scope! When entering a new page (script execution) 
@@ -175,7 +175,7 @@
 		 *  @name    createCode
 		 *  @type    method
 		 *  @access  public
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreUserTracker->createCode();
 		 */
 		public function createCode()
@@ -197,7 +197,7 @@
 		 *  @access  public
 		 *  @param   string  code
 		 *  @param   bool    autologin [optional, default true]
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreUserTracker->login( string code [, bool autologin ] );
 		 *  @note    Providing a value other than the default for 'autologin' only applies within 
 		 *           the current script execution scope! When entering a new page (script execution) 
@@ -222,7 +222,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   integer   timestamp before which the unused records will be removed [optional, defaults to a week before now]
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreUserTracker->removeUnregisteredVisitors( [ int createdbefore ]);
 		 */
 		public function removeUnregisteredTrackers( $nCreatedBeforeTS=false )

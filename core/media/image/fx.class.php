@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreMediaImageFX
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreMediaImageFX
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreMediaImageFX extends Konsolidate
 	{
@@ -33,7 +33,7 @@
 		 *  @access  public
 		 *  @param   resource image (or null to create a new image)
 		 *  @param   integer  amount (optional, default 1)
-		 *  @returns resource image
+		 *  @return  resource image
 		 *  @syntax  Object->blur( resource image, int amount )
 		 */
 		public function blur( $mImage, $nAmount=1 )
@@ -95,7 +95,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   resource image (or null to create a new image)
-		 *  @returns resource image
+		 *  @return  resource image
 		 *  @syntax  Object->invert( resource image )
 		 */
 		public function invert( $mImage )
@@ -134,7 +134,7 @@
 		 *  @access  public
 		 *  @param   resource image (or null to create a new image)
 		 *  @param   bool     correct for the human eye
-		 *  @returns resource image
+		 *  @return  resource image
 		 *  @syntax  Object->greyscale( resource image [, bool humaneye correction ] )
 		 */
 		public function greyscale( $mImage, $bHumanEyeCorrection=false )
