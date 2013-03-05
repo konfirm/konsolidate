@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreLanguage
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreLanguage
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreLanguage extends Konsolidate
 	{
@@ -48,7 +48,7 @@
 		 *  @type    constructor
 		 *  @access  public
 		 *  @param   object parent object
-		 *  @returns object
+		 *  @return  object
 		 *  @syntax  object = &new CoreLanguage( object parent )
 		 *  @note    This object is constructed by one of Konsolidates modules
 		 */
@@ -64,7 +64,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string locale
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  void CoreLanguage->setLocale( string locale )
 		 */
 		public function setLocale( $sLocale )
@@ -77,7 +77,7 @@
 		 *  @name    getLocale
 		 *  @type    method
 		 *  @access  public
-		 *  @returns string locale
+		 *  @return  string locale
 		 *  @syntax  string CoreLanguage->getLocale()
 		 */
 		public function getLocale()
@@ -91,7 +91,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string engine
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreLanguage->setEngine( string engine )
 		 */
 		public function setEngine( $sEngine )
@@ -112,7 +112,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string phrase
-		 *  @returns string translation
+		 *  @return  string translation
 		 *  @syntax  string CoreLanguage->translate( string phrase )
 		 */
 		public function translate( $sPhrase )

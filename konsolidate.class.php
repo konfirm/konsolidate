@@ -4,12 +4,12 @@
 	 *            ________ ___
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \
-	 *     /           /\      /      http://www.konsolidate.net
-	 *    /___     ___/  \    /
-	 *    \  /   /\   \  /    \
-	 *     \/___/  \___\/      \
-	 *      \   \  /\   \  /\  /
-	 *       \___\/  \___\/  \/
+	 *     /           /\      /      http://www.konsolidate.nl
+	 *    /___     ___/  \    /       
+	 *    \  /   /\   \  /    \       
+	 *     \/___/  \___\/      \      
+	 *      \   \  /\   \  /\  /      
+	 *       \___\/  \___\/  \/       
 	 *         \          \  /        $Rev$
 	 *          \___    ___\/         $Author$
 	 *              \   \  /          $Date$
@@ -18,7 +18,7 @@
 	 *  The konsolidate class, which acts as the 'one ring' being responsible for the proper inner workings of the Konsolidate framework/library/foundation
 	 *  @name   Konsolidate
 	 *  @type   class
-	 *  @author Rogier Spieker <rogier@konsolidate.net>
+	 *  @author Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class Konsolidate implements Iterator
 	{
@@ -100,7 +100,7 @@
 		 *  @type    constructor
 		 *  @access  public
 		 *  @param   array   array with the paths to load the modules from (the order of the paths is the order in which to look up modules)
-		 *  @returns object
+		 *  @return  object
 		 *  @syntax  object = new Konsolidate( array path )
 		 *  @note    The syntax described is the syntax the implementor of Konsolidate should use, all childnodes constructed by Konsolidate
 		 *           are handled by the internals of Konsolidate.
@@ -137,7 +137,7 @@
 		 *  @access  public
 		 *  @param   string   path to the property to get
 		 *  @param   mixed    default return value (optional, default null)
-		 *  @returns mixed
+		 *  @return  mixed
 		 *  @syntax  Konsolidate->get( string module [, mixed default ] );
 		 *  @note    supplying a default value should be done per call, the default is never stored
 		 */
@@ -163,7 +163,7 @@
 		 *  @access  public
 		 *  @param   string   path to the property to set
 		 *  @param   mixed    value
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  Konsolidate->set( string module, mixed value );
 		 */
 		public function set()
@@ -194,7 +194,7 @@
 		 *  @access  public
 		 *  @param   string   path to the method to call
 		 *  @param   mixed    [optional] argument
-		 *  @returns mixed
+		 *  @return  mixed
 		 *  @syntax  Konsolidate->call( string module [, mixed argument [, mixed argument, [, ... ] ] ] );
 		 *  @note    One can supply as many arguments as needed
 		 */
@@ -236,7 +236,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string   modulename
-		 *  @returns object
+		 *  @return  object
 		 *  @syntax  Konsolidate->register( string module );
 		 *  @note    register only create a single (unique) instance and always returns the same instance
 		 *           use the instance method to create different instances of the same class
@@ -263,7 +263,7 @@
 		 *  @access  public
 		 *  @param   string   modulename
 		 *  @param   mixed    param N
-		 *  @returns object
+		 *  @return  object
 		 *  @syntax  Konsolidate->instance( string module [, mixed param1 [, mixed param2 [, mixed param N ] ] ] );
 		 *  @note    instance creates an instance every time you call it, if you require a single instance which
 		 *           is always returned, use the register method
@@ -335,7 +335,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string   filename
-		 *  @returns object
+		 *  @return  object
 		 *  @syntax  Konsolidate->import( string file );
 		 */
 		public function import( $sFile )
@@ -365,7 +365,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string   module
-		 *  @returns object
+		 *  @return  object
 		 *  @syntax  Konsolidate->checkModuleAvailability( string module );
 		 */
 		public function checkModuleAvailability( $sModule )
@@ -395,7 +395,7 @@
 		 *  @name    getRoot
 		 *  @type    method
 		 *  @access  public
-		 *  @returns mixed
+		 *  @return  mixed
 		 *  @syntax  Konsolidate->getRoot();
 		 */
 		public function getRoot()
@@ -410,7 +410,7 @@
 		 *  @name    getParent
 		 *  @type    method
 		 *  @access  public
-		 *  @returns mixed
+		 *  @return  mixed
 		 *  @syntax  Konsolidate->getParent();
 		 */
 		function getParent()
@@ -425,7 +425,7 @@
 		 *  @name    getFilePath
 		 *  @type    method
 		 *  @access  public
-		 *  @returns mixed
+		 *  @return  mixed
 		 *  @syntax  Konsolidate->getFilePath();
 		 */
 		public function getFilePath()
@@ -452,7 +452,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string  module path
-		 *  @returns mixed
+		 *  @return  mixed
 		 *  @syntax  Konsolidate->getModule( string path );
 		 */
 		public function getModule( $sCall )
@@ -542,7 +542,7 @@
 		 *  @access  public
 		 *  @param   string  message (option)
 		 *  @param   int     code (option)
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  Konsolidate->exception( [ string message [, int code ] ] );
 		 *  @note    Exception classes must be an extend of PHP's built-in Exception class, if the exception method is called and the calling module does not
 		 *           have an exception class, Konsolidate will generate one dynamically.
@@ -630,7 +630,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   mixed   arg N
-		 *  @returns mixed
+		 *  @return  mixed
 		 *  @syntax  Konsolidate( [ mixed arg N ] );
 		 *  @note    __invoke only works in PHP 5.3+
 		 *  @note    You can now effectively leave out the '->call' part when calling on methods, e.g. $oK( "/DB/query", "SHOW TABLES" ) instead of $oK->call( "/DB/query", "SHOW TABLES" );
@@ -653,7 +653,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string property
-		 *  @returns bool isset
+		 *  @return  bool isset
 		 *  @syntax  isset(Konsolidate->property), empty(Konsolidate->property);
 		 *  @note    __isset only works in PHP 5.1+
 		 */

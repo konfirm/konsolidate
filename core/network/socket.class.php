@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreNetworkSocket
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreNetworkSocket
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreNetworkSocket extends Konsolidate
 	{

@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreLog
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreLog
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreLog extends Konsolidate
 	{
@@ -50,7 +50,7 @@
 		 *  @type    constructor
 		 *  @access  public
 		 *  @param   object parent object
-		 *  @returns object
+		 *  @return  object
 		 *  @syntax  object = &new CoreLog( object parent )
 		 *  @note    This object is constructed by one of Konsolidates modules
 		 */
@@ -68,7 +68,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   int level (default matching error_reporting ini directive)
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  void CoreLog->setVerbosity( [int level] )
 		 */
 		public function setVerbosity( $nLevel=null )
@@ -85,7 +85,7 @@
 		 *  @access  public
 		 *  @param   string message
 		 *  @param   int    level
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreLog->message( string message [, int level ] )
 		 *  @note    Configuration options: display_errors (Config/Log/displayerrors), log_errors (Config/Log/logerrors)
 		 */
@@ -114,7 +114,7 @@
 		 *  @access  public
 		 *  @param   string message
 		 *  @param   int    level
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreLog->write( string message [, int level ] )
 		 *  @note    if there's any reason the message cannot be written to the logfile, the message is written into the default error.log
 		 */
@@ -139,7 +139,7 @@
 		 *  @access  protected
 		 *  @param   int    level
 		 *  @param   bool   uppercase (default true)
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreLog->_translate( int level [, bool uppercase ] )
 		 */
 		protected function _translate( $nVerbosity, $bUpperCase=true )
@@ -161,7 +161,7 @@
 		 *  @name    _determineVerbosity
 		 *  @type    method
 		 *  @access  protected
-		 *  @returns int  level
+		 *  @return  int  level
 		 *  @syntax  bool CoreLog->_determineVerbosity()
 		 */
 		protected function _determineVerbosity()
@@ -189,7 +189,7 @@
 		 *  @param   string message
 		 *  @param   int    level
 		 *  @param   bool   html
-		 *  @returns int  level
+		 *  @return  int  level
 		 *  @syntax  bool CoreLog->_formatMessage( string message, int level [, bool html ] )
 		 */
 		protected function _formatMessage( $sMessage, $nVerbosity, $bHTML=false )

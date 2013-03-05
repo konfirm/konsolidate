@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreRPCStatus
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreRPCStatus
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreRPCStatus extends Konsolidate
 	{
@@ -34,7 +34,7 @@
 		 *  @type    method
 		 *  @access  protected
 		 *  @param   string value
-		 *  @returns string
+		 *  @return  string
 		 *  @syntax  Object->_cdata( string value );
 		 */
 		protected function _cdata( $sValue )
@@ -50,7 +50,7 @@
 		 *  @type    method
 		 *  @access  protected
 		 *  @param   array source
-		 *  @returns string
+		 *  @return  string
 		 *  @syntax  Object->_flattenArray( array source );
 		 */
 		protected function _flattenArray( $aSource, $sNumericKey="item" )
@@ -73,7 +73,7 @@
 		 *  @param   bool   error (true if reply should indicate an error)
 		 *  @param   string message [optional]
 		 *  @param   mixed  content (string or array containing additional info to send) [optional]
-		 *  @returns string
+		 *  @return  string
 		 *  @syntax  Object->fetch( bool error [, string message [, mixed content ] ] );
 		 */
 		public function fetch( $bError, $sMessage="", $mContent="" )
@@ -96,7 +96,7 @@
 		 *  @param   bool   error (true if reply should indicate an error)
 		 *  @param   string message [optional]
 		 *  @param   mixed  content (string or array containing additional info to send) [optional]
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  Object->send( bool error [, string message [, mixed content ] ] );
 		 */
 		public function send( $bError=true, $sMessage="", $mContent="" )

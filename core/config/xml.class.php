@@ -32,7 +32,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string  xml file
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  Object->load( string xmlfile )
 		 */
 		public function load( $sFile )
@@ -50,7 +50,7 @@
 		 *  @access  protected
 		 *  @param   object  node
 		 *  @param   string  xml file (optional, default null)
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  Object->_traverseXML( object node [, string path ] )
 		 */
 		protected function _traverseXML( $oNode, $sPath=null )

@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Interface:  CoreRPCControlInterface
 	 *     \/___/  \___\/      \      Tier:       Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreRPCControlInterface
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	interface CoreRPCControlInterface
 	{

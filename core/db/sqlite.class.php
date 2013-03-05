@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreDBSQLite
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreSQLite
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreDBSQLite extends Konsolidate
 	{
@@ -49,7 +49,7 @@
 		 *  @type    constructor
 		 *  @access  public
 		 *  @param   object parent object
-		 *  @returns object
+		 *  @return  object
 		 *  @syntax  object = &new CoreDBQLite( object parent )
 		 *  @note    This object is constructed by one of Konsolidates modules
 		 */
@@ -68,7 +68,7 @@
 		 *  @access  public
 		 *  @param   string DSN URI
 		 *  @param   bool   force new link [optional, default false]
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreDBSQLite->setConnection( string DSN [, bool newlink ] )
 		 */
 		public function setConnection( $sURI )
@@ -99,7 +99,7 @@
 		 *  @name    connect
 		 *  @type    method
 		 *  @access  public
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreDBSQLite->connect()
 		 *  @note    An explicit call to this method is not required, since the query method will create the connection if it isn't connected
 		 */
@@ -119,7 +119,7 @@
 		 *  @name    disconnect
 		 *  @type    method
 		 *  @access  public
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreDBSQLite->disconnct()
 		 */
 		public function disconnect()
@@ -134,7 +134,7 @@
 		 *  @name    isConnected
 		 *  @type    method
 		 *  @access  public
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreDBSQLite->isConnected()
 		 */
 		public function isConnected()
@@ -149,7 +149,7 @@
 		 *  @access  public
 		 *  @param   string query
 		 *  @paran   bool   usecache [optional, default true]
-		 *  @returns object result
+		 *  @return  object result
 		 *  @syntax  object CoreDBSQLite->query( string query [, bool usecache ] )
 		 */
 		public function query( $sQuery, $bUseCache=true )
@@ -178,7 +178,7 @@
 		 *  @name    lastInsertID
 		 *  @type    method
 		 *  @access  public
-		 *  @returns int id
+		 *  @return  int id
 		 *  @syntax  int CoreDBSQLiteQuery->lastInsertID()
 		 */
 		public function lastInsertID()
@@ -193,7 +193,7 @@
 		 *  @name    lastId
 		 *  @type    method
 		 *  @access  public
-		 *  @returns int id
+		 *  @return  int id
 		 *  @syntax  int CoreDBSQLiteQuery->lastId()
 		 *  @note    alias for lastInsertID
 		 *  @see     lastInsertID
@@ -209,7 +209,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string input
-		 *  @returns string escaped input
+		 *  @return  string escaped input
 		 *  @syntax  string CoreDBSQLiteQuery->escape( string input )
 		 */
 		public function escape( $sString )
@@ -223,7 +223,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string input
-		 *  @returns string quoted escaped input
+		 *  @return  string quoted escaped input
 		 *  @syntax  string CoreDBSQLiteQuery->quote( string input )
 		 */
 		public function quote( $sString )
@@ -237,7 +237,7 @@
 		 *  @type    method
 		 *  @access  protected
 		 *  @param   string query
-		 *  @returns bool   success
+		 *  @return  bool   success
 		 *  @syntax  bool CoreDBSQLiteQuery->_isCachableQuery( string query )
 		 */
 		public function _isCachableQuery( $sQuery )

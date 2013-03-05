@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreNetworkProtocolHTTP
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreNetworkProtocolHTTP
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 *  @todo    Make proper use of the CoreNetworkSocket class, cURL fallback (for ease and performance) and implement HTTPS support
 	 */
 	class CoreNetworkProtocolHTTP extends Konsolidate
@@ -98,7 +98,7 @@
 		 *  @type    constructor
 		 *  @access  public
 		 *  @param   object parent object
-		 *  @returns object
+		 *  @return  object
 		 *  @syntax  object = &new CoreNetHTTP( object parent )
 		 *  @note    This object is constructed by one of Konsolidates modules
 		 */

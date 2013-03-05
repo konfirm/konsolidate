@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreDBMySQLQuery
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreDBMySQLQuery
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreDBMySQLQuery extends Konsolidate
 	{
@@ -81,7 +81,7 @@
 		 *  @access  public
 		 *  @param   string   query
 		 *  @param   resource connection
-		 *  @returns void
+		 *  @return void
 		 *  @syntax  void CoreDBMySQLQuery->execute( string query, resource connection )
 		 */
 		public function execute( $sQuery, &$rConnection )
@@ -107,7 +107,7 @@
 		 *  @name    rewind
 		 *  @type    method
 		 *  @access  public
-		 *  @returns bool success
+		 *  @return  bool success
 		 *  @syntax  bool CoreDBMySQLQuery->rewind()
 		 */
 		public function rewind()
@@ -122,7 +122,7 @@
 		 *  @name    next
 		 *  @type    method
 		 *  @access  public
-		 *  @returns object resultrow
+		 *  @return  object resultrow
 		 *  @syntax  object CoreDBMySQLQuery->next()
 		 */
 		public function next()
@@ -137,7 +137,7 @@
 		 *  @name    lastInsertID
 		 *  @type    method
 		 *  @access  public
-		 *  @returns int id
+		 *  @return  int id
 		 *  @syntax  int CoreDBMySQLQuery->lastInsertID()
 		 */
 		public function lastInsertID()
@@ -150,7 +150,7 @@
 		 *  @name    lastId
 		 *  @type    method
 		 *  @access  public
-		 *  @returns int id
+		 *  @return  int id
 		 *  @syntax  int CoreDBMySQLQuery->lastId()
 		 *  @note    alias for lastInsertID
 		 *  @see     lastInsertID
@@ -165,7 +165,7 @@
 		 *  @name    fetchAll
 		 *  @type    method
 		 *  @access  public
-		 *  @returns array result
+		 *  @return  array result
 		 *  @syntax  array CoreDBMySQLQuery->fetchAll()
 		 */
 		public function fetchAll()

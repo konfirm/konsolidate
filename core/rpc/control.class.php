@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreRPCControl
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreRPCControl
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreRPCControl extends Konsolidate
 	{
@@ -34,7 +34,7 @@
 		 *  @param   bool   error during processing (optional, default true, we assume the worst)
 		 *  @param   string message to display (optional, default empty)
 		 *  @param   mixed  content, either a string with additional message, or an array containing arrays, strings or numbers (optional, default empty)
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  void CoreRPCControl->_feedback()
 		 */
 		protected function _feedback( $bError=true, $sMessage="", $mContent="" )
@@ -59,7 +59,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string command
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  void CoreRPCControl->process( string command )
 		 */
 		function process( $sCommand )

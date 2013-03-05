@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreTool
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreTool
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 *  @note    This class is always available as soon as Konsolidate (and its extends) is instanced (and the Core tier is available)
 	 */
 	class CoreTool extends Konsolidate
@@ -32,7 +32,7 @@
 		 *  @name    isPosted
 		 *  @type    method
 		 *  @access  public
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreTool::isPosted();
 		 */
 		public static function isPosted()
@@ -48,7 +48,7 @@
 		 *  @param   string key
 		 *  @param   array  collection
 		 *  @param   mixed  default [optional, default null]
-		 *  @returns mixed
+		 *  @return  mixed
 		 *  @syntax  mixed CoreTool::arrVal( string key, array collection [, mixed default ] );
 		 *  @note    you can swap key and collection (Haystack - Needle)
 		 */
@@ -67,7 +67,7 @@
 		 *  @param   string key
 		 *  @param   array  collection
 		 *  @param   mixed  default [optional, default null]
-		 *  @returns mixed
+		 *  @return  mixed
 		 *  @syntax  mixed CoreTool::arrayVal( string key, array collection [, mixed default ] );
 		 *  @see     arrVal
 		 */
@@ -83,7 +83,7 @@
 		 *  @access  public
 		 *  @param   string key
 		 *  @param   mixed  default [optional, default null]
-		 *  @returns mixed
+		 *  @return  mixed
 		 *  @syntax  mixed CoreTool::sesVal( string key [, mixed default ] );
 		 *  @note    This method works with PHP's built in sessions (_SESSION global), not CoreSession!
 		 */
@@ -99,7 +99,7 @@
 		 *  @access  public
 		 *  @param   string key
 		 *  @param   mixed  default [optional, default null]
-		 *  @returns mixed
+		 *  @return  mixed
 		 *  @syntax  mixed CoreTool::sessionVal( string key [, mixed default ] );
 		 *  @see     sesVal
 		 */
@@ -115,7 +115,7 @@
 		 *  @access  public
 		 *  @param   string key
 		 *  @param   mixed  default [optional, default null]
-		 *  @returns mixed
+		 *  @return  mixed
 		 *  @syntax  mixed CoreTool::cookieVal( string key [, mixed default ] );
 		 */
 		public static function cookieVal( $sKey, $mDefault=null )
@@ -130,7 +130,7 @@
 		 *  @access  public
 		 *  @param   string key
 		 *  @param   mixed  default [optional, default null]
-		 *  @returns mixed
+		 *  @return  mixed
 		 *  @syntax  mixed CoreTool::serverVal( string key [, mixed default ] );
 		 */
 		public static function serverVal( $sKey, $mDefault=null )
@@ -145,7 +145,7 @@
 		 *  @access  public
 		 *  @param   string key
 		 *  @param   mixed  default [optional, default null]
-		 *  @returns mixed
+		 *  @return  mixed
 		 *  @syntax  mixed CoreTool::envVal( string key [, mixed default ] );
 		 */
 		public static function envVal( $sKey, $mDefault=null )
@@ -160,7 +160,7 @@
 		 *  @access  public
 		 *  @param   string key
 		 *  @param   mixed  default [optional, default null]
-		 *  @returns mixed
+		 *  @return  mixed
 		 *  @syntax  mixed CoreTool::environmentVal( string key [, mixed default ] );
 		 *  @see     envVal
 		 */
@@ -177,7 +177,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   mixed  default [optional, default null]
-		 *  @returns mixed
+		 *  @return  mixed
 		 *  @syntax  mixed CoreTool::getIP( [ mixed default ] );
 		 */
 		public static function getIP( $mDefault="0.0.0.0" )
@@ -200,7 +200,7 @@
 		 *  @access  public
 		 *  @param   string URL
 		 *  @param   bool   stopscript
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  void CoreTool::redirect( string URL [, bool stopscript ] );
 		 *  @note    this method sends out both a META header and a JavaScript in case headers were already sent
 		 */
@@ -221,7 +221,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   int    timestamp [optional, default 946702800]
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  void CoreTool::expirePage( [ int timestamp ] );
 		 */
 		public static function expirePage( $nTimestamp=null )

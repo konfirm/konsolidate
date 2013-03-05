@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreTemplate
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreTemplate
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreTemplate extends Konsolidate
 	{
@@ -64,7 +64,7 @@
 		 *  @type    constructor
 		 *  @access  public
 		 *  @param   object parent object
-		 *  @returns object
+		 *  @return  object
 		 *  @syntax  object = &new CoreTemplate( object parent )
 		 *  @note    This object is constructed by one of Konsolidates modules
 		 */
@@ -85,7 +85,7 @@
 		 *  @param   string template
 		 *  @param   string reference [optional]
 		 *  @param   bool   force [optional]
-		 *  @returns string document
+		 *  @return  string document
 		 *  @syntax  Object->fetch( string template [, string reference [, bool force ] ] );
 		 */
 		public function fetch( $sTemplate, $sReference="", $bForce=false )
@@ -101,7 +101,7 @@
 		 *  @param   string template
 		 *  @param   string reference [optional]
 		 *  @param   bool   force [optional]
-		 *  @returns bool success
+		 *  @return  bool success
 		 *  @syntax  Object->display( string template [, string reference [, bool force ] ] );
 		 */
 		public function display( $sTemplate, $sReference="", $bForce=false )
@@ -116,7 +116,7 @@
 		 *  @access  public
 		 *  @param   mixed   either a variable name or an array with name=>value pairs
 		 *  @param   mixed   the value to set, ignored if 'variable' is an array [optional]
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  Object->append( mixed variable [, mixed value ] );
 		 */
 		public function append( $mVariable, $mValue=null )
@@ -180,7 +180,7 @@
 		 *  @param   mixed   either a variable name or an array with name=>value pairs
 		 *  @param   mixed   the value to set, ignored if 'variable' is an array [optional]
 		 *  @param   bool    should the variable overwrite or extend (append) existing values?
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  Object->set( mixed variable [, mixed value [, bool append ] ] );
 		 */
 		public function set()
@@ -204,7 +204,7 @@
 		 *  @access  public
 		 *  @param   string template
 		 *  @param   string reference [optional]
-		 *  @returns bool updated
+		 *  @return  bool updated
 		 *  @syntax  Object->isUpdated( string template [, string reference ] );
 		 */
 		public function isUpdated( $sTemplate, $sReference="" )
@@ -224,7 +224,7 @@
 		 *  @access  public
 		 *  @param   string template
 		 *  @param   string reference [optional]
-		 *  @returns bool compiled
+		 *  @return  bool compiled
 		 *  @syntax  Object->isCompiled( string template [, string reference ] );
 		 *  @see     isUpdated
 		 *  @note    This alias method exists to make switching from CoreTemplate to NiceTemplate (and vice versa) painless
@@ -243,7 +243,7 @@
 		 *  @param   string template
 		 *  @param   string reference [optional]
 		 *  @param   bool   force [optional]
-		 *  @returns string document
+		 *  @return  string document
 		 *  @syntax  Object->_compose( string template [, string reference [, bool force ] ] );
 		 */
 		protected function _compose( $sTemplate, $sReference="", $bForce=false )
@@ -298,7 +298,7 @@
 		 *  @access  protected
 		 *  @param   string filename
 		 *  @param   string content
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  Object->_storeCompilation( string cachefile, string content );
 		 */
 		protected function _storeCompilation( $sCacheFile, $sSource )
@@ -318,7 +318,7 @@
 		 *  @access  protected
 		 *  @param   string filename
 		 *  @param   string content
-		 *  @returns bool success
+		 *  @return  bool success
 		 *  @syntax  Object->_storeData( string file, string content );
 		 */
 		protected function _storeData( $sFile, $sContent )
@@ -333,7 +333,7 @@
 		 *  @access  protected
 		 *  @param   string template
 		 *  @param   string reference [optional]
-		 *  @returns string compiled name
+		 *  @return  string compiled name
 		 *  @syntax  Object->_getCompileName( string template [, string reference ] );
 		 */
 		protected function _getCompileName( $sTemplate, $sReference="" )
@@ -348,7 +348,7 @@
 		 *  @type    method
 		 *  @access  protected
 		 *  @param   string filename
-		 *  @returns number timestamp
+		 *  @return  number timestamp
 		 *  @syntax  Object->_getDependencyUpdateTime( string cachefile );
 		 */
 		protected function _getDependencyUpdateTime( $sCacheFile )
@@ -368,7 +368,7 @@
 		 *  @type    method
 		 *  @access  protected
 		 *  @param   string filename
-		 *  @returns number timestamp
+		 *  @return  number timestamp
 		 *  @syntax  Object->_getCompileUpdateTime( string cachefile );
 		 */
 		protected function _getCompileUpdateTime( $sCacheFile )

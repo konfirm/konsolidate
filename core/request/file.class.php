@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreRequestFile
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreRequestFile
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreRequestFile extends Konsolidate
 	{
@@ -33,7 +33,7 @@
 		 *  @access  public
 		 *  @param   string  destination
 		 *  @param   bool    safe name [optional, default true]
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  bool CoreRequestFile->move( string destination [, bool safename ] )
 		 */
 		public function move( $sDestination, $bSafeName=true )
@@ -67,7 +67,7 @@
 		 *  @access  public
 		 *  @param   string  property
 		 *  @param   mixed   value
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  bool CoreRequestFile->{string property} = mixed value;
 		 *  @note    some additional properties are automaticalaly added when certain properties are set.
 		 *           - 'error' also sets 'message', a string containing a more helpful error message.
@@ -106,7 +106,7 @@
 		 *  @type    method
 		 *  @access  protected
 		 *  @param   number  bytes
-		 *  @returns string  readable unit
+		 *  @return  string  readable unit
 		 *  @syntax  string CoreRequestFile->_bytesToLargestUnit( number bytes );
 		 */
 		protected function _bytesToLargestUnit( $nValue )
@@ -127,7 +127,7 @@
 		 *  @type    method
 		 *  @access  protected
 		 *  @param   int     error number
-		 *  @returns string  error message
+		 *  @return  string  error message
 		 *  @syntax  string CoreRequestFile->_getErrorMessage( int error );
 		 */
 		protected function _getErrorMessage( $nError )
