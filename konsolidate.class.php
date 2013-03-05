@@ -5,11 +5,11 @@
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \
 	 *     /           /\      /      http://www.konsolidate.nl
-	 *    /___     ___/  \    /       
-	 *    \  /   /\   \  /    \       
-	 *     \/___/  \___\/      \      
-	 *      \   \  /\   \  /\  /      
-	 *       \___\/  \___\/  \/       
+	 *    /___     ___/  \    /
+	 *    \  /   /\   \  /    \
+	 *     \/___/  \___\/      \
+	 *      \   \  /\   \  /\  /
+	 *       \___\/  \___\/  \/
 	 *         \          \  /        $Rev$
 	 *          \___    ___\/         $Author$
 	 *              \   \  /          $Date$
@@ -374,7 +374,7 @@
 			$sClass  = get_class($this);
 
 			//  lookahead to submodules
-			if (!isset($this::$_modulecheck[$sClass]))
+			if (!isset(self::$_modulecheck[$sClass]))
 				$this->_indexModuleAvailability();
 
 			//  if we are dealing with a submodule pattern which is not in our cache by default, test for it
@@ -382,11 +382,11 @@
 				foreach ( $this->_path as $sMod=>$sPath )
 					if ( realpath( "{$sPath}/{$sModule}.class.php" ) || realpath( "{$sPath}/{$sModule}" ) )
 					{
-						$this::$_modulecheck[$sClass][$sModule] = true;
+						self::$_modulecheck[$sClass][$sModule] = true;
 						break;
 					}
 
-			return isset($this::$_modulecheck[$sClass][$sModule]) ? $this::$_modulecheck[$sClass][$sModule] : false;
+			return isset(self::$_modulecheck[$sClass][$sModule]) ? self::$_modulecheck[$sClass][$sModule] : false;
 		}
 
 
@@ -727,18 +727,18 @@
 		 */
 		protected function _indexModuleAvailability()
 		{
-			if (!is_array($this::$_modulecheck))
-				$this::$_modulecheck = Array();
+			if (!is_array(self::$_modulecheck))
+				self::$_modulecheck = Array();
 
 			$class = get_class($this);
-			if (!isset($this::$_modulecheck[$class]))
+			if (!isset(self::$_modulecheck[$class]))
 			{
 				$list = Array();
 				if (is_array($this->_path))
 					foreach ($this->_path as $tier=>$path)
 						foreach (glob($path . '/*') as $item)
 							$list[strtolower(basename($item, '.class.php'))] = true;
-				$this::$_modulecheck[$class] = $list;
+				self::$_modulecheck[$class] = $list;
 			}
 		}
 	}
