@@ -35,7 +35,7 @@
 		public $reference;
 		public $package;
 	 	public $author;
-		public $returns;
+		public $return;
 		public $description;
 		public $note;
 
@@ -63,7 +63,7 @@
 			$this->reference   = Array();
 			$this->package     = "";
 			$this->author      = Array();
-			$this->returns     = "";
+			$this->return     = "";
 			$this->description = "";
 			$this->note        = "";
 		}
@@ -93,7 +93,7 @@
 				case "@SYNTAX":
 				case "@REFERENCE":
 				case "@PACKAGE":
-				case "@return ":
+				case "@RETURN":
 				case "@NOTE":
 				case "@ALIAS":
 				case "@SEE":
