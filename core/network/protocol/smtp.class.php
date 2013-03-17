@@ -1,19 +1,19 @@
 <?php
 
 	/*
-	 *            ________ ___        
+	 *            ________ ___
 	 *           /   /   /\  /\       Konsolidate
-	 *      ____/   /___/  \/  \      
+	 *      ____/   /___/  \/  \
 	 *     /           /\      /      http://www.konsolidate.nl
-	 *    /___     ___/  \    /       
+	 *    /___     ___/  \    /
 	 *    \  /   /\   \  /    \       Class:  CoreNetworkProtocolSMTP
 	 *     \/___/  \___\/      \      Tier:   Core
 	 *      \   \  /\   \  /\  /      Module: Network/Protocol/SMTP
-	 *       \___\/  \___\/  \/       
+	 *       \___\/  \___\/  \/
 	 *         \          \  /        $Rev$
 	 *          \___    ___\/         $Author$
 	 *              \   \  /          $Date$
-	 *               \___\/           
+	 *               \___\/
 	 */
 
 
@@ -175,20 +175,43 @@
 //		  NOTE: RFC 821 only partially implemented!!
 
 		/**
+		 *  Send the 'AUTH LOGIN' command to the server, triggering the authentication flow
+		 *  @name    authLogin
+		 *  @type    method
+		 *  @access  public
+		 *  @param   string username
+		 *  @param   string password
+		 *  @returns bool success
+		 *  @syntax  void CoreNetworkProtocolSMTP->authLogin(string username, string password)
+		 *  @note    use the status/message properties for reporting/checking/logging
+		 */
+		public function authLogin( $sUsername, $sPassword )
+		{
+			$nResponse = $this->_command("AUTH LOGIN");
+			if ( $nResponse == 334 )
+				$nResponse = $this->_command( base64_encode( $sUsername ) );
+
+			if ( $nResponse == 334 )
+				return $this->_command( base64_encode( $sPassword ) ) == 235;
+
+			return false;
+		}
+
+		/**
 		 *  Send 'HELO'/'EHLO' (handshake) command to the SMTP server
 		 *  @name    helo
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string domain [optional, default $_SERVER[ 'SERVER_NAME' ] or $this->server]
-		 *  @return  bool success
-		 *  @syntax  void CoreNetworkProtocolSMTP->helo( [ string domain ] )
+		 *  @returns bool success
+		 *  @syntax  void CoreNetworkProtocolSMTP->helo( [ string domain, [ bool enfore EHLO ] ] )
 		 *  @note    use the status/message properties for reporting/checking/logging
 		 */
-		public function helo( $sDomain=null )
+		public function helo( $sDomain=null, $bEHLO=false )
 		{
 			if ( empty( $sDomain ) )
 				$sDomain = CoreTool::arrVal( "SERVER_NAME", $_SERVER, $this->server );
-			return ( $this->_command( "HELO {$sDomain}" ) == 250 || $this->_command( "EHLO {$sDomain}" ) == 250 );
+			return ( ( !$bEHLO && $this->_command( "HELO {$sDomain}" ) == 250 ) || $this->_command( "EHLO {$sDomain}" ) == 250 );
 		}
 
 		/**
@@ -226,7 +249,7 @@
 			foreach( $aCollection as $sEmail=>$sName )
 				$bReturn &= $this->_command( "RCPT TO: {$sEmail}" ) == 250;
 			return $bReturn;
-		} 
+		}
 
 		/**
 		 *  Send 'VRFY' (verify) command to the SMTP server
@@ -238,7 +261,7 @@
 		 *  @syntax  void CoreNetworkProtocolSMTP->vrfy( string email )
 		 *  @note    use the status/message properties for reporting/checking/logging
 		 *           Don't rely on this method!
-		 *           Most mailservers have disabled the VRFY command for it was used by spammers to build lists of valid addresses, 
+		 *           Most mailservers have disabled the VRFY command for it was used by spammers to build lists of valid addresses,
 		 *           even if it is enabled, be prepared for it to accept everything you fire at it (catch-all).
 		 */
 		public function vrfy( $sEmail )
@@ -323,11 +346,13 @@
 		 *  @name    send
 		 *  @type    method
 		 *  @access  public
+		 *  @param   string username (optional)
+		 *  @param   string password (optional)
 		 *  @return  bool success
 		 *  @syntax  void CoreNetworkProtocolSMTP->send()
 		 *  @note    use the status/message properties for reporting/checking/logging
 		 */
-		public function send()
+		public function send( $sUsername=null, $sPassword=null )
 		{
 			foreach( $this->_property as $sKey=>$mValue )
 				if ( !in_array( strToLower( $sKey ), $this->_noautoheader ) )
@@ -349,7 +374,10 @@
 			if ( !$this->connect( $this->server, $this->port ) )
 				return false;
 
-			if ( !$this->helo( $this->domain ) )
+			if ( !$this->helo( $this->domain, $sUsername && $sPassword ) )
+				return false;
+
+			if ( $sUsername && $sPassword && !$this->authLogin( $sUsername, $sPassword ) )
 				return false;
 
 			if ( !$this->mailFrom( $this->from, $this->sender ) )

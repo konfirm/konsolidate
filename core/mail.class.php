@@ -1,19 +1,19 @@
 <?php
 
 	/*
-	 *            ________ ___        
+	 *            ________ ___
 	 *           /   /   /\  /\       Konsolidate
-	 *      ____/   /___/  \/  \      
+	 *      ____/   /___/  \/  \
 	 *     /           /\      /      http://www.konsolidate.nl
-	 *    /___     ___/  \    /       
+	 *    /___     ___/  \    /
 	 *    \  /   /\   \  /    \       Class:  CoreMail
 	 *     \/___/  \___\/      \      Tier:   Dev
 	 *      \   \  /\   \  /\  /      Module: Mail
-	 *       \___\/  \___\/  \/       
+	 *       \___\/  \___\/  \/
 	 *         \          \  /        $Rev$
 	 *          \___    ___\/         $Author$
 	 *              \   \  /          $Date$
-	 *               \___\/           
+	 *               \___\/
 	 */
 
 	/**
@@ -175,6 +175,15 @@
 		protected $_replace;
 
 		/**
+		 *  Plain server authentication
+		 *  @name    _auth
+		 *  @type    string
+		 *  @access  protected
+		 *  @note    this property is set implicitly using __set (without the preceeding '_')
+		 */
+		protected $_auth;
+
+		/**
 		 *  The content-boundary to be used to seperate content parts
 		 *  @name    _boundary
 		 *  @type    bool
@@ -197,7 +206,15 @@
 		public function __construct( $oParent )
 		{
 			parent::__construct( $oParent );
-			$this->_server   = $this->get( "/Config/Mail/server", "localhost" );
+			$aServer = parse_url( $this->get( "/Config/Mail/server", "localhost" ) );
+
+			if ( isset( $aServer[ "host" ] ) || isset( $aServer[ "path" ] ) )
+			{
+				$this->_server = isset( $aServer[ "host" ] ) ? $aServer[ "host" ] : $aServer[ "path" ];
+				if ( isset( $aServer[ "user" ] ) )
+					$this->_auth = trim( $aServer[ "user" ] . ":" . $aServer[ "pass" ], ":" );
+			}
+
 			$this->_boundary = $this->call( "/Key/create", "XXXX-XXX" ) . "-" . time();
 			$this->reset();
 		}
@@ -253,6 +270,12 @@
 			if ( !$bAllowEmptySubject && empty( $this->_subject ) )
 				return false;
 
+			if ($this->_auth)
+			{
+				$auth = explode(':', $this->_auth);
+				return $this->_send($auth[0], $auth[1]);
+			}
+
 			return $this->_send();
 		}
 
@@ -261,10 +284,12 @@
 		 *  @name    _send
 		 *  @type    method
 		 *  @access  protected
+		 *  @param   string auth username (optional)
+		 *  @param   string auth password (optional)
 		 *  @return  bool
-		 *  @syntax  bool CoreMail->_send()
+		 *  @syntax  bool CoreMail->_send( [ string username, [ string password ] ] )
 		 */
-		protected function _send()
+		protected function _send( $sUsername=null, $sPassword=null )
 		{
 			//  Create SMTP instance (unique for each call)
 			$oMail            = $this->instance( "/Network/Protocol/SMTP" );
@@ -300,13 +325,13 @@
 			{
 				//  Plain text content
 				$sMailBody .= $this->_createDataSegment( $this->_substitute( $this->_content ), Array(
-					"type"=>"text/plain", 
+					"type"=>"text/plain",
 					"charset"=>$this->_charset,
 					"encoding"=>$this->_encoding
 				), false );
 				//  Rich (HTML) content
 				$sMailBody .= $this->_createDataSegment( $this->_substitute( $this->_richcontent ), Array(
-					"type"=>"text/html", 
+					"type"=>"text/html",
 					"charset"=>$this->_charset,
 					"encoding"=>$this->_richencoding
 				), false );
@@ -328,7 +353,7 @@
 				{
 					$bBoundary = true;
 					$sMailBody = $this->_createDataSegment( $this->_substitute( $this->_content ), Array(
-						"type"=>"text/plain", 
+						"type"=>"text/plain",
 						"charset"=>$this->_charset,
 						"encoding"=>$this->_encoding
 					), false );
@@ -366,7 +391,7 @@
 			}
 
 			$oMail->body = $sMailBody;
-			$bResult     = $oMail->send();
+			$bResult     = $oMail->send( $sUsername, $sPassword );
 
 			$this->serverstatus  = $oMail->status;
 			$this->servermessage = $oMail->message;
@@ -388,7 +413,7 @@
 		 *  @param   string disposition [optional, value can be eithe 'attachment' or 'inline', default 'attachment']
 		 *  @return  bool   success
 		 *  @syntax  bool CoreMail->attach( string file [, string mimetype [, string disposition ] ] )
-		 *  @note    In case data needs to be attached which is not available on the filesystem (e.g. some generated 
+		 *  @note    In case data needs to be attached which is not available on the filesystem (e.g. some generated
 		 *           text or an image), you can create an instance of 'Mail/Attachment' and set the name and data properties
 		 */
 		public function attach( $mFile, $sMime=null, $sDisposition="attachment" )
@@ -603,9 +628,9 @@
 		protected function _createDataSegment( $sData, $aParam, $bMultiBoundary=false )
 		{
 			$sEncoding = CoreTool::arrVal( "encoding", $aParam, $this->_encoding );
-			$sReturn   = $this->_createBoundary( false, $bMultiBoundary ) . 
+			$sReturn   = $this->_createBoundary( false, $bMultiBoundary ) .
 			             $this->_createContentType( $aParam ) .
-			             $this->_createContentTransferEncoding( $aParam ) . 
+			             $this->_createContentTransferEncoding( $aParam ) .
 		    	         $this->_createContentDisposition( $aParam ) .
 		        	     $this->_createContentID( $aParam ) . "\r\n";
 			$sReturn  .= $this->_applyEncoding( $sData, $sEncoding ) . "\r\n\r\n";
@@ -761,7 +786,7 @@
 		 */
 		protected function _requireBoundary()
 		{
-			return ( 
+			return (
 				!empty( $this->_richcontent ) ||               //  richcontent
 				$this->_encoding != self::DEFAULT_ENCODING ||  //  non-standard encoding
 				$this->_charset != self::DEFAULT_CHARSET       //  non-standard characterset
