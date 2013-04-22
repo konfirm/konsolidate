@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreUnitLength
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -21,7 +21,7 @@
 	 *  @name    CoreUnitLength
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 *  @author  Marco Balk <marco@uniqweb.nl>
 	 */
 	class CoreUnitLength extends Konsolidate
@@ -36,13 +36,13 @@
 
 		/**
 		 *  Convert non-SI units to SI units (meters)
-		 *  @name    load
+		 *  @name    _convert
 		 *  @type    method
 		 *  @access  protected
 		 *  @param   number original value
 		 *  @param   string original unit
 		 *  @param   number conversion direction (from or to)
-		 *  @returns number value
+		 *  @return  number value
 		 *  @syntax  bool   CoreUnitLength->_convert( number value, string unit [ number direction ] )
 		 */
 		protected function _convert( $nValue, $sUnit, $nDirection=1 )
@@ -72,7 +72,7 @@
 		 *  @access  public
 		 *  @param   string original value+unit
 		 *  @param   bool   append suffix
-		 *  @returns mixed  value
+		 *  @return  mixed  value
 		 *  @syntax  bool   CoreUnitLength->toBase( string value [ bool appendsuffix ] )
 		 */
 		public function toBase( $sValue, $bOmitSuffix=false )

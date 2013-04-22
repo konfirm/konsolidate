@@ -49,7 +49,7 @@
 		 *  @access  public
 		 *  @param   string error
 		 *  @param   int    errornumber
-		 *  @returns object
+		 *  @return  object
 		 *  @syntax  object = &new CoreDBSQLiteException( string error, int errornumber )
 		 *  @note    This object is constructed by CoreDBSQLite as 'status report'
 		 */

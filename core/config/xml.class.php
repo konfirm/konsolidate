@@ -1,5 +1,29 @@
 <?php
 
+	/*
+	 *            ________ ___        
+	 *           /   /   /\  /\       Konsolidate
+	 *      ____/   /___/  \/  \      
+	 *     /           /\      /      http://www.konsolidate.nl
+	 *    /___     ___/  \    /       
+	 *    \  /   /\   \  /    \       Class:  CoreConfigXML
+	 *     \/___/  \___\/      \      Tier:   Core
+	 *      \   \  /\   \  /\  /      Module: Config/XML
+	 *       \___\/  \___\/  \/       
+	 *         \          \  /        $Rev$
+	 *          \___    ___\/         $Author$
+	 *              \   \  /          $Date$
+	 *               \___\/           
+	 */
+
+
+	/**
+	 *  Read and parse xml files and store it's sections/variables for re-use in the Config Module
+	 *  @name    CoreConfigXML
+	 *  @type    class
+	 *  @package Konsolidate
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
+	 */
 	class CoreConfigXML extends Konsolidate
 	{
 		/**
@@ -8,7 +32,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string  xml file
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  Object->load( string xmlfile )
 		 */
 		public function load( $sFile )
@@ -21,16 +45,16 @@
 
 		/**
 		 *  Traverse the XML tree and set all values in it, using the node structure as path
-		 *  @name    load
+		 *  @name    _traverseXML
 		 *  @type    method
-		 *  @access  public
-		 *  @param   string  xml file
-		 *  @returns bool
-		 *  @syntax  Object->load( string xmlfile )
+		 *  @access  protected
+		 *  @param   object  node
+		 *  @param   string  xml file (optional, default null)
+		 *  @return  bool
+		 *  @syntax  Object->_traverseXML( object node [, string path ] )
 		 */
 		protected function _traverseXML( $oNode, $sPath=null )
 		{
-			var_dump( "$sPath/" . $oNode->getName() . " :: {$oNode}" );
 			if ( $oNode->children() )
 				foreach( $oNode as $oChild )
 					$this->_traverseXML( $oChild, "{$sPath}/" . $oNode->getName() );

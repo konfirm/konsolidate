@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreDBMySQL
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreDBMySQL
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreDBMySQL extends Konsolidate
 	{
@@ -81,7 +81,7 @@
 		 *  @type    constructor
 		 *  @access  public
 		 *  @param   object parent object
-		 *  @returns object
+		 *  @return  object
 		 *  @syntax  object = &new CoreDBMySQL( object parent )
 		 *  @note    This object is constructed by one of Konsolidates modules
 		 */
@@ -103,7 +103,7 @@
 		 *  @access  public
 		 *  @param   string DSN URI
 		 *  @param   bool   force new link [optional, default false]
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreDBMySQL->setConnection( string DSN [, bool newlink ] )
 		 */
 		public function setConnection( $sURI, $bForceConnection=false )
@@ -121,7 +121,7 @@
 		 *  @name    connect
 		 *  @type    method
 		 *  @access  public
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreDBMySQL->connect()
 		 *  @note    An explicit call to this method is not required, since the query method will create the connection if it isn't connected
 		 */
@@ -152,7 +152,7 @@
 		 *  @name    disconnect
 		 *  @type    method
 		 *  @access  public
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreDBMySQL->disconnect()
 		 */
 		public function disconnect()
@@ -167,7 +167,7 @@
 		 *  @name    isConnected
 		 *  @type    method
 		 *  @access  public
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreDBMySQL->isConnected()
 		 */
 		public function isConnected()
@@ -182,7 +182,7 @@
 		 *  @access  public
 		 *  @param   string query
 		 *  @paran   bool   usecache [optional, default true]
-		 *  @returns object result
+		 *  @return  object result
 		 *  @syntax  object CoreDBMySQL->query( string query [, bool usecache ] )
 		 */
 		public function query( $sQuery, $bUseCache=true )
@@ -212,7 +212,7 @@
 		 *  @name    lastInsertID
 		 *  @type    method
 		 *  @access  public
-		 *  @returns int id
+		 *  @return  int id
 		 *  @syntax  int CoreDBMySQLQuery->lastInsertID()
 		 */
 		public function lastInsertID()
@@ -227,7 +227,7 @@
 		 *  @name    lastId
 		 *  @type    method
 		 *  @access  public
-		 *  @returns int id
+		 *  @return  int id
 		 *  @syntax  int CoreDBMySQLQuery->lastId()
 		 *  @note    alias for lastInsertID
 		 *  @see     lastInsertID
@@ -243,7 +243,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string input
-		 *  @returns string escaped input
+		 *  @return  string escaped input
 		 *  @syntax  string CoreDBMySQLQuery->escape( string input )
 		 */
 		public function escape( $sString )
@@ -263,7 +263,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string input
-		 *  @returns string quoted escaped input
+		 *  @return  string quoted escaped input
 		 *  @syntax  string CoreDBMySQLQuery->quote( string input )
 		 */
 		public function quote( $sString )
@@ -276,7 +276,7 @@
 		 *  @name    startTransaction
 		 *  @type    method
 		 *  @access  public
-		 *  @returns bool success
+		 *  @return  bool success
 		 *  @syntax  bool CoreDBMySQLQuery->startTransaction()
 		 */
 		public function startTransaction()
@@ -296,7 +296,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   bool commit [optional, default true]
-		 *  @returns bool success
+		 *  @return  bool success
 		 *  @syntax  bool CoreDBMySQLQuery->endTransaction( bool commit )
 		 *  @note    if argument 'commit' is true, 'COMMIT' is sent, 'ROLLBACK' otherwise
 		 */
@@ -319,7 +319,7 @@
 		 *  @name    commitTransaction
 		 *  @type    method
 		 *  @access  public
-		 *  @returns bool success
+		 *  @return  bool success
 		 *  @syntax  bool CoreDBMySQLQuery->commitTransaction()
 		 *  @note    same as endTransaction( true );
 		 */
@@ -333,7 +333,7 @@
 		 *  @name    rollbackTransaction
 		 *  @type    method
 		 *  @access  public
-		 *  @returns bool success
+		 *  @return  bool success
 		 *  @syntax  bool CoreDBMySQLQuery->rollbackTransaction()
 		 *  @note    same as endTransaction( false );
 		 */
@@ -348,7 +348,7 @@
 		 *  @type    method
 		 *  @access  protected
 		 *  @param   string query
-		 *  @returns bool   success
+		 *  @return  bool   success
 		 *  @syntax  bool CoreDBMySQLQuery->_isCachableQuery( string query )
 		 */
 		protected function _isCachableQuery( $sQuery )

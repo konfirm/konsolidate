@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreSystemFileCSV
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreSystemFileCSV
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreSystemFileCSV extends Konsolidate
 	{
@@ -49,7 +49,7 @@
 		 *  @type    constructor
 		 *  @access  public
 		 *  @param   object parent object
-		 *  @returns object
+		 *  @return  object
 		 *  @syntax  object = &new CoreSystemFileCSV( object parent )
 		 *  @note    This object is constructed by one of Konsolidates modules
 		 */
@@ -69,7 +69,7 @@
 		 *  @param   string filename
 		 *  @param   string mode [optional, default 'r']
 		 *  @param   bool   use first row as field definition [optional, default true]
-		 *  @returns bool  success
+		 *  @return  bool  success
 		 *  @syntax  string [object]->open( string filename [, string mode [, bool firstrowdefines ] ] );
 		 */
 		public function open( $sFile, $sMode="r", $bFirstRowDefines=true )
@@ -89,7 +89,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   mixed  int length [optional, default 4096 bytes], or string property
-		 *  @returns mixed  data
+		 *  @return  mixed  data
 		 *  @syntax  string [object]->get( [ int bytes ] );
 		 *           mixed  [object]->get( string property );
 		 *  @note    If a string property is provided, the property value is returned, otherwise the next line of the opened file is returned.
@@ -125,7 +125,7 @@
 		 *  @param   string delimiter [optional, default class property 'delimiter' (default ',')]
 		 *  @param   string enclosure [optional, default class property 'enclosure' (default '"')]
 		 *  @param   bool   use first row as field definition [optional, default true]
-		 *  @returns bool  success
+		 *  @return  bool  success
 		 *  @syntax  bool [object]->put( mixed data [, string delimiter [, string enclosure ] ] );
 		 */
 		public function put( $mData, $sDelimiter=null, $sEnclosure=null )
@@ -148,7 +148,7 @@
 		 *  @param   int    length    [optional, default 4096]
 		 *  @param   string delimiter [optional, default class property 'delimiter' (default ',')]
 		 *  @param   string enclosure [optional, default class property 'enclosure' (default '"')]
-		 *  @returns mixed  object (if fieldnames are known), array (if fieldnames are not known)
+		 *  @return  mixed  object (if fieldnames are known), array (if fieldnames are not known)
 		 *  @syntax  mixed [object]->put( mixed data [, string delimiter [, string enclosure ] ] );
 		 */
 		public function next( $nLength=4096, $sDelimiter=null, $sEncosure=null )
@@ -181,7 +181,7 @@
 		 *  @name    close
 		 *  @type    method
 		 *  @access  public
-		 *  @returns bool success
+		 *  @return  bool success
 		 *  @syntax  bool [object]->close();
 		 */
 		public function close()

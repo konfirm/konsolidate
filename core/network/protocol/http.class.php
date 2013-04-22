@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreNetworkProtocolHTTP
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreNetworkProtocolHTTP
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 *  @todo    Make proper use of the CoreNetworkSocket class, cURL fallback (for ease and performance) and implement HTTPS support
 	 */
 	class CoreNetworkProtocolHTTP extends Konsolidate
@@ -98,7 +98,7 @@
 		 *  @type    constructor
 		 *  @access  public
 		 *  @param   object parent object
-		 *  @returns object
+		 *  @return  object
 		 *  @syntax  object = &new CoreNetHTTP( object parent )
 		 *  @note    This object is constructed by one of Konsolidates modules
 		 */
@@ -269,6 +269,8 @@
 	
 		/**
 		 *  Get a specific header from the last request
+		 *  @name   getHeader
+		 *  @type   method
 		 *  @access public
 		 *  @param  string $sHeader  The header you wish to read [optional, returns all headers in an array if ommited)
 		 *  @return string|array|bool
@@ -284,6 +286,8 @@
 	
 		/**
 		 *  Set a header to add to all upcoming requests
+		 *  @name   setHeader
+		 *  @type   method
 		 *  @access public
 		 *  @since  1.0.3
 		 *  @param  mixed  $mHeader    either an array containing key=>value pairs, which will be prepared as headers, or a string with the header name
@@ -310,6 +314,8 @@
 	
 		/**
 		 *  store the headers seperatly
+		 *  @name   _parseHeader
+		 *  @type   method
 		 *  @access protected
 		 *  @param  array $aHeader The Array of headers
 		 *  @return void
@@ -336,6 +342,8 @@
 	
 		/**
 		 *  get all required information from the path provided to a request
+		 *  @name   _parseURL
+		 *  @type   method
 		 *  @access protected
 		 *  @param  string $sURL  The URL to parse
 		 *  @return void
@@ -353,6 +361,8 @@
 	
 		/**
 		 *  Build up the actual data transportation string
+		 *  @name   _buildDataString
+		 *  @type   method
 		 *  @access protected
 		 *  @param  string $sMethod   The request method to use
 		 *  @param  string $sBoundary The boundary to use to seperate variables/files from eachother
@@ -402,6 +412,8 @@
 	
 		/**
 		 *  Build up the entire request
+		 *  @name   _buildRequestString
+		 *  @type   method
 		 *  @access protected
 		 *  @param  string $sMethod   The request method to use
 		 *  @param  mixed  $mReferer  The referer to provide
@@ -442,6 +454,8 @@
 	
 		/**
 		 *  prepare and perform an actual request
+		 *  @name   request
+		 *  @type   method
 		 *  @access public
 		 *  @param  string $sMethod   The request method to use
 		 *  @param  string $sURL      The URL to request
@@ -533,6 +547,8 @@
 		/**
 		 *  Do a 'POST' request
 		 *  (NOTE: if you are POSTing files, one additional variable is added to the request. The variable is called 'http_filecount' and contains the number of files being POSTed)
+		 *  @name   post
+		 *  @type   method
 		 *  @access public
 		 *  @param  string $sURL      The URL to request
 		 *  @param  array  $aData     additional paramaters to send (use key=>value pairs)
@@ -546,6 +562,8 @@
 	
 		/**
 		 *  Do a 'GET' request
+		 *  @name   get
+		 *  @type   method
 		 *  @access public
 		 *  @param  string $sURL      The URL to request
 		 *  @param  array  $aData     additional paramaters to send (use key=>value pairs)
@@ -564,6 +582,8 @@
 	
 		/**
 		 *  Do a 'HEAD' request
+		 *  @name   head
+		 *  @type   method
 		 *  @access public
 		 *  @param  string $sURL      The URL to request
 		 *  @param  array  $aData     additional paramaters to send (use key=>value pairs)
@@ -577,6 +597,8 @@
 	
 		/**
 		 *  Do a 'OPTIONS' request
+		 *  @name   options
+		 *  @type   method
 		 *  @access public
 		 *  @param  string $sURL      The URL to request
 		 *  @return string
@@ -588,6 +610,8 @@
 	
 		/**
 		 *  Do a 'TRACE' request
+		 *  @name   trace
+		 *  @type   method
 		 *  @access public
 		 *  @param  string $sURL      The URL to request
 		 *  @return string

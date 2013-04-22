@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreSystemFileMIME
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -21,7 +21,7 @@
 	 *  @name    CoreSystemFileMIME
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreSystemFileMIME extends Konsolidate
 	{
@@ -40,7 +40,7 @@
 		 *  @type    constructor
 		 *  @access  public
 		 *  @param   object parent object
-		 *  @returns object
+		 *  @return  object
 		 *  @syntax  object = &new CoreSystemFileMIME( object parent )
 		 *  @note    This object is constructed by one of Konsolidates modules
 		 */
@@ -62,7 +62,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string filename
-		 *  @returns string MIME
+		 *  @return  string MIME
 		 *  @syntax  string CoreSystemFileMIME->getType( string filename )
 		 */
 		public function getType( $sFile )
@@ -76,7 +76,7 @@
 		 *  @type    method
 		 *  @access  protected
 		 *  @param   string filename
-		 *  @returns string MIME
+		 *  @return  string MIME
 		 *  @syntax  string CoreSystemFileMIME->_determineTypeByMimeContentType( string filename )
 		 */
 		protected function _determineTypeByMimeContentType( $sFile )
@@ -90,12 +90,12 @@
 		 *  @type    method
 		 *  @access  protected
 		 *  @param   string filename
-		 *  @returns string MIME
+		 *  @return  string MIME
 		 *  @syntax  string CoreSystemFileMIME->_determineTypeByFileInfo( string filename )
 		 */
 		protected function _determineTypeByFileInfo( $sFile )
 		{
-			$finfo    = finfo_open( FILEINFO_MIME );
+			$finfo    = finfo_open( FILEINFO_MIME, $this->get( "/Config/finfo_open/magic_file", null )  );
 			$mimetype = finfo_file( $finfo, $sFile );
 			finfo_close( $finfo );
 			return $mimetype;
@@ -107,7 +107,7 @@
 		 *  @type    method
 		 *  @access  protected
 		 *  @param   string filename
-		 *  @returns string MIME
+		 *  @return  string MIME
 		 *  @syntax  string CoreSystemFileMIME->_determineTypeByExtension( string filename )
 		 */
 		protected function _determineTypeByExtension( $sFile )

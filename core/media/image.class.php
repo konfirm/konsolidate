@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreMediaImage
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreMediaImage
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreMediaImage extends Konsolidate
 	{
@@ -40,7 +40,7 @@
 		 *  @type    constructor
 		 *  @access  public
 		 *  @param   object parent object
-		 *  @returns object
+		 *  @return  object
 		 *  @syntax  object = &new CoreImage( object parent )
 		 *  @note    This object is constructed by one of Konsolidates modules
 		 */
@@ -58,7 +58,7 @@
 		 *  @param   int    width
 		 *  @param   int    height
 		 *  @param   string hex backgroundcolor [optional]
-		 *  @returns resource image
+		 *  @return  resource image
 		 *  @syntax  Object->create( int width, int height [, string backgroundcolor ] );
 		 */
 		public function create( $nWidth, $nHeight, $sBGColor=null )
@@ -73,7 +73,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string filename
-		 *  @returns resource image
+		 *  @return  resource image
 		 *  @syntax  Object->load(string filename );
 		 */
 		public function load( $sFile )
@@ -96,7 +96,7 @@
 		 *  @param   int   width of the part to merge [optional]
 		 *  @param   int   height of the part to merge [optional]
 		 *  @param   int   percentage of transparency of the source region [optional]
-		 *  @returns resource image
+		 *  @return  resource image
 		 *  @syntax  Object->merge( mixed destination, mixed source [, int destX [, int destY [, int srcX [, int srcY [, int srcWidth [, int srcHeight [, int transparency ] ] ] ] ] ] ] );
 		 */
 		public function merge( $mDestination, $mSource, $nDX=0, $nDY=0, $nSX=0, $nSY=0, $nSW=0, $nSH=0, $nPercentage=100 )
@@ -130,7 +130,7 @@
 		 *  @param   int   Y position in source [optional]
 		 *  @param   int   width of the part to image [optional]
 		 *  @param   int   height of the part to merge [optional]
-		 *  @returns resource image
+		 *  @return  resource image
 		 *  @syntax  Object->copy( mixed destination, mixed source [, int destX [, int destY [, int srcX [, int srcY [, int srcWidth [, int srcHeight ] ] ] ] ] ] );
 		 */
 		public function copy( $mDestination, $mSource, $nDX=0, $nDY=0, $nSX=0, $nSY=0, $nSW=0, $nSH=0 )
@@ -162,7 +162,7 @@
 		 *  @param   mixed image (string filename or image resource)
 		 *  @param   int   new width [optional]
 		 *  @param   int   new height [optional]
-		 *  @returns resource image
+		 *  @return  resource image
 		 *  @syntax  Object->resize( mixed image [, int width [, int height ] ] );
 		 */
 		public function resize( $mImage, $nWidth=0, $nHeight=0 )
@@ -190,7 +190,7 @@
 		 *  @param   int   Y offset
 		 *  @param   int   new width
 		 *  @param   int   new height
-		 *  @returns resource image
+		 *  @return  resource image
 		 *  @syntax  Object->crop( mixed image, int offsetX, int offsetY, int width, int height );
 		 */
 		public function crop( $mImage, $nX, $nY, $nWidth, $nHeight )
@@ -221,7 +221,7 @@
 		 *  @param   string imagetype (one of: jpg|jpeg|gif|png) [optional]
 		 *  @param   int    quality [optional]
 		 *  @param   string filename [optional]
-		 *  @returns resource image
+		 *  @return  resource image
 		 *  @syntax  Object->display( [ string type [, int quality [, string filename ] ] ] );
 		 */
 		public function display( $sType="JPEG", $nQuality=75, $sFile=null )
@@ -230,26 +230,23 @@
 			{
 				case "GIF":
 				case IMAGETYPE_GIF:
-					if ( !headers_sent() )
+					if ( is_null( $sFile ) && !headers_sent() )
 						header( "Content-type: image/gif" );
-					if ( !is_null( $sFile ) )
-						@imagegif( $this->_image, $sFile );
-					@imagegif( $this->_image );
+					
+					@imagegif( $this->_image, $sFile );
 					break;
 				case "PNG":
 				case IMAGETYPE_PNG:
-					if ( !headers_sent() )
+					if ( is_null( $sFile ) && !headers_sent() )
 						header( "Content-type: image/png" );
-					if ( !is_null( $sFile ) )
-						@imagepng( $this->_image, $sFile, round( ( 9 / 100 ) * $nQuality ) );
-					@imagepng( $this->_image, null, round( ( 9 / 100 ) * $nQuality ) );
+					
+					@imagepng( $this->_image, $sFile, round( ( 9 / 100 ) * $nQuality ) );
 					break;
 				default:
-					if ( !headers_sent() )
+					if ( is_null( $sFile ) && !headers_sent() )
 						header( "Content-type: image/jpeg" );
-					if ( !is_null( $sFile ) )
-						@imagejpeg( $this->_image, $sFile, $nQuality );
-					@imagejpeg( $this->_image, null, $nQuality );
+					
+					@imagejpeg( $this->_image, $sFile, $nQuality );
 					break;
 			}
 
@@ -258,7 +255,7 @@
 
 			return false;
 		}
-
+		
 		/**
 		 *  Fill an image with one solid color
 		 *  @name    fill
@@ -266,7 +263,7 @@
 		 *  @access  public
 		 *  @param   mixed  image (string filename or image resource)
 		 *  @param   string hex backgroundcolor
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  Object->fill( mixed image, string hexcolor )
 		 */
 		public function fill( $mImage, $sColor )
@@ -283,7 +280,7 @@
 		 *  @access  public
 		 *  @param   string   hex backgroundcolor
 		 *  @param   resource image [optional]
-		 *  @returns int      color
+		 *  @return  int      color
 		 *  @syntax  Object->getColor( string hexcolor [, resource image ] )
 		 */
 		public function getColor( $sColor, $mImage=null )
@@ -310,7 +307,7 @@
 		 *  @param   resource image
 		 *  @param   int      width [optional, default 0]
 		 *  @param   int      height [optional, default 0]
-		 *  @returns int      array( "width"=>W, "height"=>H );
+		 *  @return  int      array( "width"=>W, "height"=>H );
 		 *  @syntax  Object->getScaleDimension( resource image, int width, int height )
 		 *  @note    provide 0 for either the width or the height to obtain it's constrained counterpart, provide 0 for both to obtain the current dimensions
 		 */
@@ -348,7 +345,7 @@
 		 *  @param   int      height
 		 *  @param   int      bits [optional]
 		 *  @param   int      channels [optional]
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  Object->adjustMemoryUsage( int width, int height [, int bits [, int channels ] ] )
 		 */
 		public function adjustMemoryUsage( $nWidth, $nHeight, $nBits=8, $nChannels=4 )
@@ -371,7 +368,7 @@
 		 *  @param   int    width
 		 *  @param   int    height
 		 *  @param   string hex backgroundcolor [optional]
-		 *  @returns resource image
+		 *  @return  resource image
 		 *  @syntax  Object->_create( int width, int height [, string backgroundcolor ] );
 		 */
 		protected function _create( $nWidth, $nHeight, $sBGColor=null )
@@ -403,7 +400,7 @@
 		 *  @type    method
 		 *  @access  protected
 		 *  @param   string filename
-		 *  @returns resource image (bool false on error)
+		 *  @return  resource image (bool false on error)
 		 *  @syntax  Object->_load( string filename );
 		 */
 		protected function _load( $sFile )

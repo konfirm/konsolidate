@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreConfigINI
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreConfigINI
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreConfigINI extends Konsolidate
 	{
@@ -32,7 +32,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string  inifile
-		 *  @returns array
+		 *  @return  array
 		 *  @syntax  Object->load( string inifile )
 		 */
 		public function load( $sFile, $sSegment=null )
@@ -69,7 +69,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string  inifile
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  Object->loadAndDefine( string inifile )
 		 *  @note    defines are formatted like [SECTION]_[KEY]=[VALUE]
 		 */

@@ -1,24 +1,24 @@
 <?php
 
 	/*
-	 *            ________ ___        
+	 *            ________ ___
 	 *           /   /   /\  /\       Konsolidate
-	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
-	 *    /___     ___/  \    /       
-	 *    \  /   /\   \  /    \       
-	 *     \/___/  \___\/      \      
-	 *      \   \  /\   \  /\  /      
-	 *       \___\/  \___\/  \/       
+	 *      ____/   /___/  \/  \
+	 *     /           /\      /      http://www.konsolidate.nl
+	 *    /___     ___/  \    /
+	 *    \  /   /\   \  /    \
+	 *     \/___/  \___\/      \
+	 *      \   \  /\   \  /\  /
+	 *       \___\/  \___\/  \/
 	 *         \          \  /        $Rev$
 	 *          \___    ___\/         $Author$
 	 *              \   \  /          $Date$
-	 *               \___\/           
+	 *               \___\/
 	 *
 	 *  The konsolidate class, which acts as the 'one ring' being responsible for the proper inner workings of the Konsolidate framework/library/foundation
 	 *  @name   Konsolidate
 	 *  @type   class
-	 *  @author Rogier Spieker <rogier@konsolidate.net>
+	 *  @author Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class Konsolidate implements Iterator
 	{
@@ -79,6 +79,14 @@
 		protected $_lookupcache;
 
 		/**
+		 *  Module lookup cache, making lookups faster for checkModuleAvailability
+		 *  @name    _modulecheck
+		 *  @type    array
+		 *  @access  protected
+		 */
+		static protected $_modulecheck;
+
+		/**
 		 *  Error traces
 		 *  @name    _tracelog
 		 *  @type    array
@@ -86,14 +94,13 @@
 		 */
 		protected $_tracelog;
 
-
 		/**
 		 *  Konsolidate constructor
 		 *  @name    Konsolidate
 		 *  @type    constructor
 		 *  @access  public
 		 *  @param   array   array with the paths to load the modules from (the order of the paths is the order in which to look up modules)
-		 *  @returns object
+		 *  @return  object
 		 *  @syntax  object = new Konsolidate( array path )
 		 *  @note    The syntax described is the syntax the implementor of Konsolidate should use, all childnodes constructed by Konsolidate
 		 *           are handled by the internals of Konsolidate.
@@ -105,7 +112,7 @@
 			$this->_property    = Array();
 			$this->_lookupcache = Array();
 			$this->_tracelog    = Array();
-			
+
 			if ( is_object( $mPath ) && ( is_subclass_of( $mPath, "Konsolidate" ) || $mPath instanceof Konsolidate ) )
 			{
 				$this->_parent          = $mPath;
@@ -117,7 +124,7 @@
 				$this->_parent          = false;
 				$this->_path            = $mPath;
 				$this->_objectseparator = isset( $this->_objectseparator ) && !empty( $this->_objectseparator ) ? $this->_objectseparator : "/";
-	
+
 				//  We always want access to our static tools
 				$this->import( "tool.class.php" );
 			}
@@ -130,7 +137,7 @@
 		 *  @access  public
 		 *  @param   string   path to the property to get
 		 *  @param   mixed    default return value (optional, default null)
-		 *  @returns mixed
+		 *  @return  mixed
 		 *  @syntax  Konsolidate->get( string module [, mixed default ] );
 		 *  @note    supplying a default value should be done per call, the default is never stored
 		 */
@@ -156,7 +163,7 @@
 		 *  @access  public
 		 *  @param   string   path to the property to set
 		 *  @param   mixed    value
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  Konsolidate->set( string module, mixed value );
 		 */
 		public function set()
@@ -167,8 +174,8 @@
 			if ( $nSeperator !== false && ( $oModule = $this->getModule( substr( $sProperty, 0, $nSeperator ) ) ) !== false )
 			{
 				array_unshift( $aArgument, substr( $sProperty, $nSeperator + 1 ) );
-				return call_user_func_array( 
-					Array( 
+				return call_user_func_array(
+					Array(
 						$oModule, // the object
 						"set"      // the method
 					),
@@ -187,7 +194,7 @@
 		 *  @access  public
 		 *  @param   string   path to the method to call
 		 *  @param   mixed    [optional] argument
-		 *  @returns mixed
+		 *  @return  mixed
 		 *  @syntax  Konsolidate->call( string module [, mixed argument [, mixed argument, [, ... ] ] ] );
 		 *  @note    One can supply as many arguments as needed
 		 */
@@ -215,7 +222,7 @@
 			}
 
 			return call_user_func_array(
-				Array( 
+				Array(
 					$oModule,  // the object
 					$sMethod   // the method
 				),
@@ -229,7 +236,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string   modulename
-		 *  @returns object
+		 *  @return  object
 		 *  @syntax  Konsolidate->register( string module );
 		 *  @note    register only create a single (unique) instance and always returns the same instance
 		 *           use the instance method to create different instances of the same class
@@ -256,7 +263,7 @@
 		 *  @access  public
 		 *  @param   string   modulename
 		 *  @param   mixed    param N
-		 *  @returns object
+		 *  @return  object
 		 *  @syntax  Konsolidate->instance( string module [, mixed param1 [, mixed param2 [, mixed param N ] ] ] );
 		 *  @note    instance creates an instance every time you call it, if you require a single instance which
 		 *           is always returned, use the register method
@@ -271,8 +278,8 @@
 				if ( count( $aArgument ) )
 				{
 					$aArgument[ 0 ] = substr( $aArgument[ 0 ], $nSeperator + 1 );
-					return call_user_func_array( 
-						Array( 
+					return call_user_func_array(
+						Array(
 							$oModule,
 							"instance"
 						),
@@ -292,10 +299,11 @@
 				{
 					$aArgument = func_get_args();
 					array_shift( $aArgument );  //  the first argument is always the module to instance, we discard it
+
 					if ( (bool) count( $aArgument ) )
 					{
 						array_unshift( $aArgument, $this ); //  inject the 'parent reference', as Konsolidate dictates
-						$oModule = new ReflectionClass( $sClass ); 
+						$oModule = new ReflectionClass( $sClass );
 						$oModule = $oModule->newInstanceArgs( $aArgument );
     				}
 					else
@@ -327,7 +335,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string   filename
-		 *  @returns object
+		 *  @return  object
 		 *  @syntax  Konsolidate->import( string file );
 		 */
 		public function import( $sFile )
@@ -342,7 +350,7 @@
 			foreach ( $aPath as $sPath )
 			{
 				$sCurrentFile = "{$sPath}/" . strToLower( $sFile );
-				if ( file_exists( $sCurrentFile ) )
+				if ( realpath( $sCurrentFile ) )
 				{
 					include_once( $sCurrentFile );
 					$bImported = true;
@@ -357,16 +365,28 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string   module
-		 *  @returns object
+		 *  @return  object
 		 *  @syntax  Konsolidate->checkModuleAvailability( string module );
 		 */
 		public function checkModuleAvailability( $sModule )
 		{
-			$sModule = strToLower( $sModule );
-			foreach ( $this->_path as $sMod=>$sPath )
-				if ( file_exists( "{$sPath}/{$sModule}.class.php" ) || is_dir( "{$sPath}/{$sModule}" ) )
-					return true;
-			return false;
+			$sModule = strtolower($sModule);
+			$sClass  = get_class($this);
+
+			//  lookahead to submodules
+			if (!isset(self::$_modulecheck[$sClass]))
+				$this->_indexModuleAvailability();
+
+			//  if we are dealing with a submodule pattern which is not in our cache by default, test for it
+			if (strpos($sModule, $this->_objectseparator) !== false)
+				foreach ( $this->_path as $sMod=>$sPath )
+					if ( realpath( "{$sPath}/{$sModule}.class.php" ) || realpath( "{$sPath}/{$sModule}" ) )
+					{
+						self::$_modulecheck[$sClass][$sModule] = true;
+						break;
+					}
+
+			return isset(self::$_modulecheck[$sClass][$sModule]) ? self::$_modulecheck[$sClass][$sModule] : false;
 		}
 
 
@@ -375,7 +395,7 @@
 		 *  @name    getRoot
 		 *  @type    method
 		 *  @access  public
-		 *  @returns mixed
+		 *  @return  mixed
 		 *  @syntax  Konsolidate->getRoot();
 		 */
 		public function getRoot()
@@ -390,7 +410,7 @@
 		 *  @name    getParent
 		 *  @type    method
 		 *  @access  public
-		 *  @returns mixed
+		 *  @return  mixed
 		 *  @syntax  Konsolidate->getParent();
 		 */
 		function getParent()
@@ -405,7 +425,7 @@
 		 *  @name    getFilePath
 		 *  @type    method
 		 *  @access  public
-		 *  @returns mixed
+		 *  @return  mixed
 		 *  @syntax  Konsolidate->getFilePath();
 		 */
 		public function getFilePath()
@@ -432,7 +452,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string  module path
-		 *  @returns mixed
+		 *  @return  mixed
 		 *  @syntax  Konsolidate->getModule( string path );
 		 */
 		public function getModule( $sCall )
@@ -448,11 +468,11 @@
 					switch( strToLower( $sSegment ) )
 					{
 						case "":        //  root
-						case "_root":   
+						case "_root":
 							$oTraverse = $oModule->getRoot();
 							break;
 						case "..":      //  parent
-						case "_parent": //  
+						case "_parent": //
 							$oTraverse = $oModule->getParent();
 							break;
 						case ".":       //  self
@@ -490,22 +510,22 @@
 		{
 			return key( $this->_property );
 		}
-		
+
 		public function current()
 		{
 			return current( $this->_property );
 		}
-		
+
 		public function next()
 		{
 			return next( $this->_property );
 		}
-		
+
 		public function rewind()
 		{
 			return reset( $this->_property );
 		}
-		
+
 		public function valid()
 		{
 			return !is_null( $this->key() );
@@ -522,7 +542,7 @@
 		 *  @access  public
 		 *  @param   string  message (option)
 		 *  @param   int     code (option)
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  Konsolidate->exception( [ string message [, int code ] ] );
 		 *  @note    Exception classes must be an extend of PHP's built-in Exception class, if the exception method is called and the calling module does not
 		 *           have an exception class, Konsolidate will generate one dynamically.
@@ -561,7 +581,9 @@
 
 			//  Create tierless Exception on the fly if the requested Exception does not exist
 			if ( !class_exists( $sThrowClass ) )
-				eval( "class {$sThrowClass} extends {$sExceptionClass}{public function __construct(\$s=null,\$c=0){parent::__construct(\$s,\$c);\$this->file='{$sFile}';\$this->line={$sLine};}}" );
+			{
+				eval( "class {$sThrowClass} extends {$sExceptionClass}{public function __construct(\$s=null,\$c=0){parent::__construct(\$s,\$c);\$this->file='{$sFile}';\$this->line= (int) '{$sLine}';}}" );
+			}
 
 			if ( class_exists( $sThrowClass ) )
 				throw new $sThrowClass( $sMessage, $nCode );
@@ -608,7 +630,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   mixed   arg N
-		 *  @returns mixed
+		 *  @return  mixed
 		 *  @syntax  Konsolidate( [ mixed arg N ] );
 		 *  @note    __invoke only works in PHP 5.3+
 		 *  @note    You can now effectively leave out the '->call' part when calling on methods, e.g. $oK( "/DB/query", "SHOW TABLES" ) instead of $oK->call( "/DB/query", "SHOW TABLES" );
@@ -617,7 +639,7 @@
 		public function __invoke()
 		{
 			return call_user_func_array(
-				Array( 
+				Array(
 					$this,       // the object
 					"call"       // the method
 				),
@@ -631,7 +653,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string property
-		 *  @returns bool isset
+		 *  @return  bool isset
 		 *  @syntax  isset(Konsolidate->property), empty(Konsolidate->property);
 		 *  @note    __isset only works in PHP 5.1+
 		 */
@@ -693,6 +715,31 @@
 			$sReturn .= "</div>";
 
 			return $sReturn;
+		}
+
+		/**
+		 *  Look ahead at all available submodules and cache the availability
+		 *  @name    _indexModuleAvailability
+		 *  @type    method
+		 *  @access  protected
+		 *  @returns void
+		 *  @syntax  Konsolidate->_indexModuleAvailability();
+		 */
+		protected function _indexModuleAvailability()
+		{
+			if (!is_array(self::$_modulecheck))
+				self::$_modulecheck = Array();
+
+			$class = get_class($this);
+			if (!isset(self::$_modulecheck[$class]))
+			{
+				$list = Array();
+				if (is_array($this->_path))
+					foreach ($this->_path as $tier=>$path)
+						foreach (glob($path . '/*') as $item)
+							$list[strtolower(basename($item, '.class.php'))] = true;
+				self::$_modulecheck[$class] = $list;
+			}
 		}
 	}
 

@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreKey
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreKey
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreKey extends Konsolidate
 	{
@@ -83,7 +83,7 @@
 		 *  @type    constructor
 		 *  @access  public
 		 *  @param   object parent object
-		 *  @returns object
+		 *  @return  object
 		 *  @syntax  object = &new CoreKey( object parent )
 		 *  @note    This object is constructed by one of Konsolidates modules
 		 */
@@ -105,7 +105,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string format (optional, default XXXX-XXXX)
-		 *  @returns string generated key
+		 *  @return  string generated key
 		 *  @syntax  string CoreKey->create( string format )
 		 *  @note    string format uses XXXX-XXXX-XXXX, where X is replaced with a key part
 		 */
@@ -121,7 +121,7 @@
 		 *  @name    _createSalt
 		 *  @type    method
 		 *  @access  protected
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  void CoreKey->_createSalt()
 		 */
 		protected function _createSalt()
@@ -136,10 +136,10 @@
 
 		/**
 		 *  magic __set, set the rules on which the 'salt' (string of characters) is based
-		 *  @name    _createSalt
+		 *  @name    __set
 		 *  @type    method
 		 *  @access  public
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  void CoreKey->[string property] = mixed value
 		 *  @note    reserved properties which actually change the 'salt' are: lowercase, uppercase, numeric, exclude and format and are treated as boolean values
 		 *           these reserved properties behave exactly as expected, except that they additionally modify the 'salt' the moment one of them is set

@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreDocumentationBlock
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreDocumentationBlock
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreDocumentationBlock extends Konsolidate
 	{
@@ -35,7 +35,7 @@
 		public $reference;
 		public $package;
 	 	public $author;
-		public $returns;
+		public $return;
 		public $description;
 		public $note;
 
@@ -46,7 +46,7 @@
 		 *  @type    constructor
 		 *  @access  public
 		 *  @param   object parent object
-		 *  @returns object
+		 *  @return  object
 		 *  @syntax  object = &new CoreDocumentationBlock( object parent )
 		 *  @note    This object is constructed by one of Konsolidates modules
 		 */
@@ -63,7 +63,7 @@
 			$this->reference   = Array();
 			$this->package     = "";
 			$this->author      = Array();
-			$this->returns     = "";
+			$this->return     = "";
 			$this->description = "";
 			$this->note        = "";
 		}
@@ -74,7 +74,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string documentation line
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  void CoreDocumentationBlock->append( string text )
 		 */
 		public function append( $sPart )
@@ -93,7 +93,7 @@
 				case "@SYNTAX":
 				case "@REFERENCE":
 				case "@PACKAGE":
-				case "@RETURNS":
+				case "@RETURN":
 				case "@NOTE":
 				case "@ALIAS":
 				case "@SEE":
@@ -125,7 +125,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   bool skip empty instructions
-		 *  @returns array instructions
+		 *  @return  array instructions
 		 *  @syntax  array CoreDocumentationBlock->fetch( bool skipempty )
 		 */
 		public function fetch( $bOmitEmpty=false )

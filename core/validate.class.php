@@ -15,7 +15,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreValidate
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -33,7 +33,7 @@
 	 *  @name    CoreValidate
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreValidate extends Konsolidate
 	{
@@ -44,14 +44,14 @@
 		 *  @access  public
 		 *  @param   mixed value
 		 *  @param   bool  unsigned [optional]
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  Object->isInteger( mixed value [, bool unsigned ] );
 		 */
 		function isInteger( $mValue, $bUnsigned=false )
 		{
 			$nMin = $bUnsigned ? 0 : INT_MIN;
 			$nMax = $bUnsigned ? INT_MAX + ( -INT_MIN ) : INT_MAX; 
-			if ( is_null( $mValue ) || ( !ereg( "^[0-9]+$", abs( $mValue ) ) ) || $mValue < $nMin || $mValue > $nMax )
+			if ( is_null( $mValue ) || ( !preg_match( "/^[0-9]+$/", abs( $mValue ) ) ) || $mValue < $nMin || $mValue > $nMax )
 				return false;
 			return true;
 		}
@@ -63,7 +63,7 @@
 		 *  @access  public
 		 *  @param   mixed value
 		 *  @param   bool  unsigned [optional]
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  Object->isPositiveInteger( mixed value [, bool unsigned ] );
 		 */
 		function isPositiveInteger( $mValue, $bUnsigned=false )
@@ -77,7 +77,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   mixed value
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  Object->isNegativeInteger( mixed value );
 		 */
 		function isNegativeInteger( $mValue )
@@ -91,7 +91,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   mixed value
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  Object->isNumber( mixed value );
 		 */
 		function isNumber( $mValue )
@@ -108,7 +108,7 @@
 		 *  @param   int   minimum [optional]
 		 *  @param   int   maximum [optional]
 		 *  @param   bool  include min/max values [optional]
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  Object->isBetween( mixed value [, int min [, int max [, bool unsigned ] ] ] );
 		 */
 		function isBetween( $mValue, $iMin=null, $iMax=null, $bIncludeValues=true)
@@ -135,7 +135,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   mixed value
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  Object->isFilled( mixed value );
 		 */
 		function isFilled( $mValue )
@@ -149,7 +149,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   mixed value
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  Object->isEmail( mixed value );
 		 *  @note    This method does NOT verify the actual existing of the e-mail address, it merely verifies that it complies to common e-mail addresses
 		 */

@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreUserData
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreUserData
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 *  @author  Rogier van Ravesteijn <rogier.vanravesteijn@advance.nl>
 	 */
 	class CoreUserData extends Konsolidate
@@ -37,7 +37,7 @@
 		 *  @type    constructor
 		 *  @access  public
 		 *  @param   object parent object
-		 *  @returns object
+		 *  @return  object
 		 *  @syntax  object = new CoreUserData( object parent )
 		 *  @note    This object is constructed by one of Konsolidates modules
 		 */
@@ -55,7 +55,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   int  userid, optional
-		 *  @returns bool success
+		 *  @return  bool success
 		 *  @syntax  bool CoreUserData->load( [ int userid ] );
 		 */
 		public function load( $nID=null )
@@ -85,7 +85,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   bool   enable [optional, default true]
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  void CoreuserData->useAnticipation( bool enable );
 		 */
 		public function useAnticipation( $bEnable=true )
@@ -99,7 +99,7 @@
 		 *  @type    method
 		 *  @access  protected
 		 *  @param   int    userid
-		 *  @returns string datatable
+		 *  @return  string datatable
 		 *  @syntax  string CoreuserData->_determineDataTable( [ int userid ] );
 		 */
 		protected function _determineDataTable( $nUserID=null )
@@ -112,7 +112,7 @@
 		 *  @name    _anticipateProperties
 		 *  @type    method
 		 *  @access  protected
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  void CoreuserData->_anticipateProperties();
 		 *  @note    Properties which are set prior to the anticipation will not be overwriten by the anticipation
 		 */
@@ -140,7 +140,7 @@
 		 *  @name    _storeAnticipationProperties
 		 *  @type    method
 		 *  @access  protected
-		 *  @returns bool sucess
+		 *  @return  bool sucess
 		 *  @syntax  bool CoreuserData->_storeAnticipationProperties();
 		 */
 		protected function _storeAnticipationProperties()
@@ -174,7 +174,7 @@
 		 *  @type    method
 		 *  @access  protected
 		 *  @param   string property
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  void CoreuserData->_loadProperty( string property );
 		 */
 		protected function _loadProperty( $sProperty )
@@ -197,7 +197,7 @@
 		 *  @name    _storeChangedProperties
 		 *  @type    method
 		 *  @access  protected
-		 *  @returns bool sucess
+		 *  @return  bool sucess
 		 *  @syntax  bool CoreuserData->_storeChangedProperties();
 		 */
 		protected function _storeChangedProperties()
@@ -225,7 +225,7 @@
 		 *  @name    _anticipationScope
 		 *  @type    method
 		 *  @access  protected
-		 *  @returns string md5 scope
+		 *  @return  string md5 scope
 		 *  @syntax  string CoreuserData->_anticipationScope();
 		 */
 		protected function _anticipationScope()
@@ -262,7 +262,7 @@
 		 *  @name    store
 		 *  @type    method
 		 *  @access  public
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  void CoreuserData->__destruct();
 		 */
 		public function __destruct()

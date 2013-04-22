@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreSession
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreSession
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 
 	class CoreSession extends  Konsolidate
@@ -85,7 +85,7 @@
 		 *  @type    constructor
 		 *  @access  public
 		 *  @param   object parent object
-		 *  @returns object
+		 *  @return  object
 		 *  @syntax  object = &new CoreSession( object parent )
 		 *  @note    This object is constructed by one of Konsolidates modules
 		 */
@@ -107,7 +107,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string sessionname, optional defaults to protected _sessionname
-		 *  @returns bool   success
+		 *  @return  bool   success
 		 *  @syntax  bool CoreSession->start( [ string sessionname ] );
 		 */
 		public function start( $sSessionName=null )
@@ -162,7 +162,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string variable
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  void CoreSession->register( [ string variable [, string variable [, ... ] ] ] );
 		 *  @note    Variables can also be assigned to a CoreSession directly using Konsolidate->set( "/Session/variable", "value" );
 		 */
@@ -187,7 +187,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string variable
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  void CoreSession->unregister( [ string variable [, string variable [, ... ] ] ] );
 		 */
 		public function unregister()
@@ -213,7 +213,7 @@
 		 *  @name    _setSessionCookie
 		 *  @type    method
 		 *  @access  protected
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreSession->_setSessionCookie();
 		 */
 		protected function _setSessionCookie()
@@ -232,7 +232,7 @@
 		 *  @name    _getSessionCookie
 		 *  @type    method
 		 *  @access  protected
-		 *  @returns string
+		 *  @return  string
 		 *  @syntax  string CoreSession->_getSessionCookie();
 		 */
 		protected function _getSessionCookie()
@@ -246,7 +246,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   bool   removecookie [optional, default false]
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  void CoreSession->destroy( [ bool removecookie ] );
 		 *  @note    The cookie is kept by default
 		 */
@@ -270,7 +270,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string variable
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreSession->isRegistered( string variablename );
 		 */
 		public function isRegistered( $sVariable )
@@ -285,7 +285,7 @@
 		 *  @name    writeClose
 		 *  @type    method
 		 *  @access  public
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreSession->writeClose();
 		 *  @note    unlike PHP's session_write_close function, CoreSession->writeClose does _NOT_ end the session, you can still add/change values which will be stored
 		 */
@@ -326,7 +326,7 @@
 		 *  @name    commit
 		 *  @type    method
 		 *  @access  public
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreSession->commit();
 		 *  @see     writeClose
 		 */

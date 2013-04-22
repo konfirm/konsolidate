@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreUser
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreUser
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreUser extends Konsolidate
 	{
@@ -65,7 +65,7 @@
 		 *  @type    constructor
 		 *  @access  public
 		 *  @param   object parent object
-		 *  @returns object
+		 *  @return  object
 		 *  @syntax  object = new CoreUser( object parent )
 		 *  @note    This object is constructed by one of Konsolidates modules
 		 */
@@ -84,7 +84,7 @@
 		 *  @name    load
 		 *  @type    method
 		 *  @access  public
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreUser->load();
 		 */
 		public function load()
@@ -132,7 +132,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string email, the email to be checked for occurance in the user table [optional, default check the current visitor by its tracker id]
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreUser->isRegistered( [string email] );
 		 */
 		public function isRegistered( $sEmail=null )
@@ -166,7 +166,7 @@
 		 *  @param   bool      agree [optional]
 		 *  @param   bool      opt in [optional]
 		 *  @param   bool      track [optional]
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreUser->create( integer userid, string email [, string password [, bool agree [, bool optin [, bool track ] ] ] ] );
 		 */
 		public function create( $sEmail, $sPassword=false, $bAgree=false, $bOptIn=false, $bTrack=true )
@@ -217,7 +217,7 @@
 		 *  @name    store
 		 *  @type    method
 		 *  @access  public
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreUser->store();
 		 *  @note    Calls to store expect a load to have taken place first
 		 */
@@ -251,7 +251,7 @@
 		 *  @param   string email address
 		 *  @param   string password
 		 *  @param   bool   autologin [default true]
-		 *  @returns string usertracker code (or bool false on error)
+		 *  @return  string usertracker code (or bool false on error)
 		 *  @syntax  stirng CoreUser->login( string email, string password [, bool autologin ] );
 		 */
 		public function login( $sEmail, $sPassword, $bAutoLogin=true )
@@ -280,7 +280,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string email address
-		 *  @returns bool   succes
+		 *  @return  bool   succes
 		 *  @syntax  bool   CoreUser->_updateLoginCount( string email );
 		 */
 		protected function _updateLoginCount( $sEmail )
@@ -299,7 +299,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string   property name
-		 *  @returns mixed
+		 *  @return  mixed
 		 *  @syntax  mixed CoreUser->get( string property );
 		 */
 		public function __get( $sProperty )

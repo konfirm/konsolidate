@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreRequest
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -22,7 +22,7 @@
 	 *  @name    CoreRequest
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreRequest extends Konsolidate
 	{
@@ -38,7 +38,7 @@
 		 *  @type    constructor
 		 *  @access  public
 		 *  @param   object parent object
-		 *  @returns object
+		 *  @return  object
 		 *  @syntax  object = &new CoreRequest( object parent )
 		 *  @note    This object is constructed by one of Konsolidates modules
 		 */
@@ -59,7 +59,7 @@
 		 *  @name    isPosted
 		 *  @type    method
 		 *  @access  public
-		 *  @returns bool
+		 *  @return  bool
 		 *  @syntax  bool CoreRequest->isPosted()
 		 */
 		public function isPosted()
@@ -72,7 +72,7 @@
 		 *  @name    getRawRequest
 		 *  @type    method
 		 *  @access  public
-		 *  @returns string (bool false, if no raw data is available)
+		 *  @return  string (bool false, if no raw data is available)
 		 *  @syntax  string CoreRequest->getRawRequest()
 		 */
 		public function getRawRequest()
@@ -85,7 +85,7 @@
 		 *  @name    getXML
 		 *  @type    method
 		 *  @access  public
-		 *  @returns SimpleXMLElement (bool false, if no xml data is available)
+		 *  @return  SimpleXMLElement (bool false, if no xml data is available)
 		 *  @syntax  SimpleXMLElement CoreRequest->getXML()
 		 */
 		public function getXML()
@@ -98,7 +98,7 @@
 		 *  @name    _collectFromRaw
 		 *  @type    method
 		 *  @access  protected
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  void CoreRequest->_collectFromRaw()
 		 */
 		protected function _collectFromRaw()
@@ -121,10 +121,10 @@
 
 		/**
 		 *  retrieve variables from a HTTP request (POST/GET only)
-		 *  @name    _collectFromRaw
+		 *  @name    _collectHTTP
 		 *  @type    method
 		 *  @access  protected
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  void CoreRequest->_collectHTTP()
 		 */
 		protected function _collectHTTP( $aCollection )
@@ -143,7 +143,7 @@
 		 *  @name    _collect
 		 *  @type    method
 		 *  @access  protected
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  void CoreRequest->_collect()
 		 */
 		protected function _collect()
@@ -163,7 +163,7 @@
 		 *  @name    _getCollection
 		 *  @type    method
 		 *  @access  protected
-		 *  @returns array     if no order is specified, _GET or _POST global, merged result of the desired order otherwise
+		 *  @return  array     if no order is specified, _GET or _POST global, merged result of the desired order otherwise
 		 *  @syntax  array CoreRequest->_getCollection()
 		 *  @note    By default _getCollection module will distinguish between GET and POST requests, they will not be processed both!
 		 *           You can override this behaviour by setting the variable order (EGPCS, like the variables_order php.ini setting) to /Config/Request/variableorder
@@ -194,7 +194,7 @@
 		 *  @name    _collectFiles
 		 *  @type    method
 		 *  @access  protected
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  void CoreRequest->_collectFiles()
 		 */
 		protected function _collectFiles()
@@ -231,7 +231,7 @@
 		 *  @param   array   _FILES record
 		 *  @param   string  fieldname
 		 *  @param   string  reference (only when multiple files are uploaded)
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  void CoreRequest->_collectFiles()
 		 */
 		protected function _createFileInstance( $aFile, $sVariable, $sReference=null )
@@ -248,7 +248,7 @@
 		 *  @name    hasFiles
 		 *  @type    method
 		 *  @access  public
-		 *  @returns void
+		 *  @return  void
 		 *  @syntax  bool CoreRequest->hasFiles()
 		 */
 		public function hasFiles()
@@ -263,7 +263,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   bool  referenced array (non referenced array containing variable names)
-		 *  @returns array files
+		 *  @return  array files
 		 *  @syntax  array CoreRequest->getFiles()
 		 */
 		public function getFiles( $bReference=false )
@@ -278,7 +278,7 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string reference name
-		 *  @returns mixed  file object, array of file objects or false if reference does not exist
+		 *  @return  mixed  file object, array of file objects or false if reference does not exist
 		 *  @syntax  array CoreRequest->getFileByReference( string reference )
 		 */
 		public function getFileByReference( $sReference )

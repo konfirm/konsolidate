@@ -4,7 +4,7 @@
 	 *            ________ ___        
 	 *           /   /   /\  /\       Konsolidate
 	 *      ____/   /___/  \/  \      
-	 *     /           /\      /      http://www.konsolidate.net
+	 *     /           /\      /      http://www.konsolidate.nl
 	 *    /___     ___/  \    /       
 	 *    \  /   /\   \  /    \       Class:  CoreMailAttachment
 	 *     \/___/  \___\/      \      Tier:   Core
@@ -21,7 +21,7 @@
 	 *  @name    CoreMailAttachment
 	 *  @type    class
 	 *  @package Konsolidate
-	 *  @author  Rogier Spieker <rogier@konsolidate.net>
+	 *  @author  Rogier Spieker <rogier@konsolidate.nl>
 	 */
 	class CoreMailAttachment extends Konsolidate
 	{
@@ -68,8 +68,8 @@
 		 *  @access  public
 		 *  @param   string property
 		 *  @param   mixed  value
-		 *  @returns void
-		 *  @syntax  void CoreDevMailAttachment->(string property) = mixed variable
+		 *  @return  void
+		 *  @syntax  void CoreMailAttachment->(string property) = mixed variable
 		 */
 		public function __set( $sProperty, $mValue )
 		{
@@ -85,8 +85,8 @@
 		 *  @type    method
 		 *  @access  public
 		 *  @param   string property
-		 *  @returns mixed  value
-		 *  @syntax  mixed = CoreDevMailAttachment->(string property);
+		 *  @return  mixed  value
+		 *  @syntax  mixed = CoreMailAttachment->(string property);
 		 */
 		public function __get( $sProperty )
 		{
