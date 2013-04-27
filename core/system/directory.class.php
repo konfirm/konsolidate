@@ -54,11 +54,14 @@
 		public function getList( $sPath, $bPrependPath=true )
 		{
 			$aReturn = Array();
-			foreach( new DirectoryIterator( $sPath ) as $nIndex=>$oItem )
+			if ( is_dir( $sPath ) )
 			{
-				$sName = $oItem->getFilename();
-				if ( $sName{0} != "." )
-					array_push( $aReturn, ( $bPrependPath ? "{$sPath}/" : "" ) . $sName );
+				foreach( new DirectoryIterator( $sPath ) as $nIndex=>$oItem )
+				{
+					$sName = $oItem->getFilename();
+					if ( $sName{0} != "." )
+						array_push( $aReturn, ( $bPrependPath ? "{$sPath}/" : "" ) . $sName );
+				}
 			}
 			return $aReturn;
 		}
