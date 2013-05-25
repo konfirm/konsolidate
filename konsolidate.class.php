@@ -113,7 +113,7 @@
 			$this->_lookupcache = Array();
 			$this->_tracelog    = Array();
 
-			if ( is_object( $mPath ) && ( is_subclass_of( $mPath, "Konsolidate" ) || $mPath instanceof Konsolidate ) )
+			if ( is_object( $mPath ) && $mPath instanceof Konsolidate )
 			{
 				$this->_parent          = $mPath;
 				$this->_path            = $this->getFilePath();
@@ -288,7 +288,13 @@
 				}
 			}
 
-			$this->import( "{$sModule}.class.php" );
+			//  optimize the number of calls to import, as importing is rather expensive due to the file I/O involved
+			static $aImported = Array();
+			if ( !isset( $aImported[ $sModule ] ) )
+			{
+				$aImported[ $sModule ] = microtime(true);
+				$this->import( "{$sModule}.class.php" );
+			}
 
 			//  try to construct the module classes top down, this ensures the correct order of construction
 			$bConstructed = false;
@@ -345,14 +351,19 @@
 				return $oModule->import( substr( $sFile, $nSeperator + 1 ) );
 
 			//  include all imported files (if they exist) bottom up, this solves the implementation classes having to know core paths
+			$aIncluded = array_flip( get_included_files() );
 			$aPath     = array_reverse( $this->_path, true );
 			$bImported = false;
 			foreach ( $aPath as $sPath )
 			{
 				$sCurrentFile = "{$sPath}/" . strToLower( $sFile );
-				if ( realpath( $sCurrentFile ) )
+				if ( isset( $aIncluded[ $sCurrentFile ] ) )
 				{
-					include_once( $sCurrentFile );
+					$bImported = true;
+				}
+				else if ( realpath( $sCurrentFile ) )
+				{
+					include( $sCurrentFile );
 					$bImported = true;
 				}
 			}
@@ -440,8 +451,11 @@
 				$sClass      = str_replace( array_keys( $aParentPath ), "", get_class( $this ) );
 				$aPath       = Array();
 				foreach ( $aParentPath as $sTier=>$sPath )
-					if ( realpath( $sPath ) )
-						$aPath[ "{$sTier}{$sClass}" ] = $sPath . "/" . strToLower( $sClass );
+				{
+					$sClassPath = $sPath . "/" . strToLower( $sClass );
+					if ( realpath( $sClassPath ) )
+						$aPath[ "{$sTier}{$sClass}" ] = $sClassPath;
+				}
 				return $aPath;
 			}
 		}
