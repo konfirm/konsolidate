@@ -33,11 +33,18 @@
 		/**
 		 *  The SMTP server
 		 *  @name    _server
-		 *  @type    bool
+		 *  @type    string
 		 *  @access  protected
-		 *  @note    this property is set implicitly using __set (without the preceeding '_')
 		 */
 		protected $_server;
+
+		/**
+		 *  The SMTP port
+		 *  @name    _port
+		 *  @type    int
+		 *  @access  protected
+		 */
+		protected $_port;
 
 		/**
 		 *  Is the content being loaded
@@ -211,6 +218,7 @@
 			if ( isset( $aServer[ "host" ] ) || isset( $aServer[ "path" ] ) )
 			{
 				$this->_server = isset( $aServer[ "host" ] ) ? $aServer[ "host" ] : $aServer[ "path" ];
+				$this->_port   = isset( $aServer[ "port" ] ) ? $aServer[ "port" ] : 25;
 				if ( isset( $aServer[ "user" ] ) )
 					$this->_auth = trim( $aServer[ "user" ] . ":" . $aServer[ "pass" ], ":" );
 			}
@@ -294,6 +302,7 @@
 			//  Create SMTP instance (unique for each call)
 			$oMail            = $this->instance( "/Network/Protocol/SMTP" );
 			$oMail->server    = $this->_server;
+			$oMail->port      = $this->_port;
 			$oMail->from      = $this->_from;
 			$oMail->to        = $this->_to;
 			$oMail->cc        = $this->_cc;
