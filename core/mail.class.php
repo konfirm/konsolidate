@@ -199,6 +199,15 @@
 		 */
 		protected $_boundary;
 
+		/**
+		 *  The headers to be sent with the mail
+		 *  @name   _header
+		 *  @type   array
+		 *  @access protected
+		 *  @note   Be careful setting these headers, they could malform your mail
+		 */
+		protected $_header;
+
 
 		/**
 		 *  constructor
@@ -223,6 +232,7 @@
 					$this->_auth = trim( $aServer[ "user" ] . ":" . $aServer[ "pass" ], ":" );
 			}
 
+			$this->_header   = Array();
 			$this->_boundary = $this->call( "/Key/create", "XXXX-XXX" ) . "-" . time();
 			$this->reset();
 		}
@@ -288,6 +298,22 @@
 		}
 
 		/**
+		 *  Add header to sent with Mail
+		 *  @name   addHeader
+		 *  @type   method
+		 *  @access public
+		 *  @param  string Header key
+		 *  @param  string Header value
+		 *  @return void
+		 *  @note   Be careful adding headers, they could malform your mail
+		 */
+		public function addHeader( $sKey, $sValue )
+		{
+			if ( !empty( $sKey ) )
+				$this->_header[ $sKey ] = $sValue;
+		}
+
+		/**
 		 *  send the prepared e-mail
 		 *  @name    _send
 		 *  @type    method
@@ -318,6 +344,10 @@
 			$bBoundary      = $this->_requireBoundary();
 			$bMultiBoundary = false;
 			$sMailBody      = "";
+
+			if ( count( $this->_header ) )
+				foreach( $this->_header as $key => $value )
+					$oMail->addHeader( $key, $value );
 
 			//  Set priority header if a priority was provided
 			if ( !empty( $this->_priority ) )
