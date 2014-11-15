@@ -21,19 +21,19 @@ class CoreRPCControl extends Konsolidate
 	 *  @return  void
 	 *  @syntax  void CoreRPCControl->_feedback()
 	 */
-	protected function _feedback( $bError=true, $sMessage="", $mContent="" )
+	protected function _feedback($bError=true, $sMessage='', $mContent='')
 	{
-		if ( $this->get( "/Request/_format" ) == "xml" )
+		if ($this->get('/Request/_format') == 'xml')
 		{
-			if ( $this->call( "/RPC/Status/send", $bError, $sMessage, $mContent ) )
+			if ($this->call('/RPC/Status/send', $bError, $sMessage, $mContent))
 				exit;
 		}
 		else
 		{
-			echo "emulating normal POST/GET, dumping vars instead of assigning to template<br />";
-			echo " - error: "; var_dump( $bError ); echo "<br />";
-			echo " - message: "; var_dump( $sMessage ); echo "<br />";
-			echo " - content: "; var_dump( $mContent ); echo "<br />";
+			echo 'emulating normal POST/GET, dumping vars instead of assigning to template<br />';
+			echo ' - error: '; var_dump($bError); echo '<br />';
+			echo ' - message: '; var_dump($sMessage); echo '<br />';
+			echo ' - content: '; var_dump($mContent); echo '<br />';
 		}
 	}
 
@@ -44,19 +44,19 @@ class CoreRPCControl extends Konsolidate
 	 *  @access  public
 	 *  @param   string command
 	 *  @return  void
-	 *  @syntax  void CoreRPCControl->process( string command )
+	 *  @syntax  void CoreRPCControl->process(string command)
 	 */
-	function process( $sCommand )
+	function process($sCommand)
 	{
-		$nMethodStart = strrpos( $sCommand, $this->_objectseparator );
-		$sModule      = substr( $sCommand, 0, $nMethodStart );
-		$sMethod      = substr( $sCommand, $nMethodStart + 1 );
+		$nMethodStart = strrpos($sCommand, $this->_objectseparator);
+		$sModule      = substr($sCommand, 0, $nMethodStart);
+		$sMethod      = substr($sCommand, $nMethodStart + 1);
 
-		$oProcessor = $this->get( $sModule );
-		if ( is_object( $oProcessor ) && method_exists( $oProcessor, $sMethod ) )
+		$oProcessor = $this->get($sModule);
+		if (is_object($oProcessor) && method_exists($oProcessor, $sMethod))
 		{
 			$oProcessor->$sMethod();
-			return $this->_feedback( !$oProcessor->getStatus(), $oProcessor->getMessage(), $oProcessor->getContent() );
+			return $this->_feedback(!$oProcessor->getStatus(), $oProcessor->getMessage(), $oProcessor->getContent());
 		}
 		return $this->_feedback();
 	}

@@ -56,12 +56,12 @@ class CoreMailAttachment extends Konsolidate
 	 *  @return  void
 	 *  @syntax  void CoreMailAttachment->(string property) = mixed variable
 	 */
-	public function __set( $sProperty, $mValue )
+	public function __set($sProperty, $mValue)
 	{
-		if ( property_exists( $this, "_{$sProperty}" ) )
-			$this->{"_{$sProperty}"} = $mValue;
+		if (property_exists($this, '_' . $sProperty))
+			$this->{'_' . $sProperty} = $mValue;
 		else
-			parent::__set( $sProperty, $mValue );
+			parent::__set($sProperty, $mValue);
 	}
 
 	/**
@@ -73,20 +73,24 @@ class CoreMailAttachment extends Konsolidate
 	 *  @return  mixed  value
 	 *  @syntax  mixed = CoreMailAttachment->(string property);
 	 */
-	public function __get( $sProperty )
+	public function __get($sProperty)
 	{
-		switch( $sProperty )
+		switch($sProperty)
 		{
-			case "data":
-				return !empty( $this->_data ) ? $this->_data : $this->call( "/System/File/read", $this->_name );
-			case "type":
-				return !empty( $this->_type ) ? $this->_type : $this->call( "/System/File/MIME/getType", $this->_name );
-			case "disposition":
-				return !empty( $this->_disposition ) ? $this->_disposition : "attachment";
-			case "name":
+			case 'data':
+				return !empty($this->_data) ? $this->_data : $this->call('/System/File/read', $this->_name);
+
+			case 'type':
+				return !empty($this->_type) ? $this->_type : $this->call('/System/File/MIME/getType', $this->_name);
+
+			case 'disposition':
+				return !empty($this->_disposition) ? $this->_disposition : 'attachment';
+
+			case 'name':
 				return $this->_name;
+
 			default:
-				return parent::__get( $sProperty );
+				return parent::__get($sProperty);
 		}
 	}
 }

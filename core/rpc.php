@@ -21,32 +21,32 @@ class CoreRPC extends Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = &new CoreRPC( object parent )
+	 *  @syntax  object = &new CoreRPC(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
-	public function __construct( &$oParent )
+	public function __construct(Konsolidate $parent)
 	{
-		parent::__construct( $oParent );
+		parent::__construct($parent);
 
-		$this->import( "control.if.php" );
+		$this->import('control.if.php');
 	}
 
-	public function loadConfig( $sFile )
+	public function loadConfig($sFile)
 	{
-		return $this->_config = $this->call( "/Config/ini/load", $sFile );
+		return $this->_config = $this->call('/Config/ini/load', $sFile);
 	}
 
-	public function process( $sConfigFile=null )
+	public function process($sConfigFile=null)
 	{
-		if ( !is_null( $sConfigFile ) )
-			$this->loadConfig( $sConfigFile );
+		if (!is_null($sConfigFile))
+			$this->loadConfig($sConfigFile);
 
-		if ( is_array( $this->_config ) )
+		if (is_array($this->_config))
 		{
-			$sCommand = $this->get( "/Request/command" );
+			$sCommand = $this->get('/Request/command');
 
-			if ( array_key_exists( "rpc", $this->_config ) && array_key_exists( $sCommand, $this->_config[ "rpc" ] ) )
-				return $this->call( "Control/process", $this->_config[ "rpc" ][ $sCommand ] );
+			if (array_key_exists('rpc', $this->_config) && array_key_exists($sCommand, $this->_config['rpc']))
+				return $this->call('Control/process', $this->_config['rpc'][$sCommand]);
 		}
 		return false;
 	}

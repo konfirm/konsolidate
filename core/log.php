@@ -35,15 +35,15 @@ class CoreLog extends Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = &new CoreLog( object parent )
+	 *  @syntax  object = &new CoreLog(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
-	public function __construct( $oParent )
+	public function __construct(Konsolidate $parent)
 	{
-		parent::__construct( $oParent );
+		parent::__construct($parent);
 
-		$this->_logfile = $this->get( "/Config/konsolidate/log", ini_get( "error_log" ) );
-		$this->setVerbosity( $this->get( "/Config/konsolidate/loglevel" ) );
+		$this->_logfile = $this->get('/Config/konsolidate/log', ini_get('error_log'));
+		$this->setVerbosity($this->get('/Config/konsolidate/loglevel'));
 	}
 
 	/**
@@ -53,11 +53,11 @@ class CoreLog extends Konsolidate
 	 *  @access  public
 	 *  @param   int level (default matching error_reporting ini directive)
 	 *  @return  void
-	 *  @syntax  void CoreLog->setVerbosity( [int level] )
+	 *  @syntax  void CoreLog->setVerbosity([int level])
 	 */
-	public function setVerbosity( $nLevel=null )
+	public function setVerbosity($nLevel=null)
 	{
-		if ( $nLevel === null )
+		if ($nLevel === null)
 			$nLevel = $this->_determineVerbosity();
 		$this->_verbositylevel = $nLevel;
 	}
@@ -70,23 +70,23 @@ class CoreLog extends Konsolidate
 	 *  @param   string message
 	 *  @param   int    level
 	 *  @return  bool
-	 *  @syntax  bool CoreLog->message( string message [, int level ] )
+	 *  @syntax  bool CoreLog->message(string message [, int level])
 	 *  @note    Configuration options: display_errors (Config/Log/displayerrors), log_errors (Config/Log/logerrors)
 	 */
-	public function message( $sMessage, $nVerbosity=3 )
+	public function message($sMessage, $nVerbosity=3)
 	{
-		if ( $nVerbosity <= $this->_verbositylevel )
+		if ($nVerbosity <= $this->_verbositylevel)
 		{
-			if ( (bool) ini_get( "display_errors" ) )
+			if ((bool) ini_get('display_errors'))
 			{
-				if ( (bool) ini_get( "html_errors" ) )
-					print $this->_formatMessage( $sMessage, $nVerbosity, true );
+				if ((bool) ini_get('html_errors'))
+					print $this->_formatMessage($sMessage, $nVerbosity, true);
 				else
-					print $this->_formatMessage( $sMessage, $nVerbosity ) . "\n";
+					print $this->_formatMessage($sMessage, $nVerbosity) . PHP_EOL;
 			}
-			if ( (bool) ini_get( "log_errors" ) )
+			if ((bool) ini_get('log_errors'))
 			{
-				$this->write( $sMessage, $nVerbosity );
+				$this->write($sMessage, $nVerbosity);
 			}
 		}
 	}
@@ -99,16 +99,16 @@ class CoreLog extends Konsolidate
 	 *  @param   string message
 	 *  @param   int    level
 	 *  @return  bool
-	 *  @syntax  bool CoreLog->write( string message [, int level ] )
+	 *  @syntax  bool CoreLog->write(string message [, int level])
 	 *  @note    if there's any reason the message cannot be written to the logfile, the message is written into the default error.log
 	 */
-	public function write( $sMessage, $nVerbosity=3 )
+	public function write($sMessage, $nVerbosity=3)
 	{
-		if ( $nVerbosity <= $this->_verbositylevel )
+		if ($nVerbosity <= $this->_verbositylevel)
 		{
-			if ( !error_log( $this->_formatMessage( $sMessage, $nVerbosity ) . "\n", 0, $this->_logfile ) )
+			if (!error_log($this->_formatMessage($sMessage, $nVerbosity) . PHP_EOL, 0, $this->_logfile))
 			{
-				error_log( $sMessage );
+				error_log($sMessage);
 				return false;
 			}
 			return true;
@@ -124,20 +124,20 @@ class CoreLog extends Konsolidate
 	 *  @param   int    level
 	 *  @param   bool   uppercase (default true)
 	 *  @return  bool
-	 *  @syntax  bool CoreLog->_translate( int level [, bool uppercase ] )
+	 *  @syntax  bool CoreLog->_translate(int level [, bool uppercase])
 	 */
-	protected function _translate( $nVerbosity, $bUpperCase=true )
+	protected function _translate($nVerbosity, $bUpperCase=true)
 	{
-		switch( (int) $nVerbosity )
+		switch((int) $nVerbosity)
 		{
-			case 0:  $sReturn = "Critical"; break;
-			case 1:  $sReturn = "Severe";   break;
-			case 2:  $sReturn = "Warning";  break;
-			case 3:  $sReturn = "Info";     break;
-			case 4:  $sReturn = "Debug";    break;
-			default: $sReturn = "Unknown";
+			case 0:  $sReturn = 'Critical'; break;
+			case 1:  $sReturn = 'Severe';   break;
+			case 2:  $sReturn = 'Warning';  break;
+			case 3:  $sReturn = 'Info';     break;
+			case 4:  $sReturn = 'Debug';    break;
+			default: $sReturn = 'Unknown';
 		}
-		return $bUpperCase ? strtoupper( $sReturn ) : $sReturn;
+		return $bUpperCase ? strtoupper($sReturn) : $sReturn;
 	}
 
 	/**
@@ -150,16 +150,16 @@ class CoreLog extends Konsolidate
 	 */
 	protected function _determineVerbosity()
 	{
-		$nReporting = ini_get( "error_reporting" );
-		if ( E_STRICT & $nReporting )
+		$nReporting = ini_get('error_reporting');
+		if (E_STRICT & $nReporting)
 			return 4; //  Debug - Very strict, al lot of information
-		else if ( E_ALL & $nReporting )
+		else if (E_ALL & $nReporting)
 			return 3; //  All - A lot of information
-		else if ( E_NOTICE & $nReporting )
+		else if (E_NOTICE & $nReporting)
 			return 2; //  Info - Much information
-		else if ( E_WARNING & $nReporting )
+		else if (E_WARNING & $nReporting)
 			return 1; // Only warnings - less informative
-		else if ( E_ERROR & $nReporting )
+		else if (E_ERROR & $nReporting)
 			return 0; // Only critial information - least informative
 
 		return 3;
@@ -174,12 +174,12 @@ class CoreLog extends Konsolidate
 	 *  @param   int    level
 	 *  @param   bool   html
 	 *  @return  int  level
-	 *  @syntax  bool CoreLog->_formatMessage( string message, int level [, bool html ] )
+	 *  @syntax  bool CoreLog->_formatMessage(string message, int level [, bool html])
 	 */
-	protected function _formatMessage( $sMessage, $nVerbosity, $bHTML=false )
+	protected function _formatMessage($sMessage, $nVerbosity, $bHTML=false)
 	{
-		if ( $bHTML )
-			return "<div class='konsolidate_error konsolidate_" . strToLower( $this->_translate( $nVerbosity ) ) . "'><span class='konsolidate_time'>" . date( "r" ) . "</span> <span class='konsolidate_level'>" . $this->_translate( $nVerbosity ) . "</span> <span class='konsolidate_script'>{$_SERVER[ "SCRIPT_NAME" ]}</span> <span class='konsolidate_message'>{$sMessage}</span></div>";
-		return "[" . $this->_translate( $nVerbosity ) . "] - {$_SERVER[ "SCRIPT_NAME" ]}]: {$sMessage}";
+		if ($bHTML)
+			return '<div class="konsolidate_error konsolidate_' . strToLower($this->_translate($nVerbosity)) . '"><span class="konsolidate_time">' . date('r') . '</span> <span class="konsolidate_level">' . $this->_translate($nVerbosity) . '</span> <span class="konsolidate_script">' . $_SERVER['SCRIPT_NAME'] . '</span> <span class="konsolidate_message">' . $sMessage . '</span></div>';
+		return '[' . $this->_translate($nVerbosity) . '] - ' . $_SERVER['SCRIPT_NAME'] . ']: ' . $sMessage;
 	}
 }

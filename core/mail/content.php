@@ -17,11 +17,11 @@ class CoreMailContent extends Konsolidate
 	 *  @access  public
 	 *  @param   string job name
 	 *  @return  bool   success
-	 *  @syntax  bool   CoreMailContent->load( string job )
+	 *  @syntax  bool   CoreMailContent->load(string job)
 	 */
-	public function load( $sJob )
+	public function load($sJob)
 	{
-		$sQuery  = "SELECT mlcid AS `id`,
+		$sQuery  = 'SELECT mlcid AS `id`,
 						   mlcdescription AS `description`,
 						   mlcjob AS `job`,
 						   mlcfrom AS `from`,
@@ -32,13 +32,13 @@ class CoreMailContent extends Konsolidate
 						   mlcrichcontent AS `richcontent`,
 						   mlctemplate AS `template`
 					  FROM mailcontent
-					 WHERE mlcjob=" . $this->call( "/DB/quote" , $sJob );
-		$oResult = $this->call( "/DB/query", $sQuery );
-		if ( is_object( $oResult ) && $oResult->errno <= 0 )
+					 WHERE mlcjob=' . $this->call('/DB/quote' , $sJob);
+		$oResult = $this->call('/DB/query', $sQuery);
+		if (is_object($oResult) && $oResult->errno <= 0)
 		{
 			$oRecord = $oResult->next();
-			foreach( $oRecord as $sKey=>$sValue )
-				$this->set( "../{$sKey}", $sValue );
+			foreach($oRecord as $sKey=>$sValue)
+				$this->set('../' . $sKey, $sValue);
 			return true;
 		}
 		return false;

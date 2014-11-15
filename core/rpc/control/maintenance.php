@@ -29,7 +29,7 @@ class CoreRPCControlMaintenance extends Konsolidate implements CoreRPCControlInt
 	 */
 	public function getMessage()
 	{
-		return isset( $this->_message ) ? $this->_message : null;
+		return isset($this->_message) ? $this->_message : null;
 	}
 
 	/**
@@ -43,7 +43,7 @@ class CoreRPCControlMaintenance extends Konsolidate implements CoreRPCControlInt
 	 */
 	public function getContent()
 	{
-		return isset( $this->_content ) ? $this->_content : null;
+		return isset($this->_content) ? $this->_content : null;
 	}
 
 	/**
@@ -57,7 +57,7 @@ class CoreRPCControlMaintenance extends Konsolidate implements CoreRPCControlInt
 	 */
 	public function getStatus()
 	{
-		return isset( $this->_status ) ? (bool) $this->_status : false;
+		return isset($this->_status) ? (bool) $this->_status : false;
 	}
 
 
@@ -73,8 +73,8 @@ class CoreRPCControlMaintenance extends Konsolidate implements CoreRPCControlInt
 	 */
 	protected function loadRequest()
 	{
-		if ( !isset( $this->_request ) )
-			$this->_request = &$this->register( "/Request" );
+		if (!isset($this->_request))
+			$this->_request = &$this->register('/Request');
 	}
 
 	/**
@@ -84,25 +84,25 @@ class CoreRPCControlMaintenance extends Konsolidate implements CoreRPCControlInt
 	 *  @access  protected
 	 *  @param   string path
 	 *  @return  bool
-	 *  @syntax  bool CoreRPCControlMaintenance->_recursiveUnlink( string path )
+	 *  @syntax  bool CoreRPCControlMaintenance->_recursiveUnlink(string path)
 	 */
-	protected function _recursiveUnlink( $sPath )
+	protected function _recursiveUnlink($sPath)
 	{
-		if ( is_dir( $sPath ) )
+		if (is_dir($sPath))
 		{
 			$bReturn = true;
-			$oDir    = new DirectoryIterator( $sPath );
-			foreach( $oDir as $oDirItem )
-				if ( $bReturn && !$oDirItem->isDot() )
+			$oDir    = new DirectoryIterator($sPath);
+			foreach($oDir as $oDirItem)
+				if ($bReturn && !$oDirItem->isDot())
 				{
-					if ( $oDirItem->isFile() )
+					if ($oDirItem->isFile())
 					{
-						$bReturn &= $this->call( "/System/File/unlink", "{$sPath}/" . $oDirItem->getFileName() );
+						$bReturn &= $this->call('/System/File/unlink', "{$sPath}/" . $oDirItem->getFileName());
 					}
-					else if ( $oDirItem->isDir() )
+					else if ($oDirItem->isDir())
 					{
-						$bReturn &= $this->_recursiveUnlink( "{$sPath}/" . $oDirItem->getFileName() );
-						$bReturn &= rmdir( "{$sPath}/" . $oDirItem->getFileName() );
+						$bReturn &= $this->_recursiveUnlink("{$sPath}/" . $oDirItem->getFileName());
+						$bReturn &= rmdir("{$sPath}/" . $oDirItem->getFileName());
 					}
 				}
 			return $bReturn;
@@ -119,6 +119,6 @@ class CoreRPCControlMaintenance extends Konsolidate implements CoreRPCControlInt
 	 */
 	public function clearCache()
 	{
-		$this->_recursiveUnlink( COMPILE_PATH );
+		$this->_recursiveUnlink(COMPILE_PATH);
 	}
 }

@@ -18,11 +18,11 @@ class CoreSystemDirectory extends Konsolidate
 	 *  @param   string path
 	 *  @param   oct    mode [optional, default 0777]
 	 *  @return  bool
-	 *  @syntax  bool CoreSystemDirectory->create( string path [, oct mode ] );
+	 *  @syntax  bool CoreSystemDirectory->create(string path [, oct mode]);
 	 */
-	public function create( $sPath, $nMode=0777 )
+	public function create($sPath, $nMode=0777)
 	{
-		return ( is_dir( $sPath) || @mkdir( $sPath, $nMode, true ) ) && chmod( $sPath, $nMode );
+		return (is_dir($sPath) || @mkdir($sPath, $nMode, true)) && chmod($sPath, $nMode);
 	}
 
 	/**
@@ -33,18 +33,18 @@ class CoreSystemDirectory extends Konsolidate
 	 *  @param   string path
 	 *  @param   bool   prependpath [optional, default true]
 	 *  @return  array
-	 *  @syntax  array CoreSystemDirectory->getList( string path [, bool prependpath ] );
+	 *  @syntax  array CoreSystemDirectory->getList(string path [, bool prependpath]);
 	 */
-	public function getList( $sPath, $bPrependPath=true )
+	public function getList($sPath, $bPrependPath=true)
 	{
 		$aReturn = Array();
-		if ( is_dir( $sPath ) )
+		if (is_dir($sPath))
 		{
-			foreach( new DirectoryIterator( $sPath ) as $nIndex=>$oItem )
+			foreach(new DirectoryIterator($sPath) as $nIndex=>$oItem)
 			{
 				$sName = $oItem->getFilename();
-				if ( $sName{0} != "." )
-					array_push( $aReturn, ( $bPrependPath ? "{$sPath}/" : "" ) . $sName );
+				if ($sName{0} != '.')
+					array_push($aReturn, ($bPrependPath ? "{$sPath}/" : '') . $sName);
 			}
 		}
 		return $aReturn;

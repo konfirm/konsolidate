@@ -10,10 +10,10 @@
  */
 class CoreMail extends Konsolidate
 {
-	const DEFAULT_ENCODING="8bit";
-	const DEFAULT_RICH_ENCODING="quoted-printable";
-	const DEFAULT_CHARSET="UTF-8";
-	const MESSAGE_MIME="> This message was sent in MIME format. Your mail reader does not seem to support this feature.";
+	const DEFAULT_ENCODING='8bit';
+	const DEFAULT_RICH_ENCODING='quoted-printable';
+	const DEFAULT_CHARSET='UTF-8';
+	const MESSAGE_MIME='> This message was sent in MIME format. Your mail reader does not seem to support this feature.';
 
 	/**
 	 *  The SMTP server
@@ -158,7 +158,7 @@ class CoreMail extends Konsolidate
 	protected $_priority;
 
 	/**
-	 *  Replacement variables (key/value pair, where key is replaced by value )
+	 *  Replacement variables (key/value pair, where key is replaced by value)
 	 *  @name    _replace
 	 *  @type    bool
 	 *  @access  protected
@@ -201,24 +201,25 @@ class CoreMail extends Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = &new CoreMail( object parent )
+	 *  @syntax  object = &new CoreMail(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
-	public function __construct( $oParent )
+	public function __construct(Konsolidate $parent)
 	{
-		parent::__construct( $oParent );
-		$aServer = parse_url( $this->get( "/Config/Mail/server", "localhost" ) );
+		parent::__construct($parent);
 
-		if ( isset( $aServer[ "host" ] ) || isset( $aServer[ "path" ] ) )
+		$aServer = parse_url($this->get('/Config/Mail/server', 'localhost'));
+
+		if (isset($aServer['host']) || isset($aServer['path']))
 		{
-			$this->_server = isset( $aServer[ "host" ] ) ? $aServer[ "host" ] : $aServer[ "path" ];
-			$this->_port   = isset( $aServer[ "port" ] ) ? $aServer[ "port" ] : 25;
-			if ( isset( $aServer[ "user" ] ) )
-				$this->_auth = trim( $aServer[ "user" ] . ":" . $aServer[ "pass" ], ":" );
+			$this->_server = isset($aServer['host']) ? $aServer['host'] : $aServer['path'];
+			$this->_port   = isset($aServer['port']) ? $aServer['port'] : 25;
+			if (isset($aServer['user']))
+				$this->_auth = trim($aServer['user'] . ':' . $aServer['pass'], ':');
 		}
 
 		$this->_header   = Array();
-		$this->_boundary = $this->call( "/Key/create", "XXXX-XXX" ) . "-" . time();
+		$this->_boundary = $this->call('/Key/create', 'XXXX-XXX') . '-' . time();
 		$this->reset();
 	}
 
@@ -239,10 +240,10 @@ class CoreMail extends Konsolidate
 		$this->_to           = Array();
 		$this->_cc           = Array();
 		$this->_bcc          = Array();
-		$this->_from         = "";
-		$this->_subject      = "";
-		$this->_content      = "";
-		$this->_richcontent  = "";
+		$this->_from         = '';
+		$this->_subject      = '';
+		$this->_content      = '';
+		$this->_richcontent  = '';
 		$this->_priority     = null;
 		$this->_attachment   = Array();
 		$this->_replace      = Array();
@@ -257,20 +258,20 @@ class CoreMail extends Konsolidate
 	 *  @param   bool allow empty content [optional, default true]
 	 *  @param   bool allow empty subject [optional, default true]
 	 *  @return  bool
-	 *  @syntax  bool CoreMail->send( [ bool empty content [, bool empty subject ] ] )
+	 *  @syntax  bool CoreMail->send([bool empty content [, bool empty subject]])
 	 */
-	public function send( $bAllowEmptyContent=true, $bAllowEmptySubject=true )
+	public function send($bAllowEmptyContent=true, $bAllowEmptySubject=true)
 	{
 		$bRecipient = false;
-		foreach( Array( "to", "cc", "bcc" ) as $sRecipient )
-			if ( count( $this->{"_{$sRecipient}"} ) > 0 )
+		foreach(Array('to', 'cc', 'bcc') as $sRecipient)
+			if (count($this->{"_{$sRecipient}"}) > 0)
 				$bRecipient = true;
-		if ( !$bRecipient )
+		if (!$bRecipient)
 			return false;
 
-		if ( !$bAllowEmptyContent && ( empty( $this->_content ) && empty( $this->_richcontent ) ) )
+		if (!$bAllowEmptyContent && (empty($this->_content) && empty($this->_richcontent)))
 			return false;
-		if ( !$bAllowEmptySubject && empty( $this->_subject ) )
+		if (!$bAllowEmptySubject && empty($this->_subject))
 			return false;
 
 		if ($this->_auth)
@@ -292,10 +293,10 @@ class CoreMail extends Konsolidate
 	 *  @return void
 	 *  @note   Be careful adding headers, they could malform your mail
 	 */
-	public function addHeader( $sKey, $sValue )
+	public function addHeader($sKey, $sValue)
 	{
-		if ( !empty( $sKey ) )
-			$this->_header[ $sKey ] = $sValue;
+		if (!empty($sKey))
+			$this->_header[$sKey] = $sValue;
 	}
 
 	/**
@@ -306,12 +307,12 @@ class CoreMail extends Konsolidate
 	 *  @param   string auth username (optional)
 	 *  @param   string auth password (optional)
 	 *  @return  bool
-	 *  @syntax  bool CoreMail->_send( [ string username, [ string password ] ] )
+	 *  @syntax  bool CoreMail->_send([string username, [string password]])
 	 */
-	protected function _send( $sUsername=null, $sPassword=null )
+	protected function _send($sUsername=null, $sPassword=null)
 	{
 		//  Create SMTP instance (unique for each call)
-		$oMail            = $this->instance( "/Network/Protocol/SMTP" );
+		$oMail            = $this->instance('/Network/Protocol/SMTP');
 		$oMail->server    = $this->_server;
 		$oMail->port      = $this->_port;
 		$oMail->from      = $this->_from;
@@ -320,109 +321,109 @@ class CoreMail extends Konsolidate
 		$oMail->bcc       = $this->_bcc;
 		$oMail->recipient = $this->recipient;
 		$oMail->sender    = $this->sender;
-		$oMail->subject   = $this->_substitute( $this->_subject );
+		$oMail->subject   = $this->_substitute($this->_subject);
 
 		//  Set defaults
-		if ( empty( $this->_from ) )
-			$oMail->from = "no-reply@{$_SERVER[ "HTTP_HOST" ]}";
+		if (empty($this->_from))
+			$oMail->from = "no-reply@{$_SERVER['HTTP_HOST']}";
 
 		$bBoundary      = $this->_requireBoundary();
 		$bMultiBoundary = false;
-		$sMailBody      = "";
+		$sMailBody      = '';
 
-		if ( count( $this->_header ) )
-			foreach( $this->_header as $key => $value )
-				$oMail->addHeader( $key, $value );
+		if (count($this->_header))
+			foreach($this->_header as $key => $value)
+				$oMail->addHeader($key, $value);
 
 		//  Set priority header if a priority was provided
-		if ( !empty( $this->_priority ) )
-			$oMail->addHeader( "Priority", $this->_priority );
+		if (!empty($this->_priority))
+			$oMail->addHeader('Priority', $this->_priority);
 
-		if ( !empty( $this->_richcontent ) )
+		if (!empty($this->_richcontent))
 		{
 			$bBoundary = true;
-			if ( empty( $this->_content ) )
-				$this->_content = strip_tags( $this->_richcontent );
+			if (empty($this->_content))
+				$this->_content = strip_tags($this->_richcontent);
 		}
 
-		if ( $bBoundary )
+		if ($bBoundary)
 		{
 			//  Plain text content
-			$sMailBody .= $this->_createDataSegment( $this->_substitute( $this->_content ), Array(
-				"type"=>"text/plain",
-				"charset"=>$this->_charset,
-				"encoding"=>$this->_encoding
-			), false );
+			$sMailBody .= $this->_createDataSegment($this->_substitute($this->_content), Array(
+				'type'=>'text/plain',
+				'charset'=>$this->_charset,
+				'encoding'=>$this->_encoding
+			), false);
 			//  Rich (HTML) content
-			$sMailBody .= $this->_createDataSegment( $this->_substitute( $this->_richcontent ), Array(
-				"type"=>"text/html",
-				"charset"=>$this->_charset,
-				"encoding"=>$this->_richencoding
-			), false );
+			$sMailBody .= $this->_createDataSegment($this->_substitute($this->_richcontent), Array(
+				'type'=>'text/html',
+				'charset'=>$this->_charset,
+				'encoding'=>$this->_richencoding
+			), false);
 		}
 		else
 		{
 			//  Plain text content
-			$sMailBody = $this->_substitute( $this->_content );
+			$sMailBody = $this->_substitute($this->_content);
 		}
 
 		//  Attachments
-		if ( is_array( $this->_attachment ) && (bool) count( $this->_attachment ) )
+		if (is_array($this->_attachment) && (bool) count($this->_attachment))
 		{
 			//  Attachments need to be in a separate multipart block if one already exists
 			$bMultiBoundary = $bBoundary;
 
 			//  The message was considered to be plain text only, having attachments forces use of a multipart message
-			if ( !$bBoundary )
+			if (!$bBoundary)
 			{
 				$bBoundary = true;
-				$sMailBody = $this->_createDataSegment( $this->_substitute( $this->_content ), Array(
-					"type"=>"text/plain",
-					"charset"=>$this->_charset,
-					"encoding"=>$this->_encoding
-				), false );
+				$sMailBody = $this->_createDataSegment($this->_substitute($this->_content), Array(
+					'type'=>'text/plain',
+					'charset'=>$this->_charset,
+					'encoding'=>$this->_encoding
+				), false);
 			}
 			else  //  already a multipart message, the created multiparted block becomes an embedded multipart itself
 			{
-				$sMailBody = $this->_createBoundary( false, true ) .
-					$this->_createContentType( Array(
-						"type"=>"multipart/alternative",
-						"boundary"=>$this->getBoundary()
-					) ) . "\r\n{$sMailBody}";
-				$sMailBody .= $this->_createBoundary( true );
+				$sMailBody = $this->_createBoundary(false, true) .
+					$this->_createContentType(Array(
+						'type'=>'multipart/alternative',
+						'boundary'=>$this->getBoundary()
+					)) . "\r\n{$sMailBody}";
+				$sMailBody .= $this->_createBoundary(true);
 			}
 
 			//  attach the actual file(s)
-			foreach( $this->_attachment as $oFile )
+			foreach($this->_attachment as $oFile)
 			{
-				$sMailBody .= $this->_createDataSegment( $oFile->data, Array(
-					"encoding"=>"base64",
-					"filename"=>baseName( $oFile->name ),
-					"type"=>$oFile->type,
-					"disposition"=>$oFile->disposition
-				), $bMultiBoundary );
+				$sMailBody .= $this->_createDataSegment($oFile->data, Array(
+					'encoding'=>'base64',
+					'filename'=>baseName($oFile->name),
+					'type'=>$oFile->type,
+					'disposition'=>$oFile->disposition
+				), $bMultiBoundary);
 			}
 		}
 
 		//  if the mail has a boundary
-		if ( $bBoundary )
+		if ($bBoundary)
 		{
 			$sMailBody = self::MESSAGE_MIME . "\r\n\r\n{$sMailBody}";
 			//  create the (final) closing boundary
-			$sMailBody .= $this->_createBoundary( true, $bMultiBoundary );
+			$sMailBody .= $this->_createBoundary(true, $bMultiBoundary);
 			//  set the MIME header to inform the mail reader about the boundary to use
-			$this->_setMultiPartHeader( $oMail, $bMultiBoundary, (bool) count( $this->_attachment ) );
+			$this->_setMultiPartHeader($oMail, $bMultiBoundary, (bool) count($this->_attachment));
 		}
 
 		$oMail->body = $sMailBody;
-		$bResult     = $oMail->send( $sUsername, $sPassword );
+		$bResult     = $oMail->send($sUsername, $sPassword);
 
 		$this->serverstatus  = $oMail->status;
 		$this->servermessage = $oMail->message;
-		unset( $oMail );
+		unset($oMail);
 
-		if ( !$bResult )
-			$this->call( "/Log/write", "Could not send mail to '{$this->_recipient}', status '{$this->serverstatus}', message '{$this->servermessage}'" );
+		if (!$bResult)
+			$this->call('/Log/write', "Could not send mail to '{$this->_recipient}', status '{$this->serverstatus}', message '{$this->servermessage}'");
 
 		return $bResult;
 	}
@@ -436,27 +437,27 @@ class CoreMail extends Konsolidate
 	 *  @param   string mime        [optional, tried to be determined by default]
 	 *  @param   string disposition [optional, value can be eithe 'attachment' or 'inline', default 'attachment']
 	 *  @return  bool   success
-	 *  @syntax  bool CoreMail->attach( string file [, string mimetype [, string disposition ] ] )
+	 *  @syntax  bool CoreMail->attach(string file [, string mimetype [, string disposition]])
 	 *  @note    In case data needs to be attached which is not available on the filesystem (e.g. some generated
 	 *           text or an image), you can create an instance of 'Mail/Attachment' and set the name and data properties
 	 */
-	public function attach( $mFile, $sMime=null, $sDisposition="attachment" )
+	public function attach($mFile, $sMime=null, $sDisposition='attachment')
 	{
-		if ( is_string( $mFile ) && file_exists( $mFile ) )
+		if (is_string($mFile) && file_exists($mFile))
 		{
 			$sFilename   = $mFile;
-			$mFile       = $this->instance( "Attachment" );
+			$mFile       = $this->instance('Attachment');
 			$mFile->name = $sFilename;
 		}
 
-		if ( is_object( $mFile ) && substr( get_class( $mFile ), -14 ) == "MailAttachment" )
+		if (is_object($mFile) && substr(get_class($mFile), -14) == 'MailAttachment')
 		{
-			if ( !empty( $sMime ) )
+			if (!empty($sMime))
 				$mFile->type = $sMime;
-			if ( !empty( $sDisposition ) && ( $sDisposition == "attachment" || $sDisposition == "inline" ) )
+			if (!empty($sDisposition) && ($sDisposition == 'attachment' || $sDisposition == 'inline'))
 				$mFile->disposition = $sDisposition;
 
-			array_push( $this->_attachment, $mFile );
+			array_push($this->_attachment, $mFile);
 			return true;
 		}
 
@@ -472,25 +473,27 @@ class CoreMail extends Konsolidate
 	 *  @param   string encoding
 	 *  @param   int    linelength (default 75 for quoted-printable, 76 for base64)
 	 *  @return  string
-	 *  @syntax  string CoreMail->_applyEncoding( string data, string encoding [, int length ] )
+	 *  @syntax  string CoreMail->_applyEncoding(string data, string encoding [, int length])
 	 */
-	protected function _applyEncoding( $sData, $sEncoding, $nLength=null )
+	protected function _applyEncoding($sData, $sEncoding, $nLength=null)
 	{
-		switch( strToLower( $sEncoding ) )
+		switch(strToLower($sEncoding))
 		{
-			case "quoted-printable":
-				$fp = fopen( "php://temp", "r+" );
-				stream_filter_append( $fp, "convert.quoted-printable-encode", STREAM_FILTER_READ, Array( "line-break-chars"=>"\r\n", "line-length"=>( is_null( $nLength ) ? 75 : $nLength ) ) );
-				fputs( $fp, $sData );
-				rewind( $fp );
-				$sData = stream_get_contents( $fp );
-				fclose( $fp );
+			case 'quoted-printable':
+				$fp = fopen('php://temp', 'r+');
+				stream_filter_append($fp, 'convert.quoted-printable-encode', STREAM_FILTER_READ, Array('line-break-chars'=>"\r\n", 'line-length'=>(is_null($nLength) ? 75 : $nLength)));
+				fputs($fp, $sData);
+				rewind($fp);
+				$sData = stream_get_contents($fp);
+				fclose($fp);
 				break;
-			case "base64":
-				$sData = chunk_split( base64_encode( $sData ), ( is_null( $nLength ) ? 76 : $nLength ), "\r\n" );
+
+			case 'base64':
+				$sData = chunk_split(base64_encode($sData), (is_null($nLength) ? 76 : $nLength), "\r\n");
 				break;
-			case "7bit":
-			case "8bit":
+
+			case '7bit':
+			case '8bit':
 			default: // do nothing
 				break;
 		}
@@ -504,11 +507,11 @@ class CoreMail extends Konsolidate
 	 *  @access  public
 	 *  @param   bool   multiboundary [optional, default false (outer boundary)]
 	 *  @return  string boundary
-	 *  @syntax  string CoreMail->getBoundary( [bool multiboundary] )
+	 *  @syntax  string CoreMail->getBoundary([bool multiboundary])
 	 */
-	public function getBoundary( $bMultiBoundary=false )
+	public function getBoundary($bMultiBoundary=false)
 	{
-		return "Konsolidate-Part" . ( ( (int) $bMultiBoundary ) + 1 ) . "-{$this->_boundary}";
+		return 'Konsolidate-Part' . (((int) $bMultiBoundary) + 1) . "-{$this->_boundary}";
 	}
 
 	/**
@@ -521,11 +524,11 @@ class CoreMail extends Konsolidate
 	 *  @return  bool
 	 *  @syntax  bool CoreMail->send()
 	 */
-	protected function _setMultiPartHeader( $oMail, $bMultiBoundary=false, $bMixedContent=false )
+	protected function _setMultiPartHeader($oMail, $bMultiBoundary=false, $bMixedContent=false)
 	{
-		$oMail->addHeader( "Message-ID", "<" . $this->call( "/Key/create", "XXX-XXX" ) . "-" . time() . "-" . md5( $this->_from ) . "-{$this->_from}>" );
-		$oMail->addHeader( "MIME-Version", "1.0" );
-		$oMail->addHeader( "Content-Type", "multipart/" . ( $bMixedContent ? "mixed" : "alternative" ) . "; \r\n\tboundary=\"" . $this->getBoundary( $bMultiBoundary ) . "\"" );
+		$oMail->addHeader('Message-ID', '<' . $this->call('/Key/create', 'XXX-XXX') . '-' . time() . '-' . md5($this->_from) . "-{$this->_from}>");
+		$oMail->addHeader('MIME-Version', '1.0');
+		$oMail->addHeader('Content-Type', 'multipart/' . ($bMixedContent ? 'mixed' : 'alternative') . "; \r\n\tboundary=\"" . $this->getBoundary($bMultiBoundary) . "\"");
 	}
 
 	/**
@@ -536,11 +539,11 @@ class CoreMail extends Konsolidate
 	 *  @param   bool  closing boundary
 	 *  @param   bool  multiboundary
 	 *  @return  string
-	 *  @syntax  string CoreMail->_createBoundary( [ bool closing [, bool multi ] ] )
+	 *  @syntax  string CoreMail->_createBoundary([bool closing [, bool multi]])
 	 */
-	protected function _createBoundary( $bClosingBoundary=false, $bMultiBoundary=false )
+	protected function _createBoundary($bClosingBoundary=false, $bMultiBoundary=false)
 	{
-		return "--" . $this->getBoundary( $bMultiBoundary ) . ( $bClosingBoundary ? "--\r\n" : "" ) . "\r\n";
+		return '--' . $this->getBoundary($bMultiBoundary) . ($bClosingBoundary ? "--\r\n" : '') . "\r\n";
 	}
 
 	/**
@@ -550,7 +553,7 @@ class CoreMail extends Konsolidate
 	 *  @access  protected
 	 *  @param   array  param
 	 *  @return  string meta-data
-	 *  @syntax  string CoreMail->_createContentType( array param )
+	 *  @syntax  string CoreMail->_createContentType(array param)
 	 *  @note    param is an associative array, consisting of the following keys:
 	 *           type:        the mime-type                         [optional, default 'application/octect-stream'],
 	 *           charset:     the character set being used          [optional, left out if omitted]
@@ -558,17 +561,17 @@ class CoreMail extends Konsolidate
 	 *           boundary:    the encapsulating boundary            [optional, left out of ommited]
 	 *  @see     _createDataSegment
 	 */
-	protected function _createContentType( $aParam )
+	protected function _createContentType($aParam)
 	{
-		$sType     = CoreTool::arrVal( "type", $aParam, "application/octet-stream" );
-		$sCharset  = CoreTool::arrVal( "charset", $aParam );
-		$sName     = CoreTool::arrVal( "filename", $aParam );
-		$sBoundary = trim( CoreTool::arrVal( "boundary", $aParam ) );
+		$sType     = CoreTool::arrVal('type', $aParam, 'application/octet-stream');
+		$sCharset  = CoreTool::arrVal('charset', $aParam);
+		$sName     = CoreTool::arrVal('filename', $aParam);
+		$sBoundary = trim(CoreTool::arrVal('boundary', $aParam));
 
 		return "Content-Type: {$sType}" .
-				( !empty( $sCharset ) ? ";\r\n\tcharset=\"{$sCharset}\"" : "" ) .
-				( !empty( $sName ) ? ";\r\n\tname=\"{$sName}\"" : "" ) .
-				( !empty( $sBoundary ) ? ";\r\n\tboundary=\"{$sBoundary}\"" : "" ) . "\r\n";
+				(!empty($sCharset) ? ";\r\n\tcharset=\"{$sCharset}\"" : '') .
+				(!empty($sName) ? ";\r\n\tname=\"{$sName}\"" : '') .
+				(!empty($sBoundary) ? ";\r\n\tboundary=\"{$sBoundary}\"" : '') . "\r\n";
 	}
 
 	/**
@@ -578,14 +581,14 @@ class CoreMail extends Konsolidate
 	 *  @access  protected
 	 *  @param   array  param
 	 *  @return  string meta-data
-	 *  @syntax  string CoreMail->_createContentTransferEncoding( array param )
+	 *  @syntax  string CoreMail->_createContentTransferEncoding(array param)
 	 *  @note    param is an associative array, consisting of the following keys:
 	 *           encoding:    the encoding type                     [optional, left out of ommited]
 	 *  @see     _createDataSegment
 	 */
-	protected function _createContentTransferEncoding( $aParam )
+	protected function _createContentTransferEncoding($aParam)
 	{
-		$sEncoding = CoreTool::arrVal( "encoding", $aParam );
+		$sEncoding = CoreTool::arrVal('encoding', $aParam);
 		return "Content-Transfer-Encoding: {$sEncoding}\r\n";
 	}
 
@@ -596,18 +599,18 @@ class CoreMail extends Konsolidate
 	 *  @access  protected
 	 *  @param   array  param
 	 *  @return  string meta-data
-	 *  @syntax  string CoreMail->_createContentDisposition( array param )
+	 *  @syntax  string CoreMail->_createContentDisposition(array param)
 	 *  @note    param is an associative array, consisting of the following keys:
 	 *           disposition: the content disposition               [optional, left out of ommited]
 	 *           filename:    the name of the file being announced  [optional, left out of ommited]
 	 *  @see     _createDataSegment
 	 */
-	protected function _createContentDisposition( $aParam )
+	protected function _createContentDisposition($aParam)
 	{
-		$sDisposition = CoreTool::arrVal( "disposition", $aParam );
-		$sFilename    = CoreTool::arrVal( "filename", $aParam );
-		return !empty( $sDisposition ) ? "Content-Disposition: {$sDisposition}" .
-				( !empty( $sFilename ) ? ";\r\n\tfilename={$sFilename}" : "" ) . "\r\n" : "";
+		$sDisposition = CoreTool::arrVal('disposition', $aParam);
+		$sFilename    = CoreTool::arrVal('filename', $aParam);
+		return !empty($sDisposition) ? "Content-Disposition: {$sDisposition}" .
+				(!empty($sFilename) ? ";\r\n\tfilename={$sFilename}" : "") . "\r\n" : '';
 	}
 
 	/**
@@ -617,17 +620,17 @@ class CoreMail extends Konsolidate
 	 *  @access  protected
 	 *  @param   array  param
 	 *  @return  string meta-data
-	 *  @syntax  string CoreMail->_createContentID( array param )
+	 *  @syntax  string CoreMail->_createContentID(array param)
 	 *  @note    param is an associative array, consisting of the following keys:
 	 *           filename:    the name of the file being announced  [optional, left out of ommited]
 	 *           cid:         the content-id reference              [optional, left out of ommited]
 	 *  @see     _createDataSegment
 	 */
-	protected function _createContentID( $aParam )
+	protected function _createContentID($aParam)
 	{
-		$sFilename  = CoreTool::arrVal( "filename", $aParam );
-		$sContentID = CoreTool::arrVal( "cid", $aParam );
-		return !empty( $sContentID ) ? "Content-ID: <{$sContentID}/{$sFilename}>\r\n" : "";
+		$sFilename  = CoreTool::arrVal('filename', $aParam);
+		$sContentID = CoreTool::arrVal('cid', $aParam);
+		return !empty($sContentID) ? "Content-ID: <{$sContentID}/{$sFilename}>\r\n" : '';
 	}
 
 	/**
@@ -639,7 +642,7 @@ class CoreMail extends Konsolidate
 	 *  @param   array  param
 	 *  @param   bool   use multiboundary
 	 *  @return  string datablock
-	 *  @syntax  string CoreMail->_createDataSegment( string data, array param [, bool multiboundary [, bool boundary ] ] )
+	 *  @syntax  string CoreMail->_createDataSegment(string data, array param [, bool multiboundary [, bool boundary]])
 	 *  @note    param is an associative array, consisting of the following keys:
 	 *           type:        the mime-type                         [optional, default 'application/octect-stream'],
 	 *           charset:     the character set being used          [optional, left out if omitted]
@@ -649,15 +652,15 @@ class CoreMail extends Konsolidate
 	 *           cid:         the content-id reference              [optional, left out of ommited]
 	 *           boundary:    the encapsulating boundary            [optional, left out of ommited]
 	 */
-	protected function _createDataSegment( $sData, $aParam, $bMultiBoundary=false )
+	protected function _createDataSegment($sData, $aParam, $bMultiBoundary=false)
 	{
-		$sEncoding = CoreTool::arrVal( "encoding", $aParam, $this->_encoding );
-		$sReturn   = $this->_createBoundary( false, $bMultiBoundary ) .
-					 $this->_createContentType( $aParam ) .
-					 $this->_createContentTransferEncoding( $aParam ) .
-					 $this->_createContentDisposition( $aParam ) .
-					 $this->_createContentID( $aParam ) . "\r\n";
-		$sReturn  .= $this->_applyEncoding( $sData, $sEncoding ) . "\r\n\r\n";
+		$sEncoding = CoreTool::arrVal('encoding', $aParam, $this->_encoding);
+		$sReturn   = $this->_createBoundary(false, $bMultiBoundary) .
+					 $this->_createContentType($aParam) .
+					 $this->_createContentTransferEncoding($aParam) .
+					 $this->_createContentDisposition($aParam) .
+					 $this->_createContentID($aParam) . "\r\n";
+		$sReturn  .= $this->_applyEncoding($sData, $sEncoding) . "\r\n\r\n";
 		return $sReturn;
 	}
 
@@ -668,13 +671,13 @@ class CoreMail extends Konsolidate
 	 *  @access  protected
 	 *  @param   string data
 	 *  @return  string
-	 *  @syntax  string CoreMail->_substitute( string data )
+	 *  @syntax  string CoreMail->_substitute(string data)
 	 */
-	protected function _substitute( $sValue )
+	protected function _substitute($sValue)
 	{
-		if ( is_array( $this->_replace ) && (bool) count( $this->_replace ) )
-			foreach( $this->_replace as $sPattern=>$sReplacement )
-				$sValue = str_replace( $sPattern, $sReplacement, $sValue );
+		if (is_array($this->_replace) && (bool) count($this->_replace))
+			foreach($this->_replace as $sPattern=>$sReplacement)
+				$sValue = str_replace($sPattern, $sReplacement, $sValue);
 		return $sValue;
 	}
 
@@ -687,12 +690,12 @@ class CoreMail extends Konsolidate
 	 *  @param   string name
 	 *  @param   string type (one of: 'to', 'cc', 'bcc'. all others are silently discarded)
 	 *  @return  string
-	 *  @syntax  string CoreMail->addRecipient( string email [, string name [, string type ] ] )
+	 *  @syntax  string CoreMail->addRecipient(string email [, string name [, string type]])
 	 */
-	public function addRecipient( $sEmail, $sName=null, $sType="to" )
+	public function addRecipient($sEmail, $sName=null, $sType='to')
 	{
-		if ( in_array( $sType, Array( "to", "cc", "bcc" ) ) )
-			$this->_addRecipient( Array( $sEmail=>$sName ), $sType );
+		if (in_array($sType, Array('to', 'cc', 'bcc')))
+			$this->_addRecipient(Array($sEmail=>$sName), $sType);
 	}
 
 	/**
@@ -703,11 +706,11 @@ class CoreMail extends Konsolidate
 	 *  @param   string email
 	 *  @param   string name
 	 *  @return  string
-	 *  @syntax  string CoreMail->addTo( string email [, string name ] )
+	 *  @syntax  string CoreMail->addTo(string email [, string name])
 	 */
-	public function addTo( $sEmail, $sName=null )
+	public function addTo($sEmail, $sName=null)
 	{
-		$this->_addRecipient( is_null( $sName ) ? Array( $sEmail ) : Array( $sEmail=>$sName ), "to" );
+		$this->_addRecipient(is_null($sName) ? Array($sEmail) : Array($sEmail=>$sName), 'to');
 	}
 
 	/**
@@ -718,11 +721,11 @@ class CoreMail extends Konsolidate
 	 *  @param   string email
 	 *  @param   string name
 	 *  @return  string
-	 *  @syntax  string CoreMail->addCC( string email [, string name ] )
+	 *  @syntax  string CoreMail->addCC(string email [, string name])
 	 */
-	public function addCC( $sEmail, $sName=null )
+	public function addCC($sEmail, $sName=null)
 	{
-		$this->_addRecipient( is_null( $sName ) ? Array( $sEmail ) : Array( $sEmail=>$sName ), "cc" );
+		$this->_addRecipient(is_null($sName) ? Array($sEmail) : Array($sEmail=>$sName), 'cc');
 	}
 
 	/**
@@ -733,11 +736,11 @@ class CoreMail extends Konsolidate
 	 *  @param   string email
 	 *  @param   string name
 	 *  @return  string
-	 *  @syntax  string CoreMail->addBCC( string email [, string name ] )
+	 *  @syntax  string CoreMail->addBCC(string email [, string name])
 	 */
-	public function addBCC( $sEmail, $sName=null )
+	public function addBCC($sEmail, $sName=null)
 	{
-		$this->_addRecipient( is_null( $sName ) ? Array( $sEmail ) : Array( $sEmail=>$sName ), "bcc" );
+		$this->_addRecipient(is_null($sName) ? Array($sEmail) : Array($sEmail=>$sName), 'bcc');
 	}
 
 	/**
@@ -745,43 +748,43 @@ class CoreMail extends Konsolidate
 	 *  @name    _addRecipient
 	 *  @type    method
 	 *  @access  protected
-	 *  @param   mixed  email (string "email", string "Pretty Name <email>", Array( "email" ), Array( "email"=>"Pretty Name" ) )
+	 *  @param   mixed  email (string 'email', string 'Pretty Name <email>', Array('email'), Array('email'=>'Pretty Name'))
 	 *  @param   string type (one of: 'to', 'cc', 'bcc'. all others are silently discarded)
 	 *  @return  string
-	 *  @syntax  string CoreMail->_addRecipient( mixed email, string type )
+	 *  @syntax  string CoreMail->_addRecipient(mixed email, string type)
 	 */
-	protected function _addRecipient( $mValue, $sType )
+	protected function _addRecipient($mValue, $sType)
 	{
-		if ( in_array( $sType, Array( "to", "cc", "bcc" ) ) )
+		if (in_array($sType, Array('to', 'cc', 'bcc')))
 		{
 			$aRecipient = Array();
-			if ( is_string( $mValue ) )
+			if (is_string($mValue))
 			{
-				$aTMP = explode( ";", $mValue );
-				foreach( $aTMP as $sField )
+				$aTMP = explode(';', $mValue);
+				foreach($aTMP as $sField)
 				{
-					preg_match( "/([^<>]+)<?([^<>]*)>?/", $sField, $aMatch );
-					if ( count( $aMatch ) >= 3 )
+					preg_match('/([^<>]+)<?([^<>]*)>?/', $sField, $aMatch);
+					if (count($aMatch) >= 3)
 					{
-						if ( !empty( $aMatch[ 2 ] ) )
-							$aRecipient[ trim( $aMatch[ 2 ] ) ] = trim( $aMatch[ 1 ] );
+						if (!empty($aMatch[2]))
+							$aRecipient[trim($aMatch[2])] = trim($aMatch[1]);
 						else
-							$aRecipient[ trim( $aMatch[ 1 ] ) ] = null;
+							$aRecipient[trim($aMatch[1])] = null;
 					}
 				}
 			}
-			elseif ( is_array( $mValue ) )
+			elseif (is_array($mValue))
 			{
-				foreach( $mValue as $sKey=>$sValue )
+				foreach($mValue as $sKey=>$sValue)
 				{
-					if ( is_numeric( $sKey ) )
-						$aRecipient[ $sValue ] = null;
+					if (is_numeric($sKey))
+						$aRecipient[$sValue] = null;
 					else
-						$aRecipient[ $sKey ] = $sValue;
+						$aRecipient[$sKey] = $sValue;
 				}
 			}
-			if ( (bool) count( $aRecipient ) )
-				$this->{"_{$sType}"} = array_merge( $this->{"_{$sType}"}, $aRecipient );
+			if ((bool) count($aRecipient))
+				$this->{"_{$sType}"} = array_merge($this->{"_{$sType}"}, $aRecipient);
 		}
 	}
 
@@ -792,11 +795,11 @@ class CoreMail extends Konsolidate
 	 *  @access  protected
 	 *  @param   string type (one of: 'to', 'cc', 'bcc'. all others are silently discarded)
 	 *  @return  string
-	 *  @syntax  string CoreMail->_flushRecipientType( string type )
+	 *  @syntax  string CoreMail->_flushRecipientType(string type)
 	 */
-	protected function _flushRecipientType( $sType )
+	protected function _flushRecipientType($sType)
 	{
-		if ( in_array( $sType, Array( "to", "cc", "bcc" ) ) )
+		if (in_array($sType, Array('to', 'cc', 'bcc')))
 			$this->{"_{$sType}"} = Array();
 	}
 
@@ -811,7 +814,7 @@ class CoreMail extends Konsolidate
 	protected function _requireBoundary()
 	{
 		return (
-			!empty( $this->_richcontent ) ||               //  richcontent
+			!empty($this->_richcontent) ||               //  richcontent
 			$this->_encoding != self::DEFAULT_ENCODING ||  //  non-standard encoding
 			$this->_charset != self::DEFAULT_CHARSET       //  non-standard characterset
 		);
@@ -827,25 +830,27 @@ class CoreMail extends Konsolidate
 	 *  @return  void
 	 *  @syntax  void CoreMail->(string property) = mixed variable
 	 */
-	public function __set( $sProperty, $mValue )
+	public function __set($sProperty, $mValue)
 	{
-		if ( property_exists( $this, "_{$sProperty}" ) )
+		if (property_exists($this, "_{$sProperty}"))
 		{
-			if ( !$this->_loading || ( $this->_loading && empty( $this->{"_{$sProperty}"} ) ) )
-				switch( strToLower( $sProperty ) )
+			if (!$this->_loading || ($this->_loading && empty($this->{"_{$sProperty}"})))
+				switch(strToLower($sProperty))
 				{
-					case "to":
-					case "cc":
-					case "bcc":
+					case 'to':
+					case 'cc':
+					case 'bcc':
 						//  setting a variable indicates existing values should be destroyed, flushing the current set
-						$this->_flushRecipientType( strToLower( $sProperty ) );
-						$this->_addRecipient( $mValue, strToLower( $sProperty ) );
+						$this->_flushRecipientType(strToLower($sProperty));
+						$this->_addRecipient($mValue, strToLower($sProperty));
 						break;
-					case "job":
+
+					case 'job':
 						$this->_loading = true;
-						$this->call( "Content/load", $mValue );
+						$this->call('Content/load', $mValue);
 						$this->_loading = false;
 						// no break, we still want the property to be set
+
 					default:
 						$this->{"_{$sProperty}"} = $mValue;
 						break;
@@ -853,7 +858,7 @@ class CoreMail extends Konsolidate
 		}
 		else
 		{
-			parent::__set( $sProperty, $mValue );
+			parent::__set($sProperty, $mValue);
 		}
 	}
 
@@ -866,10 +871,10 @@ class CoreMail extends Konsolidate
 	 *  @return  mixed  value
 	 *  @syntax  mixed = CoreMail->(string property);
 	 */
-	public function __get( $sProperty )
+	public function __get($sProperty)
 	{
-		if ( property_exists( $this, "_{$sProperty}" ) )
+		if (property_exists($this, "_{$sProperty}"))
 			return $this->{"_{$sProperty}"};
-		return parent::__get( $sProperty );
+		return parent::__get($sProperty);
 	}
 }

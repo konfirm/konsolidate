@@ -31,25 +31,25 @@ class CoreDocumentationBlock extends Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = &new CoreDocumentationBlock( object parent )
+	 *  @syntax  object = &new CoreDocumentationBlock(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
-	function __construct( $oParent )
+	function __construct(Konsolidate $parent)
 	{
-		parent::__construct( $oParent );
+		parent::__construct($parent);
 
-		$this->_instruct   = "DESCRIPTION";
-		$this->name        = "";
-		$this->type        = "unknown";
-		$this->access      = "public";
+		$this->_instruct   = 'DESCRIPTION';
+		$this->name        = '';
+		$this->type        = 'unknown';
+		$this->access      = 'public';
 		$this->param       = Array();
-		$this->syntax      = "";
+		$this->syntax      = '';
 		$this->reference   = Array();
-		$this->package     = "";
+		$this->package     = '';
 		$this->author      = Array();
-		$this->return     = "";
-		$this->description = "";
-		$this->note        = "";
+		$this->return     = '';
+		$this->description = '';
+		$this->note        = '';
 	}
 
 	/**
@@ -59,45 +59,47 @@ class CoreDocumentationBlock extends Konsolidate
 	 *  @access  public
 	 *  @param   string documentation line
 	 *  @return  void
-	 *  @syntax  void CoreDocumentationBlock->append( string text )
+	 *  @syntax  void CoreDocumentationBlock->append(string text)
 	 */
-	public function append( $sPart )
+	public function append($sPart)
 	{
-		$sPart = trim( $sPart );
-		if ( empty( $sPart ) )
+		$sPart = trim($sPart);
+		if (empty($sPart))
 			return;
 
-		$sInstruction   = substr( $sPart, 0, strPos( $sPart, " " ) );
-		$sDocumentation = trim( substr( $sPart, strPos( $sPart, " " ) + 1 ) );
-		switch( strToUpper( $sInstruction ) )
+		$sInstruction   = substr($sPart, 0, strPos($sPart, ' '));
+		$sDocumentation = trim(substr($sPart, strPos($sPart, ' ') + 1));
+		switch (strToUpper($sInstruction))
 		{
-			case "@NAME":
-			case "@TYPE":
-			case "@ACCESS":
-			case "@SYNTAX":
-			case "@REFERENCE":
-			case "@PACKAGE":
-			case "@RETURN":
-			case "@NOTE":
-			case "@ALIAS":
-			case "@SEE":
-			case "@EXTENDS":
-			case "@IMPLEMENTS":
-				$sProperty        = strToLower( substr( $sInstruction, 1 ) );
+			case '@NAME':
+			case '@TYPE':
+			case '@ACCESS':
+			case '@SYNTAX':
+			case '@REFERENCE':
+			case '@PACKAGE':
+			case '@RETURN':
+			case '@NOTE':
+			case '@ALIAS':
+			case '@SEE':
+			case '@EXTENDS':
+			case '@IMPLEMENTS':
+				$sProperty        = strToLower(substr($sInstruction, 1));
 				$this->$sProperty = $sDocumentation;
 				$this->_instruct  = $sProperty;
 				break;
-			case "@PARAM":
-			case "@AUTHOR":
-				$sProperty          = strToLower( substr( $sInstruction, 1 ) );
-				array_push( $this->$sProperty, $sDocumentation );
-				unset( $this->_instruct );
+
+			case '@PARAM':
+			case '@AUTHOR':
+				$sProperty          = strToLower(substr($sInstruction, 1));
+				array_push($this->$sProperty, $sDocumentation);
+				unset($this->_instruct);
 				break;
+
 			default:
-				if ( isset( $this->_instruct ) )
+				if (isset($this->_instruct))
 				{
-					$sProperty        = strToLower( $this->_instruct );
-					$this->$sProperty = ( !empty( $this->$sProperty ) ? trim( $this->$sProperty ) . " " : "" ) . $sPart;
+					$sProperty        = strToLower($this->_instruct);
+					$this->$sProperty = (!empty($this->$sProperty) ? trim($this->$sProperty) . ' ' : '') . $sPart;
 				}
 				break;
 		}
@@ -110,14 +112,14 @@ class CoreDocumentationBlock extends Konsolidate
 	 *  @access  public
 	 *  @param   bool skip empty instructions
 	 *  @return  array instructions
-	 *  @syntax  array CoreDocumentationBlock->fetch( bool skipempty )
+	 *  @syntax  array CoreDocumentationBlock->fetch(bool skipempty)
 	 */
-	public function fetch( $bOmitEmpty=false )
+	public function fetch($bOmitEmpty=false)
 	{
-		$aReturn = get_object_vars( $this );
-		foreach( $aReturn as $sKey=>$sValue )
-			if ( substr( $sKey, 0, 1 ) == "_" || ( $bOmitEmpty && empty( $aReturn[ $sKey ] ) ) )
-				unset( $aReturn[ $sKey ] );
+		$aReturn = get_object_vars($this);
+		foreach ($aReturn as $sKey=>$sValue)
+			if (substr($sKey, 0, 1) == '_' || ($bOmitEmpty && empty($aReturn[$sKey])))
+				unset($aReturn[$sKey]);
 		return $aReturn;
 	}
 }

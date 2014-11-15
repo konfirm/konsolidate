@@ -18,15 +18,16 @@ class CoreUserTracker extends Konsolidate
 	 */
 	protected $_autologin;
 
-	public function __construct( $oParent )
+	public function __construct(Konsolidate $parent)
 	{
-		parent::__construct( $oParent );
+		parent::__construct($parent);
+
 		$this->id           = null;
 		$this->code         = null;
 		$this->last         = null;
-		$this->cookiename   = $this->get( "/Config/Cookie/name", "KONSOLIDATETRACKER" );
-		$this->cookiedomain = $this->get( "/Config/Cookie/domain", $_SERVER[ "HTTP_HOST" ] );
-		$this->_autologin   = $this->get( "/Config/Tracker/autologin", true );
+		$this->cookiename   = $this->get('/Config/Cookie/name', 'KONSOLIDATETRACKER');
+		$this->cookiedomain = $this->get('/Config/Cookie/domain', $_SERVER['HTTP_HOST']);
+		$this->_autologin   = $this->get('/Config/Tracker/autologin', true);
 	}
 
 	/**
@@ -41,10 +42,10 @@ class CoreUserTracker extends Konsolidate
 	 */
 	public function load()
 	{
-		if ( !$this->loadFromCookie() )
+		if (!$this->loadFromCookie())
 		{
 			$nAttempt = 0;
-			while( !$this->create() && $nAttempt < 5 )
+			while(!$this->create() && $nAttempt < 5)
 				++$nAttempt;
 		}
 		else
@@ -65,19 +66,19 @@ class CoreUserTracker extends Konsolidate
 	 */
 	public function loadFromCookie()
 	{
-		$this->code = array_key_exists( $this->cookiename, $_COOKIE ) ? $_COOKIE[ $this->cookiename ] : false;
-		if ( $this->code === false )
+		$this->code = array_key_exists($this->cookiename, $_COOKIE) ? $_COOKIE[$this->cookiename] : false;
+		if ($this->code === false)
 			return false;
 		$sQuery  = "SELECT ustid,
 						   ustcode,
-						   UNIX_TIMESTAMP( ustlastvisitts ) AS ustlastvisitts
+						   UNIX_TIMESTAMP(ustlastvisitts) AS ustlastvisitts
 					  FROM usertracker
 					 WHERE ustcode='{$this->code}'";
-		$oResult = $this->call( "/DB/query", $sQuery );
-		if ( is_object( $oResult ) && $oResult->errno <= 0 && $oResult->rows == 1 )
+		$oResult = $this->call('/DB/query', $sQuery);
+		if (is_object($oResult) && $oResult->errno <= 0 && $oResult->rows == 1)
 		{
 			$oData      = $oResult->next();
-			if ( is_object( $oData ) )
+			if (is_object($oData))
 			{
 				$this->id   = (int) $oData->ustid;
 				$this->code = $oData->ustcode;
@@ -99,12 +100,12 @@ class CoreUserTracker extends Konsolidate
 	function create()
 	{
 		$this->code = $this->createCode();
-		$sQuery     = "INSERT INTO usertracker ( ustcode, ustmodifiedts, ustcreatedts, ustlastvisitts ) VALUES ( '{$this->code}', NOW(), NOW(), NOW() )";
-		$oResult    = $this->call( "/DB/query", $sQuery );
-		if ( is_object( $oResult ) && $oResult->errno <= 0 && $oResult->rows == 1 )
+		$sQuery     = "INSERT INTO usertracker (ustcode, ustmodifiedts, ustcreatedts, ustlastvisitts) VALUES ('{$this->code}', NOW(), NOW(), NOW())";
+		$oResult    = $this->call('/DB/query', $sQuery);
+		if (is_object($oResult) && $oResult->errno <= 0 && $oResult->rows == 1)
 		{
-			$this->id = $this->call( "/DB/lastId" );
-			return $this->storeCookie( true, $this->_autologin );
+			$this->id = $this->call('/DB/lastId');
+			return $this->storeCookie(true, $this->_autologin);
 		}
 		return false;
 	}
@@ -122,9 +123,9 @@ class CoreUserTracker extends Konsolidate
 		$sQuery  = "UPDATE usertracker
 					   SET ustlastvisitts=NOW()
 					 WHERE ustid={$this->id}";
-		$oResult = $this->call( "/DB/query", $sQuery );
-		if ( is_object( $oResult ) && $oResult->errno <= 0 )
-			return $this->storeCookie( false, $this->_autologin );
+		$oResult = $this->call('/DB/query', $sQuery);
+		if (is_object($oResult) && $oResult->errno <= 0)
+			return $this->storeCookie(false, $this->_autologin);
 		return false;
 	}
 
@@ -139,17 +140,17 @@ class CoreUserTracker extends Konsolidate
 	 *           the current script execution scope! When entering a new page (script execution)
 	 *           all behaviour is set to default.
 	 */
-	public function storeCookie( $bClearFirst=true, $bAutoLogin=null )
+	public function storeCookie($bClearFirst=true, $bAutoLogin=null)
 	{
-		if ( !is_null( $bAutoLogin ) )
+		if (!is_null($bAutoLogin))
 			$this->_autologin = (bool) $bAutoLogin;
 
-		if ( !headers_sent() )
+		if (!headers_sent())
 		{
-			if ( $bClearFirst )
-				$_COOKIE[ $this->cookiename  ] = $this->code;
-			$mAutoLogin = $this->_autologin ? time() + ( 60 * 60 * 24 * 30 ) : null;
-			return setCookie( $this->cookiename, $this->code, $mAutoLogin, "/", $this->cookiedomain );
+			if ($bClearFirst)
+				$_COOKIE[$this->cookiename] = $this->code;
+			$mAutoLogin = $this->_autologin ? time() + (60 * 60 * 24 * 30) : null;
+			return setCookie($this->cookiename, $this->code, $mAutoLogin, '/', $this->cookiedomain);
 		}
 		return false;
 	}
@@ -165,11 +166,11 @@ class CoreUserTracker extends Konsolidate
 	public function createCode()
 	{
 		return md5(
-			$this->call( "/Tool/arrVal", $_SERVER, "HTTP_USER_AGENT", microtime( true ) ) .
-			$this->call( "/Tool/arrVal", $_SERVER, "REMOTE_ADDR", rand( 0, pow( 2, 32 ) ) ) .
-			$this->call( "/Tool/arrVal", $_SERVER, "REMOTE_PORT", rand( 0, pow( 2, 16 ) ) ) .
+			$this->call('/Tool/arrVal', $_SERVER, 'HTTP_USER_AGENT', microtime(true)) .
+			$this->call('/Tool/arrVal', $_SERVER, 'REMOTE_ADDR', rand(0, pow(2, 32))) .
+			$this->call('/Tool/arrVal', $_SERVER, 'REMOTE_PORT', rand(0, pow(2, 16))) .
 			time() .
-			rand( 0, 10000 )
+			rand(0, 10000)
 		);
 	}
 
@@ -182,20 +183,20 @@ class CoreUserTracker extends Konsolidate
 	 *  @param   string  code
 	 *  @param   bool    autologin [optional, default true]
 	 *  @return  bool
-	 *  @syntax  bool CoreUserTracker->login( string code [, bool autologin ] );
+	 *  @syntax  bool CoreUserTracker->login(string code [, bool autologin]);
 	 *  @note    Providing a value other than the default for 'autologin' only applies within
 	 *           the current script execution scope! When entering a new page (script execution)
 	 *           all behaviour is set to default.
 	 */
-	public function login( $sCode=false, $bAutoLogin=null )
+	public function login($sCode=false, $bAutoLogin=null)
 	{
-		if ( !is_null( $bAutoLogin ) )
+		if (!is_null($bAutoLogin))
 			$this->_autologin = (bool) $bAutoLogin;
 
-		if ( $sCode !== false )
+		if ($sCode !== false)
 		{
 			$this->code = $sCode;
-			return $this->storeCookie( true, $this->_autologin );
+			return $this->storeCookie(true, $this->_autologin);
 		}
 		return false;
 	}
@@ -207,21 +208,21 @@ class CoreUserTracker extends Konsolidate
 	 *  @access  public
 	 *  @param   integer   timestamp before which the unused records will be removed [optional, defaults to a week before now]
 	 *  @return  bool
-	 *  @syntax  bool CoreUserTracker->removeUnregisteredVisitors( [ int createdbefore ]);
+	 *  @syntax  bool CoreUserTracker->removeUnregisteredVisitors([int createdbefore]);
 	 */
-	public function removeUnregisteredTrackers( $nCreatedBeforeTS=false )
+	public function removeUnregisteredTrackers($nCreatedBeforeTS=false)
 	{
-		if ( $nCreatedBeforeTS === false )
-			$nCreatedBeforeTS = time() - ( 60 * 60 * 24 * 7 ); // by default, remove unused entries older than one week
+		if ($nCreatedBeforeTS === false)
+			$nCreatedBeforeTS = time() - (60 * 60 * 24 * 7); // by default, remove unused entries older than one week
 
-		if ( !empty( $nCreatedBeforeTS ) )
-			$sWhere = "WHERE ustcreatedts < FROM_UNIXTIME( {$nCreatedBeforeTS} )";
+		if (!empty($nCreatedBeforeTS))
+			$sWhere = "WHERE ustcreatedts < FROM_UNIXTIME({$nCreatedBeforeTS})";
 		else
-			$sWhere = "";
+			$sWhere = '';
 
-		$sQuery  = "DELETE FROM usertracker WHERE ustid NOT IN ( SELECT ustid FROM user {$sWhere})";
-		$oResult = $this->call( "/DB/query", $sQuery );
-		if ( is_object( $oResult ) && $oResult->errno <= 0 )
+		$sQuery  = "DELETE FROM usertracker WHERE ustid NOT IN (SELECT ustid FROM user {$sWhere})";
+		$oResult = $this->call('/DB/query', $sQuery);
+		if (is_object($oResult) && $oResult->errno <= 0)
 			return true;
 		return false;
 	}

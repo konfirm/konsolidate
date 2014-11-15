@@ -21,7 +21,7 @@ class CoreTool extends Konsolidate
 	 */
 	public static function isPosted()
 	{
-		return array_key_exists( "REQUEST_METHOD", $_SERVER ) && $_SERVER[ "REQUEST_METHOD" ] === "POST";
+		return array_key_exists('REQUEST_METHOD', $_SERVER) && $_SERVER['REQUEST_METHOD'] === 'POST';
 	}
 
 	/**
@@ -33,14 +33,14 @@ class CoreTool extends Konsolidate
 	 *  @param   array  collection
 	 *  @param   mixed  default [optional, default null]
 	 *  @return  mixed
-	 *  @syntax  mixed CoreTool::arrVal( string key, array collection [, mixed default ] );
+	 *  @syntax  mixed CoreTool::arrVal(string key, array collection [, mixed default]);
 	 *  @note    you can swap key and collection (Haystack - Needle)
 	 */
-	public static function arrVal( $mKey, $mCollection, $mDefault=null )
+	public static function arrVal($mKey, $mCollection, $mDefault=null)
 	{
-		if ( !is_array( $mCollection ) && is_array( $mKey ) )
-			return CoreTool::arrVal( $mCollection, $mKey, $mDefault );
-		return is_array( $mCollection ) && array_key_exists( $mKey, $mCollection ) ? $mCollection[ $mKey ] : $mDefault;
+		if (!is_array($mCollection) && is_array($mKey))
+			return CoreTool::arrVal($mCollection, $mKey, $mDefault);
+		return is_array($mCollection) && array_key_exists($mKey, $mCollection) ? $mCollection[$mKey] : $mDefault;
 	}
 
 	/**
@@ -52,12 +52,12 @@ class CoreTool extends Konsolidate
 	 *  @param   array  collection
 	 *  @param   mixed  default [optional, default null]
 	 *  @return  mixed
-	 *  @syntax  mixed CoreTool::arrayVal( string key, array collection [, mixed default ] );
+	 *  @syntax  mixed CoreTool::arrayVal(string key, array collection [, mixed default]);
 	 *  @see     arrVal
 	 */
-	public static function arrayVal( $sKey, $aCollection, $mDefault=null )
+	public static function arrayVal($sKey, $aCollection, $mDefault=null)
 	{
-		return CoreTool::arrVal( $sKey, $aCollection, $mDefault );
+		return CoreTool::arrVal($sKey, $aCollection, $mDefault);
 	}
 
 	/**
@@ -68,12 +68,12 @@ class CoreTool extends Konsolidate
 	 *  @param   string key
 	 *  @param   mixed  default [optional, default null]
 	 *  @return  mixed
-	 *  @syntax  mixed CoreTool::sesVal( string key [, mixed default ] );
+	 *  @syntax  mixed CoreTool::sesVal(string key [, mixed default]);
 	 *  @note    This method works with PHP's built in sessions (_SESSION global), not CoreSession!
 	 */
-	public static function sesVal( $sKey, $mDefault=null )
+	public static function sesVal($sKey, $mDefault=null)
 	{
-		return CoreTool::arrVal( $sKey, $_SESSION, $mDefault );
+		return CoreTool::arrVal($sKey, $_SESSION, $mDefault);
 	}
 
 	/**
@@ -84,12 +84,12 @@ class CoreTool extends Konsolidate
 	 *  @param   string key
 	 *  @param   mixed  default [optional, default null]
 	 *  @return  mixed
-	 *  @syntax  mixed CoreTool::sessionVal( string key [, mixed default ] );
+	 *  @syntax  mixed CoreTool::sessionVal(string key [, mixed default]);
 	 *  @see     sesVal
 	 */
-	public static function sessionVal( $sKey, $mDefault=null )
+	public static function sessionVal($sKey, $mDefault=null)
 	{
-		return CoreTool::sesVal( $sKey, $mDefault );
+		return CoreTool::sesVal($sKey, $mDefault);
 	}
 
 	/**
@@ -100,11 +100,11 @@ class CoreTool extends Konsolidate
 	 *  @param   string key
 	 *  @param   mixed  default [optional, default null]
 	 *  @return  mixed
-	 *  @syntax  mixed CoreTool::cookieVal( string key [, mixed default ] );
+	 *  @syntax  mixed CoreTool::cookieVal(string key [, mixed default]);
 	 */
-	public static function cookieVal( $sKey, $mDefault=null )
+	public static function cookieVal($sKey, $mDefault=null)
 	{
-		return CoreTool::arrVal( $sKey, $_COOKIE, $mDefault );
+		return CoreTool::arrVal($sKey, $_COOKIE, $mDefault);
 	}
 
 	/**
@@ -115,11 +115,11 @@ class CoreTool extends Konsolidate
 	 *  @param   string key
 	 *  @param   mixed  default [optional, default null]
 	 *  @return  mixed
-	 *  @syntax  mixed CoreTool::serverVal( string key [, mixed default ] );
+	 *  @syntax  mixed CoreTool::serverVal(string key [, mixed default]);
 	 */
-	public static function serverVal( $sKey, $mDefault=null )
+	public static function serverVal($sKey, $mDefault=null)
 	{
-		return CoreTool::arrVal( $sKey, $_SERVER, $mDefault );
+		return CoreTool::arrVal($sKey, $_SERVER, $mDefault);
 	}
 
 	/**
@@ -130,11 +130,11 @@ class CoreTool extends Konsolidate
 	 *  @param   string key
 	 *  @param   mixed  default [optional, default null]
 	 *  @return  mixed
-	 *  @syntax  mixed CoreTool::envVal( string key [, mixed default ] );
+	 *  @syntax  mixed CoreTool::envVal(string key [, mixed default]);
 	 */
-	public static function envVal( $sKey, $mDefault=null )
+	public static function envVal($sKey, $mDefault=null)
 	{
-		return CoreTool::arrVal( $sKey, $_ENV, $mDefault );
+		return CoreTool::arrVal($sKey, $_ENV, $mDefault);
 	}
 
 	/**
@@ -145,12 +145,12 @@ class CoreTool extends Konsolidate
 	 *  @param   string key
 	 *  @param   mixed  default [optional, default null]
 	 *  @return  mixed
-	 *  @syntax  mixed CoreTool::environmentVal( string key [, mixed default ] );
+	 *  @syntax  mixed CoreTool::environmentVal(string key [, mixed default]);
 	 *  @see     envVal
 	 */
-	public static function environmentVal( $sKey, $mDefault=null )
+	public static function environmentVal($sKey, $mDefault=null)
 	{
-		return CoreTool::envVal( $sKey, $mDefault );
+		return CoreTool::envVal($sKey, $mDefault);
 	}
 
 
@@ -162,15 +162,15 @@ class CoreTool extends Konsolidate
 	 *  @access  public
 	 *  @param   mixed  default [optional, default null]
 	 *  @return  mixed
-	 *  @syntax  mixed CoreTool::getIP( [ mixed default ] );
+	 *  @syntax  mixed CoreTool::getIP([mixed default]);
 	 */
-	public static function getIP( $mDefault="0.0.0.0" )
+	public static function getIP($mDefault='0.0.0.0')
 	{
-		if ( $sReturn = CoreTool::serverVal( "HTTP_CLIENT_IP" ) )
+		if ($sReturn = CoreTool::serverVal('HTTP_CLIENT_IP'))
 			return $sReturn;
-		if ( $sReturn = CoreTool::serverVal( "HTTP_X_FORWARDED_FOR" ) )
+		if ($sReturn = CoreTool::serverVal('HTTP_X_FORWARDED_FOR'))
 			return $sReturn;
-		if ( $sReturn = CoreTool::serverVal( "REMOTE_ADDR" ) )
+		if ($sReturn = CoreTool::serverVal('REMOTE_ADDR'))
 			return $sReturn;
 		return $mDefault;
 	}
@@ -185,17 +185,17 @@ class CoreTool extends Konsolidate
 	 *  @param   string URL
 	 *  @param   bool   stopscript
 	 *  @return  void
-	 *  @syntax  void CoreTool::redirect( string URL [, bool stopscript ] );
+	 *  @syntax  void CoreTool::redirect(string URL [, bool stopscript]);
 	 *  @note    this method sends out both a META header and a JavaScript in case headers were already sent
 	 */
-	public static function redirect( $sURL, $bDie=true )
+	public static function redirect($sURL, $bDie=true)
 	{
-		if ( !headers_sent() )
-			header( "Location: {$sURL}" );
+		if (!headers_sent())
+			header("Location: {$sURL}");
 		else
-			print( "<meta http-equiv=\"refresh\" content=\"0;URL={$sURL}\"></meta>\n<script type=\"text/javascript\">location.href=\"{$sURL}\";</script>" );
+			print("<meta http-equiv=\"refresh\" content=\"0;URL={$sURL}\"></meta>\n<script type=\"text/javascript\">location.href=\"{$sURL}\";</script>");
 
-		if ( $bDie )
+		if ($bDie)
 			exit;
 	}
 
@@ -206,18 +206,18 @@ class CoreTool extends Konsolidate
 	 *  @access  public
 	 *  @param   int    timestamp [optional, default 946702800]
 	 *  @return  bool
-	 *  @syntax  void CoreTool::expirePage( [ int timestamp ] );
+	 *  @syntax  void CoreTool::expirePage([int timestamp]);
 	 */
-	public static function expirePage( $nTimestamp=null )
+	public static function expirePage($nTimestamp=null)
 	{
-		if ( !headers_sent() )
+		if (!headers_sent())
 		{
-			if ( is_null( $nTimestamp ) )
+			if (is_null($nTimestamp))
 				$nTimestamp = 946702800;
-			header( "Cache-Control: no-cache, must-revalidate, private" );
-			header( "Pragma: no-cache" );
-			header( "Expires: " . gmdate( "D, d M Y H:i:s", $nTimestamp ) . " GMT" );
-			header( "Last-Modified: " . gmdate( "D, d M Y H:i:s" ) . " GMT" );
+			header('Cache-Control: no-cache, must-revalidate, private');
+			header('Pragma: no-cache');
+			header('Expires: ' . gmdate('D, d M Y H:i:s', $nTimestamp) . ' GMT');
+			header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 			return true;
 		}
 		return false;

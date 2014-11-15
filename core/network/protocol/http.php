@@ -83,17 +83,17 @@ class CoreNetworkProtocolHTTP extends Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = &new CoreNetHTTP( object parent )
+	 *  @syntax  object = &new CoreNetHTTP(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
-	public function __construct( $oParent )
+	public function __construct(Konsolidate $parent)
 	{
-		parent::__construct( $oParent );
-		$this->version        = "1.0.7";
+		parent::__construct($parent);
+		$this->version        = '1.0.7';
 		$this->_storage       = Array();
 		$this->_filestorage   = Array();
 		$this->_multiform     = false;
-		$this->_useragent     = "";
+		$this->_useragent     = '';
 		$this->_statushandler = Array();
 		$this->_headerdata    = Array();
 	}
@@ -107,27 +107,27 @@ class CoreNetworkProtocolHTTP extends Konsolidate
 	 *  @param  mixed  $mValue       the value to set, note that $mValue will not be processed if you have provided an array as first variable
 	 *  @return bool
 	 */
-	public function prepareData( $mVariable, $mValue=false )
+	public function prepareData($mVariable, $mValue=false)
 	{
 		$bSuccess = true;
-		if ( is_array( $mVariable ) )
+		if (is_array($mVariable))
 		{
-			foreach( $mVariable as $sKey=>$mValue )
-				$bSuccess &= $this->prepareData( $sKey, $mValue );
+			foreach($mVariable as $sKey=>$mValue)
+				$bSuccess &= $this->prepareData($sKey, $mValue);
 			return $bSuccess;
 		}
-		elseif ( is_array( $mValue ) )
+		elseif (is_array($mValue))
 		{
-			foreach( $mValue as $mKey=>$mSubValue )
-				$bSuccess &= $this->prepareData( "{$mVariable}[" . ( is_integer( $mKey ) ? $mKey : "'{$mKey}'" ). "]", $mSubValue );
+			foreach($mValue as $mKey=>$mSubValue)
+				$bSuccess &= $this->prepareData("{$mVariable}[" . (is_integer($mKey) ? $mKey : "'{$mKey}'"). ']', $mSubValue);
 			return $bSuccess;
 		}
-		elseif ( is_string( $mVariable ) )
+		elseif (is_string($mVariable))
 		{
-			if ( is_object( $mValue ) )
-				$mValue = serialize( $mValue );
-			$this->_storage[ $mVariable ] = $mValue;
-			return( $this->_storage[ $mVariable ] == $mValue );
+			if (is_object($mValue))
+				$mValue = serialize($mValue);
+			$this->_storage[$mVariable] = $mValue;
+			return($this->_storage[$mVariable] == $mValue);
 		}
 		return false;
 	}
@@ -142,27 +142,27 @@ class CoreNetworkProtocolHTTP extends Konsolidate
 	 *  @return bool
 	 *  @note   requires the request to be of type 'POST'), one additional variable will be added to the request. The variable is called 'http_filecount' and contains the number of files being POSTed)
 	 */
-	public function prepareFile( $sFile, $sMime="" )
+	public function prepareFile($sFile, $sMime='')
 	{
-		if ( file_exists( $sFile ) )
+		if (file_exists($sFile))
 		{
-			if ( empty( $sMime ) )
-				$sMime = "application/octet-stream";
+			if (empty($sMime))
+				$sMime = 'application/octet-stream';
 
-			$fpFile = fopen( $sFile, "rb" );
-			if ( $fpFile )
+			$fpFile = fopen($sFile, 'rb');
+			if ($fpFile)
 			{
-				$sData = "";
-				while ( !feof( $fpFile ) )
-					$sData .= fgets( $fpFile, fileSize( $sFile ) );
-				fclose( $fpFile );
+				$sData = '';
+				while (!feof($fpFile))
+					$sData .= fgets($fpFile, fileSize($sFile));
+				fclose($fpFile);
 
 				$this->_filestorage[] = Array(
-					"name"=>$sFile,
-					"data"=>$sData,
-					"mime"=>$sMime
+					'name'=>$sFile,
+					'data'=>$sData,
+					'mime'=>$sMime
 				);
-				if ( strLen( $sData ) > 0 )
+				if (strLen($sData) > 0)
 				{
 					$this->_multiform = true;
 					return true;
@@ -184,9 +184,9 @@ class CoreNetworkProtocolHTTP extends Konsolidate
 	 *  @param  string  $sFunction The function to call if status equals $nStatus
 	 *  @return void
 	 */
-	public function setStatusHandler( $nStatus, $sFunction )
+	public function setStatusHandler($nStatus, $sFunction)
 	{
-		$this->_statushandler[ $nStatus ] = $sFunction;
+		$this->_statushandler[$nStatus] = $sFunction;
 	}
 
 	/**
@@ -197,10 +197,10 @@ class CoreNetworkProtocolHTTP extends Konsolidate
 	 *  @param  number $nStatus The status number
 	 *  @return void
 	 */
-	protected function _triggerStatusHandler( $nStatus )
+	protected function _triggerStatusHandler($nStatus)
 	{
-		if ( CoreTool::arrVal( $this->_statushandler, $nStatus, false ) )
-			$this->_statushandler[ $nStatus ]( $nStatus, $this );
+		if (CoreTool::arrVal($this->_statushandler, $nStatus, false))
+			$this->_statushandler[$nStatus]($nStatus, $this);
 	}
 
 	/**
@@ -212,7 +212,7 @@ class CoreNetworkProtocolHTTP extends Konsolidate
 	 */
 	public function getResponse()
 	{
-		return $this->getHeader( "response" );
+		return $this->getHeader('response');
 	}
 
 	/**
@@ -224,7 +224,7 @@ class CoreNetworkProtocolHTTP extends Konsolidate
 	 */
 	public function getResponseStatus()
 	{
-		return $this->getHeader( "status" );
+		return $this->getHeader('status');
 	}
 
 	/**
@@ -236,7 +236,7 @@ class CoreNetworkProtocolHTTP extends Konsolidate
 	 */
 	public function getResponseInfo()
 	{
-		return $this->getHeader( "statusinfo" );
+		return $this->getHeader('statusinfo');
 	}
 
 	/**
@@ -248,7 +248,7 @@ class CoreNetworkProtocolHTTP extends Konsolidate
 	 */
 	public function getResponseProtocol()
 	{
-		return $this->getHeader( "protocol" );
+		return $this->getHeader('protocol');
 	}
 
 	/**
@@ -259,12 +259,12 @@ class CoreNetworkProtocolHTTP extends Konsolidate
 	 *  @param  string $sHeader  The header you wish to read [optional, returns all headers in an array if ommited)
 	 *  @return string|array|bool
 	 */
-	public function getHeader( $sHeader="" )
+	public function getHeader($sHeader='')
 	{
-		if ( empty( $sHeader ) )
+		if (empty($sHeader))
 			return $this->_requestheader;
-		else if ( is_array( $this->_requestheader ) && array_key_exists( $sHeader, $this->_requestheader ) )
-			return $this->_requestheader[ $sHeader ];
+		else if (is_array($this->_requestheader) && array_key_exists($sHeader, $this->_requestheader))
+			return $this->_requestheader[$sHeader];
 		return false;
 	}
 
@@ -279,19 +279,19 @@ class CoreNetworkProtocolHTTP extends Konsolidate
 	 *                             if the value is ommited or empty (0/false/'') the header will not be send
 	 *  @return void
 	 */
-	public function setHeader( $mHeader, $mValue=false )
+	public function setHeader($mHeader, $mValue=false)
 	{
 		$bSuccess = true;
-		if ( is_array( $mHeader ) )
+		if (is_array($mHeader))
 		{
-			foreach( $mHeader as $sKey=>$mValue )
-				$bSuccess &= $this->setHeader( $sKey, $mValue );
+			foreach($mHeader as $sKey=>$mValue)
+				$bSuccess &= $this->setHeader($sKey, $mValue);
 			return $bSuccess;
 		}
-		elseif ( is_string( $mHeader ) )
+		elseif (is_string($mHeader))
 		{
-			$this->_headerdata[ $mHeader ] = $mValue;
-			return( $this->_headerdata[ $mHeader ] == $mValue );
+			$this->_headerdata[$mHeader] = $mValue;
+			return($this->_headerdata[$mHeader] == $mValue);
 		}
 		return false;
 	}
@@ -304,23 +304,23 @@ class CoreNetworkProtocolHTTP extends Konsolidate
 	 *  @param  array $aHeader The Array of headers
 	 *  @return void
 	 */
-	protected function _parseHeader( $aHeader )
+	protected function _parseHeader($aHeader)
 	{
-		for ( $i = 0; $i < count( $aHeader ); ++$i )
-			if ( $i == 0 ) // the status reply (also starts a new array, which prevents mixing previous header info
+		for ($i = 0; $i < count($aHeader); ++$i)
+			if ($i == 0) // the status reply (also starts a new array, which prevents mixing previous header info
 			{
-				$aHeaderPart = explode( " ", $aHeader[ $i ], 3 );
+				$aHeaderPart = explode(' ', $aHeader[$i], 3);
 				$this->_requestheader = Array(
-					"response"=>$aHeader[ $i ],
-					"protocol"=>$aHeaderPart[ 0 ],
-					"status"=>$aHeaderPart[ 1 ],
-					"statusinfo"=>$aHeaderPart[ 2 ]
+					'response'=>$aHeader[$i],
+					'protocol'=>$aHeaderPart[0],
+					'status'=>$aHeaderPart[1],
+					'statusinfo'=>$aHeaderPart[2]
 				);
 			}
 			else // other headers
 			{
-				$aHeaderPart = explode( ":", $aHeader[ $i ], 2 );
-				$this->_requestheader[ $aHeaderPart[ 0 ] ] = trim( $aHeaderPart[ 1 ] );
+				$aHeaderPart = explode(':', $aHeader[$i], 2);
+				$this->_requestheader[$aHeaderPart[0]] = trim($aHeaderPart[1]);
 			}
 	}
 
@@ -332,15 +332,15 @@ class CoreNetworkProtocolHTTP extends Konsolidate
 	 *  @param  string $sURL  The URL to parse
 	 *  @return void
 	 */
-	protected function _parseURL( $sURL )
+	protected function _parseURL($sURL)
 	{
-		if ( !strPos( $sURL, "://" ) )
+		if (!strPos($sURL, '://'))
 			$sURL = "http://{$sURL}";
-		$aURL          = parse_url( $sURL );
-		$this->host   = CoreTool::arrVal( $aURL, "host", $_SERVER[ "HTTP_HOST" ] );
-		$this->path   = CoreTool::arrVal( $aURL, "path", "/" );
-		$this->scheme = CoreTool::arrVal( $aURL, "scheme", "http" );
-		$this->port   = (int) CoreTool::arrVal( $aURL, "port", 80 );
+		$aURL          = parse_url($sURL);
+		$this->host   = CoreTool::arrVal($aURL, 'host', $_SERVER['HTTP_HOST']);
+		$this->path   = CoreTool::arrVal($aURL, 'path', '/');
+		$this->scheme = CoreTool::arrVal($aURL, 'scheme', 'http');
+		$this->port   = (int) CoreTool::arrVal($aURL, 'port', 80);
 	}
 
 	/**
@@ -352,43 +352,43 @@ class CoreNetworkProtocolHTTP extends Konsolidate
 	 *  @param  string $sBoundary The boundary to use to seperate variables/files from eachother
 	 *  @return string
 	 */
-	protected function _buildDataString( $sMethod="GET", $sBoundary="++HTTPRequest++" )
+	protected function _buildDataString($sMethod='GET', $sBoundary='++HTTPRequest++')
 	{
 		//  If we are sending files, add a variable telling the receiving end how many files are being transmitted
-		if ( strToUpper( $sMethod ) == "POST" && count( $this->_filestorage ) > 0 )
-			$aStorage = array_merge( $this->_storage, Array( "http_filecount"=>count( $this->_filestorage ) ) );
+		if (strToUpper($sMethod) == 'POST' && count($this->_filestorage) > 0)
+			$aStorage = array_merge($this->_storage, Array('http_filecount'=>count($this->_filestorage)));
 		else
 			$aStorage = $this->_storage;
 
-		$sData  = "";
-		foreach( $aStorage as $sKey=>$sValue )
+		$sData  = '';
+		foreach($aStorage as $sKey=>$sValue)
 		{
-			if ( $this->_multiform )
+			if ($this->_multiform)
 			{
 				$sData .= "--{$sBoundary}\n";
 				$sData .= "Content-Disposition: form-data; name=\"{$sKey}\"\n";
-				$sData .= "\n";
+				$sData .= PHP_EOL;
 				$sData .= "{$sValue}\n";
 			}
 			else
 			{
-				$sData .= ( empty( $sData ) ? "" : "&" ) . "{$sKey}=" . urlencode( $sValue );
+				$sData .= (empty($sData) ? '' : '&') . "{$sKey}=" . urlencode($sValue);
 			}
 		}
 
-		if ( strToUpper( $sMethod ) == "POST" && count( $this->_filestorage ) > 0 )
+		if (strToUpper($sMethod) == 'POST' && count($this->_filestorage) > 0)
 		{
-			for ( $i = 0; $i < count( $this->_filestorage ); ++$i )
+			for ($i = 0; $i < count($this->_filestorage); ++$i)
 			{
 				$sKey   = $i + 1;
-				$sData .= ( $i > 0 ? "\n" : "" ) . "--{$sBoundary}\n";
-				$sData .= "Content-Disposition: form-data; name=\"file{$sKey}\"; filename=\"{$this->_filestorage[$i]["name"]}\"\n";
-				$sData .= "Content-Type: {$this->_filestorage[$i]["mime"]}\n";
-				$sData .= "\n";
-				$sData .= "{$this->_filestorage[$i]["data"]}";
+				$sData .= ($i > 0 ? PHP_EOL : '') . "--{$sBoundary}\n";
+				$sData .= "Content-Disposition: form-data; name=\"file{$sKey}\"; filename=\"{$this->_filestorage[$i]['name']}\"\n";
+				$sData .= "Content-Type: {$this->_filestorage[$i]['mime']}\n";
+				$sData .= PHP_EOL;
+				$sData .= "{$this->_filestorage[$i]['data']}";
 			}
 		}
-		if ( $this->_multiform )
+		if ($this->_multiform)
 			$sData .= "--{$sBoundary}--";
 
 		return $sData;
@@ -403,32 +403,32 @@ class CoreNetworkProtocolHTTP extends Konsolidate
 	 *  @param  mixed  $mReferer  The referer to provide
 	 *  @return string
 	 */
-	protected function _buildRequestString( $sMethod="GET", $mReferer=false )
+	protected function _buildRequestString($sMethod='GET', $mReferer=false)
 	{
-		$sBoundary = str_pad( substr( md5( time() ), 0, 12 ), 40, "-", STR_PAD_LEFT );
-		$sMethod   = strToUpper( $sMethod );
-		$sData     = $this->_buildDataString( $sMethod, $sBoundary );
+		$sBoundary = str_pad(substr(md5(time()), 0, 12), 40, '-', STR_PAD_LEFT);
+		$sMethod   = strToUpper($sMethod);
+		$sData     = $this->_buildDataString($sMethod, $sBoundary);
 
 		// Set or override headers
 		$this->setHeader(
 			Array(
-				"Host"=>$this->host,
-				"User-Agent"=>( !empty( $this->_useragent ) ? "{$this->_useragent} " : "" ) . "HTTPRequest/{$this->version} (PHP Class; klof++ 2005)",
-				"Referer"=>( !empty( $mReferer ) ? $mReferer : "http://{$_SERVER[ "HTTP_HOST" ]}{$_SERVER["REQUEST_URI"]}" ),
-				"Connection"=>"close"
+				'Host'=>$this->host,
+				'User-Agent'=>(!empty($this->_useragent) ? "{$this->_useragent} " : '') . "HTTPRequest/{$this->version} (PHP Class; klof++ 2005)",
+				'Referer'=>(!empty($mReferer) ? $mReferer : "http://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}"),
+				'Connection'=>'close'
 			)
 		);
-		$sRequest  = "{$sMethod} {$this->path}" . ( $sMethod == "GET" && !empty( $sData ) ? "?$sData" : "" ) . " HTTP/1.1\n";
+		$sRequest  = "{$sMethod} {$this->path}" . ($sMethod == 'GET' && !empty($sData) ? "?$sData" : '') . ' HTTP/1.1' . PHP_EOL;
 
-		if ( count( $this->_headerdata ) > 0 )
-			foreach( $this->_headerdata as $sKey=>$sValue )
-				if ( !empty( $sValue ) )
+		if (count($this->_headerdata) > 0)
+			foreach($this->_headerdata as $sKey=>$sValue)
+				if (!empty($sValue))
 					$sRequest .= "{$sKey}: {$sValue}\n";
 
-		if ( $sMethod == "POST" )
+		if ($sMethod == 'POST')
 		{
-			$sRequest .= "Content-type: " . ( $this->_multiform ? "multipart/form-data; boundary={$sBoundary}" : "application/x-www-form-urlencoded" ) . "\n";
-			$sRequest .= "Content-length: " . strlen( $sData ) . "\r\n\r\n";
+			$sRequest .= 'Content-type: ' . ($this->_multiform ? "multipart/form-data; boundary={$sBoundary}" : 'application/x-www-form-urlencoded') . PHP_EOL;
+			$sRequest .= 'Content-length: ' . strlen($sData) . "\r\n\r\n";
 			$sRequest .= "{$sData}";
 		}
 		$sRequest .= "\r\n\r\n";
@@ -447,83 +447,83 @@ class CoreNetworkProtocolHTTP extends Konsolidate
 	 *  @param  mixed  $mReferer  The referer to provide
 	 *  @return string
 	 */
-	public function request( $sMethod, $sURL, $aData=Array(), $mReferer=false )
+	public function request($sMethod, $sURL, $aData=Array(), $mReferer=false)
 	{
 		//  Files cannot be transmitted with a GET request, so even if files were added, we do not use multipart/form-data
-		if ( strToUpper( $sMethod ) == "GET" && $this->_multiform )
+		if (strToUpper($sMethod) == 'GET' && $this->_multiform)
 			$this->_multiform = false;
 
 		//  Prepare all request URL requirements
-		$this->_parseURL( $sURL );
+		$this->_parseURL($sURL);
 
 		//  Prepare all data (NOTE: variables set with PostRequest::prepare will be overwritten by variables provided in $aData if they carry the same name!)
-		$this->prepareData( $aData );
+		$this->prepareData($aData);
 
 		//  Prepare the actual request
-		$sRequest = $this->_buildRequestString( $sMethod, $mReferer );
+		$sRequest = $this->_buildRequestString($sMethod, $mReferer);
 
 		//  Open the connection, post the data and read the feedback
-		$fpConn = @fsockopen( $this->host, $this->port );
-		if ( $fpConn )
+		$fpConn = @fsockopen($this->host, $this->port);
+		if ($fpConn)
 		{
 			$aResult = Array(
-				"header"=>Array(),
-				"content"=>""
+				'header'=>Array(),
+				'content'=>''
 			);
 			$bHeader         = true;
 			$bChunkedTranfer = false;
 			$bBeginChunk     = false;
 			$nReadBytes      = 1024;
 
-			fputs( $fpConn, $sRequest, strLen( $sRequest ) );
-			while( !feof( $fpConn ) )
+			fputs($fpConn, $sRequest, strLen($sRequest));
+			while(!feof($fpConn))
 			{
-				$sResult = fgets( $fpConn, $nReadBytes );
-				$sTrim   = trim( $sResult );
+				$sResult = fgets($fpConn, $nReadBytes);
+				$sTrim   = trim($sResult);
 
-				if ( empty( $sTrim ) && $bHeader ) // determine wether or not the header has ended (this empty line is not added to either the header or the content)
+				if (empty($sTrim) && $bHeader) // determine wether or not the header has ended (this empty line is not added to either the header or the content)
 				{
 					$bHeader = false;
-					$this->_parseHeader( $aResult[ "header" ] );
+					$this->_parseHeader($aResult['header']);
 
-					if ( $this->getHeader( "Transfer-Encoding" ) == "chunked" ) // if the content is delivered in chunks, we need to handle the content slightly different
+					if ($this->getHeader('Transfer-Encoding') == 'chunked') // if the content is delivered in chunks, we need to handle the content slightly different
 					{
 						$bChunkedTranfer = true;
 						$bBeginChunk     = true;
 					}
 				}
-				elseif ( $bHeader ) // add the result to the header array
+				elseif ($bHeader) // add the result to the header array
 				{
-					$aResult[ "header" ][] = $sTrim;
+					$aResult['header'][] = $sTrim;
 				}
 				else // add the result to the content string
 				{
-					if ( $bChunkedTranfer ) // we should handle chunked data delivery
+					if ($bChunkedTranfer) // we should handle chunked data delivery
 					{
-						if ( $bBeginChunk ) // we are at the beginning of an era (chunk wise)
+						if ($bBeginChunk) // we are at the beginning of an era (chunk wise)
 						{
 							$bBeginChunk = false;
-							$nReadBytes  = hexdec( $sTrim ); // chunk sizes are provided as HEX values
-							if ( $nReadBytes == 0 )
+							$nReadBytes  = hexdec($sTrim); // chunk sizes are provided as HEX values
+							if ($nReadBytes == 0)
 								break;
-							unset( $sResult ); // clear sResult
+							unset($sResult); // clear sResult
 						}
-						else if ( is_numeric( $sTrim ) && $sTrim == 0 ) // the end of the chunk has been reached
+						else if (is_numeric($sTrim) && $sTrim == 0) // the end of the chunk has been reached
 						{
 							$nBeginChunk = true;
 							$nReadBytes  = 1024;
-							unset( $sResult ); // clear sResult
+							unset($sResult); // clear sResult
 						}
 					}
-					if ( !empty( $sResult ) ) // do we have content?
-						$aResult[ "content" ] .= $sResult;
+					if (!empty($sResult)) // do we have content?
+						$aResult['content'] .= $sResult;
 				}
 			}
 
-			fclose( $fpConn );
-			$this->_triggerStatusHandler( $this->getResponseStatus() );
+			fclose($fpConn);
+			$this->_triggerStatusHandler($this->getResponseStatus());
 
-			return $aResult[ "content" ];
+			return $aResult['content'];
 		}
 		return false;
 	}
@@ -539,9 +539,9 @@ class CoreNetworkProtocolHTTP extends Konsolidate
 	 *  @param  mixed  $mReferer  The referer to provide
 	 *  @return string
 	 */
-	public function post( $sURL, $aData=Array(), $mReferer=false )
+	public function post($sURL, $aData=Array(), $mReferer=false)
 	{
-		return $this->request( "post", $sURL, $aData, $mReferer );
+		return $this->request('post', $sURL, $aData, $mReferer);
 	}
 
 	/**
@@ -557,11 +557,11 @@ class CoreNetworkProtocolHTTP extends Konsolidate
 	public function get()
 	{
 		$aArgument = func_get_args();
-		$sURL      = array_shift( $aArgument );
-		$aData     = (bool) count( $aArgument ) ? array_shift( $aArgument ) : Array();
-		$mReferer  = (bool) count( $aArgument ) ? array_shift( $aArgument ) : false;
+		$sURL      = array_shift($aArgument);
+		$aData     = (bool) count($aArgument) ? array_shift($aArgument) : Array();
+		$mReferer  = (bool) count($aArgument) ? array_shift($aArgument) : false;
 
-		return $this->request( "get", $sURL, $aData, $mReferer );
+		return $this->request('get', $sURL, $aData, $mReferer);
 	}
 
 	/**
@@ -574,9 +574,9 @@ class CoreNetworkProtocolHTTP extends Konsolidate
 	 *  @param  mixed  $mReferer  The referer to provide
 	 *  @return string
 	 */
-	public function head( $sURL, $aData=Array(), $mReferer=false )
+	public function head($sURL, $aData=Array(), $mReferer=false)
 	{
-		return $this->request( "head", $sURL, $aData, $mReferer );
+		return $this->request('head', $sURL, $aData, $mReferer);
 	}
 
 	/**
@@ -587,9 +587,9 @@ class CoreNetworkProtocolHTTP extends Konsolidate
 	 *  @param  string $sURL      The URL to request
 	 *  @return string
 	 */
-	public function options( $sURL )
+	public function options($sURL)
 	{
-		return $this->request( "options", $sURL );
+		return $this->request('options', $sURL);
 	}
 
 	/**
@@ -600,8 +600,8 @@ class CoreNetworkProtocolHTTP extends Konsolidate
 	 *  @param  string $sURL      The URL to request
 	 *  @return string
 	 */
-	public function trace( $sURL )
+	public function trace($sURL)
 	{
-		return $this->request( "trace", $sURL );
+		return $this->request('trace', $sURL);
 	}
 }

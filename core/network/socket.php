@@ -20,12 +20,12 @@ class CoreNetworkSocket extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 */
-	public function connect( $sHost, $nPort, $sTransport="tcp", $nTimeout=10 )
+	public function connect($sHost, $nPort, $sTransport='tcp', $nTimeout=10)
 	{
-		$this->_conn = @stream_socket_client( "{$sTransport}://{$sHost}:{$nPort}", $errno, $errstr, $nTimeout );
-		if ( is_resource( $this->_conn ) )
+		$this->_conn = @stream_socket_client("{$sTransport}://{$sHost}:{$nPort}", $errno, $errstr, $nTimeout);
+		if (is_resource($this->_conn))
 		{
-			$this->timeout( $nTimeout );
+			$this->timeout($nTimeout);
 			return true;
 		}
 		return false;
@@ -38,8 +38,8 @@ class CoreNetworkSocket extends Konsolidate
 	 */
 	public function disconnect()
 	{
-		if ( is_resource( $this->_conn ) )
-			return fclose( $this->_conn );
+		if (is_resource($this->_conn))
+			return fclose($this->_conn);
 		return false;
 	}
 
@@ -48,11 +48,11 @@ class CoreNetworkSocket extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 */
-	public function timeout( $nTimeout )
+	public function timeout($nTimeout)
 	{
 		$this->_timeout = $nTimeout;
-		if ( is_resource( $this->_conn ) )
-			return stream_set_timeout( $this->_conn, $this->_timeout );
+		if (is_resource($this->_conn))
+			return stream_set_timeout($this->_conn, $this->_timeout);
 		return false;
 	}
 
@@ -61,10 +61,10 @@ class CoreNetworkSocket extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 */
-	public function write( $sData )
+	public function write($sData)
 	{
-		if ( is_resource( $this->_conn ) )
-			return stream_socket_sendto( $this->_conn, $sData );
+		if (is_resource($this->_conn))
+			return stream_socket_sendto($this->_conn, $sData);
 		return false;
 	}
 
@@ -73,10 +73,10 @@ class CoreNetworkSocket extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 */
-	public function read( $nLength=512 )
+	public function read($nLength=512)
 	{
-		if ( is_resource( $this->_conn ) )
-			return stream_socket_recvfrom( $this->_conn, $nLength );
+		if (is_resource($this->_conn))
+			return stream_socket_recvfrom($this->_conn, $nLength);
 		return false;
 	}
 }

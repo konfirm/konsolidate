@@ -23,7 +23,7 @@ class CoreUnitSI extends Konsolidate
 	const DECA     = 1;  			const YOCTO = -24;
 	const STANDARD = 0;
 
-	protected $_unitMatrix = Array( "YOTA"=>"Y", "ZETTA"=>"Z", "EXA"=>"E", "PETA"=>"P", "TERA"=>"T", "GIGA"=>"G", "MEGA"=>"M", "KILO"=>"k", "HECTO"=>"h", "DECA"=>"da", "DECI"=>"d", "CENTI"=>"c", "MILLI"=>"m", "MICRO"=>"μ", "NANO"=>"n", "PICO"=>"p", "FEMTO"=>"f", "ATTO"=>"a", "ZEPTO"=>"z", "YOCTO"=>"y", "STANDARD"=>"" );
+	protected $_unitMatrix = Array('YOTA'=>'Y', 'ZETTA'=>'Z', 'EXA'=>'E', 'PETA'=>'P', 'TERA'=>'T', 'GIGA'=>'G', 'MEGA'=>'M', 'KILO'=>'k', 'HECTO'=>'h', 'DECA'=>'da', 'DECI'=>'d', 'CENTI'=>'c', 'MILLI'=>'m', 'MICRO'=>'μ', 'NANO'=>'n', 'PICO'=>'p', 'FEMTO'=>'f', 'ATTO'=>'a', 'ZEPTO'=>'z', 'YOCTO'=>'y', 'STANDARD'=>'');
 
 
 	/**
@@ -35,19 +35,19 @@ class CoreUnitSI extends Konsolidate
 	 *  @param   string original unit
 	 *  @param   number conversion direction (from or to)
 	 *  @return  number value
-	 *  @syntax  bool   CoreUnitSI->_convert( number value, string unit [ number direction ] )
+	 *  @syntax  bool   CoreUnitSI->_convert(number value, string unit [number direction])
 	 */
-	protected function _convert( $nBase, $sFix="", $nDirection=1 )
+	protected function _convert($nBase, $sFix='', $nDirection=1)
 	{
-		if ( !array_key_exists( strToUpper( $sFix ), $this->_unitMatrix ) )
-			$sFix = array_search( $sFix, $this->_unitMatrix );
+		if (!array_key_exists(strToUpper($sFix), $this->_unitMatrix))
+			$sFix = array_search($sFix, $this->_unitMatrix);
 		else
-			$sFix = strToUpper( $sFix );
+			$sFix = strToUpper($sFix);
 
-		if ( $sFix === false )
-			throw new Exception( "No or unknown pre-/suffix provided" );
+		if ($sFix === false)
+			throw new Exception('No or unknown pre-/suffix provided');
 
-		return $nBase / pow( 10, ( $nDirection * constant( "self::{$sFix}" ) ) );
+		return $nBase / pow(10, ($nDirection * constant("self::{$sFix}")));
 	}
 
 	/**
@@ -58,11 +58,11 @@ class CoreUnitSI extends Konsolidate
 	 *  @param   string original value+unit
 	 *  @param   string original unit
 	 *  @return  mixed  value
-	 *  @syntax  bool   CoreUnitLength->toBase( string value [, string unit ] )
+	 *  @syntax  bool   CoreUnitLength->toBase(string value [, string unit])
 	 */
-	public function baseToPrefix( $nBase, $sFix="" )
+	public function baseToPrefix($nBase, $sFix='')
 	{
-		return $this->_convert( $nBase, $sFix );
+		return $this->_convert($nBase, $sFix);
 	}
 
 	/**
@@ -73,10 +73,10 @@ class CoreUnitSI extends Konsolidate
 	 *  @param   string original value+unit
 	 *  @param   string original unit
 	 *  @return  mixed  value
-	 *  @syntax  bool   CoreUnitSI->prefixToBase( string value [, string unit ] )
+	 *  @syntax  bool   CoreUnitSI->prefixToBase(string value [, string unit])
 	 */
-	public function prefixToBase( $nBase, $sFix="" )
+	public function prefixToBase($nBase, $sFix='')
 	{
-		return $this->_convert( $nBase, $sFix, -1 );
+		return $this->_convert($nBase, $sFix, -1);
 	}
 }

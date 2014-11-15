@@ -17,13 +17,13 @@ class CoreConfigXML extends Konsolidate
 	 *  @access  public
 	 *  @param   string  xml file
 	 *  @return  bool
-	 *  @syntax  Object->load( string xmlfile )
+	 *  @syntax  Object->load(string xmlfile)
 	 */
-	public function load( $sFile )
+	public function load($sFile)
 	{
-		$oConfig = simplexml_load_file( $sFile );
-		if ( is_object( $oConfig ) )
-			return $this->_traverseXML( $oConfig );
+		$oConfig = simplexml_load_file($sFile);
+		if (is_object($oConfig))
+			return $this->_traverseXML($oConfig);
 		return false;
 	}
 
@@ -35,14 +35,14 @@ class CoreConfigXML extends Konsolidate
 	 *  @param   object  node
 	 *  @param   string  xml file (optional, default null)
 	 *  @return  bool
-	 *  @syntax  Object->_traverseXML( object node [, string path ] )
+	 *  @syntax  Object->_traverseXML(object node [, string path])
 	 */
-	protected function _traverseXML( $oNode, $sPath=null )
+	protected function _traverseXML($oNode, $sPath=null)
 	{
-		if ( $oNode->children() )
-			foreach( $oNode as $oChild )
-				$this->_traverseXML( $oChild, "{$sPath}/" . $oNode->getName() );
+		if ($oNode->children())
+			foreach($oNode as $oChild)
+				$this->_traverseXML($oChild, "{$sPath}/" . $oNode->getName());
 		else
-			$this->set( "{$sPath}/" . $oNode->getName(), (string) $oNode );
+			$this->set("{$sPath}/" . $oNode->getName(), (string) $oNode);
 	}
 }

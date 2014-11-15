@@ -15,7 +15,7 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	 *  @name    _validheader
 	 *  @type    array
 	 *  @access  protected
-	 *  @note    all dynamically set properties not contained in this array will be preceeded by "X-"
+	 *  @note    all dynamically set properties not contained in this array will be preceeded by 'X-'
 	 */
 	protected $_validheader;
 
@@ -52,24 +52,24 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = &new CoreNetworkProtocolSMTP( object parent )
+	 *  @syntax  object = &new CoreNetworkProtocolSMTP(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
-	public function __construct( $oParent )
+	public function __construct(Konsolidate $parent)
 	{
-		parent::__construct( $oParent );
+		parent::__construct($parent);
 
-		$this->_validheader  = Array( "to", "cc", "bcc", "from", "date", "subject", "reply-to", "return-path", "message-id", "mime-version", "content-type", "charset" );
-		$this->_noautoheader = Array( "to", "from", "server", "domain", "port", "sender", "recipient", "body", "status", "message" );
+		$this->_validheader  = Array('to', 'cc', 'bcc', 'from', 'date', 'subject', 'reply-to', 'return-path', 'message-id', 'mime-version', 'content-type', 'charset');
+		$this->_noautoheader = Array('to', 'from', 'server', 'domain', 'port', 'sender', 'recipient', 'body', 'status', 'message');
 
 		$this->_header = Array();
-		$this->server  = $this->get( "/Config/Mail/server", ini_get( "SMTP" ) );
-		$this->domain  = $this->get( "/Config/Mail/domain", CoreTool::arrVal( $_SERVER, "HTTP_HOST", "localhost" ) );
+		$this->server  = $this->get('/Config/Mail/server', ini_get('SMTP'));
+		$this->domain  = $this->get('/Config/Mail/domain', CoreTool::arrVal($_SERVER, 'HTTP_HOST', 'localhost'));
 		$this->port    = 25;
 		$this->from    = "konsolidate@{$this->domain}";
-		$this->subject = "No subject";
-		$this->mailer  = "Konsolidate (" . get_class( $this ) . ")";
-		$this->date    = gmdate( "r" );
+		$this->subject = 'No subject';
+		$this->mailer  = 'Konsolidate (' . get_class($this) . ')';
+		$this->date    = gmdate('r');
 	}
 
 	/**
@@ -80,11 +80,11 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	 *  @param   string headername
 	 *  @param   string headervalue
 	 *  @return  void
-	 *  @syntax  void CoreNetworkProtocolSMTP->addHeader( string headername, string headervalue )
+	 *  @syntax  void CoreNetworkProtocolSMTP->addHeader(string headername, string headervalue)
 	 */
-	public function addHeader( $sKey, $sValue )
+	public function addHeader($sKey, $sValue)
 	{
-		$this->_header[ ( !in_array( strToLower( $sKey ), $this->_validheader ) ? "X-" : "" ) . ucfirst( $sKey ) ] = $sValue;
+		$this->_header[(!in_array(strToLower($sKey), $this->_validheader) ? 'X-' : '') . ucfirst($sKey)] = $sValue;
 	}
 
 	/**
@@ -96,15 +96,15 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	 *  @param   int    portnumber   [optional, default 25]
 	 *  @param   int    timeout (ms) [optional, default 30]
 	 *  @return  void
-	 *  @syntax  void CoreNetworkProtocolSMTP->connect( [ string hostname [, int portnumber [, int timeout ] ] ] )
+	 *  @syntax  void CoreNetworkProtocolSMTP->connect([string hostname [, int portnumber [, int timeout]]])
 	 */
-	public function connect( $sHost="localhost", $nPort=25, $nTimeout=30 )
+	public function connect($sHost='localhost', $nPort=25, $nTimeout=30)
 	{
-		$this->_socket = $this->instance( "/Network/Socket" );
-		if ( $this->_socket->connect( $sHost, $nPort, "tcp", $nTimeout ) )
+		$this->_socket = $this->instance('/Network/Socket');
+		if ($this->_socket->connect($sHost, $nPort, 'tcp', $nTimeout))
 		{
 			$nStatus = $this->_getResponseStatus();
-			return empty( $nStatus ) || $nStatus == 220;
+			return empty($nStatus) || $nStatus == 220;
 		}
 		return false;
 	}
@@ -119,8 +119,8 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	 */
 	protected function _getResponseStatus()
 	{
-		$sResponse = trim( $this->_socket->read( 512 ) );
-		list( $this->status, $this->message ) = explode( " ", $sResponse, 2 );
+		$sResponse = trim($this->_socket->read(512));
+		list($this->status, $this->message) = explode(' ', $sResponse, 2);
 		return (int) $this->status;
 	}
 
@@ -130,11 +130,11 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	 *  @access  protected
 	 *  @return  string
 	 */
-	protected function _createRecipientList( $aCollection )
+	protected function _createRecipientList($aCollection)
 	{
-		$sReturn = "";
-		foreach( $aCollection as $sEmail=>$sName )
-			$sReturn .= ( !empty( $sReturn ) ? "," : "" ) . ( !is_null( $sName ) ? "{$sName}<{$sEmail}>" : $sEmail );
+		$sReturn = '';
+		foreach($aCollection as $sEmail=>$sName)
+			$sReturn .= (!empty($sReturn) ? ',' : '') . (!is_null($sName) ? "{$sName}<{$sEmail}>" : $sEmail);
 		return $sReturn;
 	}
 
@@ -145,11 +145,11 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	 *  @access  protected
 	 *  @param   string command
 	 *  @return  mixed      int statuscode or bool if failed
-	 *  @syntax  void CoreNetworkProtocolSMTP->_command( string command )
+	 *  @syntax  void CoreNetworkProtocolSMTP->_command(string command)
 	 */
-	protected function _command( $sCommand )
+	protected function _command($sCommand)
 	{
-		if ( $this->_socket->write( "{$sCommand}\r\n" ) )
+		if ($this->_socket->write("{$sCommand}\r\n"))
 			return $this->_getResponseStatus();
 		return false;
 	}
@@ -169,14 +169,14 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	 *  @syntax  void CoreNetworkProtocolSMTP->authLogin(string username, string password)
 	 *  @note    use the status/message properties for reporting/checking/logging
 	 */
-	public function authLogin( $sUsername, $sPassword )
+	public function authLogin($sUsername, $sPassword)
 	{
-		$nResponse = $this->_command("AUTH LOGIN");
-		if ( $nResponse == 334 )
-			$nResponse = $this->_command( base64_encode( $sUsername ) );
+		$nResponse = $this->_command('AUTH LOGIN');
+		if ($nResponse == 334)
+			$nResponse = $this->_command(base64_encode($sUsername));
 
-		if ( $nResponse == 334 )
-			return $this->_command( base64_encode( $sPassword ) ) == 235;
+		if ($nResponse == 334)
+			return $this->_command(base64_encode($sPassword)) == 235;
 
 		return false;
 	}
@@ -186,16 +186,16 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	 *  @name    helo
 	 *  @type    method
 	 *  @access  public
-	 *  @param   string domain [optional, default $_SERVER[ 'SERVER_NAME' ] or $this->server]
+	 *  @param   string domain [optional, default $_SERVER['SERVER_NAME'] or $this->server]
 	 *  @returns bool success
-	 *  @syntax  void CoreNetworkProtocolSMTP->helo( [ string domain, [ bool enfore EHLO ] ] )
+	 *  @syntax  void CoreNetworkProtocolSMTP->helo([string domain, [bool enfore EHLO]])
 	 *  @note    use the status/message properties for reporting/checking/logging
 	 */
-	public function helo( $sDomain=null, $bEHLO=false )
+	public function helo($sDomain=null, $bEHLO=false)
 	{
-		if ( empty( $sDomain ) )
-			$sDomain = CoreTool::arrVal( "SERVER_NAME", $_SERVER, $this->server );
-		return ( ( !$bEHLO && $this->_command( "HELO {$sDomain}" ) == 250 ) || $this->_command( "EHLO {$sDomain}" ) == 250 );
+		if (empty($sDomain))
+			$sDomain = CoreTool::arrVal('SERVER_NAME', $_SERVER, $this->server);
+		return ((!$bEHLO && $this->_command("HELO {$sDomain}") == 250) || $this->_command("EHLO {$sDomain}") == 250);
 	}
 
 	/**
@@ -206,13 +206,13 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	 *  @param   string senderemail
 	 *  @param   string sendername [optional, omitted if empty]
 	 *  @return  bool success
-	 *  @syntax  void CoreNetworkProtocolSMTP->mailFrom( string email [, string name ] )
+	 *  @syntax  void CoreNetworkProtocolSMTP->mailFrom(string email [, string name])
 	 *  @note    use the status/message properties for reporting/checking/logging
 	 */
-	public function mailFrom( $sEmail, $sName=null )
+	public function mailFrom($sEmail, $sName=null)
 	{
-		$this->addHeader( "From", ( !is_null( $sName ) ? "{$sName} <{$sEmail}>" : $sEmail ) );
-		return $this->_command( "MAIL FROM: {$sEmail}" ) == 250;
+		$this->addHeader('From', (!is_null($sName) ? "{$sName} <{$sEmail}>" : $sEmail));
+		return $this->_command("MAIL FROM: {$sEmail}") == 250;
 	}
 
 	/**
@@ -223,15 +223,15 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	 *  @param   string recipientemail
 	 *  @param   string recipientname [optional, omitted if empty]
 	 *  @return  bool success
-	 *  @syntax  void CoreNetworkProtocolSMTP->rcptTo( string email [, string name ] )
+	 *  @syntax  void CoreNetworkProtocolSMTP->rcptTo(string email [, string name])
 	 *  @note    use the status/message properties for reporting/checking/logging
 	 */
-	public function rcptTo( $aCollection, $sHeaderName="To" )
+	public function rcptTo($aCollection, $sHeaderName='To')
 	{
-		$this->addHeader( $sHeaderName, $this->_createRecipientList( $aCollection ) );
+		$this->addHeader($sHeaderName, $this->_createRecipientList($aCollection));
 		$bReturn = true;
-		foreach( $aCollection as $sEmail=>$sName )
-			$bReturn &= $this->_command( "RCPT TO: {$sEmail}" ) == 250;
+		foreach($aCollection as $sEmail=>$sName)
+			$bReturn &= $this->_command("RCPT TO: {$sEmail}") == 250;
 		return $bReturn;
 	}
 
@@ -242,15 +242,15 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	 *  @access  public
 	 *  @param   string recipientemail
 	 *  @return  bool success
-	 *  @syntax  void CoreNetworkProtocolSMTP->vrfy( string email )
+	 *  @syntax  void CoreNetworkProtocolSMTP->vrfy(string email)
 	 *  @note    use the status/message properties for reporting/checking/logging
 	 *           Don't rely on this method!
 	 *           Most mailservers have disabled the VRFY command for it was used by spammers to build lists of valid addresses,
 	 *           even if it is enabled, be prepared for it to accept everything you fire at it (catch-all).
 	 */
-	public function vrfy( $sEmail )
+	public function vrfy($sEmail)
 	{
-		$nStatus = $this->_command( "VRFY {$sEmail}" );
+		$nStatus = $this->_command("VRFY {$sEmail}");
 		return $nStatus == 250 || $nStatus == 251;
 	}
 
@@ -261,22 +261,22 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	 *  @access  public
 	 *  @param   string data
 	 *  @return  bool success
-	 *  @syntax  void CoreNetworkProtocolSMTP->data( string data )
+	 *  @syntax  void CoreNetworkProtocolSMTP->data(string data)
 	 *  @note    use the status/message properties for reporting/checking/logging
 	 */
-	public function data( $sData )
+	public function data($sData)
 	{
-		if ( $this->_command( "DATA" ) == 354 )
+		if ($this->_command('DATA') == 354)
 		{
-			uksort( $this->_header, Array( $this, "_headerSort" ) );
+			uksort($this->_header, Array($this, '_headerSort'));
 
-			foreach( $this->_header as $sKey=>$sValue )
-				$this->_socket->write( "{$sKey}: {$sValue}\r\n" );
+			foreach($this->_header as $sKey=>$sValue)
+				$this->_socket->write("{$sKey}: {$sValue}\r\n");
 
 			//  The SMTP protocol removes any dot which is the first character on a line, this is resolved by simply adding a dot.
-			$this->_socket->write( str_replace( "\n.", "\n..", "\r\n{$sData}\r\n" ) );
+			$this->_socket->write(str_replace("\n.", "\n..", "\r\n{$sData}\r\n"));
 
-			return $this->_command( "." ) == 250;
+			return $this->_command('.') == 250;
 		}
 		return false;
 	}
@@ -292,7 +292,7 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	 */
 	public function quit()
 	{
-		if ( $this->_command( "QUIT" ) == 221 )
+		if ($this->_command('QUIT') == 221)
 			return true;
 		return false;
 	}
@@ -305,24 +305,24 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	 *  @param   string email
 	 *  @param   bool   useVRFY [optional, default false]
 	 *  @return  bool success
-	 *  @syntax  void CoreNetworkProtocolSMTP->verify( string email [, bool useVRFY ] )
+	 *  @syntax  void CoreNetworkProtocolSMTP->verify(string email [, bool useVRFY])
 	 *  @see     vrfy
 	 */
-	public function verify( $sAddress, $bVRFY=false )
+	public function verify($sAddress, $bVRFY=false)
 	{
-		$sServer = substr( $sAddress, strpos( $sAddress, "@" ) + 1 );
-		dns_get_mx( $sServer, $aMX );
+		$sServer = substr($sAddress, strpos($sAddress, '@') + 1);
+		dns_get_mx($sServer, $aMX);
 
-		if ( count( $aMX ) <= 0 )
+		if (count($aMX) <= 0)
 			return false;
 
-		if ( !$bVRFY )
+		if (!$bVRFY)
 			return true;
 
-		$sServer = $aMX[ 0 ];
-		if ( !is_object( $this->_socket ) && !$this->connect( $sServer, 25 ) )
+		$sServer = $aMX[0];
+		if (!is_object($this->_socket) && !$this->connect($sServer, 25))
 			return false;
-		return $this->vrfy( $sAddress );
+		return $this->vrfy($sAddress);
 	}
 
 	/**
@@ -336,45 +336,45 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	 *  @syntax  void CoreNetworkProtocolSMTP->send()
 	 *  @note    use the status/message properties for reporting/checking/logging
 	 */
-	public function send( $sUsername=null, $sPassword=null )
+	public function send($sUsername=null, $sPassword=null)
 	{
-		foreach( $this->_property as $sKey=>$mValue )
-			if ( !in_array( strToLower( $sKey ), $this->_noautoheader ) )
+		foreach($this->_property as $sKey=>$mValue)
+			if (!in_array(strToLower($sKey), $this->_noautoheader))
 			{
-				if ( is_array( $mValue ) )
+				if (is_array($mValue))
 				{
-					$sHeader = "";
-					foreach( $mValue as $sValue )
-						$sHeader .= ( !empty( $sHeader ) ? ", " : "" ) . $sValue;
-					if ( !empty( $sHeader ) )
-						$this->addHeader( $sKey, $sHeader );
+					$sHeader = '';
+					foreach($mValue as $sValue)
+						$sHeader .= (!empty($sHeader) ? ', ' : '') . $sValue;
+					if (!empty($sHeader))
+						$this->addHeader($sKey, $sHeader);
 				}
-				elseif ( !empty( $mValue ) )
+				elseif (!empty($mValue))
 				{
-					$this->addHeader( $sKey, $mValue );
+					$this->addHeader($sKey, $mValue);
 				}
 			}
 
-		if ( !$this->connect( $this->server, $this->port ) )
+		if (!$this->connect($this->server, $this->port))
 			return false;
 
-		if ( !$this->helo( $this->domain, $sUsername && $sPassword ) )
+		if (!$this->helo($this->domain, $sUsername && $sPassword))
 			return false;
 
-		if ( $sUsername && $sPassword && !$this->authLogin( $sUsername, $sPassword ) )
+		if ($sUsername && $sPassword && !$this->authLogin($sUsername, $sPassword))
 			return false;
 
-		if ( !$this->mailFrom( $this->from, $this->sender ) )
+		if (!$this->mailFrom($this->from, $this->sender))
 			return false;
 
-		foreach( Array( "to", "cc", "bcc" ) as $sType )
+		foreach(Array('to', 'cc', 'bcc') as $sType)
 		{
 			$mValue = $this->$sType;
-			if ( !empty( $mValue ) && !$this->rcptTo( $mValue, $sType ) )
+			if (!empty($mValue) && !$this->rcptTo($mValue, $sType))
 				return false;
 		}
 
-		if ( !$this->data( $this->body ) )
+		if (!$this->data($this->body))
 			return false;
 
 		return $this->quit();
@@ -388,11 +388,11 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	 *  @param   string A
 	 *  @param   string B
 	 *  @return  int  order
-	 *  @syntax  void CoreNetworkProtocolSMTP->_headerSort( string A, string B )
+	 *  @syntax  void CoreNetworkProtocolSMTP->_headerSort(string A, string B)
 	 *  @note    used as array sort function
 	 */
-	protected function _headerSort( $sA, $sB )
+	protected function _headerSort($sA, $sB)
 	{
-		return array_search( strToLower( $sA ), $this->_validheader ) > array_search( strToLower( $sB ), $this->_validheader ) ? 1 : -1;
+		return array_search(strToLower($sA), $this->_validheader) > array_search(strToLower($sB), $this->_validheader) ? 1 : -1;
 	}
 }

@@ -23,14 +23,14 @@ class CoreRequest extends Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = &new CoreRequest( object parent )
+	 *  @syntax  object = &new CoreRequest(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
-	function __construct( &$oParent )
+	function __construct(Konsolidate $parent)
 	{
-		parent::__construct( $oParent );
+		parent::__construct($parent);
 
-		$this->_order         = $this->get( "/Config/Request/variableorder", "r" );
+		$this->_order         = $this->get('/Config/Request/variableorder', 'r');
 		$this->_raw           = null;
 		$this->_xml           = null;
 		$this->_file          = null;
@@ -48,7 +48,7 @@ class CoreRequest extends Konsolidate
 	 */
 	public function isPosted()
 	{
-		return isset( $_SERVER[ "REQUEST_METHOD" ] ) && $_SERVER[ "REQUEST_METHOD" ] === "POST";
+		return isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'POST';
 	}
 
 	/**
@@ -61,7 +61,7 @@ class CoreRequest extends Konsolidate
 	 */
 	public function getRawRequest()
 	{
-		return !is_null( $this->_raw ) ? $this->_raw : false;
+		return !is_null($this->_raw) ? $this->_raw : false;
 	}
 
 	/**
@@ -74,7 +74,7 @@ class CoreRequest extends Konsolidate
 	 */
 	public function getXML()
 	{
-		return !is_null( $this->_xml ) ? $this->_xml : false;
+		return !is_null($this->_xml) ? $this->_xml : false;
 	}
 
 	/**
@@ -87,18 +87,18 @@ class CoreRequest extends Konsolidate
 	 */
 	protected function _collectFromRaw()
 	{
-		$this->_raw = trim( file_get_contents( "php://input" ) );
+		$this->_raw = trim(file_get_contents('php://input'));
 
 		//  Try to determine what kind of request triggered this class
-		switch( substr( $this->_raw, 0, 1 ) )
+		switch(substr($this->_raw, 0, 1))
 		{
-			case "<": // XML
+			case '<': // XML
 				// in-class for now
-				$this->_xml = new SimpleXMLElement( $this->_raw );
+				$this->_xml = new SimpleXMLElement($this->_raw);
 
-				foreach( $this->_xml as $sParam=>$sValue )
+				foreach($this->_xml as $sParam=>$sValue)
 					$this->$sParam = (string) $sValue;
-				$this->call( "/Log/write", var_export( $this->_property, true ), 4 );
+				$this->call('/Log/write', var_export($this->_property, true), 4);
 				break;
 		}
 	}
@@ -111,11 +111,11 @@ class CoreRequest extends Konsolidate
 	 *  @return  void
 	 *  @syntax  void CoreRequest->_collectHTTP()
 	 */
-	protected function _collectHTTP( $aCollection )
+	protected function _collectHTTP($aCollection)
 	{
-		if ( is_array( $aCollection ) && (bool) count( $aCollection ) )
+		if (is_array($aCollection) && (bool) count($aCollection))
 		{
-			foreach( $aCollection as $sParam=>$mValue )
+			foreach($aCollection as $sParam=>$mValue)
 				$this->$sParam = $mValue;
 			return true;
 		}
@@ -133,11 +133,11 @@ class CoreRequest extends Konsolidate
 	protected function _collect()
 	{
 		//  gather variables and if request method is post and it failed to gather variables, try to collect data from raw input.
-		if ( !$this->_collectHTTP( $this->_getCollection() ) && $this->isPosted() )
+		if (!$this->_collectHTTP($this->_getCollection()) && $this->isPosted())
 			$this->_collectFromRaw();
 
 		// if the request method is post and the appear to be (one or more) files attached, prepare those aswel
-		if ( $this->isPosted() && is_array( $_FILES ) && (bool) count( $_FILES ) )
+		if ($this->isPosted() && is_array($_FILES) && (bool) count($_FILES))
 			$this->_collectFiles();
 	}
 
@@ -151,22 +151,22 @@ class CoreRequest extends Konsolidate
 	 *  @syntax  array CoreRequest->_getCollection()
 	 *  @note    By default _getCollection module will distinguish between GET and POST requests, they will not be processed both!
 	 *           You can override this behaviour by setting the variable order (EGPCS, like the variables_order php.ini setting) to /Config/Request/variableorder
-	 *           E.g. $this->set( "/Config/Request/variableorder", "GP" ); // combine GET and POST variables
+	 *           E.g. $this->set('/Config/Request/variableorder', 'GP'); // combine GET and POST variables
 	 */
 	protected function _getCollection()
 	{
-		if ( !is_null( $this->_order ) )
+		if (!is_null($this->_order))
 		{
 			$aReturn = Array();
-			for( $i = 0; $i < strlen( $this->_order ); ++$i )
-				switch( strToUpper( $this->_order{$i} ) )
+			for($i = 0; $i < strlen($this->_order); ++$i)
+				switch(strToUpper($this->_order{$i}))
 				{
-					case "G": $aReturn = array_merge( $aReturn, $_GET );    break;
-					case "P": $aReturn = array_merge( $aReturn, $_POST );   break;
-					case "C": $aReturn = array_merge( $aReturn, $_COOKIE ); break;
-					case "R": $aReturn = array_merge( $aReturn, $_REQUEST ); break;
-					case "E": $aReturn = array_merge( $aReturn, $_ENV );    break;
-					case "S": $aReturn = array_merge( $aReturn, $_SERVER ); break;
+					case 'G': $aReturn = array_merge($aReturn, $_GET);    break;
+					case 'P': $aReturn = array_merge($aReturn, $_POST);   break;
+					case 'C': $aReturn = array_merge($aReturn, $_COOKIE); break;
+					case 'R': $aReturn = array_merge($aReturn, $_REQUEST); break;
+					case 'E': $aReturn = array_merge($aReturn, $_ENV);    break;
+					case 'S': $aReturn = array_merge($aReturn, $_SERVER); break;
 				}
 			return $aReturn;
 		}
@@ -185,25 +185,25 @@ class CoreRequest extends Konsolidate
 	{
 		$this->_file          = Array();
 		$this->_filereference = Array();
-		foreach( $_FILES as $sFieldName=>$aFile )
-			if ( isset( $aFile[ "error" ] ) ) // we have one or more file
+		foreach($_FILES as $sFieldName=>$aFile)
+			if (isset($aFile['error'])) // we have one or more file
 			{
-				if ( is_array( $aFile[ "error" ] ) ) // multiple files
+				if (is_array($aFile['error'])) // multiple files
 				{
 					$mFile = Array();
-					foreach( $aFile[ "error" ] as $sKey=>$mValue )
+					foreach($aFile['error'] as $sKey=>$mValue)
 					{
-						$oFile = $this->_createFileInstance( $aFile, $sFieldName, $sKey );
-						array_push( $this->_file, $oFile );
-						array_push( $mFile, $oFile );
+						$oFile = $this->_createFileInstance($aFile, $sFieldName, $sKey);
+						array_push($this->_file, $oFile);
+						array_push($mFile, $oFile);
 					}
 				}
 				else // single file
 				{
-					$mFile = $this->_createFileInstance( $aFile, $sFieldName );
-					array_push( $this->_file, $mFile );
+					$mFile = $this->_createFileInstance($aFile, $sFieldName);
+					array_push($this->_file, $mFile);
 				}
-				$this->_filereference[ $sFieldName ] = $mFile;
+				$this->_filereference[$sFieldName] = $mFile;
 			}
 	}
 
@@ -218,12 +218,12 @@ class CoreRequest extends Konsolidate
 	 *  @return  void
 	 *  @syntax  void CoreRequest->_collectFiles()
 	 */
-	protected function _createFileInstance( $aFile, $sVariable, $sReference=null )
+	protected function _createFileInstance($aFile, $sVariable, $sReference=null)
 	{
-		$oTMP = $this->instance( "File" );
+		$oTMP = $this->instance('File');
 		$oTMP->variable = $sVariable;
-		foreach( $aFile as $sProperty=>$mValue )
-			$oTMP->{$sProperty} = is_null( $sReference ) ? $mValue : $mValue[ $sReference ];
+		foreach($aFile as $sProperty=>$mValue)
+			$oTMP->{$sProperty} = is_null($sReference) ? $mValue : $mValue[$sReference];
 		return $oTMP;
 	}
 
@@ -237,7 +237,7 @@ class CoreRequest extends Konsolidate
 	 */
 	public function hasFiles()
 	{
-		return is_array( $this->_file ) && (bool) count( $this->_file );
+		return is_array($this->_file) && (bool) count($this->_file);
 	}
 
 
@@ -250,7 +250,7 @@ class CoreRequest extends Konsolidate
 	 *  @return  array files
 	 *  @syntax  array CoreRequest->getFiles()
 	 */
-	public function getFiles( $bReference=false )
+	public function getFiles($bReference=false)
 	{
 		return $bReference ? $this->_filereference : $this->_file;
 	}
@@ -263,10 +263,10 @@ class CoreRequest extends Konsolidate
 	 *  @access  public
 	 *  @param   string reference name
 	 *  @return  mixed  file object, array of file objects or false if reference does not exist
-	 *  @syntax  array CoreRequest->getFileByReference( string reference )
+	 *  @syntax  array CoreRequest->getFileByReference(string reference)
 	 */
-	public function getFileByReference( $sReference )
+	public function getFileByReference($sReference)
 	{
-		return array_key_exists( $sReference, $this->_filereference ) ? $this->_filereference[ $sReference ] : false;
+		return array_key_exists($sReference, $this->_filereference) ? $this->_filereference[$sReference] : false;
 	}
 }

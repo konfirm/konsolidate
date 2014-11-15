@@ -34,12 +34,12 @@ class CoreDBSQLite extends Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = &new CoreDBQLite( object parent )
+	 *  @syntax  object = &new CoreDBQLite(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
-	public function __construct( $oParent )
+	public function __construct(Konsolidate $parent)
 	{
-		parent::__construct( $oParent );
+		parent::__construct($parent);
 
 		$this->_conn  = null;
 		$this->_cache = Array();
@@ -53,26 +53,26 @@ class CoreDBSQLite extends Konsolidate
 	 *  @param   string DSN URI
 	 *  @param   bool   force new link [optional, default false]
 	 *  @return  bool
-	 *  @syntax  bool CoreDBSQLite->setConnection( string DSN [, bool newlink ] )
+	 *  @syntax  bool CoreDBSQLite->setConnection(string DSN [, bool newlink])
 	 */
-	public function setConnection( $sURI )
+	public function setConnection($sURI)
 	{
-		assert( is_string( $sURI ) );
+		assert(is_string($sURI));
 
-		preg_match( "/([a-zA-Z]+):\/\/(.*)/", $sURI, $aParse );
+		preg_match('/([a-zA-Z]+):\/\/(.*)/', $sURI, $aParse);
 
-		if ( is_array( $aParse ) && count( $aParse ) == 3 )
+		if (is_array($aParse) && count($aParse) == 3)
 		{
 			// 0 = $sURI
 			// 1 = scheme
 			// 2 = path (the remainder string)
 
-			$sBasePath = $this->get( "/Config/SQLite/basepath" );
-			$sDBPath   = realpath( substr( $aParse[ 2 ], 0, 1 ) == "/" ? dirname( $aParse[ 2 ] ) : ( !empty( $sBasePath ) ? $sBasePath : ( defined( "DOCUMENT_ROOT" ) ? DOCUMENT_ROOT : ( array_key_exists( "DOCUMENT_ROOT", $_SERVER ) ? $_SERVER[ "DOCUMENT_ROOT" ] : "" ) ) ) . "/" . dirname( $aParse[ 2 ] ) );
-			$sDBFile   = basename( $aParse[ 2 ] );
+			$sBasePath = $this->get('/Config/SQLite/basepath');
+			$sDBPath   = realpath(substr($aParse[2], 0, 1) == '/' ? dirname($aParse[2]) : (!empty($sBasePath) ? $sBasePath : (defined('DOCUMENT_ROOT') ? DOCUMENT_ROOT : (array_key_exists('DOCUMENT_ROOT', $_SERVER) ? $_SERVER['DOCUMENT_ROOT'] : ''))) . '/' . dirname($aParse[2]));
+			$sDBFile   = basename($aParse[2]);
 			$this->_URI = Array(
-				"scheme"=>$aParse[ 1 ],
-				"path"=>( $sDBPath ? "{$sDBPath}/{$sDBFile}" : false )
+				'scheme' => $aParse[1],
+				'path'   => ($sDBPath ? "{$sDBPath}/{$sDBFile}" : false)
 			);
 		}
 		return true;
@@ -89,9 +89,9 @@ class CoreDBSQLite extends Konsolidate
 	 */
 	public function connect()
 	{
-		if ( !$this->isConnected() && $this->_URI[ "path" ] )
+		if (!$this->isConnected() && $this->_URI['path'])
 		{
-			$this->_conn = @sqlite_open( $this->_URI[ "path" ], 0766, $sMessage );
+			$this->_conn = @sqlite_open($this->_URI['path'], 0766, $sMessage);
 
 			return $this->isConnected();
 		}
@@ -108,8 +108,8 @@ class CoreDBSQLite extends Konsolidate
 	 */
 	public function disconnect()
 	{
-		if ( $this->isConnected() )
-			return sqlite_close( $this->_conn );
+		if ($this->isConnected())
+			return sqlite_close($this->_conn);
 		return true;
 	}
 
@@ -123,7 +123,7 @@ class CoreDBSQLite extends Konsolidate
 	 */
 	public function isConnected()
 	{
-		return is_resource( $this->_conn );
+		return is_resource($this->_conn);
 	}
 
 	/**
@@ -134,24 +134,24 @@ class CoreDBSQLite extends Konsolidate
 	 *  @param   string query
 	 *  @paran   bool   usecache [optional, default true]
 	 *  @return  object result
-	 *  @syntax  object CoreDBSQLite->query( string query [, bool usecache ] )
+	 *  @syntax  object CoreDBSQLite->query(string query [, bool usecache])
 	 */
-	public function query( $sQuery, $bUseCache=true )
+	public function query($sQuery, $bUseCache=true)
 	{
-		$sCacheKey = md5( $sQuery );
-		if ( $bUseCache && array_key_exists( $sCacheKey, $this->_cache ) )
+		$sCacheKey = md5($sQuery);
+		if ($bUseCache && array_key_exists($sCacheKey, $this->_cache))
 		{
-			$this->_cache[ $sCacheKey ]->rewind();
-			return $this->_cache[ $sCacheKey ];
+			$this->_cache[$sCacheKey]->rewind();
+			return $this->_cache[$sCacheKey];
 		}
 
-		if ( $this->connect() )
+		if ($this->connect())
 		{
-			$oQuery = $this->instance( "Query" );
-			$oQuery->execute( $sQuery, $this->_conn );
+			$oQuery = $this->instance('Query');
+			$oQuery->execute($sQuery, $this->_conn);
 
-			if ( $bUseCache && $this->_isCachableQuery( $sQuery ) )
-				$this->_cache[ $sCacheKey ] = $oQuery;
+			if ($bUseCache && $this->_isCachableQuery($sQuery))
+				$this->_cache[$sCacheKey] = $oQuery;
 			return $oQuery;
 		}
 		return false;
@@ -167,8 +167,8 @@ class CoreDBSQLite extends Konsolidate
 	 */
 	public function lastInsertID()
 	{
-		if ( $this->isConnected() )
-			return sqlite_last_insert_rowid( $this->_conn );
+		if ($this->isConnected())
+			return sqlite_last_insert_rowid($this->_conn);
 		return false;
 	}
 
@@ -194,11 +194,11 @@ class CoreDBSQLite extends Konsolidate
 	 *  @access  public
 	 *  @param   string input
 	 *  @return  string escaped input
-	 *  @syntax  string CoreDBSQLiteQuery->escape( string input )
+	 *  @syntax  string CoreDBSQLiteQuery->escape(string input)
 	 */
-	public function escape( $sString )
+	public function escape($sString)
 	{
-		return sqlite_escape_string( $sString );
+		return sqlite_escape_string($sString);
 	}
 
 	/**
@@ -208,11 +208,11 @@ class CoreDBSQLite extends Konsolidate
 	 *  @access  public
 	 *  @param   string input
 	 *  @return  string quoted escaped input
-	 *  @syntax  string CoreDBSQLiteQuery->quote( string input )
+	 *  @syntax  string CoreDBSQLiteQuery->quote(string input)
 	 */
-	public function quote( $sString )
+	public function quote($sString)
 	{
-		return "'" . $this->escape( $sString ) . "'";
+		return '\'' . $this->escape($sString) . '\'';
 	}
 
 	/**
@@ -222,10 +222,10 @@ class CoreDBSQLite extends Konsolidate
 	 *  @access  protected
 	 *  @param   string query
 	 *  @return  bool   success
-	 *  @syntax  bool CoreDBSQLiteQuery->_isCachableQuery( string query )
+	 *  @syntax  bool CoreDBSQLiteQuery->_isCachableQuery(string query)
 	 */
-	public function _isCachableQuery( $sQuery )
+	public function _isCachableQuery($sQuery)
 	{
-		return (bool) preg_match( "/^\s*SELECT /i", $sQuery );
+		return (bool) preg_match('/^\s*SELECT /i', $sQuery);
 	}
 }

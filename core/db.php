@@ -33,12 +33,12 @@ class CoreDB extends Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = &new CoreDB( object parent )
+	 *  @syntax  object = &new CoreDB(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
-	public function __construct( &$oParent )
+	public function __construct(Konsolidate $oParent)
 	{
-		parent::__construct( $oParent );
+		parent::__construct($parent);
 
 		$this->_pool    = Array();
 		$this->_default = false;
@@ -55,18 +55,18 @@ class CoreDB extends Konsolidate
 	 *  @note    the URI is formatted like: scheme://user:pass@host[:port]/database
 	 *           providing an unique reference provides you to ability to use more than one connection
 	 */
-	public function setConnection( $sReference, $sURI )
+	public function setConnection($sReference, $sURI)
 	{
-		$sReference = strToUpper( $sReference );
-		$aURI       = parse_url( $sURI );
+		$sReference = strToUpper($sReference);
+		$aURI       = parse_url($sURI);
 
-		if ( $this->_default === false )
+		if ($this->_default === false)
 			$this->_default = $sReference;
 
-		$this->_pool[ $sReference ] = $this->instance( $aURI[ "scheme" ] );
+		$this->_pool[$sReference] = $this->instance($aURI['scheme']);
 
-		if ( is_object( $this->_pool[ $sReference ] ) )
-			return $this->_pool[ $sReference ]->setConnection( $sURI, true );
+		if (is_object($this->_pool[$sReference]))
+			return $this->_pool[$sReference]->setConnection($sURI, true);
 		return false;
 	}
 
@@ -80,10 +80,10 @@ class CoreDB extends Konsolidate
 	 *  @note    By default the first connection will be the default connection, a call to the setDefaultConnection
 	 *           is only required if you want to change this behaviour
 	 */
-	public function setDefaultConnection( $sReference )
+	public function setDefaultConnection($sReference)
 	{
-		$sReference = strToUpper( $sReference );
-		if ( array_key_exists( $sReference, $this->_pool ) && is_object( $this->_pool[ $sReference ] ) )
+		$sReference = strToUpper($sReference);
+		if (array_key_exists($sReference, $this->_pool) && is_object($this->_pool[$sReference]))
 			return $this->_default = $sReference;
 		return false;
 	}
@@ -98,8 +98,8 @@ class CoreDB extends Konsolidate
 	 */
 	public function connect()
 	{
-		if ( array_key_exists( $this->_default, $this->_pool ) && is_object( $this->_pool[ $this->_default ] ) )
-			return $this->_pool[ $this->_default ]->connect();
+		if (array_key_exists($this->_default, $this->_pool) && is_object($this->_pool[$this->_default]))
+			return $this->_pool[$this->_default]->connect();
 		return false;
 	}
 
@@ -110,12 +110,12 @@ class CoreDB extends Konsolidate
 	 *  @access  public
 	 *  @param   string reference
 	 *  @return  bool
-	 *  @syntax  isConnected( string reference );
+	 *  @syntax  isConnected(string reference);
 	 */
 	public function isConnected()
 	{
-		if ( array_key_exists( $this->_default, $this->_pool ) && is_object( $this->_pool[ $this->_default ] ) )
-			return $this->_pool[ $this->_default ]->isConnected();
+		if (array_key_exists($this->_default, $this->_pool) && is_object($this->_pool[$this->_default]))
+			return $this->_pool[$this->_default]->isConnected();
 		return false;
 	}
 
@@ -126,23 +126,23 @@ class CoreDB extends Konsolidate
 	 *  @access  public
 	 *  @param   string reference (optional, default only the connection marked as 'default')
 	 *  @return  bool
-	 *  @syntax  disconnect( [ string reference ] );
+	 *  @syntax  disconnect([string reference]);
 	 */
-	public function disconnect( $sReference=false )
+	public function disconnect($sReference=false)
 	{
-		if ( $sReference === true )
+		if ($sReference === true)
 		{
 			$bReturn = true;
-			if ( $this->_connected )
-				foreach( $this->_pool as $sKey=>$oDB )
+			if ($this->_connected)
+				foreach($this->_pool as $sKey=>$oDB)
 					$bReturn &= $oDB->disconnect();
 			return $bReturn;
 		}
-		else if ( $sReference === false )
+		else if ($sReference === false)
 			$sReference = $this->_default;
 
-		if ( array_key_exists( $this->_default, $this->_pool ) && is_object( $this->_pool[ $sReference ] ) )
-			return $this->_pool[ $this->_default ]->disconnect();
+		if (array_key_exists($this->_default, $this->_pool) && is_object($this->_pool[$sReference]))
+			return $this->_pool[$this->_default]->disconnect();
 		return false;
 	}
 
@@ -154,14 +154,14 @@ class CoreDB extends Konsolidate
 	 *  @param   string SQL-query
 	 *  @param   bool   use cache (optional, default true)
 	 *  @return  ResultObject
-	 *  @syntax  query( string SQL [, string reference [, bool cache ] ] );
+	 *  @syntax  query(string SQL [, string reference [, bool cache]]);
 	 *  @note    the optional cache is per pageview and in memory only, it merely prevents
 	 *           executing the exact same query over and over again
 	 */
-	public function query( $sQuery, $bUseCache=true )
+	public function query($sQuery, $bUseCache=true)
 	{
-		if ( $this->_default && array_key_exists( $this->_default, $this->_pool ) && is_object( $this->_pool[ $this->_default ] ) )
-			return $this->_pool[ $this->_default ]->query( $sQuery, $bUseCache );
+		if ($this->_default && array_key_exists($this->_default, $this->_pool) && is_object($this->_pool[$this->_default]))
+			return $this->_pool[$this->_default]->query($sQuery, $bUseCache);
 		return false;
 	}
 
@@ -175,12 +175,12 @@ class CoreDB extends Konsolidate
 	 *  @return  Object
 	 *  @note    this method is an override to Konsolidates default behaviour
 	 */
-	public function register( $sModule )
+	public function register($sModule)
 	{
-		$sReference = strToUpper( $sModule );
-		if ( is_array( $this->_pool ) && array_key_exists( $sReference, $this->_pool ) && is_object( $this->_pool[ $sReference ] ) )
-			return $this->_pool[ $sReference ];
-		return parent::register( $sModule );
+		$sReference = strToUpper($sModule);
+		if (is_array($this->_pool) && array_key_exists($sReference, $this->_pool) && is_object($this->_pool[$sReference]))
+			return $this->_pool[$sReference];
+		return parent::register($sModule);
 	}
 
 	/**
@@ -191,7 +191,7 @@ class CoreDB extends Konsolidate
 	 */
 	public function __destruct()
 	{
-		$this->disconnect( true );
+		$this->disconnect(true);
 	}
 
 	/**
@@ -202,26 +202,26 @@ class CoreDB extends Konsolidate
 	 *  @note    By default all calls which are not defined in this class are bridged to the default connection
 	 *  @see     setDefaultConnection
 	 */
-	public function __call( $sCall, $aArgument )
+	public function __call($sCall, $aArgument)
 	{
 		//  Get the first argument, which could be a reference to a pool item
-		$sReference = (string) array_shift( $aArgument );
+		$sReference = (string) array_shift($aArgument);
 
 		//  In case the first argument was not a pool item, put the first argument back in refer to the master
-		if ( !array_key_exists( $sReference, $this->_pool ) )
+		if (!array_key_exists($sReference, $this->_pool))
 		{
-			array_unshift( $aArgument, $sReference );
+			array_unshift($aArgument, $sReference);
 			$sReference = $this->_default;
 		}
 
-		if ( method_exists( $this->_pool[ $sReference ], $sCall ) )
+		if (method_exists($this->_pool[$sReference], $sCall))
 			return call_user_func_array(
 				Array(
-					&$this->_pool[ $sReference ], // the database object
+					&$this->_pool[$sReference], // the database object
 					$sCall                        // the method
 				),
 				$aArgument                        // the arguments
 			);
-		return parent::__call( $sCall, $aArgument );
+		return parent::__call($sCall, $aArgument);
 	}
 }

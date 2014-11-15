@@ -18,25 +18,25 @@ class CoreRequestFile extends Konsolidate
 	 *  @param   string  destination
 	 *  @param   bool    safe name [optional, default true]
 	 *  @return  void
-	 *  @syntax  bool CoreRequestFile->move( string destination [, bool safename ] )
+	 *  @syntax  bool CoreRequestFile->move(string destination [, bool safename])
 	 */
-	public function move( $sDestination, $bSafeName=true )
+	public function move($sDestination, $bSafeName=true)
 	{
-		if ( is_uploaded_file( $this->tmp_name ) )
+		if (is_uploaded_file($this->tmp_name))
 		{
-			if ( is_dir( realpath( $sDestination ) ) ) //  only directory provided, appending filename to it
+			if (is_dir(realpath($sDestination))) //  only directory provided, appending filename to it
 			{
-				$sDestination = realpath( $sDestination ) . "/" . ( $bSafeName ? $this->sanitizedname : $this->name );
+				$sDestination = realpath($sDestination) . '/' . ($bSafeName ? $this->sanitizedname : $this->name);
 			}
-			else if ( !strstr( basename( $sDestination ), "." ) ) //  assuming a dot in every filename... possible weird side effects?
+			else if (!strstr(basename($sDestination), '.')) //  assuming a dot in every filename... possible weird side effects?
 			{
-				mkdir( $sDestination, 0777, true );
-				$sDestination = realpath( $sDestination ) . "/" . ( $bSafeName ? $this->sanitizedname : $this->name );
+				mkdir($sDestination, 0777, true);
+				$sDestination = realpath($sDestination) . '/' . ($bSafeName ? $this->sanitizedname : $this->name);
 			}
 
-			if ( move_uploaded_file( $this->tmp_name, $sDestination ) )
+			if (move_uploaded_file($this->tmp_name, $sDestination))
 			{
-				unset( $this->_property[ "tmp_name" ] );
+				unset($this->_property['tmp_name']);
 				$this->location = $sDestination;
 				return true;
 			}
@@ -59,25 +59,28 @@ class CoreRequestFile extends Konsolidate
 	 *           - 'tmp_name' also sets 'md5', the MD5 checksum of the file.
 	 *           - 'size' also sets 'filesize', a human readable representation of the file size.
 	 */
-	public function __set( $sProperty, $mValue )
+	public function __set($sProperty, $mValue)
 	{
-		if ( !empty( $mValue ) || $sProperty == "error" )
+		if (!empty($mValue) || $sProperty == 'error')
 		{
-			parent::__set( $sProperty, $mValue );
-			switch( $sProperty )
+			parent::__set($sProperty, $mValue);
+			switch($sProperty)
 			{
-				case "error":
-					$this->_property[ "message" ] = $this->_getErrorMessage( $mValue );
-					$this->_property[ "success" ] = $mValue == UPLOAD_ERR_OK;
+				case 'error':
+					$this->_property['message'] = $this->_getErrorMessage($mValue);
+					$this->_property['success'] = $mValue == UPLOAD_ERR_OK;
 					break;
-				case "name":
-					$this->_property[ "sanitizedname" ] = preg_replace( "/[^a-zA-Z0-9\._-]+/", "_", $mValue );
+
+				case 'name':
+					$this->_property['sanitizedname'] = preg_replace('/[^a-zA-Z0-9\._-]+/', '_', $mValue);
 					break;
-				case "tmp_name":
-					$this->_property[ "md5" ] = md5_file( $mValue );
+
+				case 'tmp_name':
+					$this->_property['md5'] = md5_file($mValue);
 					break;
-				case "size":
-					$this->_property[ "filesize" ] = $this->_bytesToLargestUnit( $mValue );
+
+				case 'size':
+					$this->_property['filesize'] = $this->_bytesToLargestUnit($mValue);
 					break;
 			}
 		}
@@ -91,16 +94,16 @@ class CoreRequestFile extends Konsolidate
 	 *  @access  protected
 	 *  @param   number  bytes
 	 *  @return  string  readable unit
-	 *  @syntax  string CoreRequestFile->_bytesToLargestUnit( number bytes );
+	 *  @syntax  string CoreRequestFile->_bytesToLargestUnit(number bytes);
 	 */
-	protected function _bytesToLargestUnit( $nValue )
+	protected function _bytesToLargestUnit($nValue)
 	{
 		$sValue = "{$nValue} bytes";
-		foreach ( Array( "KB", "MB", "GB", "TB", "PB" ) as $sUnit )
-			if ( $nValue >= 1024 )
+		foreach (Array('KB', 'MB', 'GB', 'TB', 'PB') as $sUnit)
+			if ($nValue >= 1024)
 			{
 				$nValue /= 1024;
-				$sValue  = ( round( $nValue * 10 ) / 10 ) . $sUnit;
+				$sValue  = (round($nValue * 10) / 10) . $sUnit;
 			}
 		return $sValue;
 	}
@@ -112,21 +115,21 @@ class CoreRequestFile extends Konsolidate
 	 *  @access  protected
 	 *  @param   int     error number
 	 *  @return  string  error message
-	 *  @syntax  string CoreRequestFile->_getErrorMessage( int error );
+	 *  @syntax  string CoreRequestFile->_getErrorMessage(int error);
 	 */
-	protected function _getErrorMessage( $nError )
+	protected function _getErrorMessage($nError)
 	{
-		switch( (int) $nError )
+		switch((int) $nError)
 		{
-			case UPLOAD_ERR_OK:         return "No error";
-			case UPLOAD_ERR_INI_SIZE:   return "The file exceeds PHP maximum file size";
-			case UPLOAD_ERR_FORM_SIZE:  return "The file exceeds Form maximum file size";
-			case UPLOAD_ERR_PARTIAL:    return "The file was only partially uploaded";
-			case UPLOAD_ERR_NO_FILE:    return "No file was uploaded";
-			case UPLOAD_ERR_NO_TMP_DIR: return "Missing temporary upload location";
-			case UPLOAD_ERR_CANT_WRITE: return "Failed to write file to disk";
-			case UPLOAD_ERR_EXTENSION:  return "File upload stopped by extension";
-			default:                    return "Unknown error";
+			case UPLOAD_ERR_OK:         return 'No error';
+			case UPLOAD_ERR_INI_SIZE:   return 'The file exceeds PHP maximum file size';
+			case UPLOAD_ERR_FORM_SIZE:  return 'The file exceeds Form maximum file size';
+			case UPLOAD_ERR_PARTIAL:    return 'The file was only partially uploaded';
+			case UPLOAD_ERR_NO_FILE:    return 'No file was uploaded';
+			case UPLOAD_ERR_NO_TMP_DIR: return 'Missing temporary upload location';
+			case UPLOAD_ERR_CANT_WRITE: return 'Failed to write file to disk';
+			case UPLOAD_ERR_EXTENSION:  return 'File upload stopped by extension';
+			default:                    return 'Unknown error';
 		};
 	}
 }

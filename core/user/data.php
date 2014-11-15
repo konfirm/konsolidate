@@ -22,13 +22,13 @@ class CoreUserData extends Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = new CoreUserData( object parent )
+	 *  @syntax  object = new CoreUserData(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
-	public function __construct( $oParent )
+	public function __construct(Konsolidate $parent)
 	{
-		parent::__construct( $oParent );
-		$this->_anticipation = $this->get( "/Config/UserData/anticipation" ) == 1;
+		parent::__construct($parent);
+		$this->_anticipation = $this->get('/Config/UserData/anticipation') == 1;
 		$this->_anticipated  = null;
 		$this->_change       = Array();
 	}
@@ -40,24 +40,24 @@ class CoreUserData extends Konsolidate
 	 *  @access  public
 	 *  @param   int  userid, optional
 	 *  @return  bool success
-	 *  @syntax  bool CoreUserData->load( [ int userid ] );
+	 *  @syntax  bool CoreUserData->load([int userid]);
 	 */
-	public function load( $nID=null )
+	public function load($nID=null)
 	{
 		$this->_property = Array();
 
-		if ( is_null( $nID ) )
-			$nID = $this->get( "/User/id" );
+		if (is_null($nID))
+			$nID = $this->get('/User/id');
 
-		$sQuery  = "SELECT usdproperty,
+		$sQuery  = 'SELECT usdproperty,
 						   usdvalue
-					  FROM " . $this->_determineDataTable( $nID ) . "
+					  FROM ' . $this->_determineDataTable($nID) . "
 					 WHERE usrid={$nID}";
-		$oResult = $this->call( "/DB/query", $sQuery );
-		if ( is_object( $oResult ) && $oResult->errno <= 0 )
+		$oResult = $this->call('/DB/query', $sQuery);
+		if (is_object($oResult) && $oResult->errno <= 0)
 		{
-			while( $oRecord = $oResult->next() )
-				$this->_property[ $oRecord->usdproperty ] = $oRecord->usdvalue;
+			while($oRecord = $oResult->next())
+				$this->_property[$oRecord->usdproperty] = $oRecord->usdvalue;
 			return true;
 		}
 		return false;
@@ -70,9 +70,9 @@ class CoreUserData extends Konsolidate
 	 *  @access  public
 	 *  @param   bool   enable [optional, default true]
 	 *  @return  void
-	 *  @syntax  void CoreuserData->useAnticipation( bool enable );
+	 *  @syntax  void CoreuserData->useAnticipation(bool enable);
 	 */
-	public function useAnticipation( $bEnable=true )
+	public function useAnticipation($bEnable=true)
 	{
 		$this->_anticipation = $bEnable;
 	}
@@ -84,11 +84,11 @@ class CoreUserData extends Konsolidate
 	 *  @access  protected
 	 *  @param   int    userid
 	 *  @return  string datatable
-	 *  @syntax  string CoreuserData->_determineDataTable( [ int userid ] );
+	 *  @syntax  string CoreuserData->_determineDataTable([int userid]);
 	 */
-	protected function _determineDataTable( $nUserID=null )
+	protected function _determineDataTable($nUserID=null)
 	{
-		return "userdata";
+		return 'userdata';
 	}
 
 	/**
@@ -102,20 +102,20 @@ class CoreUserData extends Konsolidate
 	 */
 	protected function _anticipateProperties()
 	{
-		$nID = $this->get( "/User/id" );
+		$nID = $this->get('/User/id');
 		$this->_anticipated = Array();
-		$sQuery  = "SELECT usd.usdproperty,
+		$sQuery  = 'SELECT usd.usdproperty,
 						   usd.usdvalue
 					  FROM userdatascope uds
-					 INNER JOIN " . $this->_determineDataTable( $nID ) . " usd ON usd.usdproperty=uds.usdproperty AND usd.usrid={$nID}
-					 WHERE uds.udsscope=" . $this->call( "/DB/quote", $this->_anticipationScope() );
-		$oResult = $this->call( "/DB/query", $sQuery );
-		if ( is_object( $oResult ) && $oResult->errno <= 0 && $oResult->rows > 0 )
-			while( $oRecord = $oResult->next() )
-				if ( !array_key_exists( $oRecord->usdproperty, $this->_property ) )
+					 INNER JOIN ' . $this->_determineDataTable($nID) . " usd ON usd.usdproperty=uds.usdproperty AND usd.usrid={$nID}
+					 WHERE uds.udsscope=" . $this->call('/DB/quote', $this->_anticipationScope());
+		$oResult = $this->call('/DB/query', $sQuery);
+		if (is_object($oResult) && $oResult->errno <= 0 && $oResult->rows > 0)
+			while($oRecord = $oResult->next())
+				if (!array_key_exists($oRecord->usdproperty, $this->_property))
 				{
-					array_push( $this->_anticipated, $oRecord->usdproperty );
-					$this->_property[ $oRecord->usdproperty ] = $oRecord->usdvalue;
+					array_push($this->_anticipated, $oRecord->usdproperty);
+					$this->_property[$oRecord->usdproperty] = $oRecord->usdvalue;
 				}
 	}
 
@@ -129,24 +129,24 @@ class CoreUserData extends Konsolidate
 	 */
 	protected function _storeAnticipationProperties()
 	{
-		if ( $this->_anticipation && (bool) count( $this->_property ) && !is_null( $this->_anticipated ) )
+		if ($this->_anticipation && (bool) count($this->_property) && !is_null($this->_anticipated))
 		{
-			$aAnticipate = array_diff( array_keys( $this->_property ), $this->_anticipated );
+			$aAnticipate = array_diff(array_keys($this->_property), $this->_anticipated);
 
-			if ( (bool) count( $aAnticipate ) )
+			if ((bool) count($aAnticipate))
 			{
-				$sAnticipate = "";
-				$sScope      = $this->call( "/DB/quote", $this->_anticipationScope() );
+				$sAnticipate = '';
+				$sScope      = $this->call('/DB/quote', $this->_anticipationScope());
 
-				foreach( $this->_property as $sKey=>$mValue )
-					if ( !in_array( $sKey, $this->_anticipated ) )
-						$sAnticipate .= ( !empty( $sAnticipate ) ? "," : "" ) . "( " . $this->call( "/DB/quote", $sKey ) . ", {$sScope}, NOW() )";
+				foreach($this->_property as $sKey=>$mValue)
+					if (!in_array($sKey, $this->_anticipated))
+						$sAnticipate .= (!empty($sAnticipate) ? ',' : '') . '(' . $this->call('/DB/quote', $sKey) . ", {$sScope}, NOW())";
 
 				//  store the requested property in the database with the current scope
-				$sQuery  = "INSERT IGNORE INTO userdatascope ( usdproperty, udsscope, udscreatedts )
+				$sQuery  = "INSERT IGNORE INTO userdatascope (usdproperty, udsscope, udscreatedts)
 							VALUES {$sAnticipate}";
-				$oResult = $this->call( "/DB/query", $sQuery );
-				return ( is_object( $oResult ) && $oResult->errno <= 0 );
+				$oResult = $this->call('/DB/query', $sQuery);
+				return (is_object($oResult) && $oResult->errno <= 0);
 			}
 		}
 		return false;
@@ -159,20 +159,20 @@ class CoreUserData extends Konsolidate
 	 *  @access  protected
 	 *  @param   string property
 	 *  @return  void
-	 *  @syntax  void CoreuserData->_loadProperty( string property );
+	 *  @syntax  void CoreuserData->_loadProperty(string property);
 	 */
-	protected function _loadProperty( $sProperty )
+	protected function _loadProperty($sProperty)
 	{
-		$nID = $this->get( "/User/id" );
-		$sQuery  = "SELECT usdvalue
-					  FROM " . $this->_determineDataTable( $nID ) . "
+		$nID = $this->get('/User/id');
+		$sQuery  = 'SELECT usdvalue
+					  FROM ' . $this->_determineDataTable($nID) . "
 					 WHERE usrid={$nID}
-					   AND usdproperty=" . $this->call( "/DB/quote", $sProperty );
-		$oResult = $this->call( "/DB/query", $sQuery );
-		if ( is_object( $oResult ) && $oResult->errno <= 0 && $oResult->rows > 0 )
+					   AND usdproperty=" . $this->call('/DB/quote', $sProperty);
+		$oResult = $this->call('/DB/query', $sQuery);
+		if (is_object($oResult) && $oResult->errno <= 0 && $oResult->rows > 0)
 		{
 			$oRecord = $oResult->next();
-			$this->_property[ $sProperty ] = $oRecord->usdvalue;
+			$this->_property[$sProperty] = $oRecord->usdvalue;
 		}
 	}
 
@@ -186,19 +186,19 @@ class CoreUserData extends Konsolidate
 	 */
 	protected function _storeChangedProperties()
 	{
-		$nID         = $this->get( "../id" );
-		$sProperty   = "";
-		if ( (bool) count( $this->_change ) )
+		$nID         = $this->get('../id');
+		$sProperty   = '';
+		if ((bool) count($this->_change))
 		{
-			foreach( $this->_change as $sKey=>$mValue )
-				$sProperty .= ( !empty( $sProperty ) ? "," : "" ) . "( {$nID}, " . $this->call( "/DB/quote", $sKey ) . ", " . $this->call( "/DB/quote", $mValue ) . ", NOW() )";
-			$sQuery  = "INSERT INTO " . $this->_determineDataTable( $nID ) . " ( usrid, usdproperty, usdvalue, usdcreatedts )
+			foreach($this->_change as $sKey=>$mValue)
+				$sProperty .= (!empty($sProperty) ? ',' : '') . "({$nID}, " . $this->call('/DB/quote', $sKey) . ', ' . $this->call('/DB/quote', $mValue) . ', NOW())';
+			$sQuery  = 'INSERT INTO ' . $this->_determineDataTable($nID) . " (usrid, usdproperty, usdvalue, usdcreatedts)
 						VALUES {$sProperty}
 							ON DUPLICATE KEY
-						UPDATE usdvalue=VALUES( usdvalue ),
+						UPDATE usdvalue=VALUES(usdvalue),
 							   usdmodifiedts=NOW()";
-			$oResult = $this->call( "/DB/query", $sQuery );
-			if ( is_object( $oResult ) && $oResult->errno <= 0 )
+			$oResult = $this->call('/DB/query', $sQuery);
+			if (is_object($oResult) && $oResult->errno <= 0)
 				return true;
 		}
 		return false;
@@ -214,31 +214,31 @@ class CoreUserData extends Konsolidate
 	 */
 	protected function _anticipationScope()
 	{
-		$aParam  = array_keys( $_REQUEST );
-		sort( $aParam );
-		array_unshift( $aParam, $_SERVER[ "SCRIPT_NAME" ] );
-		return md5( implode( " ", $aParam ) );
+		$aParam  = array_keys($_REQUEST);
+		sort($aParam);
+		array_unshift($aParam, $_SERVER['SCRIPT_NAME']);
+		return md5(implode(' ', $aParam));
 	}
 
-	public function __set( $sProperty, $mValue )
+	public function __set($sProperty, $mValue)
 	{
-		if ( !array_key_exists( $sProperty, $this->_property ) || $mValue !== $this->_property[ $sProperty ] )
-			$this->_change[ $sProperty ] = $mValue;
-		return parent::__set( $sProperty, $mValue );
+		if (!array_key_exists($sProperty, $this->_property) || $mValue !== $this->_property[$sProperty])
+			$this->_change[$sProperty] = $mValue;
+		return parent::__set($sProperty, $mValue);
 	}
 
-	public function __get( $sProperty )
+	public function __get($sProperty)
 	{
-		if ( !array_key_exists( $sProperty, $this->_property ) )
+		if (!array_key_exists($sProperty, $this->_property))
 		{
-			if ( $this->_anticipation && is_null( $this->_anticipated ) )
+			if ($this->_anticipation && is_null($this->_anticipated))
 				$this->_anticipateProperties();
 
-			if ( !array_key_exists( $sProperty, $this->_property ) )
-				$this->_loadProperty( $sProperty );
+			if (!array_key_exists($sProperty, $this->_property))
+				$this->_loadProperty($sProperty);
 		}
 
-		return parent::__get( $sProperty );
+		return parent::__get($sProperty);
 	}
 
 	/**
@@ -251,10 +251,10 @@ class CoreUserData extends Konsolidate
 	 */
 	public function __destruct()
 	{
-		if ( $this->_anticipation )
+		if ($this->_anticipation)
 			$this->_storeAnticipationProperties();
 
-		if ( (bool) count( $this->_change ) )
+		if ((bool) count($this->_change))
 			$this->_storeChangedProperties();
 	}
 }

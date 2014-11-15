@@ -26,19 +26,19 @@ class CoreSystemFileMIME extends Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = &new CoreSystemFileMIME( object parent )
+	 *  @syntax  object = &new CoreSystemFileMIME(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
-	public function __construct( $oParent )
+	public function __construct(Konsolidate $parent)
 	{
-		parent::__construct( $oParent );
+		parent::__construct($parent);
 
-		if ( function_exists( "finfo_open" ) )
-			$this->_executeMethod = "_determineTypeByFileInfo";
-		else if ( function_exists( "mime_content_type" ) )
-			$this->_executeMethod = "_determineTypeByMimeContentType";
+		if (function_exists('finfo_open'))
+			$this->_executeMethod = '_determineTypeByFileInfo';
+		else if (function_exists('mime_content_type'))
+			$this->_executeMethod = '_determineTypeByMimeContentType';
 		else
-			$this->_executeMethod = "_determineTypeByExtension";
+			$this->_executeMethod = '_determineTypeByExtension';
 	}
 
 	/**
@@ -48,11 +48,11 @@ class CoreSystemFileMIME extends Konsolidate
 	 *  @access  public
 	 *  @param   string filename
 	 *  @return  string MIME
-	 *  @syntax  string CoreSystemFileMIME->getType( string filename )
+	 *  @syntax  string CoreSystemFileMIME->getType(string filename)
 	 */
-	public function getType( $sFile )
+	public function getType($sFile)
 	{
-		return $this->{$this->_executeMethod}( $sFile );
+		return $this->{$this->_executeMethod}($sFile);
 	}
 
 	/**
@@ -62,11 +62,11 @@ class CoreSystemFileMIME extends Konsolidate
 	 *  @access  protected
 	 *  @param   string filename
 	 *  @return  string MIME
-	 *  @syntax  string CoreSystemFileMIME->_determineTypeByMimeContentType( string filename )
+	 *  @syntax  string CoreSystemFileMIME->_determineTypeByMimeContentType(string filename)
 	 */
-	protected function _determineTypeByMimeContentType( $sFile )
+	protected function _determineTypeByMimeContentType($sFile)
 	{
-		return mime_content_type( $sFile );
+		return mime_content_type($sFile);
 	}
 
 	/**
@@ -76,13 +76,13 @@ class CoreSystemFileMIME extends Konsolidate
 	 *  @access  protected
 	 *  @param   string filename
 	 *  @return  string MIME
-	 *  @syntax  string CoreSystemFileMIME->_determineTypeByFileInfo( string filename )
+	 *  @syntax  string CoreSystemFileMIME->_determineTypeByFileInfo(string filename)
 	 */
-	protected function _determineTypeByFileInfo( $sFile )
+	protected function _determineTypeByFileInfo($sFile)
 	{
-		$finfo    = finfo_open( FILEINFO_MIME, $this->get( "/Config/finfo_open/magic_file", null )  );
-		$mimetype = finfo_file( $finfo, $sFile );
-		finfo_close( $finfo );
+		$finfo    = finfo_open(FILEINFO_MIME, $this->get('/Config/finfo_open/magic_file', null));
+		$mimetype = finfo_file($finfo, $sFile);
+		finfo_close($finfo);
 		return $mimetype;
 	}
 
@@ -93,90 +93,118 @@ class CoreSystemFileMIME extends Konsolidate
 	 *  @access  protected
 	 *  @param   string filename
 	 *  @return  string MIME
-	 *  @syntax  string CoreSystemFileMIME->_determineTypeByExtension( string filename )
+	 *  @syntax  string CoreSystemFileMIME->_determineTypeByExtension(string filename)
 	 */
-	protected function _determineTypeByExtension( $sFile )
+	protected function _determineTypeByExtension($sFile)
 	{
-		$aFilePart  = explode( ".", $sFile );
-		$sExtension = array_pop( $aFilePart );
-		switch( strToLower( $sExtension ) )
+		$aFilePart  = explode('.', $sFile);
+		$sExtension = array_pop($aFilePart);
+		switch(strToLower($sExtension))
 		{
 			//  Common image types
-			case "ai":    case "eps":
-			case "ps":
-				return "application/postscript";
-			case "bmp":
-				return "image/bmp";
-			case "gif":
-				return "image/gif";
-			case "jpe":   case "jpg":
-			case "jpeg":
-				return "image/jpeg";
+			case 'ai':    case 'eps':
+			case 'ps':
+				return 'application/postscript';
+
+			case 'bmp':
+				return 'image/bmp';
+
+			case 'gif':
+				return 'image/gif';
+
+			case 'jpe':   case 'jpg':
+			case 'jpeg':
+				return 'image/jpeg';
+
 
 			//  Common audio types
-			case "aifc":  case "aiff":
-			case "aif":
-				return "audio/aiff";
-			case "mid":   case "midi":
-				return "audio/midi";
-			case "mod":
-				return "audio/mod";
-			case "mp2":
-				return "audio/mpeg";
-			case "mp3":
-				return "audio/mpeg3";
-			case "wav":
-				return "audio/wav";
+			case 'aifc':  case 'aiff':
+			case 'aif':
+				return 'audio/aiff';
+
+			case 'mid':   case 'midi':
+				return 'audio/midi';
+
+			case 'mod':
+				return 'audio/mod';
+
+			case 'mp2':
+				return 'audio/mpeg';
+
+			case 'mp3':
+				return 'audio/mpeg3';
+
+			case 'wav':
+				return 'audio/wav';
+
 
 			//  Common video types
-			case "avi":
-				return "video/avi";
-			case "mov":  case "qt":
-				return "video/quicktime";
-			case "mpe":  case "mpg":
-			case "mpeg":
-				return "video/mpeg";
+			case 'avi':
+				return 'video/avi';
+
+			case 'mov':  case 'qt':
+				return 'video/quicktime';
+
+			case 'mpe':  case 'mpg':
+			case 'mpeg':
+				return 'video/mpeg';
+
 
 			//  Common text types
-			case "css":
-				return "text/css";
-			case "htm":   case "html":
-			case "htmls": case "htx":
-				return "text/html";
-			case "conf":  case "log":
-			case "text":  case "txt":
-			case "php":
-				return "text/plain";
-			case "js":
-				return "application/x-javascript";
-			case "rtf":
-				return "text/richtext";
+			case 'css':
+				return 'text/css';
+
+			case 'htm':   case 'html':
+			case 'htmls': case 'htx':
+				return 'text/html';
+
+			case 'conf':  case 'log':
+			case 'text':  case 'txt':
+			case 'php':
+				return 'text/plain';
+
+			case 'js':
+				return 'application/x-javascript';
+
+			case 'rtf':
+				return 'text/richtext';
+
 
 			//  Other commonly used types
-			case "dcr":
-				return "application/x-director";
-			case "doc":  case "dot":
-			case "word":
-				return "application/msword";
-			case "gz":   case "gzip":
-				return "application/x-gzip";
-			case "latex":
-				return "application/x-latex";
-			case "pdf":
-				return "application/pdf";
-			case "pps":  case "ppt":
-				return "application/mspowerpoint";
-			case "swf":
-				return "application/x-shockwave-flash";
-			case "wp":   case "wp5":
-			case "wp6":  case "wpd":
-				return "application/wordperfect";
-			case "xls":
-				return "application/excel";
-			case "zip":
-				return "zip	application/zip";
+			case 'dcr':
+				return 'application/x-director';
+
+			case 'doc':  case 'dot':
+			case 'word':
+				return 'application/msword';
+
+			case 'gz':   case 'gzip':
+				return 'application/x-gzip';
+
+			case 'latex':
+				return 'application/x-latex';
+
+			case 'pdf':
+				return 'application/pdf';
+
+			case 'pps':  case 'ppt':
+				return 'application/mspowerpoint';
+
+			case 'swf':
+				return 'application/x-shockwave-flash';
+
+			case 'wp':   case 'wp5':
+			case 'wp6':  case 'wpd':
+				return 'application/wordperfect';
+
+			case 'xls':
+				return 'application/excel';
+
+			case 'zip':
+				return 'zip	application/zip';
+
 			default:
-				return "application/octet-stream";
+				return 'application/octet-stream';
 		}
 	}
 }

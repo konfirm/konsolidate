@@ -1,15 +1,15 @@
 <?php
 
-define( "TINYINT_MIN", -128 );                // for future reference
-define( "TINYINT_MAX",  127 );                // for future reference
-define( "SMALLINT_MIN", -32768 );             // for future reference
-define( "SMALLINT_MAX",  32767 );             // for future reference
-define( "MEDIUMINT_MIN", -8388608 );          // for future reference
-define( "MEDIUMINT_MAX",  8388607 );          // for future reference
-define( "INT_MIN", -2147483648 );
-define( "INT_MAX", 2147483647 );
-define( "BIGINT_MIN", -9223372036854775808 ); // for future reference
-define( "BIGINT_MAX", 9223372036854775807 );  // for future reference
+define('TINYINT_MIN', -128);                // for future reference
+define('TINYINT_MAX',  127);                // for future reference
+define('SMALLINT_MIN', -32768);             // for future reference
+define('SMALLINT_MAX',  32767);             // for future reference
+define('MEDIUMINT_MIN', -8388608);          // for future reference
+define('MEDIUMINT_MAX',  8388607);          // for future reference
+define('INT_MIN', -2147483648);
+define('INT_MAX', 2147483647);
+define('BIGINT_MIN', -9223372036854775808); // for future reference
+define('BIGINT_MAX', 9223372036854775807);  // for future reference
 
 
 /**
@@ -29,13 +29,13 @@ class CoreValidate extends Konsolidate
 	 *  @param   mixed value
 	 *  @param   bool  unsigned [optional]
 	 *  @return  bool
-	 *  @syntax  Object->isInteger( mixed value [, bool unsigned ] );
+	 *  @syntax  Object->isInteger(mixed value [, bool unsigned]);
 	 */
-	function isInteger( $mValue, $bUnsigned=false )
+	function isInteger($mValue, $bUnsigned=false)
 	{
 		$nMin = $bUnsigned ? 0 : INT_MIN;
-		$nMax = $bUnsigned ? INT_MAX + ( -INT_MIN ) : INT_MAX;
-		if ( is_null( $mValue ) || ( !preg_match( "/^[0-9]+$/", abs( $mValue ) ) ) || $mValue < $nMin || $mValue > $nMax )
+		$nMax = $bUnsigned ? INT_MAX + (-INT_MIN) : INT_MAX;
+		if (is_null($mValue) || (!preg_match("/^[0-9]+$/", abs($mValue))) || $mValue < $nMin || $mValue > $nMax)
 			return false;
 		return true;
 	}
@@ -48,11 +48,11 @@ class CoreValidate extends Konsolidate
 	 *  @param   mixed value
 	 *  @param   bool  unsigned [optional]
 	 *  @return  bool
-	 *  @syntax  Object->isPositiveInteger( mixed value [, bool unsigned ] );
+	 *  @syntax  Object->isPositiveInteger(mixed value [, bool unsigned]);
 	 */
-	function isPositiveInteger( $mValue, $bUnsigned=false )
+	function isPositiveInteger($mValue, $bUnsigned=false)
 	{
-		return ( $this->isInteger( $mValue, $bUnsigned ) && $mValue >= 0 );
+		return ($this->isInteger($mValue, $bUnsigned) && $mValue >= 0);
 	}
 
 	/**
@@ -62,11 +62,11 @@ class CoreValidate extends Konsolidate
 	 *  @access  public
 	 *  @param   mixed value
 	 *  @return  bool
-	 *  @syntax  Object->isNegativeInteger( mixed value );
+	 *  @syntax  Object->isNegativeInteger(mixed value);
 	 */
-	function isNegativeInteger( $mValue )
+	function isNegativeInteger($mValue)
 	{
-		return ( $this->isInteger( $mValue ) && $mValue < 0 );
+		return ($this->isInteger($mValue) && $mValue < 0);
 	}
 
 	/**
@@ -76,11 +76,11 @@ class CoreValidate extends Konsolidate
 	 *  @access  public
 	 *  @param   mixed value
 	 *  @return  bool
-	 *  @syntax  Object->isNumber( mixed value );
+	 *  @syntax  Object->isNumber(mixed value);
 	 */
-	function isNumber( $mValue )
+	function isNumber($mValue)
 	{
-		return ( is_numeric( $mValue ) );
+		return (is_numeric($mValue));
 	}
 
 	/**
@@ -93,24 +93,24 @@ class CoreValidate extends Konsolidate
 	 *  @param   int   maximum [optional]
 	 *  @param   bool  include min/max values [optional]
 	 *  @return  bool
-	 *  @syntax  Object->isBetween( mixed value [, int min [, int max [, bool unsigned ] ] ] );
+	 *  @syntax  Object->isBetween(mixed value [, int min [, int max [, bool unsigned]]]);
 	 */
-	function isBetween( $mValue, $iMin=null, $iMax=null, $bIncludeValues=true)
+	function isBetween($mValue, $iMin=null, $iMax=null, $bIncludeValues=true)
 	{
-		if ( $bIncludeValues )
+		if ($bIncludeValues)
 		{
-			if ( !is_null( $iMin ) )
+			if (!is_null($iMin))
 				$iMin -= 1;
-			if ( !is_null( $iMax ) )
+			if (!is_null($iMax))
 				$iMax += 1;
 		}
 
-		if ( !is_null( $iMin ) && !is_null( $iMax ) )
-			return ( $mValue > $iMin && $mValue < $iMax );
-		else if ( !is_null( $iMin ) )
-			return ( $mValue > $iMin );
-		else if ( !is_null( $iMax ) )
-			return ( $mValue < $iMax );
+		if (!is_null($iMin) && !is_null($iMax))
+			return ($mValue > $iMin && $mValue < $iMax);
+		else if (!is_null($iMin))
+			return ($mValue > $iMin);
+		else if (!is_null($iMax))
+			return ($mValue < $iMax);
 	}
 
 	/**
@@ -120,11 +120,11 @@ class CoreValidate extends Konsolidate
 	 *  @access  public
 	 *  @param   mixed value
 	 *  @return  bool
-	 *  @syntax  Object->isFilled( mixed value );
+	 *  @syntax  Object->isFilled(mixed value);
 	 */
-	function isFilled( $mValue )
+	function isFilled($mValue)
 	{
-		return ( !preg_match( "/^$/", $mValue ) );
+		return (!preg_match("/^$/", $mValue));
 	}
 
 	/**
@@ -134,11 +134,11 @@ class CoreValidate extends Konsolidate
 	 *  @access  public
 	 *  @param   mixed value
 	 *  @return  bool
-	 *  @syntax  Object->isEmail( mixed value );
+	 *  @syntax  Object->isEmail(mixed value);
 	 *  @note    This method does NOT verify the actual existing of the e-mail address, it merely verifies that it complies to common e-mail addresses
 	 */
-	function isEmail( $mValue )
+	function isEmail($mValue)
 	{
-		return preg_match( "/^[_a-z0-9-]+([a-z0-9\.\+_-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3}|.info)$/i", $mValue );
+		return preg_match("/^[_a-z0-9-]+([a-z0-9\.\+_-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3}|.info)$/i", $mValue);
 	}
 }

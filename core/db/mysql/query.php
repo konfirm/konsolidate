@@ -66,22 +66,22 @@ class CoreDBMySQLQuery extends Konsolidate
 	 *  @param   string   query
 	 *  @param   resource connection
 	 *  @return void
-	 *  @syntax  void CoreDBMySQLQuery->execute( string query, resource connection )
+	 *  @syntax  void CoreDBMySQLQuery->execute(string query, resource connection)
 	 */
-	public function execute( $sQuery, &$rConnection )
+	public function execute($sQuery, $rConnection)
 	{
 		$this->query   = $sQuery;
 		$this->_conn   = $rConnection;
-		$this->_result = @mysql_query( $this->query, $this->_conn );
+		$this->_result = @mysql_query($this->query, $this->_conn);
 
-		if ( is_resource( $this->_result ) )
-			$this->rows = mysql_num_rows( $this->_result );
-		else if ( $this->_result === true )
-			$this->rows = mysql_affected_rows( $this->_conn );
+		if (is_resource($this->_result))
+			$this->rows = mysql_num_rows($this->_result);
+		else if ($this->_result === true)
+			$this->rows = mysql_affected_rows($this->_conn);
 
 		//  We want the exception object to tell us everything is going extremely well, don't throw it!
-		$this->import( "../exception.class.php" );
-		$this->exception = new CoreDBMySQLException( $this->_conn );
+		$this->import('../exception.class.php');
+		$this->exception = new CoreDBMySQLException($this->_conn);
 		$this->errno     = &$this->exception->errno;
 		$this->error     = &$this->exception->error;
 	}
@@ -96,8 +96,8 @@ class CoreDBMySQLQuery extends Konsolidate
 	 */
 	public function rewind()
 	{
-		if ( is_resource( $this->_result ) && mysql_num_rows( $this->_result ) > 0 )
-			return mysql_data_seek( $this->_result, 0 );
+		if (is_resource($this->_result) && mysql_num_rows($this->_result) > 0)
+			return mysql_data_seek($this->_result, 0);
 		return false;
 	}
 
@@ -111,8 +111,8 @@ class CoreDBMySQLQuery extends Konsolidate
 	 */
 	public function next()
 	{
-		if ( is_resource( $this->_result ) )
-			return mysql_fetch_object( $this->_result );
+		if (is_resource($this->_result))
+			return mysql_fetch_object($this->_result);
 		return false;
 	}
 
@@ -126,7 +126,7 @@ class CoreDBMySQLQuery extends Konsolidate
 	 */
 	public function lastInsertID()
 	{
-		return mysql_insert_id( $this->_conn );
+		return mysql_insert_id($this->_conn);
 	}
 
 	/**
@@ -155,8 +155,8 @@ class CoreDBMySQLQuery extends Konsolidate
 	public function fetchAll()
 	{
 		$aReturn = Array();
-		while( $oRecord = $this->next() )
-			array_push( $aReturn, $oRecord );
+		while($oRecord = $this->next())
+			array_push($aReturn, $oRecord);
 		$this->rewind();
 		return $aReturn;
 	}

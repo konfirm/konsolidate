@@ -33,13 +33,14 @@ class CoreLanguage extends Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = &new CoreLanguage( object parent )
+	 *  @syntax  object = &new CoreLanguage(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
-	public function __construct( $oParent )
+	public function __construct(Konsolidate $parent)
 	{
-		parent::__construct( $oParent );
-		$this->setEngine( "Switch" );
+		parent::__construct($parent);
+
+		$this->setEngine('Switch');
 	}
 
 	/**
@@ -49,9 +50,9 @@ class CoreLanguage extends Konsolidate
 	 *  @access  public
 	 *  @param   string locale
 	 *  @return  void
-	 *  @syntax  void CoreLanguage->setLocale( string locale )
+	 *  @syntax  void CoreLanguage->setLocale(string locale)
 	 */
-	public function setLocale( $sLocale )
+	public function setLocale($sLocale)
 	{
 		$this->_locale = $sLocale;
 	}
@@ -76,15 +77,15 @@ class CoreLanguage extends Konsolidate
 	 *  @access  public
 	 *  @param   string engine
 	 *  @return  bool
-	 *  @syntax  bool CoreLanguage->setEngine( string engine )
+	 *  @syntax  bool CoreLanguage->setEngine(string engine)
 	 */
-	public function setEngine( $sEngine )
+	public function setEngine($sEngine)
 	{
-		assert( is_string( $sEngine ) );
-		assert( !empty( $sEngine ) );
+		assert(is_string($sEngine));
+		assert(!empty($sEngine));
 
-		$oTMP = $this->register( $sEngine );
-		if ( $oTMP !== false )
+		$oTMP = $this->register($sEngine);
+		if ($oTMP !== false)
 			$this->_engine = $sEngine;
 
 		return $this->_engine === $sEngine;
@@ -97,10 +98,10 @@ class CoreLanguage extends Konsolidate
 	 *  @access  public
 	 *  @param   string phrase
 	 *  @return  string translation
-	 *  @syntax  string CoreLanguage->translate( string phrase )
+	 *  @syntax  string CoreLanguage->translate(string phrase)
 	 */
-	public function translate( $sPhrase )
+	public function translate($sPhrase)
 	{
-		return $this->call( "{$this->_engine}/translate", $sPhrase );
+		return $this->call("{$this->_engine}/translate", $sPhrase);
 	}
 }

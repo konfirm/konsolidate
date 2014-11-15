@@ -10,8 +10,8 @@
  */
 class CoreKey extends Konsolidate
 {
-	const CHAR    = "abcdefghijklmnopqrstuvwxyz";
-	const NUMERIC = "0123456789";
+	const CHAR    = 'abcdefghijklmnopqrstuvwxyz';
+	const NUMERIC = '0123456789';
 
 	/**
 	 *  The salt used
@@ -68,18 +68,18 @@ class CoreKey extends Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = &new CoreKey( object parent )
+	 *  @syntax  object = &new CoreKey(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
-	public function __construct( $oParent )
+	public function __construct(Konsolidate $parent)
 	{
-		parent::__construct( $oParent );
+		parent::__construct($parent);
 
-		$this->_exclude   = "oO0iI1lzZ2sS5uUvVwWnNmMRQq";
+		$this->_exclude   = 'oO0iI1lzZ2sS5uUvVwWnNmMRQq';
 		$this->_lowercase = true;
 		$this->_uppercase = true;
 		$this->_numeric   = true;
-		$this->_format    = "XXXX-XXXX";
+		$this->_format    = 'XXXX-XXXX';
 		$this->_createSalt();
 	}
 
@@ -90,14 +90,14 @@ class CoreKey extends Konsolidate
 	 *  @access  public
 	 *  @param   string format (optional, default XXXX-XXXX)
 	 *  @return  string generated key
-	 *  @syntax  string CoreKey->create( string format )
+	 *  @syntax  string CoreKey->create(string format)
 	 *  @note    string format uses XXXX-XXXX-XXXX, where X is replaced with a key part
 	 */
-	public function create( $sFormat=null )
+	public function create($sFormat=null)
 	{
-		if ( is_null( $sFormat ) )
+		if (is_null($sFormat))
 			$sFormat = $this->_format;
-		return vsprintf( str_replace( Array( "%", "X" ), Array( "%%", "%s" ), $sFormat ), preg_split( "//", substr( str_shuffle( $this->_salt ), 0, substr_count( $sFormat, "X" ) ), -1, PREG_SPLIT_NO_EMPTY ) );
+		return vsprintf(str_replace(Array('%', 'X'), Array('%%', '%s'), $sFormat), preg_split('//', substr(str_shuffle($this->_salt), 0, substr_count($sFormat, 'X')), -1, PREG_SPLIT_NO_EMPTY));
 	}
 
 	/**
@@ -110,12 +110,12 @@ class CoreKey extends Konsolidate
 	 */
 	protected function _createSalt()
 	{
-		$this->_salt  = $this->_lowercase ? self::CHAR : "";
-		$this->_salt .= $this->_uppercase ? strToUpper( self::CHAR ) : "";
-		$this->_salt .= $this->_numeric ? self::NUMERIC : "";
-		$this->_salt  = preg_replace( "/[{$this->_exclude}]/", "", $this->_salt );
-		$this->_salt  = str_repeat( $this->_salt, strlen( $this->_format ) );
-		$this->_salt  = str_shuffle( $this->_salt );
+		$this->_salt  = $this->_lowercase ? self::CHAR : '';
+		$this->_salt .= $this->_uppercase ? strToUpper(self::CHAR) : '';
+		$this->_salt .= $this->_numeric ? self::NUMERIC : '';
+		$this->_salt  = preg_replace("/[{$this->_exclude}]/", '', $this->_salt);
+		$this->_salt  = str_repeat($this->_salt, strlen($this->_format));
+		$this->_salt  = str_shuffle($this->_salt);
 	}
 
 	/**
@@ -128,20 +128,21 @@ class CoreKey extends Konsolidate
 	 *  @note    reserved properties which actually change the 'salt' are: lowercase, uppercase, numeric, exclude and format and are treated as boolean values
 	 *           these reserved properties behave exactly as expected, except that they additionally modify the 'salt' the moment one of them is set
 	 */
-	public function __set( $sProperty, $mValue )
+	public function __set($sProperty, $mValue)
 	{
-		switch( $sProperty )
+		switch($sProperty)
 		{
-			case "lowercase":
-			case "uppercase":
-			case "numeric":
-			case "exclude":
-			case "format":
+			case 'lowercase':
+			case 'uppercase':
+			case 'numeric':
+			case 'exclude':
+			case 'format':
 				$sProperty = "_{$sProperty}";
 				$this->$sProperty = $mValue;
 				$this->_createSalt();
+
 			default:
-				parent::__set( $sProperty, $mValue );
+				parent::__set($sProperty, $mValue);
 				break;
 		}
 	}

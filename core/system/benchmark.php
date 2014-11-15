@@ -12,24 +12,24 @@ class CoreSystemBenchmark extends Konsolidate
 {
 	protected $_timer;
 
-	public function __construct( $oParent )
+	public function __construct(Konsolidate $parent)
 	{
-		parent::__construct( $oParent );
+		parent::__construct($parent);
 		$this->_timer = Array();
 	}
 
 	public function start()
 	{
-		$this->_timer[] = microtime( true );
-		return count( $this->_timer ) - 1;
+		$this->_timer[] = microtime(true);
+		return count($this->_timer) - 1;
 	}
 
-	public function stop( $nTimer=null )
+	public function stop($nTimer=null)
 	{
-		if ( empty( $nTimer ) )
-			$nTimer = count( $this->_timer ) - 1;
-		if ( $nTimer < 0 || $nTimer >= count( $this->_timer ) )
+		if (empty($nTimer))
+			$nTimer = count($this->_timer) - 1;
+		if ($nTimer < 0 || $nTimer >= count($this->_timer))
 			return false;
-		return microtime( true ) - $this->_timer[ $nTimer ];
+		return microtime(true) - $this->_timer[$nTimer];
 	}
 }

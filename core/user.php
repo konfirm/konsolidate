@@ -49,12 +49,13 @@ class CoreUser extends Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = new CoreUser( object parent )
+	 *  @syntax  object = new CoreUser(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
-	public function __construct( $oParent )
+	public function __construct(Konsolidate $parent)
 	{
-		parent::__construct( $oParent );
+		parent::__construct($parent);
+
 		$this->_loaded   = false;
 		$this->_updated  = false;
 		$this->_autosave = true;
@@ -72,8 +73,8 @@ class CoreUser extends Konsolidate
 	 */
 	public function load()
 	{
-		$nID = $this->call( "Tracker/load" );
-		if ( !empty( $nID ) )
+		$nID = $this->call('Tracker/load');
+		if (!empty($nID))
 		{
 			$sQuery  = "SELECT usrid,
 							   usremail,
@@ -81,13 +82,13 @@ class CoreUser extends Konsolidate
 							   usroptin,
 							   usrtrack,
 							   usrlogincount,
-							   UNIX_TIMESTAMP( usrlastlogints ) AS usrlastlogints,
-							   UNIX_TIMESTAMP( usrmodifiedts ) AS usrmodifiedts,
-							   UNIX_TIMESTAMP( usrcreatedts ) AS usrcreatedts
+							   UNIX_TIMESTAMP(usrlastlogints) AS usrlastlogints,
+							   UNIX_TIMESTAMP(usrmodifiedts) AS usrmodifiedts,
+							   UNIX_TIMESTAMP(usrcreatedts) AS usrcreatedts
 						  FROM user
 						 WHERE ustid={$nID}";
-			$oResult = $this->call( "/DB/query", $sQuery );
-			if ( is_object( $oResult ) && $oResult->errno <= 0 && $oResult->rows == 1 )
+			$oResult = $this->call('/DB/query', $sQuery);
+			if (is_object($oResult) && $oResult->errno <= 0 && $oResult->rows == 1)
 			{
 				$oData            = $oResult->next();
 				$this->_init      = true;
@@ -106,6 +107,7 @@ class CoreUser extends Konsolidate
 				return true;
 			}
 		}
+
 		return false;
 	}
 
@@ -116,25 +118,26 @@ class CoreUser extends Konsolidate
 	 *  @access  public
 	 *  @param   string email, the email to be checked for occurance in the user table [optional, default check the current visitor by its tracker id]
 	 *  @return  bool
-	 *  @syntax  bool CoreUser->isRegistered( [string email] );
+	 *  @syntax  bool CoreUser->isRegistered([string email]);
 	 */
-	public function isRegistered( $sEmail=null )
+	public function isRegistered($sEmail=null)
 	{
-		if ( is_null( $sEmail ) )
+		if (is_null($sEmail))
 		{
-			if ( $this->_loaded === false )
+			if ($this->_loaded === false)
 				$this->load();
-			return is_integer( $this->id );
+			return is_integer($this->id);
 		}
 		else
 		{
-			$sQuery  = "SELECT usrid
+			$sQuery  = 'SELECT usrid
 						  FROM user
-						 WHERE usremail=" . $this->call( "/DB/quote", $sEmail );
-			$oResult = $this->call( "/DB/query", $sQuery );
-			if ( is_object( $oResult ) && $oResult->errno <= 0 && $oResult->rows > 0 )
+						 WHERE usremail=' . $this->call('/DB/quote', $sEmail);
+			$oResult = $this->call('/DB/query', $sQuery);
+			if (is_object($oResult) && $oResult->errno <= 0 && $oResult->rows > 0)
 				return true;
 		}
+
 		return false;
 	}
 
@@ -150,48 +153,49 @@ class CoreUser extends Konsolidate
 	 *  @param   bool      opt in [optional]
 	 *  @param   bool      track [optional]
 	 *  @return  bool
-	 *  @syntax  bool CoreUser->create( integer userid, string email [, string password [, bool agree [, bool optin [, bool track ] ] ] ] );
+	 *  @syntax  bool CoreUser->create(integer userid, string email [, string password [, bool agree [, bool optin [, bool track]]]]);
 	 */
-	public function create( $sEmail, $sPassword=false, $bAgree=false, $bOptIn=false, $bTrack=true )
+	public function create($sEmail, $sPassword=false, $bAgree=false, $bOptIn=false, $bTrack=true)
 	{
-		if ( $sPassword === false )
-			$sPassword = "";
+		if ($sPassword === false)
+			$sPassword = '';
 
-		$nID = $this->call( "Tracker/get", "id" );
-		if ( is_numeric( $nID ) )
+		$nID = $this->call('Tracker/get', 'id');
+		if (is_numeric($nID))
 		{
 			$sQuery  = "INSERT INTO user
-							   ( ustid,
+							   (ustid,
 								 usremail,
 								 usrpassword,
 								 usragree,
 								 usroptin,
 								 usrtrack,
 								 usrcreatedts
-							   )
-						VALUES ( {$nID},
-								 " . $this->call( "/DB/quote", $sEmail ) . ",
-								 " . $this->call( "/DB/quote", $sPassword ) . ",
-								 " . ( (int) $bAgree ) . ",
-								 " . ( (int) $bOptIn ) . ",
-								 " . ( (int) $bTrack ) . ",
+							)
+						VALUES ({$nID},
+								 " . $this->call('/DB/quote', $sEmail) . ',
+								 ' . $this->call('/DB/quote', $sPassword) . ',
+								 ' . ((int) $bAgree) . ',
+								 ' . ((int) $bOptIn) . ',
+								 ' . ((int) $bTrack) . ',
 								 NOW()
-							   )";
+							)';
 
-			$oResult = $this->call( "/DB/query", $sQuery );
-			if ( is_object( $oResult ) )
+			$oResult = $this->call('/DB/query', $sQuery);
+			if (is_object($oResult))
 			{
-				if ( $oResult->errno <= 0 )
+				if ($oResult->errno <= 0)
 				{
 					$this->id = $oResult->lastId();
 					return true;
 				}
-				else if ( $oResult->errno == 1062 ) // Duplicate key email
+				else if ($oResult->errno == 1062) // Duplicate key email
 				{
 					return false;
 				}
 			}
 		}
+
 		return false;
 	}
 
@@ -204,25 +208,26 @@ class CoreUser extends Konsolidate
 	 *  @syntax  bool CoreUser->store();
 	 *  @note    Calls to store expect a load to have taken place first
 	 */
-	public function store( $bForceEmptyPassword=false )
+	public function store($bForceEmptyPassword=false)
 	{
-		if ( $this->_loaded && is_integer( $this->id ) && $this->id > 0 )
+		if ($this->_loaded && is_integer($this->id) && $this->id > 0)
 		{
-			$sQuery  = "UPDATE user
-						   SET usremail=" . $this->call( "/DB/quote", $this->email ) . ",
-							   " . ( $bForceEmptyPassword || !is_null( $this->password ) ? "usrpassword=" . $this->call( "/DB/quote", $this->password ) . "," : "" ) . "
-							   usragree=" . ( (int) $this->agree ) . ",
-							   usroptin=" . ( (int) $this->optin ) . ",
-							   usrtrack=" . ( (int) $this->track ) . ",
+			$sQuery  = 'UPDATE user
+						   SET usremail=' . $this->call('/DB/quote', $this->email) . ',
+							   ' . ($bForceEmptyPassword || !is_null($this->password) ? 'usrpassword=' . $this->call('/DB/quote', $this->password) . ',' : '') . '
+							   usragree=' . ((int) $this->agree) . ',
+							   usroptin=' . ((int) $this->optin) . ',
+							   usrtrack=' . ((int) $this->track) . ",
 							   usrmodifiedts=NOW()
 						 WHERE usrid={$this->id}";
-			$oResult = $this->call( "/DB/query", $sQuery );
-			if ( is_object( $oResult ) && $oResult->errno <= 0 )
+			$oResult = $this->call('/DB/query', $sQuery);
+			if (is_object($oResult) && $oResult->errno <= 0)
 			{
 				$this->_updated = false;
 				return true;
 			}
 		}
+
 		return false;
 	}
 
@@ -235,25 +240,26 @@ class CoreUser extends Konsolidate
 	 *  @param   string password
 	 *  @param   bool   autologin [default true]
 	 *  @return  string usertracker code (or bool false on error)
-	 *  @syntax  stirng CoreUser->login( string email, string password [, bool autologin ] );
+	 *  @syntax  stirng CoreUser->login(string email, string password [, bool autologin]);
 	 */
-	public function login( $sEmail, $sPassword, $bAutoLogin=true )
+	public function login($sEmail, $sPassword, $bAutoLogin=true)
 	{
-		$sQuery  = "SELECT ust.ustcode
+		$sQuery  = 'SELECT ust.ustcode
 					  FROM user u
 					 INNER JOIN usertracker ust ON ust.ustid=u.ustid
-					 WHERE u.usremail=" . $this->call( "/DB/quote", $sEmail ) . "
-					   AND u.usrpassword=" . $this->call( "/DB/quote", $sPassword );
-		$oResult = $this->call( "/DB/query", $sQuery );
-		if ( is_object( $oResult ) && $oResult->errno <= 0 && $oResult->rows >= 1 )
+					 WHERE u.usremail=' . $this->call('/DB/quote', $sEmail) . '
+					   AND u.usrpassword=' . $this->call('/DB/quote', $sPassword);
+		$oResult = $this->call('/DB/query', $sQuery);
+		if (is_object($oResult) && $oResult->errno <= 0 && $oResult->rows >= 1)
 		{
 			$oRecord = $oResult->next();
-			if ( !empty( $oRecord->ustcode ) && $this->call( "Tracker/login", $oRecord->ustcode, $bAutoLogin ) && $this->_updateLoginCount( $sEmail ) )
+			if (!empty($oRecord->ustcode) && $this->call('Tracker/login', $oRecord->ustcode, $bAutoLogin) && $this->_updateLoginCount($sEmail))
 			{
 				$this->load();
 				return $oRecord->ustcode;
 			}
 		}
+
 		return false;
 	}
 
@@ -264,16 +270,17 @@ class CoreUser extends Konsolidate
 	 *  @access  public
 	 *  @param   string email address
 	 *  @return  bool   succes
-	 *  @syntax  bool   CoreUser->_updateLoginCount( string email );
+	 *  @syntax  bool   CoreUser->_updateLoginCount(string email);
 	 */
-	protected function _updateLoginCount( $sEmail )
+	protected function _updateLoginCount($sEmail)
 	{
-		$sQuery  = "UPDATE user
+		$sQuery  = 'UPDATE user
 					   SET usrlastlogints=NOW(),
 						   usrlogincount=usrlogincount+1
-					 WHERE usremail=" . $this->call( "/DB/quote", $sEmail );
-		$oResult = $this->call( "/DB/query", $sQuery );
-		return is_object( $oResult ) && $oResult->errno <= 0;
+					 WHERE usremail=' . $this->call('/DB/quote', $sEmail);
+		$oResult = $this->call('/DB/query', $sQuery);
+
+		return is_object($oResult) && $oResult->errno <= 0;
 	}
 
 	/**
@@ -283,26 +290,26 @@ class CoreUser extends Konsolidate
 	 *  @access  public
 	 *  @param   string   property name
 	 *  @return  mixed
-	 *  @syntax  mixed CoreUser->get( string property );
+	 *  @syntax  mixed CoreUser->get(string property);
 	 */
-	public function __get( $sProperty )
+	public function __get($sProperty)
 	{
-		if ( !$this->_init && !$this->_loaded )
+		if (!$this->_init && !$this->_loaded)
 			$this->load();
 
-		return parent::__get( $sProperty );
+		return parent::__get($sProperty);
 	}
 
-	function __set( $sProperty, $mValue )
+	function __set($sProperty, $mValue)
 	{
-		if ( $sProperty == "password" || ( array_key_exists( $sProperty, $this->_property ) && $this->_property[ $sProperty ] !== $mValue ) )
+		if ($sProperty == 'password' || (array_key_exists($sProperty, $this->_property) && $this->_property[$sProperty] !== $mValue))
 			$this->_updated = true;
-		parent::__set( $sProperty, $mValue );
+		parent::__set($sProperty, $mValue);
 	}
 
 	function __destruct()
 	{
-		if ( $this->_autosave && $this->_updated )
+		if ($this->_autosave && $this->_updated)
 			$this->store();
 	}
 }

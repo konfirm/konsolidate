@@ -25,15 +25,15 @@ class CoreLanguageSwitch extends Konsolidate
 	 *  @access  public
 	 *  @param   string phrase
 	 *  @return  string translation
-	 *  @syntax  string CoreLanguageSwitch->translate( string phrase )
+	 *  @syntax  string CoreLanguageSwitch->translate(string phrase)
 	 */
-	public function translate( $sPhrase )
+	public function translate($sPhrase)
 	{
-		$this->_trackPhrase( $sPhrase );
-		$sLocale = $this->call( "../getLocale" );
-		if ( empty( $sLocale ) )
+		$this->_trackPhrase($sPhrase);
+		$sLocale = $this->call('../getLocale');
+		if (empty($sLocale))
 			return $sPhrase;
-		return $this->_getPhraseByLocale( $sPhrase, $sLocale );
+		return $this->_getPhraseByLocale($sPhrase, $sLocale);
 	}
 
 	/**
@@ -44,21 +44,21 @@ class CoreLanguageSwitch extends Konsolidate
 	 *  @param   string phrase
 	 *  @param   string locale
 	 *  @return  string translation
-	 *  @syntax  string CoreLanguageSwitch->_getPhraseByLocale( string phrase )
+	 *  @syntax  string CoreLanguageSwitch->_getPhraseByLocale(string phrase)
 	 */
-	protected function _getPhraseByLocale( $sPhrase, $sLocale )
+	protected function _getPhraseByLocale($sPhrase, $sLocale)
 	{
-		$sQuery  = "SELECT lsp.lspphrase AS phrase,
+		$sQuery  = 'SELECT lsp.lspphrase AS phrase,
 						   lst.lsttranslation AS translation
 					  FROM languageswitchphrase lsp
 					 INNER JOIN languageswitchtranslation lst
 						ON lst.lspid=lsp.lspid
-					   AND lst.lstlocale=" . $this->call( "/DB/quote", $sLocale ) . "
+					   AND lst.lstlocale=' . $this->call('/DB/quote', $sLocale) . '
 					   AND lst.lstenabled=1
-					 WHERE lsp.lspphrase=" . $this->call( "/DB/quote", $sPhrase );
-		$oResult = $this->call( "/DB/query", $sQuery );
-		if ( is_object( $oResult ) && $oResult->errno <= 0 && $oResult->rows > 0 )
-			while( $oRecord = $oResult->next() )
+					 WHERE lsp.lspphrase=' . $this->call('/DB/quote', $sPhrase);
+		$oResult = $this->call('/DB/query', $sQuery);
+		if (is_object($oResult) && $oResult->errno <= 0 && $oResult->rows > 0)
+			while($oRecord = $oResult->next())
 				return $oRecord->translation;
 		return $sPhrase;
 	}
@@ -70,13 +70,13 @@ class CoreLanguageSwitch extends Konsolidate
 	 *  @access  protected
 	 *  @param   string phrase
 	 *  @return  void
-	 *  @syntax  void CoreLanguageSwitch->_trackPhrase( string phrase )
+	 *  @syntax  void CoreLanguageSwitch->_trackPhrase(string phrase)
 	 */
-	protected function _trackPhrase( $sPhrase )
+	protected function _trackPhrase($sPhrase)
 	{
-		if ( !is_array( $this->_usage ) )
+		if (!is_array($this->_usage))
 			$this->_usage = Array();
-		array_push( $this->_usage, $this->call( "/DB/quote", $sPhrase ) );
+		array_push($this->_usage, $this->call('/DB/quote', $sPhrase));
 	}
 
 	/**
@@ -89,14 +89,14 @@ class CoreLanguageSwitch extends Konsolidate
 	 */
 	public function __destruct()
 	{
-		if ( is_array( $this->_usage ) && count( $this->_usage ) > 0 )
+		if (is_array($this->_usage) && count($this->_usage) > 0)
 		{
-			$sQuery  = "INSERT INTO languageswitchphrase
-							   ( lspphrase, lspcreatedts )
-						VALUES ( " . implode( ", NOW() ),( ", $this->_usage ) . ", NOW() )
+			$sQuery  = 'INSERT INTO languageswitchphrase
+							   (lspphrase, lspcreatedts)
+						VALUES (' . implode(', NOW()),(', $this->_usage) . ', NOW())
 						ON DUPLICATE KEY
-						UPDATE lspmodifiedts=NOW()";
-			$this->call( "/DB/query", $sQuery );
+						UPDATE lspmodifiedts=NOW()';
+			$this->call('/DB/query', $sQuery);
 		}
 	}
 }

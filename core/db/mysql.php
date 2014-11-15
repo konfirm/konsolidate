@@ -66,12 +66,13 @@ class CoreDBMySQL extends Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = &new CoreDBMySQL( object parent )
+	 *  @syntax  object = &new CoreDBMySQL(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
-	public function __construct( &$oParent )
+	public function __construct(Konsolidate $parent)
 	{
-		parent::__construct( $oParent );
+		parent::__construct($parent);
+
 		$this->_URI             = null;
 		$this->_conn            = null;
 		$this->_cache           = Array();
@@ -88,14 +89,14 @@ class CoreDBMySQL extends Konsolidate
 	 *  @param   string DSN URI
 	 *  @param   bool   force new link [optional, default false]
 	 *  @return  bool
-	 *  @syntax  bool CoreDBMySQL->setConnection( string DSN [, bool newlink ] )
+	 *  @syntax  bool CoreDBMySQL->setConnection(string DSN [, bool newlink])
 	 */
-	public function setConnection( $sURI, $bForceConnection=false )
+	public function setConnection($sURI, $bForceConnection=false)
 	{
-		assert( is_string( $sURI ) );
-		assert( is_bool( $bForceConnection ) );
+		assert(is_string($sURI));
+		assert(is_bool($bForceConnection));
 
-		$this->_URI             = parse_url( $sURI );
+		$this->_URI             = parse_url($sURI);
 		$this->_forceConnection = $bForceConnection;
 		return true;
 	}
@@ -111,19 +112,19 @@ class CoreDBMySQL extends Konsolidate
 	 */
 	public function connect()
 	{
-		if ( !$this->isConnected() )
+		if (!$this->isConnected())
 		{
 			$this->_conn = @mysql_connect(
-				"{$this->_URI[ "host" ]}:" . ( isset( $this->_URI[ "port" ] ) ? $this->_URI[ "port" ] : 3306 ),
-				$this->_URI[ "user" ],
-				$this->_URI[ "pass" ],
+				"{$this->_URI['host']}:" . (isset($this->_URI['port']) ? $this->_URI['port'] : 3306),
+				$this->_URI['user'],
+				$this->_URI['pass'],
 				$this->_forceConnection
 			);
 
-			if ( $this->_conn === false || !@mysql_select_db( trim( $this->_URI[ "path" ], "/" ) ) )
+			if ($this->_conn === false || !@mysql_select_db(trim($this->_URI['path'], '/')))
 			{
-				$this->import( "exception.class.php" );
-				$this->error = new CoreDBMySQLException( $this->_conn );
+				$this->import('exception.php');
+				$this->error = new CoreDBMySQLException($this->_conn);
 				$this->_conn = null;
 				return false;
 			}
@@ -141,8 +142,8 @@ class CoreDBMySQL extends Konsolidate
 	 */
 	public function disconnect()
 	{
-		if ( $this->isConnected() )
-			return mysql_close( $this->_conn );
+		if ($this->isConnected())
+			return mysql_close($this->_conn);
 		return true;
 	}
 
@@ -156,7 +157,7 @@ class CoreDBMySQL extends Konsolidate
 	 */
 	public function isConnected()
 	{
-		return is_resource( $this->_conn );
+		return is_resource($this->_conn);
 	}
 
 	/**
@@ -167,24 +168,24 @@ class CoreDBMySQL extends Konsolidate
 	 *  @param   string query
 	 *  @paran   bool   usecache [optional, default true]
 	 *  @return  object result
-	 *  @syntax  object CoreDBMySQL->query( string query [, bool usecache ] )
+	 *  @syntax  object CoreDBMySQL->query(string query [, bool usecache])
 	 */
-	public function query( $sQuery, $bUseCache=true )
+	public function query($sQuery, $bUseCache=true)
 	{
-		$sCacheKey = md5( $sQuery );
-		if ( $bUseCache && array_key_exists( $sCacheKey, $this->_cache ) )
+		$sCacheKey = md5($sQuery);
+		if ($bUseCache && array_key_exists($sCacheKey, $this->_cache))
 		{
-			$this->_cache[ $sCacheKey ]->rewind();
-			return $this->_cache[ $sCacheKey ];
+			$this->_cache[$sCacheKey]->rewind();
+			return $this->_cache[$sCacheKey];
 		}
 
-		if ( $this->connect() )
+		if ($this->connect())
 		{
-			$oQuery = $this->instance( "Query" );
-			$oQuery->execute( $sQuery, $this->_conn );
+			$oQuery = $this->instance('Query');
+			$oQuery->execute($sQuery, $this->_conn);
 
-			if ( $bUseCache && $this->_isCachableQuery( $sQuery ) )
-				$this->_cache[ $sCacheKey ] = $oQuery;
+			if ($bUseCache && $this->_isCachableQuery($sQuery))
+				$this->_cache[$sCacheKey] = $oQuery;
 
 			return $oQuery;
 		}
@@ -201,8 +202,8 @@ class CoreDBMySQL extends Konsolidate
 	 */
 	public function lastInsertID()
 	{
-		if ( $this->isConnected() )
-			return mysql_insert_id( $this->_conn );
+		if ($this->isConnected())
+			return mysql_insert_id($this->_conn);
 		return false;
 	}
 
@@ -228,16 +229,16 @@ class CoreDBMySQL extends Konsolidate
 	 *  @access  public
 	 *  @param   string input
 	 *  @return  string escaped input
-	 *  @syntax  string CoreDBMySQLQuery->escape( string input )
+	 *  @syntax  string CoreDBMySQLQuery->escape(string input)
 	 */
-	public function escape( $sString )
+	public function escape($sString)
 	{
-		if ( $this->connect() )
-			return mysql_real_escape_string( $sString, $this->_conn );
-		else if ( function_exists( "mysql_escape_string" ) )
-			return mysql_escape_string( $sString );
+		if ($this->connect())
+			return mysql_real_escape_string($sString, $this->_conn);
+		else if (function_exists('mysql_escape_string'))
+			return mysql_escape_string($sString);
 
-		$this->call( "/Log/write", get_class( $this ) . "::escape, could not escape string" );
+		$this->call('/Log/write', get_class($this) . '::escape, could not escape string');
 		return false;
 	}
 
@@ -248,11 +249,11 @@ class CoreDBMySQL extends Konsolidate
 	 *  @access  public
 	 *  @param   string input
 	 *  @return  string quoted escaped input
-	 *  @syntax  string CoreDBMySQLQuery->quote( string input )
+	 *  @syntax  string CoreDBMySQLQuery->quote(string input)
 	 */
-	public function quote( $sString )
+	public function quote($sString)
 	{
-		return "'" . $this->escape( $sString ) . "'";
+		return '\'' . $this->escape($sString) . '\'';
 	}
 
 	/**
@@ -265,10 +266,10 @@ class CoreDBMySQL extends Konsolidate
 	 */
 	public function startTransaction()
 	{
-		if ( !$this->_transaction )
+		if (!$this->_transaction)
 		{
-			$oResult = $this->query( "START TRANSACTION" );
-			if ( is_object( $oResult ) && $oResult->errno <= 0 )
+			$oResult = $this->query('START TRANSACTION');
+			if (is_object($oResult) && $oResult->errno <= 0)
 				$this->_transaction = true;
 		}
 		return $this->_transaction;
@@ -281,15 +282,15 @@ class CoreDBMySQL extends Konsolidate
 	 *  @access  public
 	 *  @param   bool commit [optional, default true]
 	 *  @return  bool success
-	 *  @syntax  bool CoreDBMySQLQuery->endTransaction( bool commit )
+	 *  @syntax  bool CoreDBMySQLQuery->endTransaction(bool commit)
 	 *  @note    if argument 'commit' is true, 'COMMIT' is sent, 'ROLLBACK' otherwise
 	 */
-	public function endTransaction( $bSuccess=true )
+	public function endTransaction($bSuccess=true)
 	{
-		if ( $this->_transaction )
+		if ($this->_transaction)
 		{
-			$oResult = $this->query( $bSuccess ? "COMMIT" : "ROLLBACK" );
-			if ( is_object( $oResult ) && $oResult->errno <= 0 )
+			$oResult = $this->query($bSuccess ? 'COMMIT' : 'ROLLBACK');
+			if (is_object($oResult) && $oResult->errno <= 0)
 			{
 				$this->_transaction = false;
 				return true;
@@ -305,11 +306,11 @@ class CoreDBMySQL extends Konsolidate
 	 *  @access  public
 	 *  @return  bool success
 	 *  @syntax  bool CoreDBMySQLQuery->commitTransaction()
-	 *  @note    same as endTransaction( true );
+	 *  @note    same as endTransaction(true);
 	 */
 	public function commitTransaction()
 	{
-		return $this->endTransaction( true );
+		return $this->endTransaction(true);
 	}
 
 	/**
@@ -319,11 +320,11 @@ class CoreDBMySQL extends Konsolidate
 	 *  @access  public
 	 *  @return  bool success
 	 *  @syntax  bool CoreDBMySQLQuery->rollbackTransaction()
-	 *  @note    same as endTransaction( false );
+	 *  @note    same as endTransaction(false);
 	 */
 	public function rollbackTransaction()
 	{
-		return $this->endTransaction( false );
+		return $this->endTransaction(false);
 	}
 
 	/**
@@ -333,10 +334,10 @@ class CoreDBMySQL extends Konsolidate
 	 *  @access  protected
 	 *  @param   string query
 	 *  @return  bool   success
-	 *  @syntax  bool CoreDBMySQLQuery->_isCachableQuery( string query )
+	 *  @syntax  bool CoreDBMySQLQuery->_isCachableQuery(string query)
 	 */
-	protected function _isCachableQuery( $sQuery )
+	protected function _isCachableQuery($sQuery)
 	{
-		return (bool) preg_match( "/^\s*SELECT /i", $sQuery );
+		return (bool) preg_match('/^\s*SELECT /i', $sQuery);
 	}
 }

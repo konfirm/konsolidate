@@ -94,6 +94,7 @@ class Konsolidate implements Iterator
 	 */
 	protected $_tracelog;
 
+
 	/**
 	 *  Konsolidate constructor
 	 *  @name    Konsolidate
@@ -101,11 +102,11 @@ class Konsolidate implements Iterator
 	 *  @access  public
 	 *  @param   array   array with the paths to load the modules from (the order of the paths is the order in which to look up modules)
 	 *  @return  object
-	 *  @syntax  object = new Konsolidate( array path )
+	 *  @syntax  object = new Konsolidate(array path)
 	 *  @note    The syntax described is the syntax the implementor of Konsolidate should use, all childnodes constructed by Konsolidate
 	 *           are handled by the internals of Konsolidate.
 	 */
-	public function __construct( $mPath )
+	public function __construct($path)
 	{
 		$this->_debug       = false;
 		$this->_module      = Array();
@@ -113,20 +114,20 @@ class Konsolidate implements Iterator
 		$this->_lookupcache = Array();
 		$this->_tracelog    = Array();
 
-		if ( is_object( $mPath ) && $mPath instanceof Konsolidate )
+		if (is_object($path) && $path instanceof Konsolidate)
 		{
-			$this->_parent          = $mPath;
+			$this->_parent          = $path;
 			$this->_path            = $this->getFilePath();
 			$this->_objectseparator = $this->_parent->_objectseparator;
 		}
-		else if ( is_array( $mPath ) )  //  We are the Root instance
+		else if (is_array($path))  //  We are the Root instance
 		{
 			$this->_parent          = false;
-			$this->_path            = $mPath;
-			$this->_objectseparator = isset( $this->_objectseparator ) && !empty( $this->_objectseparator ) ? $this->_objectseparator : "/";
+			$this->_path            = $path;
+			$this->_objectseparator = isset($this->_objectseparator) && !empty($this->_objectseparator) ? $this->_objectseparator : '/';
 
 			//  We always want access to our static tools
-			$this->import( "tool.php" );
+			$this->import('tool.php');
 		}
 	}
 
@@ -138,22 +139,22 @@ class Konsolidate implements Iterator
 	 *  @param   string   path to the property to get
 	 *  @param   mixed    default return value (optional, default null)
 	 *  @return  mixed
-	 *  @syntax  Konsolidate->get( string module [, mixed default ] );
+	 *  @syntax  Konsolidate->get(string module [, mixed default]);
 	 *  @note    supplying a default value should be done per call, the default is never stored
 	 */
 	public function get()
 	{
-		$aArgument  = func_get_args();
-		$sProperty  = array_shift( $aArgument );
-		$mDefault   = (bool) count( $aArgument ) ? array_shift( $aArgument ) : null;
+		$args     = func_get_args();
+		$property = array_shift($args);
+		$default  = (bool) count($args) ? array_shift($args) : null;
+		$seperator = strrpos($property, $this->_objectseparator);
 
-		$nSeperator = strrpos( $sProperty, $this->_objectseparator );
-		if ( $nSeperator !== false && ( $oModule = $this->getModule( substr( $sProperty, 0, $nSeperator ) ) ) !== false )
-			return $oModule->get( substr( $sProperty, $nSeperator + 1 ), $mDefault );
-		else if ( $this->checkModuleAvailability( $sProperty ) )
-			return $this->register( $sProperty );
-		$mReturn = $this->$sProperty;
-		return is_null( $mReturn ) ? $mDefault : $mReturn; // can (and will be by default!) still be null
+		if ($seperator !== false && ($instance = $this->getModule(substr($property, 0, $seperator))) !== false)
+			return $instance->get(substr($property, $seperator + 1), $default);
+		else if ($this->checkModuleAvailability($property))
+			return $this->register($property);
+		$return = $this->$property;
+		return is_null($return) ? $default : $return; // can (and will be by default!) still be null
 	}
 
 	/**
@@ -164,27 +165,27 @@ class Konsolidate implements Iterator
 	 *  @param   string   path to the property to set
 	 *  @param   mixed    value
 	 *  @return  void
-	 *  @syntax  Konsolidate->set( string module, mixed value );
+	 *  @syntax  Konsolidate->set(string module, mixed value);
 	 */
 	public function set()
 	{
-		$aArgument  = func_get_args();
-		$sProperty  = array_shift( $aArgument );
-		$nSeperator = strrpos( $sProperty, $this->_objectseparator );
-		if ( $nSeperator !== false && ( $oModule = $this->getModule( substr( $sProperty, 0, $nSeperator ) ) ) !== false )
+		$args  = func_get_args();
+		$property  = array_shift($args);
+		$seperator = strrpos($property, $this->_objectseparator);
+		if ($seperator !== false && ($instance = $this->getModule(substr($property, 0, $seperator))) !== false)
 		{
-			array_unshift( $aArgument, substr( $sProperty, $nSeperator + 1 ) );
+			array_unshift($args, substr($property, $seperator + 1));
 			return call_user_func_array(
 				Array(
-					$oModule, // the object
-					"set"      // the method
+					$instance, // the object
+					'set'      // the method
 				),
-				$aArgument     // the arguments
+				$args     // the arguments
 			);
 		}
-		$mValue           = array_shift( $aArgument );
-		$this->$sProperty = $mValue;
-		return $this->$sProperty === $mValue;
+		$value           = array_shift($args);
+		$this->$property = $value;
+		return $this->$property === $value;
 	}
 
 	/**
@@ -195,38 +196,38 @@ class Konsolidate implements Iterator
 	 *  @param   string   path to the method to call
 	 *  @param   mixed    [optional] argument
 	 *  @return  mixed
-	 *  @syntax  Konsolidate->call( string module [, mixed argument [, mixed argument, [, ... ] ] ] );
+	 *  @syntax  Konsolidate->call(string module [, mixed argument [, mixed argument, [, ...]]]);
 	 *  @note    One can supply as many arguments as needed
 	 */
 	public function call()
 	{
-		$aArgument  = func_get_args();
-		$sCall      = array_shift( $aArgument );
-		$nSeperator = strrpos( $sCall, $this->_objectseparator );
+		$args      = func_get_args();
+		$call      = array_shift($args);
+		$seperator = strrpos($call, $this->_objectseparator);
 
-		if ( $nSeperator !== false )
+		if ($seperator !== false)
 		{
-			$oModule = $this->getModule( substr( $sCall, 0, $nSeperator ) );
-			$sMethod = substr( $sCall, $nSeperator + 1 );
+			$instance = $this->getModule(substr($call, 0, $seperator));
+			$method   = substr($call, $seperator + 1);
 		}
 		else
 		{
-			$oModule = $this;
-			$sMethod = $sCall;
+			$instance = $this;
+			$method   = $call;
 		}
 
-		if ( !is_object( $oModule ) )
+		if (!is_object($instance))
 		{
-			$this->call( "/Log/write", "Module '" . get_class( $oModule ) . "' not found!" );
+			$this->call('/Log/write', 'Module \'' . get_class($instance) . '\' not found!');
 			return false;
 		}
 
 		return call_user_func_array(
 			Array(
-				$oModule,  // the object
-				$sMethod   // the method
+				$instance,  // the object
+				$method   // the method
 			),
-			$aArgument     // the arguments
+			$args     // the arguments
 		);
 	}
 
@@ -237,23 +238,23 @@ class Konsolidate implements Iterator
 	 *  @access  public
 	 *  @param   string   modulename
 	 *  @return  object
-	 *  @syntax  Konsolidate->register( string module );
+	 *  @syntax  Konsolidate->register(string module);
 	 *  @note    register only create a single (unique) instance and always returns the same instance
 	 *           use the instance method to create different instances of the same class
 	 */
-	public function register( $sModule )
+	public function register($module)
 	{
-		$sModule = strToUpper( $sModule );
-		if ( !array_key_exists( $sModule, $this->_module ) )
+		$module = strToUpper($module);
+		if (!array_key_exists($module, $this->_module))
 		{
-			$oModule = $this->instance( $sModule );
+			$instance = $this->instance($module);
 
-			if ( $oModule === false )
-				return $oModule;
+			if ($instance === false)
+				return $instance;
 
-			$this->_module[ $sModule ] = $oModule;
+			$this->_module[$module] = $instance;
 		}
-		return $this->_module[ $sModule ];
+		return $this->_module[$module];
 	}
 
 	/**
@@ -264,76 +265,76 @@ class Konsolidate implements Iterator
 	 *  @param   string   modulename
 	 *  @param   mixed    param N
 	 *  @return  object
-	 *  @syntax  Konsolidate->instance( string module [, mixed param1 [, mixed param2 [, mixed param N ] ] ] );
+	 *  @syntax  Konsolidate->instance(string module [, mixed param1 [, mixed param2 [, mixed param N]]]);
 	 *  @note    instance creates an instance every time you call it, if you require a single instance which
 	 *           is always returned, use the register method
 	 */
-	public function instance( $sModule )
+	public function instance($module)
 	{
 		//  In case we request an instance of a remote node, we verify it here and leave the instancing to the instance parent
-		$nSeperator = strrpos( $sModule, $this->_objectseparator );
-		if ( $nSeperator !== false && ( $oModule = $this->getModule( substr( $sModule, 0, $nSeperator ) ) ) !== false )
+		$seperator = strrpos($module, $this->_objectseparator);
+		if ($seperator !== false && ($instance = $this->getModule(substr($module, 0, $seperator))) !== false)
 		{
-			$aArgument = func_get_args();
-			if ( count( $aArgument ) )
+			$args = func_get_args();
+			if (count($args))
 			{
-				$aArgument[ 0 ] = substr( $aArgument[ 0 ], $nSeperator + 1 );
+				$args[0] = substr($args[0], $seperator + 1);
 				return call_user_func_array(
 					Array(
-						$oModule,
-						"instance"
+						$instance,
+						'instance'
 					),
-					$aArgument
+					$args
 				);
 			}
 		}
 
 		//  optimize the number of calls to import, as importing is rather expensive due to the file I/O involved
-		static $aImported = Array();
-		if ( !isset( $aImported[ $sModule ] ) )
+		static $imports = Array();
+		if (!isset($imports[$module]))
 		{
-			$aImported[ $sModule ] = microtime(true);
-			$this->import( "{$sModule}.php" );
+			$imports[$module] = microtime(true);
+			$this->import($module . '.php');
 		}
 
 		//  try to construct the module classes top down, this ensures the correct order of construction
-		$bConstructed = false;
-		foreach ( $this->_path as $sMod=>$sPath )
+		$constructed = false;
+		foreach ($this->_path as $name=>$path)
 		{
-			$sClass  = "{$sMod}" . ucFirst( strToLower( $sModule ) );
-			if ( class_exists( $sClass ) )
+			$className  = $name . ucFirst(strToLower($module));
+			if (class_exists($className))
 			{
-				$aArgument = func_get_args();
-				array_shift( $aArgument );  //  the first argument is always the module to instance, we discard it
+				$args = func_get_args();
+				array_shift($args);  //  the first argument is always the module to instance, we discard it
 
-				if ( (bool) count( $aArgument ) )
+				if ((bool) count($args))
 				{
-					array_unshift( $aArgument, $this ); //  inject the 'parent reference', as Konsolidate dictates
-					$oModule = new ReflectionClass( $sClass );
-					$oModule = $oModule->newInstanceArgs( $aArgument );
+					array_unshift($args, $this); //  inject the 'parent reference', as Konsolidate dictates
+					$instance = new ReflectionClass($className);
+					$instance = $instance->newInstanceArgs($args);
 				}
 				else
 				{
-					$oModule = new $sClass( $this );
+					$instance = new $className($this);
 				}
-				$bConstructed = is_object( $oModule );
+				$constructed = is_object($instance);
 				break;
 			}
 		}
 
-		if ( !$bConstructed )
+		if (!$constructed)
 		{
 			//  create class stubs on the fly
-			eval( "class {$sClass} extends Konsolidate{ public \$_dynamicStubClass=true; }" );
-			$oModule      = new $sClass( $this );
-			$bConstructed = is_object( $oModule );
+			eval('class ' . $className . ' extends Konsolidate{public $_dynamicStubClass=true;}');
+			$instance    = new $className($this);
+			$constructed = is_object($instance);
 
-			if ( !$bConstructed )
+			if (!$constructed)
 				return false;
 		}
 
-		return $oModule;
-	 }
+		return $instance;
+	}
 
 	/**
 	 *  Import a file within the tree
@@ -342,39 +343,41 @@ class Konsolidate implements Iterator
 	 *  @access  public
 	 *  @param   string   filename
 	 *  @return  object
-	 *  @syntax  Konsolidate->import( string file );
+	 *  @syntax  Konsolidate->import(string file);
 	 */
-	public function import( $sFile )
+	public function import($file)
 	{
-		$nSeperator = strrpos( $sFile, $this->_objectseparator );
-		if ( $nSeperator !== false && ( $oModule = $this->getModule( substr( $sFile, 0, $nSeperator ) ) ) !== false )
-			return $oModule->import( substr( $sFile, $nSeperator + 1 ) );
+		$seperator = strrpos($file, $this->_objectseparator);
+		if ($seperator !== false && ($instance = $this->getModule(substr($file, 0, $seperator))) !== false)
+			return $instance->import(substr($file, $seperator + 1));
 
 		//  include all imported files (if they exist) bottom up, this solves the implementation classes having to know core paths
-		$sCompatible = strpos($sFile, '.class.php') ? str_replace('.class.php', '.php', $sFile) : str_replace('.php', '.class.php', $sFile);
-		$aIncluded   = array_flip( get_included_files() );
-		$aPath       = array_reverse( $this->_path, true );
-		$bImported   = false;
-		foreach ( $aPath as $sPath )
+		$compatible = strpos($file, '.class.php') ? str_replace('.class.php', '.php', $file) : str_replace('.php', '.class.php', $file);
+		$included   = array_flip(get_included_files());
+		$pathList   = array_reverse($this->_path, true);
+		$imported   = false;
+
+		foreach ($pathList as $path)
 		{
-			$sCurrentFile   = "{$sPath}/" . strToLower( $sFile );
-			$sCurrentCompat = "{$sPath}/" . strToLower( $sCompatible );
-			if ( isset( $aIncluded[ $sCurrentFile ] ) || isset( $aIncluded[ $sCurrentCompat ] ) )
+			$currentFile   = $path . '/' . strToLower($file);
+			$currentCompat = $path . '/' . strToLower($compatible);
+			if (isset($included[$currentFile]) || isset($included[$currentCompat]))
 			{
-				$bImported = true;
+				$imported = true;
 			}
-			else if ( realpath( $sCurrentFile ) )
+			else if (realpath($currentFile))
 			{
-				include( $sCurrentFile );
-				$bImported = true;
+				include($currentFile);
+				$imported = true;
 			}
-			else if ( realpath( $sCurrentCompat ) )
+			else if (realpath($currentCompat))
 			{
-				include( $sCurrentCompat );
-				$bImported = true;
+				include($currentCompat);
+				$imported = true;
 			}
 		}
-		return $bImported;
+
+		return $imported;
 	}
 
 	/**
@@ -384,27 +387,27 @@ class Konsolidate implements Iterator
 	 *  @access  public
 	 *  @param   string   module
 	 *  @return  object
-	 *  @syntax  Konsolidate->checkModuleAvailability( string module );
+	 *  @syntax  Konsolidate->checkModuleAvailability(string module);
 	 */
-	public function checkModuleAvailability( $sModule )
+	public function checkModuleAvailability($module)
 	{
-		$sModule = strtolower($sModule);
-		$sClass  = get_class($this);
+		$module = strtolower($module);
+		$className  = get_class($this);
 
 		//  lookahead to submodules
-		if (!isset(self::$_modulecheck[$sClass]))
+		if (!isset(self::$_modulecheck[$className]))
 			$this->_indexModuleAvailability();
 
 		//  if we are dealing with a submodule pattern which is not in our cache by default, test for it
-		if (strpos($sModule, $this->_objectseparator) !== false)
-			foreach ( $this->_path as $sMod=>$sPath )
-				if ( realpath( "{$sPath}/{$sModule}.php" ) || realpath( "{$sPath}/{$sModule}" ) )
+		if (strpos($module, $this->_objectseparator) !== false)
+			foreach ($this->_path as $name=>$path)
+				if (realpath($path . '/' . $module . '.php') || realpath($path . '/' . $module))
 				{
-					self::$_modulecheck[$sClass][$sModule] = true;
+					self::$_modulecheck[$className][$module] = true;
 					break;
 				}
 
-		return isset(self::$_modulecheck[$sClass][$sModule]) ? self::$_modulecheck[$sClass][$sModule] : false;
+		return isset(self::$_modulecheck[$className][$module]) ? self::$_modulecheck[$className][$module] : false;
 	}
 
 
@@ -418,7 +421,7 @@ class Konsolidate implements Iterator
 	 */
 	public function getRoot()
 	{
-		if ( $this->_parent !== false )
+		if ($this->_parent !== false)
 			return $this->_parent->getRoot();
 		return $this;
 	}
@@ -433,7 +436,7 @@ class Konsolidate implements Iterator
 	 */
 	function getParent()
 	{
-		if ( $this->_parent !== false )
+		if ($this->_parent !== false)
 			return $this->_parent;
 		return false;
 	}
@@ -448,22 +451,24 @@ class Konsolidate implements Iterator
 	 */
 	public function getFilePath()
 	{
-		if ( is_array( $this->_path ) )
+		if (is_array($this->_path))
 		{
 			return $this->_path;
 		}
 		else
 		{
-			$aParentPath = $this->_parent->getFilePath();
-			$sClass      = str_replace( array_keys( $aParentPath ), "", get_class( $this ) );
-			$aPath       = Array();
-			foreach ( $aParentPath as $sTier=>$sPath )
+			$parentPath = $this->_parent->getFilePath();
+			$className  = str_replace(array_keys($parentPath), '', get_class($this));
+			$pathList   = Array();
+
+			foreach ($parentPath as $tier=>$path)
 			{
-				$sClassPath = $sPath . "/" . strToLower( $sClass );
-				if ( realpath( $sClassPath ) )
-					$aPath[ "{$sTier}{$sClass}" ] = $sClassPath;
+				$classPath = $path . '/' . strToLower($className);
+				if (realpath($classPath))
+					$pathList[$tier . $className] = $classPath;
 			}
-			return $aPath;
+
+			return $pathList;
 		}
 	}
 
@@ -474,82 +479,82 @@ class Konsolidate implements Iterator
 	 *  @access  public
 	 *  @param   string  module path
 	 *  @return  mixed
-	 *  @syntax  Konsolidate->getModule( string path );
+	 *  @syntax  Konsolidate->getModule(string path);
 	 */
-	public function getModule( $sCall )
+	public function getModule($call)
 	{
-		$sPath = strToUpper( $sCall );
-		if ( !array_key_exists( $sPath, $this->_lookupcache ) )
+		$path = strToUpper($call);
+		if (!array_key_exists($path, $this->_lookupcache))
 		{
-			$aPath   = explode( $this->_objectseparator, $sPath );
-			$oModule = $this;
-			while( is_object( $oModule ) && count( $aPath ) )
+			$pathList   = explode($this->_objectseparator, $path);
+			$instance = $this;
+			while(is_object($instance) && count($pathList))
 			{
-				$sSegment = array_shift( $aPath );
-				switch( strToLower( $sSegment ) )
+				$segment = array_shift($pathList);
+				switch(strToLower($segment))
 				{
-					case "":        //  root
-					case "_root":
-						$oTraverse = $oModule->getRoot();
+					case '':        //  root
+					case '_root':
+						$traverse = $instance->getRoot();
 						break;
-					case "..":      //  parent
-					case "_parent": //
-						$oTraverse = $oModule->getParent();
+					case '..':      //  parent
+					case '_parent': //
+						$traverse = $instance->getParent();
 						break;
-					case ".":       //  self
-						$oTraverse = $this;
+					case '.':       //  self
+						$traverse = $this;
 						break;
 					default:        //  child
-						$oTraverse = $oModule->register( $sSegment );
+						$traverse = $instance->register($segment);
 						break;
 				}
 
-				if ( !is_object( $oTraverse ) )
+				if (!is_object($traverse))
 				{
-					$this->call( "/Log/write", "Module '{$sSegment}' not found in module " . get_class( $oModule ) . "!", 3 );
-					return $oTraverse;
+					$this->call('/Log/write', 'Module \'' . $segment . '\' not found in module ' . get_class($instance) . '!', 3);
+					return $traverse;
 				}
 
-				$oModule = $oTraverse;
+				$instance = $traverse;
 			}
 
-			$this->_lookupcache[ $sPath ] = $oModule;
+			$this->_lookupcache[$path] = $instance;
 		}
-		return $this->_lookupcache[ $sPath ];
+		return $this->_lookupcache[$path];
 	}
 
 	public function getTopAuthoredClass()
 	{
-		if ( property_exists( $this, "_dynamicStubClass" ) )
-			return $this->call( "../getTopAuthoredClass" );
-		return get_class( $this );
+		if (property_exists($this, '_dynamicStubClass'))
+			return $this->call('../getTopAuthoredClass');
+		return get_class($this);
 	}
 
 	//  Iterator functionality
 
 	public function key()
 	{
-		return key( $this->_property );
+		return key($this->_property);
 	}
 
 	public function current()
 	{
-		return current( $this->_property );
+		return current($this->_property);
 	}
 
 	public function next()
 	{
-		return next( $this->_property );
+		return next($this->_property);
 	}
 
 	public function rewind()
 	{
-		return reset( $this->_property );
+		return reset($this->_property);
 	}
 
 	public function valid()
 	{
-		return !is_null( $this->key() );
+		return !is_null($this->key());
 	}
 
 	//  End Iterator functionality
@@ -564,84 +569,86 @@ class Konsolidate implements Iterator
 	 *  @param   string  message (option)
 	 *  @param   int     code (option)
 	 *  @return  void
-	 *  @syntax  Konsolidate->exception( [ string message [, int code ] ] );
+	 *  @syntax  Konsolidate->exception([string message [, int code]]);
 	 *  @note    Exception classes must be an extend of PHP's built-in Exception class, if the exception method is called and the calling module does not
 	 *           have an exception class, Konsolidate will generate one dynamically.
 	 *  @note    Exception classname use the same structure as normal Konsolidated classnames, but they must omit the tiername, e.g. you have a module
 	 *           'Example' in the tier 'Demo' (class DemoExample in example.php), its exception class name should be (or will be generated dynamically)
 	 *           'ExampleException' and be located in the file example/exception.php.
 	 */
-	public function exception( $sMessage=null, $nCode=0 )
+	public function exception($message=null, $code=0)
 	{
-		$this->import( "exception.php" );
+		$this->import('exception.php');
 
-		$sThrowClass     = str_replace( array_keys( $this->getRoot()->getFilePath() ), "", get_class( $this ) . "Exception" );
-		$sExceptionClass = "";
-		foreach ( $this->_path as $sMod=>$sPath )
+		$throwClass     = str_replace(array_keys($this->getRoot()->getFilePath()), '', get_class($this) . 'Exception');
+		$exceptionClass = '';
+		foreach ($this->_path as $name=>$path)
 		{
-			$sClass  = "{$sMod}Exception";
-			if ( class_exists( $sClass ) )
+			$className  = $name . 'Exception';
+			if (class_exists($className))
 			{
-				$sExceptionClass = $sClass;
+				$exceptionClass = $className;
 				break;
 			}
 		}
 
-		$aTrace = debug_backtrace();
-		$sFile  = "";
-		$sLine  = "";
-		if ( count( $aTrace ) >= 4 && isset( $aTrace[ 3 ] ) )
+		$trace = debug_backtrace();
+		$file  = '';
+		$line  = '';
+		if (count($trace) >= 4 && isset($trace[3]))
 		{
 			//  The origin of species
-			$sFile = $aTrace[ 3 ][ "file" ];
-			$sLine = $aTrace[ 3 ][ "line" ];
+			$file = $trace[3]['file'];
+			$line = $trace[3]['line'];
 		}
 
-		if ( empty( $sExceptionClass ) )
-			$sExceptionClass = "Exception";
+		if (empty($exceptionClass))
+			$exceptionClass = 'Exception';
 
 		//  Create tierless Exception on the fly if the requested Exception does not exist
-		if ( !class_exists( $sThrowClass ) )
+		if (!class_exists($throwClass))
 		{
-			eval( "class {$sThrowClass} extends {$sExceptionClass}{public function __construct(\$s=null,\$c=0){parent::__construct(\$s,\$c);\$this->file='{$sFile}';\$this->line= (int) '{$sLine}';}}" );
+			eval('class ' . $throwClass . ' extends ' . $exceptionClass . '{public function __construct($s=null,$c=0){parent::__construct($s,$c);$this->file=\'' . $file . '\';$this->line= (int) \'' . $line . '\';}}');
 		}
 
-		if ( class_exists( $sThrowClass ) )
-			throw new $sThrowClass( $sMessage, $nCode );
-		throw new Exception( $sMessage, $nCode );
+		if (class_exists($throwClass))
+			throw new $throwClass($message, $code);
+
+		throw new Exception($message, $code);
 	}
 
 
 	// Magic methods.
-	public function __set( $sProperty, $mValue )
+	public function __set($property, $value)
 	{
-		if ( array_key_exists( strToUpper( $sProperty ), $this->_module ) )
-			throw new Exception( "Trying to overwrite existing module {$sProperty} in " . get_class( $this ) . " with " . gettype( $mValue ) . " {$mValue}" );
-		else if ( $this->checkModuleAvailability( $sProperty ) )
-			throw new Exception( "Trying to set a property " . gettype( $mValue ) . " {$mValue} in " . get_class( $this ) . " where a module is available" );
-		$this->_property[ $sProperty ] = $mValue;
+		if (array_key_exists(strToUpper($property), $this->_module))
+			throw new Exception('Trying to overwrite existing module ' . $property . ' in ' . get_class($this) . ' with ' . gettype($value) . ' ' . $value);
+		else if ($this->checkModuleAvailability($property))
+			throw new Exception('Trying to set a property ' . gettype($value) . ' ' . $value . ' in ' . get_class($this) . ' where a module is available');
+		$this->_property[$property] = $value;
 	}
 
-	public function __get( $sProperty )
+	public function __get($property)
 	{
-		if ( $sProperty == "modules" )
+		if ($property == 'modules')
 			return $this->_module;
-		else if ( array_key_exists( $sProperty, $this->_property ) )
-			return $this->_property[ $sProperty ];
-		else if ( array_key_exists( strToUpper( $sProperty ), $this->_module ) )
-			return $this->_module[ strToUpper( $sProperty ) ];
-		else if ( $this->checkModuleAvailability( $sProperty ) )
-			return $this->get( $sProperty );
+		else if (array_key_exists($property, $this->_property))
+			return $this->_property[$property];
+		else if (array_key_exists(strToUpper($property), $this->_module))
+			return $this->_module[strToUpper($property)];
+		else if ($this->checkModuleAvailability($property))
+			return $this->get($property);
 		return null;
 	}
 
-	public function __call( $sMethod, $aArgument )
+	public function __call($method, $args)
 	{
-		$sSelf        = get_class( $this );
-		$sTopAuthored = $this->getTopAuthoredClass();
-		$sMessage     = "Call to unknown method '{$sSelf}::{$sMethod}'" . ( $sTopAuthored != $sSelf ? ", nearest authored class is '{$sTopAuthored}'" : "" );
-		$this->call( "/Log/write", $sMessage, 0 );
-		throw new Exception( $sMessage );
+		$self        = get_class($this);
+		$topAuthored = $this->getTopAuthoredClass();
+		$message     = 'Call to unknown method \'' . $self . '::' . $method . '\'' . ($topAuthored != $self ? ', nearest authored class is \'' . $topAuthored . '\'' : '');
+		$this->call('/Log/write', $message, 0);
+		throw new Exception($message);
+
 		return false;
 	}
 
@@ -652,9 +659,9 @@ class Konsolidate implements Iterator
 	 *  @access  public
 	 *  @param   mixed   arg N
 	 *  @return  mixed
-	 *  @syntax  Konsolidate( [ mixed arg N ] );
+	 *  @syntax  Konsolidate([mixed arg N]);
 	 *  @note    __invoke only works in PHP 5.3+
-	 *  @note    You can now effectively leave out the '->call' part when calling on methods, e.g. $oK( "/DB/query", "SHOW TABLES" ) instead of $oK->call( "/DB/query", "SHOW TABLES" );
+	 *  @note    You can now effectively leave out the '->call' part when calling on methods, e.g. $K('/DB/query', 'SHOW TABLES') instead of $K->call('/DB/query', 'SHOW TABLES');
 	 *  @see     call
 	 */
 	public function __invoke()
@@ -662,7 +669,7 @@ class Konsolidate implements Iterator
 		return call_user_func_array(
 			Array(
 				$this,       // the object
-				"call"       // the method
+				'call'       // the method
 			),
 			func_get_args()  // the arguments
 		);
@@ -678,9 +685,9 @@ class Konsolidate implements Iterator
 	 *  @syntax  isset(Konsolidate->property), empty(Konsolidate->property);
 	 *  @note    __isset only works in PHP 5.1+
 	 */
-	public function __isset( $sProperty )
+	public function __isset($property)
 	{
-		return isset($this->_property[ $sProperty ]);
+		return isset($this->_property[$property]);
 	}
 
 	/**
@@ -692,9 +699,9 @@ class Konsolidate implements Iterator
 	 *  @syntax  unset(Konsolidate->property);
 	 *  @note    __unset only works in PHP 5.1+
 	 */
-	public function __unset( $sProperty )
+	public function __unset($property)
 	{
-		unset($this->_property[ $sProperty ]);
+		unset($this->_property[$property]);
 	}
 
 	/**
@@ -706,36 +713,39 @@ class Konsolidate implements Iterator
 	 */
 	public function __toString()
 	{
-		$sReturn  = "<div style='font-family:\"Lucida Grande\", Verdana, Arial, sans-serif;font-size:11px;color'>";
-		$sReturn .= "<h3 style='margin:0;padding:0;'>" . get_class( $this ) . "</h3>\n";
-		if ( count( $this->_property ) )
-		{
-			$sReturn .= "<div style='color:#400;'>\n";
-			$sReturn .= "<em>Custom properties</em>\n";
-			$sReturn .= "<ul>";
-			foreach( $this->_property as $sKey=>$mValue )
-				if ( is_object( $mValue ) )
-					$sReturn .= " <li>{$sKey}\t= (object " . get_class( $mValue ) . ")</li>\n";
-				else if ( is_array( $mValue ) )
-					$sReturn .= " <li>{$sKey}\t= (array)</li>\n";
-				else if ( is_bool( $mValue ) )
-					$sReturn .= " <li>{$sKey}\t= (bool) " . ( $mValue ? "true" : "false" ) . "</li>\n";
-				else
-					$sReturn .= " <li>{$sKey}\t= (" . gettype( $mValue ) . ") {$mValue}</li>\n";
-			$sReturn .= "</ul>";
-			$sReturn .= "</div>";
-		}
-		if ( count( $this->_module ) )
-		{
-			$sReturn .= "<strong>Modules</strong>\n";
-			$sReturn .= "<ul>";
-			foreach( $this->_module as $sKey=>$mValue )
-				$sReturn .= " <li style='list-style-type:square;'>{$sKey}\n<br />{$mValue}</li>";
-			$sReturn .= "</ul>";
-		}
-		$sReturn .= "</div>";
+		$return = [
+			'<div style="font-family:\'Lucida Grande\', Verdana, Arial, sans-serif;font-size:11px;">',
+			'<h3 style="margin:0;padding:0;">' . get_class($this) . '</h3>',
+		];
 
-		return $sReturn;
+		if (count($this->_property))
+		{
+			$return[] = '<div style="color:#400;"><em>Custom properties</em><ul>';
+
+			foreach ($this->_property as $key=>$value)
+			{
+				$type = gettype($value);
+				if ($type === 'object')
+					$type = get_class($value);
+
+				$return[] = '<li><code>' . $key . '</code> = (' . $type . ') <code>' . var_export($value, true) . '</code></li>';
+			}
+
+			$return[] = '</ul></div>';
+		}
+
+		if (count($this->_module))
+		{
+			$return[] = '<strong>Modules</strong><ul>';
+
+			foreach ($this->_module as $key=>$value)
+				$return[] = ' <li style="list-style-type:square;">' . $key . '<br />' . $value . '</li>';
+
+			$return[] = '</ul>';
+		}
+		$return[] = '</div>';
+
+		return join('', $return);
 	}
 
 	/**

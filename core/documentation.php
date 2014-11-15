@@ -19,12 +19,13 @@ class CoreDocumentation extends Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = &new CoreDocumentation( object parent )
+	 *  @syntax  object = &new CoreDocumentation(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
-	public function __construct( &$oParent )
+	public function __construct(Konsolidate $oParent)
 	{
-		parent::__construct( $oParent );
+		parent::__construct($parent);
+
 		$this->_collect = Array();
 	}
 
@@ -35,26 +36,26 @@ class CoreDocumentation extends Konsolidate
 	 *  @access  public
 	 *  @param   string filename
 	 *  @return  array of Documentation/Block instances
-	 *  @syntax  array CoreDocumentation->collect( string filename )
+	 *  @syntax  array CoreDocumentation->collect(string filename)
 	 *  @note    the return array contains a single Documentation/Block instance per comment block in the 'collected' file
 	 */
-	public function collect( $sFile )
+	public function collect($sFile)
 	{
-		$sBody = file_get_contents( $sFile );
+		$sBody = file_get_contents($sFile);
 
-		preg_match_all( "#/\*\*(.*?)\*/#s", $sBody, $aMatch );
-		if ( count( $aMatch ) > 1 )
+		preg_match_all('#/\*\*(.*?)\*/#s', $sBody, $aMatch);
+		if (count($aMatch) > 1)
 		{
-			foreach( $aMatch[ 1 ] as $sComment )
+			foreach($aMatch[1] as $sComment)
 			{
-				$nIndex                    = count( $this->_collect );
-				$this->_collect[ $nIndex ] = $this->instance( "Block" );
+				$nIndex                    = count($this->_collect);
+				$this->_collect[$nIndex] = $this->instance('Block');
 
-				$sComment = preg_replace( "/([\r\t ]+)\*([\r\t ]+)/s", "", $sComment );
-				$aComment = explode( "\n", $sComment );
+				$sComment = preg_replace('/([\r\t]+)\*([\r\t]+)/s', '', $sComment);
+				$aComment = explode(PHP_EOL, $sComment);
 
-				foreach( $aComment as $sCommentLine )
-					$this->_collect[ $nIndex ]->append( $sCommentLine );
+				foreach($aComment as $sCommentLine)
+					$this->_collect[$nIndex]->append($sCommentLine);
 			}
 		}
 		return $this->_collect;
@@ -66,14 +67,14 @@ class CoreDocumentation extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @param   bool   skip empty documentation instructions
-	 *  @syntax  array CoreDocumentation->fetch( bool skipempty )
+	 *  @syntax  array CoreDocumentation->fetch(bool skipempty)
 	 *  @return  array of Documentation/Block instances
 	 */
-	public function fetch( $bOmitEmpty=false )
+	public function fetch($bOmitEmpty=false)
 	{
 		$aReturn = Array();
-		foreach( $this->_collect as $oDocBlock )
-			array_push( $aReturn, $oDocBlock->fetch( $bOmitEmpty ) );
+		foreach($this->_collect as $oDocBlock)
+			array_push($aReturn, $oDocBlock->fetch($bOmitEmpty));
 		return $aReturn;
 	}
 }

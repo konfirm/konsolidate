@@ -33,12 +33,12 @@ class CoreDBMySQLException extends Exception
 	 *  @access  public
 	 *  @param   resource connection
 	 *  @return  object
-	 *  @syntax  object = &new CoreDBMySQLException( resource connection )
+	 *  @syntax  object = &new CoreDBMySQLException(resource connection)
 	 *  @note    This object is constructed by CoreDBMySQL as 'status report'
 	 */
-	public function __construct( &$rConnection )
+	public function __construct($rConnection)
 	{
-		$this->error = is_resource( $rConnection ) ? mysql_error( $rConnection ) : mysql_error();
-		$this->errno = is_resource( $rConnection ) ? mysql_errno( $rConnection ) : mysql_errno();
+		$this->error = is_resource($rConnection) ? mysql_error($rConnection) : mysql_error();
+		$this->errno = is_resource($rConnection) ? mysql_errno($rConnection) : mysql_errno();
 	}
 }

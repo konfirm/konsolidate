@@ -17,32 +17,32 @@ class CoreConfigINI extends Konsolidate
 	 *  @access  public
 	 *  @param   string  inifile
 	 *  @return  array
-	 *  @syntax  Object->load( string inifile )
+	 *  @syntax  Object->load(string inifile)
 	 */
-	public function load( $sFile, $sSegment=null )
+	public function load($sFile, $sSegment=null)
 	{
-		$aConfig = parse_ini_file( $sFile, true );
+		$aConfig = parse_ini_file($sFile, true);
 		$aReturn = Array();
-		foreach( $aConfig as $sPrefix=>$mValue )
+		foreach($aConfig as $sPrefix=>$mValue)
 		{
-			if ( is_array( $mValue ) )
+			if (is_array($mValue))
 			{
-				$aReturn[ $sPrefix ] = array_key_exists( "default", $aReturn ) ? $aReturn[ "default" ] : Array();
-				foreach( $mValue as $sKey=>$sValue )
+				$aReturn[$sPrefix] = array_key_exists('default', $aReturn) ? $aReturn['default'] : Array();
+				foreach($mValue as $sKey=>$sValue)
 				{
-					$aReturn[ $sPrefix ][ $sKey ] = $sValue;
-					$this->set( "/Config/{$sPrefix}/$sKey", $sValue );
+					$aReturn[$sPrefix][$sKey] = $sValue;
+					$this->set("/Config/{$sPrefix}/$sKey", $sValue);
 				}
 			}
 			else
 			{
-				$aReturn[ $sPrefix ] = $mValue;
-				$this->set( "/Config/{$sPrefix}", $mValue );
+				$aReturn[$sPrefix] = $mValue;
+				$this->set("/Config/{$sPrefix}", $mValue);
 			}
 		}
 
-		if ( !is_null( $sSegment ) && array_key_exists( $sSegment, $aReturn ) )
-			return $aReturn[ $sSegment ];
+		if (!is_null($sSegment) && array_key_exists($sSegment, $aReturn))
+			return $aReturn[$sSegment];
 
 		return $aReturn;
 	}
@@ -54,18 +54,18 @@ class CoreConfigINI extends Konsolidate
 	 *  @access  public
 	 *  @param   string  inifile
 	 *  @return  void
-	 *  @syntax  Object->loadAndDefine( string inifile )
+	 *  @syntax  Object->loadAndDefine(string inifile)
 	 *  @note    defines are formatted like [SECTION]_[KEY]=[VALUE]
 	 */
-	public function loadAndDefine( $sFile, $sSegment=null )
+	public function loadAndDefine($sFile, $sSegment=null)
 	{
-		$aConfig = $this->load( $sFile, $sSegment );
-		foreach( $aConfig as $sPrefix=>$aValue )
-			foreach( $aValue as $sKey=>$sValue )
+		$aConfig = $this->load($sFile, $sSegment);
+		foreach($aConfig as $sPrefix=>$aValue)
+			foreach($aValue as $sKey=>$sValue)
 			{
-				$sConstant = strToUpper( "{$sPrefix}_{$sKey}" );
-				if ( !defined( $sConstant ) )
-					define( $sConstant, $sValue );
+				$sConstant = strToUpper("{$sPrefix}_{$sKey}");
+				if (!defined($sConstant))
+					define($sConstant, $sValue);
 			}
 	}
 }

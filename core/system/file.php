@@ -19,12 +19,12 @@ class CoreSystemFile extends Konsolidate
 	 *  @access  public
 	 *  @param   string filename
 	 *  @return  string file contents (bool false on error)
-	 *  @syntax  bool [object]->read( string filename )
+	 *  @syntax  bool [object]->read(string filename)
 	 */
-	public static function read( $sFile )
+	public static function read($sFile)
 	{
-		if ( file_exists( $sFile ) && is_readable( $sFile ) )
-			return file_get_contents( $sFile );
+		if (file_exists($sFile) && is_readable($sFile))
+			return file_get_contents($sFile);
 		return false;
 	}
 
@@ -36,11 +36,11 @@ class CoreSystemFile extends Konsolidate
 	 *  @param   string filename
 	 *  @param   string data
 	 *  @return  bool success
-	 *  @syntax  bool [object]->write( string filename, string data )
+	 *  @syntax  bool [object]->write(string filename, string data)
 	 */
-	public static function write( $sFile, $sData )
+	public static function write($sFile, $sData)
 	{
-		return file_put_contents( $sFile, $sData );
+		return file_put_contents($sFile, $sData);
 	}
 
 	/**
@@ -51,12 +51,12 @@ class CoreSystemFile extends Konsolidate
 	 *  @param   string filename
 	 *  @param   number mode
 	 *  @return  bool success
-	 *  @syntax  bool [object]->mode( string file, number mode )
+	 *  @syntax  bool [object]->mode(string file, number mode)
 	 *  @note    mode needs be an octal number, eg 0777
 	 */
-	public static function mode( $sFile, $nMode )
+	public static function mode($sFile, $nMode)
 	{
-		return chmod( $sFile, $nMode );
+		return chmod($sFile, $nMode);
 	}
 
 	/**
@@ -66,11 +66,11 @@ class CoreSystemFile extends Konsolidate
 	 *  @access  public
 	 *  @param   string filename
 	 *  @return  bool success
-	 *  @syntax  bool [object]->unlink( string filename )
+	 *  @syntax  bool [object]->unlink(string filename)
 	 */
-	public static function unlink( $sFile )
+	public static function unlink($sFile)
 	{
-		return unlink( $sFile );
+		return unlink($sFile);
 	}
 
 	/**
@@ -80,13 +80,13 @@ class CoreSystemFile extends Konsolidate
 	 *  @access  public
 	 *  @param   string filename
 	 *  @return  bool success
-	 *  @syntax  bool [object]->delete( string filename )
+	 *  @syntax  bool [object]->delete(string filename)
 	 *  @see     unlink
 	 *  @note    an alias method for unlink
 	 */
-	public static function delete( $sFile )
+	public static function delete($sFile)
 	{
-		return $this->unlink( $sFile );
+		return $this->unlink($sFile);
 	}
 
 	/**
@@ -98,12 +98,12 @@ class CoreSystemFile extends Konsolidate
 	 *  @param   string newfilename
 	 *  @param   bool   force (optional, default false)
 	 *  @return  bool success
-	 *  @syntax  bool [object]->rename( string filename, string newfilename [, bool force ] )
+	 *  @syntax  bool [object]->rename(string filename, string newfilename [, bool force])
 	 */
-	public static function rename( $sFile, $sNewFile, $bForce=false )
+	public static function rename($sFile, $sNewFile, $bForce=false)
 	{
-		if ( file_exists( $sFile ) && ( $bForce || ( !$bForce && !file_exists( $sNewFile ) ) ) )
-			return rename( $sFile, $sNewFile );
+		if (file_exists($sFile) && ($bForce || (!$bForce && !file_exists($sNewFile))))
+			return rename($sFile, $sNewFile);
 		return false;
 	}
 
@@ -117,15 +117,15 @@ class CoreSystemFile extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @param   string filename
-	 *  @param   string mode (optional, default "r" (read access))
+	 *  @param   string mode (optional, default 'r' (read access))
 	 *  @return  bool success
-	 *  @syntax  bool [object]->open( string filename [, string mode ] );
+	 *  @syntax  bool [object]->open(string filename [, string mode]);
 	 *  @note    Warning: Since you cannot know if your code is the only code currently accessing any file
-	 *           you can best create a unique instance to use this method, obtained through: [KonsolidateObject]->instance( "/System/File" );
+	 *           you can best create a unique instance to use this method, obtained through: [KonsolidateObject]->instance('/System/File');
 	 */
-	public function open( $sFile, $sMode="r" )
+	public function open($sFile, $sMode='r')
 	{
-		$this->_filepointer = fopen( $sFile, $sMode );
+		$this->_filepointer = fopen($sFile, $sMode);
 		return $this->_filepointer !== false;
 	}
 
@@ -136,26 +136,26 @@ class CoreSystemFile extends Konsolidate
 	 *  @access  public
 	 *  @param   mixed  int length [optional, default 4096 bytes], or string property
 	 *  @return  mixed  data
-	 *  @syntax  string [object]->get( [ int bytes ] );
-	 *           mixed  [object]->get( string property );
+	 *  @syntax  string [object]->get([int bytes]);
+	 *           mixed  [object]->get(string property);
 	 *  @note    If a string property is provided, the property value is returned, otherwise the next line of the opened file is returned.
 	 *           Warning: Since you cannot know if your code is the only code currently accessing any file
-	 *           you can best create a unique instance to use this method, obtained through: [KonsolidateObject]->instance( "/System/File" );
+	 *           you can best create a unique instance to use this method, obtained through: [KonsolidateObject]->instance('/System/File');
 	 */
 	public function get()
 	{
 		//  in order to achieve compatiblity with Konsolidates set method in strict mode, the params are read 'manually'
 		$aArgument  = func_get_args();
-		$mLength    = (bool) count( $aArgument ) ? array_shift( $aArgument ) : 4096;
-		$mDefault   = (bool) count( $aArgument ) ? array_shift( $aArgument ) : null;
+		$mLength    = (bool) count($aArgument) ? array_shift($aArgument) : 4096;
+		$mDefault   = (bool) count($aArgument) ? array_shift($aArgument) : null;
 
-		if ( is_integer( $mLength ) )
+		if (is_integer($mLength))
 		{
-			if ( is_resource( $this->_filepointer ) && !feof( $this->_filepointer ) )
-				return fgets( $this->_filepointer, $mLength );
+			if (is_resource($this->_filepointer) && !feof($this->_filepointer))
+				return fgets($this->_filepointer, $mLength);
 			return false;
 		}
-		return parent::get( $mLength, $mDefault );
+		return parent::get($mLength, $mDefault);
 	}
 
 	/**
@@ -165,14 +165,14 @@ class CoreSystemFile extends Konsolidate
 	 *  @access  public
 	 *  @param   string data
 	 *  @return  bool success
-	 *  @syntax  bool [object]->put( string data );
+	 *  @syntax  bool [object]->put(string data);
 	 *  @note    Warning: Since you cannot know if your code is the only code currently accessing any file
-	 *           you can best create a unique instance to use this method, obtained through: [KonsolidateObject]->instance( "/System/File" );
+	 *           you can best create a unique instance to use this method, obtained through: [KonsolidateObject]->instance('/System/File');
 	 */
-	public function put( $sData )
+	public function put($sData)
 	{
-		if ( is_resource( $this->_filepointer ) )
-			return fputs( $this->_filepointer, $sData, strlen( $sData ) );
+		if (is_resource($this->_filepointer))
+			return fputs($this->_filepointer, $sData, strlen($sData));
 		return false;
 	}
 
@@ -186,7 +186,7 @@ class CoreSystemFile extends Konsolidate
 	 *  @see     get
 	 *  @note    Alias of get, relying on the default amount of bytes
 	 *  @note    Warning: Since you cannot know if your code is the only code currently accessing any file
-	 *           you can best create a unique instance to use this method, obtained through: [KonsolidateObject]->instance( "/System/File" );
+	 *           you can best create a unique instance to use this method, obtained through: [KonsolidateObject]->instance('/System/File');
 	 */
 	public function next()
 	{
@@ -201,12 +201,12 @@ class CoreSystemFile extends Konsolidate
 	 *  @return  bool success
 	 *  @syntax  bool [object]->close
 	 *  @note    Warning: Since you cannot know if your code is the only code currently accessing any file
-	 *           you can best create a unique instance to use this method, obtained through: [KonsolidateObject]->instance( "/System/File" );
+	 *           you can best create a unique instance to use this method, obtained through: [KonsolidateObject]->instance('/System/File');
 	 */
 	public function close()
 	{
-		if ( is_resource( $this->_filepointer ) )
-			return fclose( $this->_filepointer );
+		if (is_resource($this->_filepointer))
+			return fclose($this->_filepointer);
 		return false;
 	}
 
@@ -218,7 +218,7 @@ class CoreSystemFile extends Konsolidate
 	 *  @return  resource filepointer
 	 *  @syntax  resource [object]->getFilePointer()
 	 *  @note    Warning: Since you cannot know if your code is the only code currently accessing any file
-	 *           you can best create a unique instance to use this method, obtained through: [KonsolidateObject]->instance( "/System/File" );
+	 *           you can best create a unique instance to use this method, obtained through: [KonsolidateObject]->instance('/System/File');
 	 */
 	public function getFilePointer()
 	{
@@ -236,7 +236,7 @@ class CoreSystemFile extends Konsolidate
 	 */
 	public function __destruct()
 	{
-		if ( !is_null( $this->_filepointer ) && is_resource( $this->_filepointer ) )
+		if (!is_null($this->_filepointer) && is_resource($this->_filepointer))
 			$this->close();
 	}
 }

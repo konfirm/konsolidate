@@ -42,23 +42,23 @@ class CoreDBSQLiteQuery extends Konsolidate
 	 *  @param   string   query
 	 *  @param   resource connection
 	 *  @return  void
-	 *  @syntax  void CoreDBSQLiteQuery->execute( string query, resource connection )
+	 *  @syntax  void CoreDBSQLiteQuery->execute(string query, resource connection)
 	 */
-	public function execute( $sQuery, &$rConnection )
+	public function execute($sQuery, $rConnection)
 	{
 		$this->_replace = Array(
-			"NOW()"=>microtime( true )
+			'NOW()'=>microtime(true)
 		);
-		$this->query   = str_replace( array_keys( $this->_replace ), array_values( $this->_replace ), $sQuery );
+		$this->query   = str_replace(array_keys($this->_replace), array_values($this->_replace), $sQuery);
 		$this->_conn   = $rConnection;
-		$this->_result = @sqlite_query( $this->query, $this->_conn, SQLITE_BOTH, $sError );
+		$this->_result = @sqlite_query($this->query, $this->_conn, SQLITE_BOTH, $sError);
 
-		if ( is_resource( $this->_result ) )
-			$this->rows = sqlite_num_rows( $this->_result );
+		if (is_resource($this->_result))
+			$this->rows = sqlite_num_rows($this->_result);
 
 		//  We want the exception object to tell us everything is going extremely well, don't throw it!
-		$this->import( "../exception.class.php" );
-		$this->exception = new CoreDBSQLiteException( sqlite_last_error( $this->_conn ) );
+		$this->import('../exception.php');
+		$this->exception = new CoreDBSQLiteException(sqlite_last_error($this->_conn));
 		$this->errno     = &$this->exception->errno;
 		$this->error     = &$this->exception->error;
 	}
@@ -73,8 +73,8 @@ class CoreDBSQLiteQuery extends Konsolidate
 	 */
 	public function rewind()
 	{
-		if ( is_resource( $this->_result ) && sqlite_num_rows( $this->_result ) > 0 )
-			return sqlite_rewind( $this->_result );
+		if (is_resource($this->_result) && sqlite_num_rows($this->_result) > 0)
+			return sqlite_rewind($this->_result);
 		return false;
 	}
 
@@ -88,8 +88,8 @@ class CoreDBSQLiteQuery extends Konsolidate
 	 */
 	public function next()
 	{
-		if ( is_resource( $this->_result ) )
-			return sqlite_fetch_object( $this->_result );
+		if (is_resource($this->_result))
+			return sqlite_fetch_object($this->_result);
 		return false;
 	}
 
@@ -103,7 +103,7 @@ class CoreDBSQLiteQuery extends Konsolidate
 	 */
 	public function lastInsertID()
 	{
-		return sqlite_last_insert_rowid( $this->_conn );
+		return sqlite_last_insert_rowid($this->_conn);
 	}
 
 	/**
@@ -132,8 +132,8 @@ class CoreDBSQLiteQuery extends Konsolidate
 	public function fetchAll()
 	{
 		$aReturn = Array();
-		while( $oRecord = $this->next() )
-			array_push( $aReturn, $oRecord );
+		while($oRecord = $this->next())
+			array_push($aReturn, $oRecord);
 		$this->rewind();
 		return $aReturn;
 	}
