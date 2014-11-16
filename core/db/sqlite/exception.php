@@ -34,7 +34,6 @@ class CoreDBSQLiteException extends Exception
 	 *  @param   string error
 	 *  @param   int    errornumber
 	 *  @return  object
-	 *  @syntax  object = &new CoreDBSQLiteException(string error, int errornumber)
 	 *  @note    This object is constructed by CoreDBSQLite as 'status report'
 	 */
 	public function __construct($nError)

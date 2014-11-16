@@ -57,7 +57,6 @@ class CoreMediaImageShape extends Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = &new CoreMediaImageShape(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
 	public function __construct(Konsolidate $parent)
@@ -80,7 +79,6 @@ class CoreMediaImageShape extends Konsolidate
 	 *  @param   float  Y (optional, default 0)
 	 *  @param   float  Z (optional, default 0)
 	 *  @return  void
-	 *  @syntax  string CoreMediaImageShape->rotate(float X [, float Y [, float Z]])
 	 *  @note    3D rotation is considered experimental (and ugly), use with care
 	 */
 	public function rotate($nX, $nY, $nZ=0)
@@ -97,7 +95,6 @@ class CoreMediaImageShape extends Konsolidate
 	 *  @access  public
 	 *  @param   bool   bottom is base
 	 *  @return  void
-	 *  @syntax  string CoreMediaImageShape->buildBottomUp(bool bottom)
 	 */
 	public function buildBottomUp($bBottomY=true)
 	{
@@ -116,7 +113,6 @@ class CoreMediaImageShape extends Konsolidate
 	 *  @param   int end Y
 	 *  @param   string color
 	 *  @return  bool
-	 *  @syntax  string CoreMediaImageShape->line(resource image, int startX, int startY, int endX, int endY, string color)
 	 */
 	public function line($mImage, $nSX, $nSY, $nDX, $nDY, $sColor)
 	{
@@ -139,7 +135,6 @@ class CoreMediaImageShape extends Konsolidate
 	 *  @param   string bordercolor (optional, default null)
 	 *  @param   string fillcolor (optional, default null)
 	 *  @return  bool
-	 *  @syntax  string CoreMediaImageShape->rectangle(resource image, int x, int y, int width, int height [, string bordercolor [, string fillcolor]])
 	 */
 	public function rectangle($mImage, $nX, $nY, $nWidth, $nHeight, $sBorderColor=null, $sFillColor=null)
 	{
@@ -164,7 +159,6 @@ class CoreMediaImageShape extends Konsolidate
 	 *  @param   string bordercolor (optional, default null)
 	 *  @param   string fillcolor (optional, default null)
 	 *  @return  bool
-	 *  @syntax  string CoreMediaImageShape->polygon(resource image, int x, int y, int radius, int segments [, string bordercolor [, string fillcolor]])
 	 */
 	public function polygon($mImage, $nX, $nY, $nRadius, $nSegment, $sBorderColor=null, $sFillColor=null)
 	{
@@ -185,7 +179,6 @@ class CoreMediaImageShape extends Konsolidate
 	 *  @param   string bordercolor (optional, default null)
 	 *  @param   string fillcolor (optional, default null)
 	 *  @return  bool
-	 *  @syntax  string CoreMediaImageShape->star(resource image, int x, int y, int innerradius, int outerradius, int peaks [, string bordercolor [, string fillcolor]])
 	 */
 	public function star($mImage, $nX, $nY, $nInnerRadius, $nOuterRadius, $nPeak, $sBorderColor=null, $sFillColor=null)
 	{
@@ -209,7 +202,6 @@ class CoreMediaImageShape extends Konsolidate
 	 *  @param   string bordercolor (optional, default null)
 	 *  @param   string fillcolor (optional, default null)
 	 *  @return  bool
-	 *  @syntax  string CoreMediaImageShape->_draw(resource image, array points [, string bordercolor [, string fillcolor]])
 	 */
 	protected function _draw($mImage, $aPoint, $sBorderColor=null, $sFillColor=null)
 	{
@@ -228,7 +220,6 @@ class CoreMediaImageShape extends Konsolidate
 	 *  @param   string bordercolor (optional, default null)
 	 *  @param   string fillcolor (optional, default null)
 	 *  @return  bool
-	 *  @syntax  string CoreMediaImageShape->_draw2D(resource image, array points [, string bordercolor [, string fillcolor]])
 	 */
 	protected function _draw2D($mImage, $aPoint, $sBorderColor=null, $sFillColor=null)
 	{
@@ -266,7 +257,6 @@ class CoreMediaImageShape extends Konsolidate
 	 *  @param   string bordercolor (optional, default null)
 	 *  @param   string fillcolor (optional, default null)
 	 *  @return  bool
-	 *  @syntax  string CoreMediaImageShape->_draw3D(resource image, array points [, string bordercolor [, string fillcolor]])
 	 *  @note    drawing 3D image is considered experimental (and ugly)
 	 */
 	protected function _draw3D($mImage, $aPoint, $sBorderColor=null, $sFillColor=null)
@@ -302,7 +292,6 @@ class CoreMediaImageShape extends Konsolidate
 	 *  @param   int outer radius
 	 *  @param   int angle (optional, default 0)
 	 *  @return  array points
-	 *  @syntax  array CoreMediaImageShape->_calculateRing(int x, int y, int innerradiuas, int outerradius [, int angle])
 	 */
 	protected function _calculateRing($nX, $nY, $nRadius, $nSegment, $nRotation=0)
 	{
@@ -327,7 +316,6 @@ class CoreMediaImageShape extends Konsolidate
 	 *  @param   int y
 	 *  @param   int z (optional, default 0)
 	 *  @return  array point
-	 *  @syntax  array CoreMediaImageShape->_point(int x, int y [, int z])
 	 */
 	protected function _point($nX, $nY, $nZ=0)
 	{
@@ -342,7 +330,6 @@ class CoreMediaImageShape extends Konsolidate
 	 *  @param   array points
 	 *  @param   resource image (optional, only used in case the image is build bottomUp)
 	 *  @return  array points
-	 *  @syntax  array CoreMediaImageShape->_resolvePoints(array points [, resource image])
 	 */
 	protected function _resolvePoints($aPoint, $mImage=null)
 	{
@@ -367,7 +354,6 @@ class CoreMediaImageShape extends Konsolidate
 	 *  @param   int Y (optional, default 0)
 	 *  @param   int Z (optional, default 0)
 	 *  @return  array point
-	 *  @syntax  array CoreMediaImageShape->_applyRotation(array point [, int X [, int Y [, int Z]]])
 	 */
 	protected function _applyRotation($aPoint, $nRotationX=0, $nRotationY=0, $nRotationZ=0)
 	{

@@ -68,7 +68,6 @@ class CoreKey extends Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = &new CoreKey(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
 	public function __construct(Konsolidate $parent)
@@ -90,7 +89,6 @@ class CoreKey extends Konsolidate
 	 *  @access  public
 	 *  @param   string format (optional, default XXXX-XXXX)
 	 *  @return  string generated key
-	 *  @syntax  string CoreKey->create(string format)
 	 *  @note    string format uses XXXX-XXXX-XXXX, where X is replaced with a key part
 	 */
 	public function create($sFormat=null)
@@ -106,7 +104,6 @@ class CoreKey extends Konsolidate
 	 *  @type    method
 	 *  @access  protected
 	 *  @return  void
-	 *  @syntax  void CoreKey->_createSalt()
 	 */
 	protected function _createSalt()
 	{
@@ -124,7 +121,6 @@ class CoreKey extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  void
-	 *  @syntax  void CoreKey->[string property] = mixed value
 	 *  @note    reserved properties which actually change the 'salt' are: lowercase, uppercase, numeric, exclude and format and are treated as boolean values
 	 *           these reserved properties behave exactly as expected, except that they additionally modify the 'salt' the moment one of them is set
 	 */

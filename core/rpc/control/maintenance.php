@@ -24,7 +24,6 @@ class CoreRPCControlMaintenance extends Konsolidate implements CoreRPCControlInt
 	 *  @type    method
 	 *  @access  public
 	 *  @return  string
-	 *  @syntax  string CoreRPCControlMaintenance->getMessage()
 	 *  @note    This method is required by the interface
 	 */
 	public function getMessage()
@@ -38,7 +37,6 @@ class CoreRPCControlMaintenance extends Konsolidate implements CoreRPCControlInt
 	 *  @type    method
 	 *  @access  public
 	 *  @return  mixed
-	 *  @syntax  mixed CoreRPCControlMaintenance->getContent()
 	 *  @note    This method is required by the interface
 	 */
 	public function getContent()
@@ -52,7 +50,6 @@ class CoreRPCControlMaintenance extends Konsolidate implements CoreRPCControlInt
 	 *  @type    method
 	 *  @access  public
 	 *  @return  bool
-	 *  @syntax  bool CoreRPCControlMaintenance->getStatus()
 	 *  @note    This method is required by the interface
 	 */
 	public function getStatus()
@@ -69,7 +66,6 @@ class CoreRPCControlMaintenance extends Konsolidate implements CoreRPCControlInt
 	 *  @type    method
 	 *  @access  protected
 	 *  @return  void
-	 *  @syntax  void CoreRPCControlMaintenance->_loadRequest()
 	 */
 	protected function loadRequest()
 	{
@@ -84,7 +80,6 @@ class CoreRPCControlMaintenance extends Konsolidate implements CoreRPCControlInt
 	 *  @access  protected
 	 *  @param   string path
 	 *  @return  bool
-	 *  @syntax  bool CoreRPCControlMaintenance->_recursiveUnlink(string path)
 	 */
 	protected function _recursiveUnlink($sPath)
 	{
@@ -115,7 +110,6 @@ class CoreRPCControlMaintenance extends Konsolidate implements CoreRPCControlInt
 	 *  @type    method
 	 *  @access  public
 	 *  @return  void
-	 *  @syntax  void CoreRPCControlMaintenance->clearCache()
 	 */
 	public function clearCache()
 	{

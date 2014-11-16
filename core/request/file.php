@@ -18,7 +18,6 @@ class CoreRequestFile extends Konsolidate
 	 *  @param   string  destination
 	 *  @param   bool    safe name [optional, default true]
 	 *  @return  void
-	 *  @syntax  bool CoreRequestFile->move(string destination [, bool safename])
 	 */
 	public function move($sDestination, $bSafeName=true)
 	{
@@ -52,7 +51,6 @@ class CoreRequestFile extends Konsolidate
 	 *  @param   string  property
 	 *  @param   mixed   value
 	 *  @return  void
-	 *  @syntax  bool CoreRequestFile->{string property} = mixed value;
 	 *  @note    some additional properties are automaticalaly added when certain properties are set.
 	 *           - 'error' also sets 'message', a string containing a more helpful error message.
 	 *           - 'name' also set 'sanitizedname', a cleaned up (suggested) name for the file.
@@ -94,7 +92,6 @@ class CoreRequestFile extends Konsolidate
 	 *  @access  protected
 	 *  @param   number  bytes
 	 *  @return  string  readable unit
-	 *  @syntax  string CoreRequestFile->_bytesToLargestUnit(number bytes);
 	 */
 	protected function _bytesToLargestUnit($nValue)
 	{
@@ -115,7 +112,6 @@ class CoreRequestFile extends Konsolidate
 	 *  @access  protected
 	 *  @param   int     error number
 	 *  @return  string  error message
-	 *  @syntax  string CoreRequestFile->_getErrorMessage(int error);
 	 */
 	protected function _getErrorMessage($nError)
 	{

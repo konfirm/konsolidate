@@ -34,7 +34,6 @@ class CoreSystemFileCSV extends Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = &new CoreSystemFileCSV(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
 	function __construct(Konsolidate $parent)
@@ -55,7 +54,6 @@ class CoreSystemFileCSV extends Konsolidate
 	 *  @param   string mode [optional, default 'r']
 	 *  @param   bool   use first row as field definition [optional, default true]
 	 *  @return  bool  success
-	 *  @syntax  string [object]->open(string filename [, string mode [, bool firstrowdefines]]);
 	 */
 	public function open($file, $mode='r', $definitionRow=true)
 	{
@@ -77,7 +75,6 @@ class CoreSystemFileCSV extends Konsolidate
 	 *  @access  public
 	 *  @param   mixed  int length [optional, default 4096 bytes], or string property
 	 *  @return  mixed  data
-	 *  @syntax  string [object]->get([int bytes]);
 	 *           mixed  [object]->get(string property);
 	 *  @note    If a string property is provided, the property value is returned, otherwise the next line of the
 	 *           opened file is returned.
@@ -116,7 +113,6 @@ class CoreSystemFileCSV extends Konsolidate
 	 *  @param   string enclosure [optional, default class property 'enclosure' (default '"')]
 	 *  @param   bool   use first row as field definition [optional, default true]
 	 *  @return  bool  success
-	 *  @syntax  bool [object]->put(mixed data [, string delimiter [, string enclosure]]);
 	 */
 	public function put($data, $delimiter=null, $enclosure=null)
 	{
@@ -140,7 +136,6 @@ class CoreSystemFileCSV extends Konsolidate
 	 *  @param   string delimiter [optional, default class property 'delimiter' (default ',')]
 	 *  @param   string enclosure [optional, default class property 'enclosure' (default '"')]
 	 *  @return  mixed  object (if fieldnames are known), array (if fieldnames are not known)
-	 *  @syntax  mixed [object]->put(mixed data [, string delimiter [, string enclosure]]);
 	 */
 	public function next($length=4096, $delimiter=null, $sEncosure=null)
 	{
@@ -176,7 +171,6 @@ class CoreSystemFileCSV extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  bool success
-	 *  @syntax  bool [object]->close();
 	 */
 	public function close()
 	{

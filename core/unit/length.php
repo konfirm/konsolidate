@@ -28,7 +28,6 @@ class CoreUnitLength extends Konsolidate
 	 *  @param   string original unit
 	 *  @param   number conversion direction (from or to)
 	 *  @return  number value
-	 *  @syntax  bool   CoreUnitLength->_convert(number value, string unit [number direction])
 	 */
 	protected function _convert($nValue, $sUnit, $nDirection=1)
 	{
@@ -63,7 +62,6 @@ class CoreUnitLength extends Konsolidate
 	 *  @param   string original value+unit
 	 *  @param   bool   append suffix
 	 *  @return  mixed  value
-	 *  @syntax  bool   CoreUnitLength->toBase(string value [bool appendsuffix])
 	 */
 	public function toBase($sValue, $bOmitSuffix=false)
 	{

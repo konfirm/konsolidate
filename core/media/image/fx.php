@@ -18,7 +18,6 @@ class CoreMediaImageFX extends Konsolidate
 	 *  @param   resource image (or null to create a new image)
 	 *  @param   integer  amount (optional, default 1)
 	 *  @return  resource image
-	 *  @syntax  Object->blur(resource image, int amount)
 	 */
 	public function blur($mImage, $nAmount=1)
 	{
@@ -80,7 +79,6 @@ class CoreMediaImageFX extends Konsolidate
 	 *  @access  public
 	 *  @param   resource image (or null to create a new image)
 	 *  @return  resource image
-	 *  @syntax  Object->invert(resource image)
 	 */
 	public function invert($mImage)
 	{
@@ -119,7 +117,6 @@ class CoreMediaImageFX extends Konsolidate
 	 *  @param   resource image (or null to create a new image)
 	 *  @param   bool     correct for the human eye
 	 *  @return  resource image
-	 *  @syntax  Object->greyscale(resource image [, bool humaneye correction])
 	 */
 	public function greyscale($mImage, $bHumanEyeCorrection=false)
 	{

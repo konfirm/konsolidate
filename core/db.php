@@ -33,7 +33,6 @@ class CoreDB extends Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = &new CoreDB(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
 	public function __construct(Konsolidate $parent)
@@ -97,7 +96,6 @@ class CoreDB extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  bool
-	 *  @syntax  connect();
 	 */
 	public function connect()
 	{
@@ -114,7 +112,6 @@ class CoreDB extends Konsolidate
 	 *  @access  public
 	 *  @param   string reference
 	 *  @return  bool
-	 *  @syntax  isConnected(string reference);
 	 */
 	public function isConnected()
 	{
@@ -131,7 +128,6 @@ class CoreDB extends Konsolidate
 	 *  @access  public
 	 *  @param   string reference (optional, default only the connection marked as 'default')
 	 *  @return  bool
-	 *  @syntax  disconnect([string reference]);
 	 */
 	public function disconnect($reference=false)
 	{
@@ -161,7 +157,6 @@ class CoreDB extends Konsolidate
 	 *  @param   string SQL-query
 	 *  @param   bool   use cache (optional, default true)
 	 *  @return  ResultObject
-	 *  @syntax  query(string SQL [, string reference [, bool cache]]);
 	 *  @note    the optional cache is per pageview and in memory only, it merely prevents
 	 *           executing the exact same query over and over again
 	 */

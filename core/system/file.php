@@ -19,7 +19,6 @@ class CoreSystemFile extends Konsolidate
 	 *  @access  public
 	 *  @param   string filename
 	 *  @return  string file contents (bool false on error)
-	 *  @syntax  bool [object]->read(string filename)
 	 */
 	public static function read($file)
 	{
@@ -37,7 +36,6 @@ class CoreSystemFile extends Konsolidate
 	 *  @param   string filename
 	 *  @param   string data
 	 *  @return  bool success
-	 *  @syntax  bool [object]->write(string filename, string data)
 	 */
 	public static function write($file, $data)
 	{
@@ -52,7 +50,6 @@ class CoreSystemFile extends Konsolidate
 	 *  @param   string filename
 	 *  @param   number mode
 	 *  @return  bool success
-	 *  @syntax  bool [object]->mode(string file, number mode)
 	 *  @note    mode needs be an octal number, eg 0777
 	 */
 	public static function mode($file, $mode)
@@ -67,7 +64,6 @@ class CoreSystemFile extends Konsolidate
 	 *  @access  public
 	 *  @param   string filename
 	 *  @return  bool success
-	 *  @syntax  bool [object]->unlink(string filename)
 	 */
 	public static function unlink($file)
 	{
@@ -81,7 +77,6 @@ class CoreSystemFile extends Konsolidate
 	 *  @access  public
 	 *  @param   string filename
 	 *  @return  bool success
-	 *  @syntax  bool [object]->delete(string filename)
 	 *  @see     unlink
 	 *  @note    an alias method for unlink
 	 */
@@ -99,7 +94,6 @@ class CoreSystemFile extends Konsolidate
 	 *  @param   string newfilename
 	 *  @param   bool   force (optional, default false)
 	 *  @return  bool success
-	 *  @syntax  bool [object]->rename(string filename, string newfilename [, bool force])
 	 */
 	public static function rename($file, $newFile, $force=false)
 	{
@@ -117,7 +111,6 @@ class CoreSystemFile extends Konsolidate
 	 *  @param   string filename
 	 *  @param   string mode (optional, default 'r' (read access))
 	 *  @return  bool success
-	 *  @syntax  bool [object]->open(string filename [, string mode]);
 	 *  @note    Warning: Since you cannot know if your code is the only code currently accessing any file
 	 *           you can best create a unique instance to use this method, obtained through:
 	 *           [KonsolidateObject]->instance('/System/File');
@@ -136,7 +129,6 @@ class CoreSystemFile extends Konsolidate
 	 *  @access  public
 	 *  @param   mixed  int length [optional, default 4096 bytes], or string property
 	 *  @return  mixed  data
-	 *  @syntax  string [object]->get([int bytes]);
 	 *           mixed  [object]->get(string property);
 	 *  @note    If a string property is provided, the property value is returned, otherwise the next line of the
 	 *           opened file is returned.
@@ -169,7 +161,6 @@ class CoreSystemFile extends Konsolidate
 	 *  @access  public
 	 *  @param   string data
 	 *  @return  bool success
-	 *  @syntax  bool [object]->put(string data);
 	 *  @note    Warning: Since you cannot know if your code is the only code currently accessing any file
 	 *           you can best create a unique instance to use this method, obtained through: [KonsolidateObject]->instance('/System/File');
 	 */
@@ -187,7 +178,6 @@ class CoreSystemFile extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  string data
-	 *  @syntax  string [object]->next();
 	 *  @see     get
 	 *  @note    Alias of get, relying on the default amount of bytes
 	 *  @note    Warning: Since you cannot know if your code is the only code currently accessing any file
@@ -205,7 +195,6 @@ class CoreSystemFile extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  bool success
-	 *  @syntax  bool [object]->close
 	 *  @note    Warning: Since you cannot know if your code is the only code currently accessing any file
 	 *           you can best create a unique instance to use this method, obtained through:
 	 *           [KonsolidateObject]->instance('/System/File');
@@ -224,7 +213,6 @@ class CoreSystemFile extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  resource filepointer
-	 *  @syntax  resource [object]->getFilePointer()
 	 *  @note    Warning: Since you cannot know if your code is the only code currently accessing any file
 	 *           you can best create a unique instance to use this method, obtained through:
 	 *           [KonsolidateObject]->instance('/System/File');

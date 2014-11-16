@@ -35,7 +35,6 @@ class CoreUnitSI extends Konsolidate
 	 *  @param   string original unit
 	 *  @param   number conversion direction (from or to)
 	 *  @return  number value
-	 *  @syntax  bool   CoreUnitSI->_convert(number value, string unit [number direction])
 	 */
 	protected function _convert($nBase, $sFix='', $nDirection=1)
 	{
@@ -58,7 +57,6 @@ class CoreUnitSI extends Konsolidate
 	 *  @param   string original value+unit
 	 *  @param   string original unit
 	 *  @return  mixed  value
-	 *  @syntax  bool   CoreUnitLength->toBase(string value [, string unit])
 	 */
 	public function baseToPrefix($nBase, $sFix='')
 	{
@@ -73,7 +71,6 @@ class CoreUnitSI extends Konsolidate
 	 *  @param   string original value+unit
 	 *  @param   string original unit
 	 *  @return  mixed  value
-	 *  @syntax  bool   CoreUnitSI->prefixToBase(string value [, string unit])
 	 */
 	public function prefixToBase($nBase, $sFix='')
 	{

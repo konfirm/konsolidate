@@ -19,7 +19,6 @@ class CoreRPCStatus extends Konsolidate
 	 *  @access  protected
 	 *  @param   string value
 	 *  @return  string
-	 *  @syntax  Object->_cdata(string value);
 	 */
 	protected function _cdata($sValue)
 	{
@@ -35,7 +34,6 @@ class CoreRPCStatus extends Konsolidate
 	 *  @access  protected
 	 *  @param   array source
 	 *  @return  string
-	 *  @syntax  Object->_flattenArray(array source);
 	 */
 	protected function _flattenArray($aSource, $sNumericKey='item')
 	{
@@ -58,7 +56,6 @@ class CoreRPCStatus extends Konsolidate
 	 *  @param   string message [optional]
 	 *  @param   mixed  content (string or array containing additional info to send) [optional]
 	 *  @return  string
-	 *  @syntax  Object->fetch(bool error [, string message [, mixed content]]);
 	 */
 	public function fetch($bError, $sMessage='', $mContent='')
 	{
@@ -81,7 +78,6 @@ class CoreRPCStatus extends Konsolidate
 	 *  @param   string message [optional]
 	 *  @param   mixed  content (string or array containing additional info to send) [optional]
 	 *  @return  bool
-	 *  @syntax  Object->send(bool error [, string message [, mixed content]]);
 	 */
 	public function send($bError=true, $sMessage='', $mContent='')
 	{

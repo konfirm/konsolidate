@@ -23,7 +23,6 @@ class CoreRequest extends Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = &new CoreRequest(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
 	function __construct(Konsolidate $parent)
@@ -44,7 +43,6 @@ class CoreRequest extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  bool
-	 *  @syntax  bool CoreRequest->isPosted()
 	 */
 	public function isPosted()
 	{
@@ -57,7 +55,6 @@ class CoreRequest extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  string (bool false, if no raw data is available)
-	 *  @syntax  string CoreRequest->getRawRequest()
 	 */
 	public function getRawRequest()
 	{
@@ -70,7 +67,6 @@ class CoreRequest extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  SimpleXMLElement (bool false, if no xml data is available)
-	 *  @syntax  SimpleXMLElement CoreRequest->getXML()
 	 */
 	public function getXML()
 	{
@@ -83,7 +79,6 @@ class CoreRequest extends Konsolidate
 	 *  @type    method
 	 *  @access  protected
 	 *  @return  void
-	 *  @syntax  void CoreRequest->_collectFromRaw()
 	 */
 	protected function _collectFromRaw()
 	{
@@ -109,7 +104,6 @@ class CoreRequest extends Konsolidate
 	 *  @type    method
 	 *  @access  protected
 	 *  @return  void
-	 *  @syntax  void CoreRequest->_collectHTTP()
 	 */
 	protected function _collectHTTP($aCollection)
 	{
@@ -128,7 +122,6 @@ class CoreRequest extends Konsolidate
 	 *  @type    method
 	 *  @access  protected
 	 *  @return  void
-	 *  @syntax  void CoreRequest->_collect()
 	 */
 	protected function _collect()
 	{
@@ -148,9 +141,9 @@ class CoreRequest extends Konsolidate
 	 *  @type    method
 	 *  @access  protected
 	 *  @return  array     if no order is specified, _GET or _POST global, merged result of the desired order otherwise
-	 *  @syntax  array CoreRequest->_getCollection()
-	 *  @note    By default _getCollection module will distinguish between GET and POST requests, they will not be processed both!
-	 *           You can override this behaviour by setting the variable order (EGPCS, like the variables_order php.ini setting) to /Config/Request/variableorder
+	 *  @note    By default _getCollection module will distinguish between GET and POST requests, they will not be
+	 *           processed both! You can override this behavior by setting the variable order (EGPCS, like the
+	 *           variables_order php.ini setting) to /Config/Request/variableorder
 	 *           E.g. $this->set('/Config/Request/variableorder', 'GP'); // combine GET and POST variables
 	 */
 	protected function _getCollection()
@@ -179,7 +172,6 @@ class CoreRequest extends Konsolidate
 	 *  @type    method
 	 *  @access  protected
 	 *  @return  void
-	 *  @syntax  void CoreRequest->_collectFiles()
 	 */
 	protected function _collectFiles()
 	{
@@ -216,7 +208,6 @@ class CoreRequest extends Konsolidate
 	 *  @param   string  fieldname
 	 *  @param   string  reference (only when multiple files are uploaded)
 	 *  @return  void
-	 *  @syntax  void CoreRequest->_collectFiles()
 	 */
 	protected function _createFileInstance($aFile, $sVariable, $sReference=null)
 	{
@@ -233,7 +224,6 @@ class CoreRequest extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  void
-	 *  @syntax  bool CoreRequest->hasFiles()
 	 */
 	public function hasFiles()
 	{
@@ -248,7 +238,6 @@ class CoreRequest extends Konsolidate
 	 *  @access  public
 	 *  @param   bool  referenced array (non referenced array containing variable names)
 	 *  @return  array files
-	 *  @syntax  array CoreRequest->getFiles()
 	 */
 	public function getFiles($bReference=false)
 	{
@@ -263,7 +252,6 @@ class CoreRequest extends Konsolidate
 	 *  @access  public
 	 *  @param   string reference name
 	 *  @return  mixed  file object, array of file objects or false if reference does not exist
-	 *  @syntax  array CoreRequest->getFileByReference(string reference)
 	 */
 	public function getFileByReference($sReference)
 	{

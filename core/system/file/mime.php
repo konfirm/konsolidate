@@ -26,7 +26,6 @@ class CoreSystemFileMIME extends Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = &new CoreSystemFileMIME(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
 	public function __construct(Konsolidate $parent)
@@ -48,7 +47,6 @@ class CoreSystemFileMIME extends Konsolidate
 	 *  @access  public
 	 *  @param   string filename
 	 *  @return  string MIME
-	 *  @syntax  string CoreSystemFileMIME->getType(string filename)
 	 */
 	public function getType($sFile)
 	{
@@ -62,7 +60,6 @@ class CoreSystemFileMIME extends Konsolidate
 	 *  @access  protected
 	 *  @param   string filename
 	 *  @return  string MIME
-	 *  @syntax  string CoreSystemFileMIME->_determineTypeByMimeContentType(string filename)
 	 */
 	protected function _determineTypeByMimeContentType($sFile)
 	{
@@ -76,7 +73,6 @@ class CoreSystemFileMIME extends Konsolidate
 	 *  @access  protected
 	 *  @param   string filename
 	 *  @return  string MIME
-	 *  @syntax  string CoreSystemFileMIME->_determineTypeByFileInfo(string filename)
 	 */
 	protected function _determineTypeByFileInfo($sFile)
 	{
@@ -93,7 +89,6 @@ class CoreSystemFileMIME extends Konsolidate
 	 *  @access  protected
 	 *  @param   string filename
 	 *  @return  string MIME
-	 *  @syntax  string CoreSystemFileMIME->_determineTypeByExtension(string filename)
 	 */
 	protected function _determineTypeByExtension($sFile)
 	{

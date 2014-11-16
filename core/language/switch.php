@@ -25,7 +25,6 @@ class CoreLanguageSwitch extends Konsolidate
 	 *  @access  public
 	 *  @param   string phrase
 	 *  @return  string translation
-	 *  @syntax  string CoreLanguageSwitch->translate(string phrase)
 	 */
 	public function translate($sPhrase)
 	{
@@ -44,7 +43,6 @@ class CoreLanguageSwitch extends Konsolidate
 	 *  @param   string phrase
 	 *  @param   string locale
 	 *  @return  string translation
-	 *  @syntax  string CoreLanguageSwitch->_getPhraseByLocale(string phrase)
 	 */
 	protected function _getPhraseByLocale($sPhrase, $sLocale)
 	{
@@ -70,7 +68,6 @@ class CoreLanguageSwitch extends Konsolidate
 	 *  @access  protected
 	 *  @param   string phrase
 	 *  @return  void
-	 *  @syntax  void CoreLanguageSwitch->_trackPhrase(string phrase)
 	 */
 	protected function _trackPhrase($sPhrase)
 	{
@@ -85,7 +82,6 @@ class CoreLanguageSwitch extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  void
-	 *  @syntax  void CoreLanguageSwitch->__destruct()
 	 */
 	public function __destruct()
 	{

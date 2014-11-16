@@ -29,7 +29,6 @@ class CoreValidate extends Konsolidate
 	 *  @param   mixed value
 	 *  @param   bool  unsigned [optional]
 	 *  @return  bool
-	 *  @syntax  Object->isInteger(mixed value [, bool unsigned]);
 	 */
 	function isInteger($mValue, $bUnsigned=false)
 	{
@@ -48,7 +47,6 @@ class CoreValidate extends Konsolidate
 	 *  @param   mixed value
 	 *  @param   bool  unsigned [optional]
 	 *  @return  bool
-	 *  @syntax  Object->isPositiveInteger(mixed value [, bool unsigned]);
 	 */
 	function isPositiveInteger($mValue, $bUnsigned=false)
 	{
@@ -62,7 +60,6 @@ class CoreValidate extends Konsolidate
 	 *  @access  public
 	 *  @param   mixed value
 	 *  @return  bool
-	 *  @syntax  Object->isNegativeInteger(mixed value);
 	 */
 	function isNegativeInteger($mValue)
 	{
@@ -76,7 +73,6 @@ class CoreValidate extends Konsolidate
 	 *  @access  public
 	 *  @param   mixed value
 	 *  @return  bool
-	 *  @syntax  Object->isNumber(mixed value);
 	 */
 	function isNumber($mValue)
 	{
@@ -93,7 +89,6 @@ class CoreValidate extends Konsolidate
 	 *  @param   int   maximum [optional]
 	 *  @param   bool  include min/max values [optional]
 	 *  @return  bool
-	 *  @syntax  Object->isBetween(mixed value [, int min [, int max [, bool unsigned]]]);
 	 */
 	function isBetween($mValue, $iMin=null, $iMax=null, $bIncludeValues=true)
 	{
@@ -120,7 +115,6 @@ class CoreValidate extends Konsolidate
 	 *  @access  public
 	 *  @param   mixed value
 	 *  @return  bool
-	 *  @syntax  Object->isFilled(mixed value);
 	 */
 	function isFilled($mValue)
 	{
@@ -134,8 +128,8 @@ class CoreValidate extends Konsolidate
 	 *  @access  public
 	 *  @param   mixed value
 	 *  @return  bool
-	 *  @syntax  Object->isEmail(mixed value);
-	 *  @note    This method does NOT verify the actual existing of the e-mail address, it merely verifies that it complies to common e-mail addresses
+	 *  @note    This method does NOT verify the actual existing of the e-mail address, it merely verifies that it
+	 *           complies to common e-mail addresses
 	 */
 	function isEmail($mValue)
 	{

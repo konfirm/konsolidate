@@ -86,7 +86,6 @@ class CoreNetworkProtocolHTTP extends Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = &new CoreNetHTTP(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
 	public function __construct(Konsolidate $parent)

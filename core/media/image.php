@@ -25,7 +25,6 @@ class CoreMediaImage extends Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = &new CoreImage(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
 	public function __construct(Konsolidate $parent)
@@ -44,7 +43,6 @@ class CoreMediaImage extends Konsolidate
 	 *  @param   int    height
 	 *  @param   string hex backgroundcolor [optional]
 	 *  @return  resource image
-	 *  @syntax  Object->create(int width, int height [, string backgroundcolor]);
 	 */
 	public function create($nWidth, $nHeight, $sBGColor=null)
 	{
@@ -59,7 +57,6 @@ class CoreMediaImage extends Konsolidate
 	 *  @access  public
 	 *  @param   string filename
 	 *  @return  resource image
-	 *  @syntax  Object->load(string filename);
 	 */
 	public function load($sFile)
 	{
@@ -82,7 +79,6 @@ class CoreMediaImage extends Konsolidate
 	 *  @param   int   height of the part to merge [optional]
 	 *  @param   int   percentage of transparency of the source region [optional]
 	 *  @return  resource image
-	 *  @syntax  Object->merge(mixed destination, mixed source [, int destX [, int destY [, int srcX [, int srcY [, int srcWidth [, int srcHeight [, int transparency]]]]]]]);
 	 */
 	public function merge($mDestination, $mSource, $nDX=0, $nDY=0, $nSX=0, $nSY=0, $nSW=0, $nSH=0, $nPercentage=100)
 	{
@@ -116,7 +112,6 @@ class CoreMediaImage extends Konsolidate
 	 *  @param   int   width of the part to image [optional]
 	 *  @param   int   height of the part to merge [optional]
 	 *  @return  resource image
-	 *  @syntax  Object->copy(mixed destination, mixed source [, int destX [, int destY [, int srcX [, int srcY [, int srcWidth [, int srcHeight]]]]]]);
 	 */
 	public function copy($mDestination, $mSource, $nDX=0, $nDY=0, $nSX=0, $nSY=0, $nSW=0, $nSH=0)
 	{
@@ -148,7 +143,6 @@ class CoreMediaImage extends Konsolidate
 	 *  @param   int   new width [optional]
 	 *  @param   int   new height [optional]
 	 *  @return  resource image
-	 *  @syntax  Object->resize(mixed image [, int width [, int height]]);
 	 */
 	public function resize($mImage, $nWidth=0, $nHeight=0)
 	{
@@ -176,7 +170,6 @@ class CoreMediaImage extends Konsolidate
 	 *  @param   int   new width
 	 *  @param   int   new height
 	 *  @return  resource image
-	 *  @syntax  Object->crop(mixed image, int offsetX, int offsetY, int width, int height);
 	 */
 	public function crop($mImage, $nX, $nY, $nWidth, $nHeight)
 	{
@@ -207,7 +200,6 @@ class CoreMediaImage extends Konsolidate
 	 *  @param   int    quality [optional]
 	 *  @param   string filename [optional]
 	 *  @return  resource image
-	 *  @syntax  Object->display([string type [, int quality [, string filename]]]);
 	 */
 	public function display($sType='JPEG', $nQuality=75, $sFile=null)
 	{
@@ -251,7 +243,6 @@ class CoreMediaImage extends Konsolidate
 	 *  @param   mixed  image (string filename or image resource)
 	 *  @param   string hex backgroundcolor
 	 *  @return  bool
-	 *  @syntax  Object->fill(mixed image, string hexcolor)
 	 */
 	public function fill($mImage, $sColor)
 	{
@@ -268,7 +259,6 @@ class CoreMediaImage extends Konsolidate
 	 *  @param   string   hex backgroundcolor
 	 *  @param   resource image [optional]
 	 *  @return  int      color
-	 *  @syntax  Object->getColor(string hexcolor [, resource image])
 	 */
 	public function getColor($sColor, $mImage=null)
 	{
@@ -295,8 +285,8 @@ class CoreMediaImage extends Konsolidate
 	 *  @param   int      width [optional, default 0]
 	 *  @param   int      height [optional, default 0]
 	 *  @return  int      array('width'=>W, 'height'=>H);
-	 *  @syntax  Object->getScaleDimension(resource image, int width, int height)
-	 *  @note    provide 0 for either the width or the height to obtain it's constrained counterpart, provide 0 for both to obtain the current dimensions
+	 *  @note    provide 0 for either the width or the height to obtain it's constrained counterpart, provide 0 for both
+	 *           to obtain the current dimensions
 	 */
 	public function getScaleDimension($mImage, $nWidth=0, $nHeight=0)
 	{
@@ -333,7 +323,6 @@ class CoreMediaImage extends Konsolidate
 	 *  @param   int      bits [optional]
 	 *  @param   int      channels [optional]
 	 *  @return  bool
-	 *  @syntax  Object->adjustMemoryUsage(int width, int height [, int bits [, int channels]])
 	 */
 	public function adjustMemoryUsage($nWidth, $nHeight, $nBits=8, $nChannels=4)
 	{
@@ -356,7 +345,6 @@ class CoreMediaImage extends Konsolidate
 	 *  @param   int    height
 	 *  @param   string hex backgroundcolor [optional]
 	 *  @return  resource image
-	 *  @syntax  Object->_create(int width, int height [, string backgroundcolor]);
 	 */
 	protected function _create($nWidth, $nHeight, $sBGColor=null)
 	{
@@ -388,7 +376,6 @@ class CoreMediaImage extends Konsolidate
 	 *  @access  protected
 	 *  @param   string filename
 	 *  @return  resource image (bool false on error)
-	 *  @syntax  Object->_load(string filename);
 	 */
 	protected function _load($sFile)
 	{

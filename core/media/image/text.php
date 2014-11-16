@@ -231,7 +231,6 @@ class CoreMediaImageText extends Konsolidate
 	 *  @param   string  property
 	 *  @param   string  default (optional, default null)
 	 *  @return  mixed property value
-	 *  @syntax  CoreMediaImageText->_getStyle(string property [, mixed default])
 	 */
 	protected function _getStyle($property, $default=null)
 	{

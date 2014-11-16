@@ -35,7 +35,6 @@ class CoreLog extends Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = &new CoreLog(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
 	public function __construct(Konsolidate $parent)
@@ -53,7 +52,6 @@ class CoreLog extends Konsolidate
 	 *  @access  public
 	 *  @param   int level (default matching error_reporting ini directive)
 	 *  @return  void
-	 *  @syntax  void CoreLog->setVerbosity([int level])
 	 */
 	public function setVerbosity($nLevel=null)
 	{
@@ -70,7 +68,6 @@ class CoreLog extends Konsolidate
 	 *  @param   string message
 	 *  @param   int    level
 	 *  @return  bool
-	 *  @syntax  bool CoreLog->message(string message [, int level])
 	 *  @note    Configuration options: display_errors (Config/Log/displayerrors), log_errors (Config/Log/logerrors)
 	 */
 	public function message($sMessage, $nVerbosity=3)
@@ -99,8 +96,8 @@ class CoreLog extends Konsolidate
 	 *  @param   string message
 	 *  @param   int    level
 	 *  @return  bool
-	 *  @syntax  bool CoreLog->write(string message [, int level])
-	 *  @note    if there's any reason the message cannot be written to the logfile, the message is written into the default error.log
+	 *  @note    if there's any reason the message cannot be written to the logfile, the message is written into the
+	 *           default error.log
 	 */
 	public function write($sMessage, $nVerbosity=3)
 	{
@@ -124,7 +121,6 @@ class CoreLog extends Konsolidate
 	 *  @param   int    level
 	 *  @param   bool   uppercase (default true)
 	 *  @return  bool
-	 *  @syntax  bool CoreLog->_translate(int level [, bool uppercase])
 	 */
 	protected function _translate($nVerbosity, $bUpperCase=true)
 	{
@@ -146,7 +142,6 @@ class CoreLog extends Konsolidate
 	 *  @type    method
 	 *  @access  protected
 	 *  @return  int  level
-	 *  @syntax  bool CoreLog->_determineVerbosity()
 	 */
 	protected function _determineVerbosity()
 	{
@@ -174,7 +169,6 @@ class CoreLog extends Konsolidate
 	 *  @param   int    level
 	 *  @param   bool   html
 	 *  @return  int  level
-	 *  @syntax  bool CoreLog->_formatMessage(string message, int level [, bool html])
 	 */
 	protected function _formatMessage($sMessage, $nVerbosity, $bHTML=false)
 	{

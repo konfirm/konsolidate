@@ -22,7 +22,6 @@ class CoreUserData extends Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = new CoreUserData(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
 	public function __construct(Konsolidate $parent)
@@ -41,7 +40,6 @@ class CoreUserData extends Konsolidate
 	 *  @access  public
 	 *  @param   int  userid, optional
 	 *  @return  bool success
-	 *  @syntax  bool CoreUserData->load([int userid]);
 	 */
 	public function load($nID=null)
 	{
@@ -71,7 +69,6 @@ class CoreUserData extends Konsolidate
 	 *  @access  public
 	 *  @param   bool   enable [optional, default true]
 	 *  @return  void
-	 *  @syntax  void CoreuserData->useAnticipation(bool enable);
 	 */
 	public function useAnticipation($bEnable=true)
 	{
@@ -85,7 +82,6 @@ class CoreUserData extends Konsolidate
 	 *  @access  protected
 	 *  @param   int    userid
 	 *  @return  string datatable
-	 *  @syntax  string CoreuserData->_determineDataTable([int userid]);
 	 */
 	protected function _determineDataTable($nUserID=null)
 	{
@@ -98,7 +94,6 @@ class CoreUserData extends Konsolidate
 	 *  @type    method
 	 *  @access  protected
 	 *  @return  void
-	 *  @syntax  void CoreuserData->_anticipateProperties();
 	 *  @note    Properties which are set prior to the anticipation will not be overwriten by the anticipation
 	 */
 	protected function _anticipateProperties()
@@ -126,7 +121,6 @@ class CoreUserData extends Konsolidate
 	 *  @type    method
 	 *  @access  protected
 	 *  @return  bool sucess
-	 *  @syntax  bool CoreuserData->_storeAnticipationProperties();
 	 */
 	protected function _storeAnticipationProperties()
 	{
@@ -160,7 +154,6 @@ class CoreUserData extends Konsolidate
 	 *  @access  protected
 	 *  @param   string property
 	 *  @return  void
-	 *  @syntax  void CoreuserData->_loadProperty(string property);
 	 */
 	protected function _loadProperty($sProperty)
 	{
@@ -182,8 +175,7 @@ class CoreUserData extends Konsolidate
 	 *  @name    _storeChangedProperties
 	 *  @type    method
 	 *  @access  protected
-	 *  @return  bool sucess
-	 *  @syntax  bool CoreuserData->_storeChangedProperties();
+	 *  @return  bool success
 	 */
 	protected function _storeChangedProperties()
 	{
@@ -211,7 +203,6 @@ class CoreUserData extends Konsolidate
 	 *  @type    method
 	 *  @access  protected
 	 *  @return  string md5 scope
-	 *  @syntax  string CoreuserData->_anticipationScope();
 	 */
 	protected function _anticipationScope()
 	{
@@ -248,7 +239,6 @@ class CoreUserData extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  void
-	 *  @syntax  void CoreuserData->__destruct();
 	 */
 	public function __destruct()
 	{

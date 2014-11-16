@@ -49,7 +49,6 @@ class CoreUser extends Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = new CoreUser(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
 	public function __construct(Konsolidate $parent)
@@ -69,7 +68,6 @@ class CoreUser extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  bool
-	 *  @syntax  bool CoreUser->load();
 	 */
 	public function load()
 	{
@@ -118,7 +116,6 @@ class CoreUser extends Konsolidate
 	 *  @access  public
 	 *  @param   string email, the email to be checked for occurance in the user table [optional, default check the current visitor by its tracker id]
 	 *  @return  bool
-	 *  @syntax  bool CoreUser->isRegistered([string email]);
 	 */
 	public function isRegistered($sEmail=null)
 	{
@@ -153,7 +150,6 @@ class CoreUser extends Konsolidate
 	 *  @param   bool      opt in [optional]
 	 *  @param   bool      track [optional]
 	 *  @return  bool
-	 *  @syntax  bool CoreUser->create(integer userid, string email [, string password [, bool agree [, bool optin [, bool track]]]]);
 	 */
 	public function create($sEmail, $sPassword=false, $bAgree=false, $bOptIn=false, $bTrack=true)
 	{
@@ -205,7 +201,6 @@ class CoreUser extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  bool
-	 *  @syntax  bool CoreUser->store();
 	 *  @note    Calls to store expect a load to have taken place first
 	 */
 	public function store($bForceEmptyPassword=false)
@@ -240,7 +235,6 @@ class CoreUser extends Konsolidate
 	 *  @param   string password
 	 *  @param   bool   autologin [default true]
 	 *  @return  string usertracker code (or bool false on error)
-	 *  @syntax  stirng CoreUser->login(string email, string password [, bool autologin]);
 	 */
 	public function login($sEmail, $sPassword, $bAutoLogin=true)
 	{
@@ -270,7 +264,6 @@ class CoreUser extends Konsolidate
 	 *  @access  public
 	 *  @param   string email address
 	 *  @return  bool   succes
-	 *  @syntax  bool   CoreUser->_updateLoginCount(string email);
 	 */
 	protected function _updateLoginCount($sEmail)
 	{
@@ -290,7 +283,6 @@ class CoreUser extends Konsolidate
 	 *  @access  public
 	 *  @param   string   property name
 	 *  @return  mixed
-	 *  @syntax  mixed CoreUser->get(string property);
 	 */
 	public function __get($sProperty)
 	{

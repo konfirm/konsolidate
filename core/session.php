@@ -71,7 +71,6 @@ class CoreSession extends  Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = &new CoreSession(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
 	public function __construct(Konsolidate $parent)
@@ -149,7 +148,6 @@ class CoreSession extends  Konsolidate
 	 *  @access  public
 	 *  @param   string variable
 	 *  @return  void
-	 *  @syntax  void CoreSession->register([string variable [, string variable [, ...]]]);
 	 *  @note    Variables can also be assigned to a CoreSession directly using Konsolidate->set('/Session/variable', 'value');
 	 */
 	public function register($module)
@@ -176,7 +174,6 @@ class CoreSession extends  Konsolidate
 	 *  @access  public
 	 *  @param   string variable
 	 *  @return  void
-	 *  @syntax  void CoreSession->unregister([string variable [, string variable [, ...]]]);
 	 */
 	public function unregister()
 	{
@@ -202,7 +199,6 @@ class CoreSession extends  Konsolidate
 	 *  @type    method
 	 *  @access  protected
 	 *  @return  bool
-	 *  @syntax  bool CoreSession->_setSessionCookie();
 	 */
 	protected function _setSessionCookie()
 	{
@@ -221,7 +217,6 @@ class CoreSession extends  Konsolidate
 	 *  @type    method
 	 *  @access  protected
 	 *  @return  string
-	 *  @syntax  string CoreSession->_getSessionCookie();
 	 */
 	protected function _getSessionCookie()
 	{
@@ -235,7 +230,6 @@ class CoreSession extends  Konsolidate
 	 *  @access  public
 	 *  @param   bool   removecookie [optional, default false]
 	 *  @return  void
-	 *  @syntax  void CoreSession->destroy([bool removecookie]);
 	 *  @note    The cookie is kept by default
 	 */
 	public function destroy($removeCookie=false)
@@ -259,7 +253,6 @@ class CoreSession extends  Konsolidate
 	 *  @access  public
 	 *  @param   string variable
 	 *  @return  bool
-	 *  @syntax  bool CoreSession->isRegistered(string variablename);
 	 */
 	public function isRegistered($variable)
 	{
@@ -275,8 +268,8 @@ class CoreSession extends  Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  bool
-	 *  @syntax  bool CoreSession->writeClose();
-	 *  @note    unlike PHP's session_write_close function, CoreSession->writeClose does _NOT_ end the session, you can still add/change values which will be stored
+	 *  @note    unlike PHP's session_write_close function, CoreSession->writeClose does _NOT_ end the session, you can
+	 *           still add/change values which will be stored
 	 */
 	public function writeClose()
 	{
@@ -318,7 +311,6 @@ class CoreSession extends  Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  bool
-	 *  @syntax  bool CoreSession->commit();
 	 *  @see     writeClose
 	 */
 	public function commit()

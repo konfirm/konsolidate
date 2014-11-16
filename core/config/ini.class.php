@@ -17,7 +17,6 @@ class CoreConfigINI extends Konsolidate
 	 *  @access  public
 	 *  @param   string  inifile
 	 *  @return  array
-	 *  @syntax  Object->load(string inifile)
 	 */
 	public function load($sFile, $sSegment=null)
 	{
@@ -54,7 +53,6 @@ class CoreConfigINI extends Konsolidate
 	 *  @access  public
 	 *  @param   string  inifile
 	 *  @return  void
-	 *  @syntax  Object->loadAndDefine(string inifile)
 	 *  @note    defines are formatted like [SECTION]_[KEY]=[VALUE]
 	 */
 	public function loadAndDefine($sFile, $sSegment=null)

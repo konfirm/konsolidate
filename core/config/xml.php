@@ -17,7 +17,6 @@ class CoreConfigXML extends Konsolidate
 	 *  @access  public
 	 *  @param   string  xml file
 	 *  @return  bool
-	 *  @syntax  Object->load(string xmlfile)
 	 */
 	public function load($sFile)
 	{
@@ -36,7 +35,6 @@ class CoreConfigXML extends Konsolidate
 	 *  @param   object  node
 	 *  @param   string  xml file (optional, default null)
 	 *  @return  bool
-	 *  @syntax  Object->_traverseXML(object node [, string path])
 	 */
 	protected function _traverseXML($oNode, $sPath=null)
 	{

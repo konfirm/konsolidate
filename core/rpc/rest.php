@@ -17,7 +17,6 @@ class CoreRPCREST extends CoreRPC
 	 *  @access  public
 	 *  @param   string configfile (optional, default null)
 	 *  @return  bool
-	 *  @syntax  bool CoreRPCREST(string configfile)
 	 */
 	public function process($configFile=null)
 	{

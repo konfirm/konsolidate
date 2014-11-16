@@ -18,7 +18,6 @@ class CoreSystemDirectory extends Konsolidate
 	 *  @param   string path
 	 *  @param   oct    mode [optional, default 0777]
 	 *  @return  bool
-	 *  @syntax  bool CoreSystemDirectory->create(string path [, oct mode]);
 	 */
 	public function create($sPath, $nMode=0777)
 	{
@@ -33,7 +32,6 @@ class CoreSystemDirectory extends Konsolidate
 	 *  @param   string path
 	 *  @param   bool   prependpath [optional, default true]
 	 *  @return  array
-	 *  @syntax  array CoreSystemDirectory->getList(string path [, bool prependpath]);
 	 */
 	public function getList($sPath, $bPrependPath=true)
 	{

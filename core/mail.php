@@ -201,7 +201,6 @@ class CoreMail extends Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = &new CoreMail(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
 	public function __construct(Konsolidate $parent)
@@ -229,7 +228,6 @@ class CoreMail extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  void
-	 *  @syntax  void CoreMail->reset()
 	 */
 	public function reset()
 	{
@@ -258,7 +256,6 @@ class CoreMail extends Konsolidate
 	 *  @param   bool allow empty content [optional, default true]
 	 *  @param   bool allow empty subject [optional, default true]
 	 *  @return  bool
-	 *  @syntax  bool CoreMail->send([bool empty content [, bool empty subject]])
 	 */
 	public function send($bAllowEmptyContent=true, $bAllowEmptySubject=true)
 	{
@@ -307,7 +304,6 @@ class CoreMail extends Konsolidate
 	 *  @param   string auth username (optional)
 	 *  @param   string auth password (optional)
 	 *  @return  bool
-	 *  @syntax  bool CoreMail->_send([string username, [string password]])
 	 */
 	protected function _send($sUsername=null, $sPassword=null)
 	{
@@ -437,7 +433,6 @@ class CoreMail extends Konsolidate
 	 *  @param   string mime        [optional, tried to be determined by default]
 	 *  @param   string disposition [optional, value can be eithe 'attachment' or 'inline', default 'attachment']
 	 *  @return  bool   success
-	 *  @syntax  bool CoreMail->attach(string file [, string mimetype [, string disposition]])
 	 *  @note    In case data needs to be attached which is not available on the filesystem (e.g. some generated
 	 *           text or an image), you can create an instance of 'Mail/Attachment' and set the name and data properties
 	 */
@@ -473,7 +468,6 @@ class CoreMail extends Konsolidate
 	 *  @param   string encoding
 	 *  @param   int    linelength (default 75 for quoted-printable, 76 for base64)
 	 *  @return  string
-	 *  @syntax  string CoreMail->_applyEncoding(string data, string encoding [, int length])
 	 */
 	protected function _applyEncoding($sData, $sEncoding, $nLength=null)
 	{
@@ -507,7 +501,6 @@ class CoreMail extends Konsolidate
 	 *  @access  public
 	 *  @param   bool   multiboundary [optional, default false (outer boundary)]
 	 *  @return  string boundary
-	 *  @syntax  string CoreMail->getBoundary([bool multiboundary])
 	 */
 	public function getBoundary($bMultiBoundary=false)
 	{
@@ -522,7 +515,6 @@ class CoreMail extends Konsolidate
 	 *  @param   object SMTP instance
 	 *  @param   bool   use extra boundary
 	 *  @return  bool
-	 *  @syntax  bool CoreMail->send()
 	 */
 	protected function _setMultiPartHeader($oMail, $bMultiBoundary=false, $bMixedContent=false)
 	{
@@ -539,7 +531,6 @@ class CoreMail extends Konsolidate
 	 *  @param   bool  closing boundary
 	 *  @param   bool  multiboundary
 	 *  @return  string
-	 *  @syntax  string CoreMail->_createBoundary([bool closing [, bool multi]])
 	 */
 	protected function _createBoundary($bClosingBoundary=false, $bMultiBoundary=false)
 	{
@@ -553,7 +544,6 @@ class CoreMail extends Konsolidate
 	 *  @access  protected
 	 *  @param   array  param
 	 *  @return  string meta-data
-	 *  @syntax  string CoreMail->_createContentType(array param)
 	 *  @note    param is an associative array, consisting of the following keys:
 	 *           type:        the mime-type                         [optional, default 'application/octect-stream'],
 	 *           charset:     the character set being used          [optional, left out if omitted]
@@ -581,7 +571,6 @@ class CoreMail extends Konsolidate
 	 *  @access  protected
 	 *  @param   array  param
 	 *  @return  string meta-data
-	 *  @syntax  string CoreMail->_createContentTransferEncoding(array param)
 	 *  @note    param is an associative array, consisting of the following keys:
 	 *           encoding:    the encoding type                     [optional, left out of ommited]
 	 *  @see     _createDataSegment
@@ -599,7 +588,6 @@ class CoreMail extends Konsolidate
 	 *  @access  protected
 	 *  @param   array  param
 	 *  @return  string meta-data
-	 *  @syntax  string CoreMail->_createContentDisposition(array param)
 	 *  @note    param is an associative array, consisting of the following keys:
 	 *           disposition: the content disposition               [optional, left out of ommited]
 	 *           filename:    the name of the file being announced  [optional, left out of ommited]
@@ -620,7 +608,6 @@ class CoreMail extends Konsolidate
 	 *  @access  protected
 	 *  @param   array  param
 	 *  @return  string meta-data
-	 *  @syntax  string CoreMail->_createContentID(array param)
 	 *  @note    param is an associative array, consisting of the following keys:
 	 *           filename:    the name of the file being announced  [optional, left out of ommited]
 	 *           cid:         the content-id reference              [optional, left out of ommited]
@@ -642,7 +629,6 @@ class CoreMail extends Konsolidate
 	 *  @param   array  param
 	 *  @param   bool   use multiboundary
 	 *  @return  string datablock
-	 *  @syntax  string CoreMail->_createDataSegment(string data, array param [, bool multiboundary [, bool boundary]])
 	 *  @note    param is an associative array, consisting of the following keys:
 	 *           type:        the mime-type                         [optional, default 'application/octect-stream'],
 	 *           charset:     the character set being used          [optional, left out if omitted]
@@ -671,7 +657,6 @@ class CoreMail extends Konsolidate
 	 *  @access  protected
 	 *  @param   string data
 	 *  @return  string
-	 *  @syntax  string CoreMail->_substitute(string data)
 	 */
 	protected function _substitute($sValue)
 	{
@@ -690,7 +675,6 @@ class CoreMail extends Konsolidate
 	 *  @param   string name
 	 *  @param   string type (one of: 'to', 'cc', 'bcc'. all others are silently discarded)
 	 *  @return  string
-	 *  @syntax  string CoreMail->addRecipient(string email [, string name [, string type]])
 	 */
 	public function addRecipient($sEmail, $sName=null, $sType='to')
 	{
@@ -706,7 +690,6 @@ class CoreMail extends Konsolidate
 	 *  @param   string email
 	 *  @param   string name
 	 *  @return  string
-	 *  @syntax  string CoreMail->addTo(string email [, string name])
 	 */
 	public function addTo($sEmail, $sName=null)
 	{
@@ -721,7 +704,6 @@ class CoreMail extends Konsolidate
 	 *  @param   string email
 	 *  @param   string name
 	 *  @return  string
-	 *  @syntax  string CoreMail->addCC(string email [, string name])
 	 */
 	public function addCC($sEmail, $sName=null)
 	{
@@ -736,7 +718,6 @@ class CoreMail extends Konsolidate
 	 *  @param   string email
 	 *  @param   string name
 	 *  @return  string
-	 *  @syntax  string CoreMail->addBCC(string email [, string name])
 	 */
 	public function addBCC($sEmail, $sName=null)
 	{
@@ -751,7 +732,6 @@ class CoreMail extends Konsolidate
 	 *  @param   mixed  email (string 'email', string 'Pretty Name <email>', Array('email'), Array('email'=>'Pretty Name'))
 	 *  @param   string type (one of: 'to', 'cc', 'bcc'. all others are silently discarded)
 	 *  @return  string
-	 *  @syntax  string CoreMail->_addRecipient(mixed email, string type)
 	 */
 	protected function _addRecipient($mValue, $sType)
 	{
@@ -795,7 +775,6 @@ class CoreMail extends Konsolidate
 	 *  @access  protected
 	 *  @param   string type (one of: 'to', 'cc', 'bcc'. all others are silently discarded)
 	 *  @return  string
-	 *  @syntax  string CoreMail->_flushRecipientType(string type)
 	 */
 	protected function _flushRecipientType($sType)
 	{
@@ -809,7 +788,6 @@ class CoreMail extends Konsolidate
 	 *  @type    method
 	 *  @access  protected
 	 *  @return  bool
-	 *  @syntax  bool CoreMail->_requireBoundary()
 	 */
 	protected function _requireBoundary()
 	{
@@ -828,7 +806,6 @@ class CoreMail extends Konsolidate
 	 *  @param   string property
 	 *  @param   mixed  value
 	 *  @return  void
-	 *  @syntax  void CoreMail->(string property) = mixed variable
 	 */
 	public function __set($sProperty, $mValue)
 	{
@@ -869,7 +846,6 @@ class CoreMail extends Konsolidate
 	 *  @access  public
 	 *  @param   string property
 	 *  @return  mixed  value
-	 *  @syntax  mixed = CoreMail->(string property);
 	 */
 	public function __get($sProperty)
 	{

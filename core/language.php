@@ -33,7 +33,6 @@ class CoreLanguage extends Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = &new CoreLanguage(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
 	public function __construct(Konsolidate $parent)
@@ -50,7 +49,6 @@ class CoreLanguage extends Konsolidate
 	 *  @access  public
 	 *  @param   string locale
 	 *  @return  void
-	 *  @syntax  void CoreLanguage->setLocale(string locale)
 	 */
 	public function setLocale($sLocale)
 	{
@@ -63,7 +61,6 @@ class CoreLanguage extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  string locale
-	 *  @syntax  string CoreLanguage->getLocale()
 	 */
 	public function getLocale()
 	{
@@ -77,7 +74,6 @@ class CoreLanguage extends Konsolidate
 	 *  @access  public
 	 *  @param   string engine
 	 *  @return  bool
-	 *  @syntax  bool CoreLanguage->setEngine(string engine)
 	 */
 	public function setEngine($sEngine)
 	{
@@ -98,7 +94,6 @@ class CoreLanguage extends Konsolidate
 	 *  @access  public
 	 *  @param   string phrase
 	 *  @return  string translation
-	 *  @syntax  string CoreLanguage->translate(string phrase)
 	 */
 	public function translate($sPhrase)
 	{

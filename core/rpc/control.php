@@ -20,7 +20,6 @@ class CoreRPCControl extends Konsolidate
 	 *  @param   mixed  content, either a string with additional message, or an array containing arrays, strings or
 	 *           numbers (optional, default empty)
 	 *  @return  void
-	 *  @syntax  void CoreRPCControl->_feedback()
 	 */
 	protected function _feedback($error=true, $message='', $content='')
 	{
@@ -45,7 +44,6 @@ class CoreRPCControl extends Konsolidate
 	 *  @access  public
 	 *  @param   string command
 	 *  @return  void
-	 *  @syntax  void CoreRPCControl->process(string command)
 	 */
 	function process($command)
 	{

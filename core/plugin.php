@@ -18,7 +18,6 @@ class CorePlugin extends Konsolidate
 	 *  @param   string modulename
 	 *  @param   object module
 	 *  @return  object
-	 *  @syntax  Object->hook(string modulename, object module);
 	 */
 	public function hook($module, $instance)
 	{
@@ -36,7 +35,6 @@ class CorePlugin extends Konsolidate
 	 *  @param   mixed  class argument2
 	 *  @param   mixed  class argument...
 	 *  @return  object
-	 *  @syntax  Object->create(string modulename, object module);
 	 *  @note    You can provide as many arguments as needed to construct the class
 	 */
 	public function create()

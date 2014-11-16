@@ -7,7 +7,8 @@
  *  @type    class
  *  @package Konsolidate
  *  @author  Rogier Spieker <rogier@konsolidate.nl>
- *  @note    This class is always available as soon as Konsolidate (and its extends) is instanced (and the Core tier is available)
+ *  @note    This class is always available as soon as Konsolidate (and its extends) is instanced (and the Core
+ *           tier is available)
  */
 class CoreTool extends Konsolidate
 {
@@ -17,7 +18,6 @@ class CoreTool extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  bool
-	 *  @syntax  bool CoreTool::isPosted();
 	 */
 	public static function isPosted()
 	{
@@ -33,7 +33,6 @@ class CoreTool extends Konsolidate
 	 *  @param   array  collection
 	 *  @param   mixed  default [optional, default null]
 	 *  @return  mixed
-	 *  @syntax  mixed CoreTool::arrVal(string key, array collection [, mixed default]);
 	 *  @note    you can swap key and collection (Haystack - Needle)
 	 */
 	public static function arrVal($mKey, $mCollection, $mDefault=null)
@@ -52,7 +51,6 @@ class CoreTool extends Konsolidate
 	 *  @param   array  collection
 	 *  @param   mixed  default [optional, default null]
 	 *  @return  mixed
-	 *  @syntax  mixed CoreTool::arrayVal(string key, array collection [, mixed default]);
 	 *  @see     arrVal
 	 */
 	public static function arrayVal($sKey, $aCollection, $mDefault=null)
@@ -68,7 +66,6 @@ class CoreTool extends Konsolidate
 	 *  @param   string key
 	 *  @param   mixed  default [optional, default null]
 	 *  @return  mixed
-	 *  @syntax  mixed CoreTool::sesVal(string key [, mixed default]);
 	 *  @note    This method works with PHP's built in sessions (_SESSION global), not CoreSession!
 	 */
 	public static function sesVal($sKey, $mDefault=null)
@@ -84,7 +81,6 @@ class CoreTool extends Konsolidate
 	 *  @param   string key
 	 *  @param   mixed  default [optional, default null]
 	 *  @return  mixed
-	 *  @syntax  mixed CoreTool::sessionVal(string key [, mixed default]);
 	 *  @see     sesVal
 	 */
 	public static function sessionVal($sKey, $mDefault=null)
@@ -100,7 +96,6 @@ class CoreTool extends Konsolidate
 	 *  @param   string key
 	 *  @param   mixed  default [optional, default null]
 	 *  @return  mixed
-	 *  @syntax  mixed CoreTool::cookieVal(string key [, mixed default]);
 	 */
 	public static function cookieVal($sKey, $mDefault=null)
 	{
@@ -115,7 +110,6 @@ class CoreTool extends Konsolidate
 	 *  @param   string key
 	 *  @param   mixed  default [optional, default null]
 	 *  @return  mixed
-	 *  @syntax  mixed CoreTool::serverVal(string key [, mixed default]);
 	 */
 	public static function serverVal($sKey, $mDefault=null)
 	{
@@ -130,7 +124,6 @@ class CoreTool extends Konsolidate
 	 *  @param   string key
 	 *  @param   mixed  default [optional, default null]
 	 *  @return  mixed
-	 *  @syntax  mixed CoreTool::envVal(string key [, mixed default]);
 	 */
 	public static function envVal($sKey, $mDefault=null)
 	{
@@ -145,7 +138,6 @@ class CoreTool extends Konsolidate
 	 *  @param   string key
 	 *  @param   mixed  default [optional, default null]
 	 *  @return  mixed
-	 *  @syntax  mixed CoreTool::environmentVal(string key [, mixed default]);
 	 *  @see     envVal
 	 */
 	public static function environmentVal($sKey, $mDefault=null)
@@ -162,7 +154,6 @@ class CoreTool extends Konsolidate
 	 *  @access  public
 	 *  @param   mixed  default [optional, default null]
 	 *  @return  mixed
-	 *  @syntax  mixed CoreTool::getIP([mixed default]);
 	 */
 	public static function getIP($mDefault='0.0.0.0')
 	{
@@ -185,7 +176,6 @@ class CoreTool extends Konsolidate
 	 *  @param   string URL
 	 *  @param   bool   stopscript
 	 *  @return  void
-	 *  @syntax  void CoreTool::redirect(string URL [, bool stopscript]);
 	 *  @note    this method sends out both a META header and a JavaScript in case headers were already sent
 	 */
 	public static function redirect($sURL, $bDie=true)
@@ -206,7 +196,6 @@ class CoreTool extends Konsolidate
 	 *  @access  public
 	 *  @param   int    timestamp [optional, default 946702800]
 	 *  @return  bool
-	 *  @syntax  void CoreTool::expirePage([int timestamp]);
 	 */
 	public static function expirePage($nTimestamp=null)
 	{

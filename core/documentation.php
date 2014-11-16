@@ -19,7 +19,6 @@ class CoreDocumentation extends Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = &new CoreDocumentation(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
 	public function __construct(Konsolidate $parent)
@@ -36,7 +35,6 @@ class CoreDocumentation extends Konsolidate
 	 *  @access  public
 	 *  @param   string filename
 	 *  @return  array of Documentation/Block instances
-	 *  @syntax  array CoreDocumentation->collect(string filename)
 	 *  @note    the return array contains a single Documentation/Block instance per comment block in the 'collected' file
 	 */
 	public function collect($sFile)
@@ -67,7 +65,6 @@ class CoreDocumentation extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @param   bool   skip empty documentation instructions
-	 *  @syntax  array CoreDocumentation->fetch(bool skipempty)
 	 *  @return  array of Documentation/Block instances
 	 */
 	public function fetch($bOmitEmpty=false)

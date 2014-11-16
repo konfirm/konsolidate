@@ -55,7 +55,6 @@ class CoreMailAttachment extends Konsolidate
 	 *  @param   string property
 	 *  @param   mixed  value
 	 *  @return  void
-	 *  @syntax  void CoreMailAttachment->(string property) = mixed variable
 	 */
 	public function __set($sProperty, $mValue)
 	{
@@ -72,7 +71,6 @@ class CoreMailAttachment extends Konsolidate
 	 *  @access  public
 	 *  @param   string property
 	 *  @return  mixed  value
-	 *  @syntax  mixed = CoreMailAttachment->(string property);
 	 */
 	public function __get($sProperty)
 	{

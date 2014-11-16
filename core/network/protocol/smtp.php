@@ -52,7 +52,6 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = &new CoreNetworkProtocolSMTP(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
 	public function __construct(Konsolidate $parent)
@@ -80,7 +79,6 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	 *  @param   string headername
 	 *  @param   string headervalue
 	 *  @return  void
-	 *  @syntax  void CoreNetworkProtocolSMTP->addHeader(string headername, string headervalue)
 	 */
 	public function addHeader($sKey, $sValue)
 	{
@@ -96,7 +94,6 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	 *  @param   int    portnumber   [optional, default 25]
 	 *  @param   int    timeout (ms) [optional, default 30]
 	 *  @return  void
-	 *  @syntax  void CoreNetworkProtocolSMTP->connect([string hostname [, int portnumber [, int timeout]]])
 	 */
 	public function connect($sHost='localhost', $nPort=25, $nTimeout=30)
 	{
@@ -115,7 +112,6 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	 *  @type    method
 	 *  @access  protected
 	 *  @return  int statuscode
-	 *  @syntax  void CoreNetworkProtocolSMTP->_getReponseStatus()
 	 */
 	protected function _getResponseStatus()
 	{
@@ -145,7 +141,6 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	 *  @access  protected
 	 *  @param   string command
 	 *  @return  mixed      int statuscode or bool if failed
-	 *  @syntax  void CoreNetworkProtocolSMTP->_command(string command)
 	 */
 	protected function _command($sCommand)
 	{
@@ -166,7 +161,6 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	 *  @param   string username
 	 *  @param   string password
 	 *  @returns bool success
-	 *  @syntax  void CoreNetworkProtocolSMTP->authLogin(string username, string password)
 	 *  @note    use the status/message properties for reporting/checking/logging
 	 */
 	public function authLogin($sUsername, $sPassword)
@@ -188,7 +182,6 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	 *  @access  public
 	 *  @param   string domain [optional, default $_SERVER['SERVER_NAME'] or $this->server]
 	 *  @returns bool success
-	 *  @syntax  void CoreNetworkProtocolSMTP->helo([string domain, [bool enfore EHLO]])
 	 *  @note    use the status/message properties for reporting/checking/logging
 	 */
 	public function helo($sDomain=null, $bEHLO=false)
@@ -206,7 +199,6 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	 *  @param   string senderemail
 	 *  @param   string sendername [optional, omitted if empty]
 	 *  @return  bool success
-	 *  @syntax  void CoreNetworkProtocolSMTP->mailFrom(string email [, string name])
 	 *  @note    use the status/message properties for reporting/checking/logging
 	 */
 	public function mailFrom($sEmail, $sName=null)
@@ -223,7 +215,6 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	 *  @param   string recipientemail
 	 *  @param   string recipientname [optional, omitted if empty]
 	 *  @return  bool success
-	 *  @syntax  void CoreNetworkProtocolSMTP->rcptTo(string email [, string name])
 	 *  @note    use the status/message properties for reporting/checking/logging
 	 */
 	public function rcptTo($aCollection, $sHeaderName='To')
@@ -242,11 +233,10 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	 *  @access  public
 	 *  @param   string recipientemail
 	 *  @return  bool success
-	 *  @syntax  void CoreNetworkProtocolSMTP->vrfy(string email)
 	 *  @note    use the status/message properties for reporting/checking/logging
 	 *           Don't rely on this method!
-	 *           Most mailservers have disabled the VRFY command for it was used by spammers to build lists of valid addresses,
-	 *           even if it is enabled, be prepared for it to accept everything you fire at it (catch-all).
+	 *           Most mailservers have disabled the VRFY command for it was used by spammers to build lists of valid
+	 *           addresses, even if it is enabled, be prepared for it to accept everything you fire at it (catch-all).
 	 */
 	public function vrfy($sEmail)
 	{
@@ -261,7 +251,6 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	 *  @access  public
 	 *  @param   string data
 	 *  @return  bool success
-	 *  @syntax  void CoreNetworkProtocolSMTP->data(string data)
 	 *  @note    use the status/message properties for reporting/checking/logging
 	 */
 	public function data($sData)
@@ -287,7 +276,6 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  bool success
-	 *  @syntax  void CoreNetworkProtocolSMTP->quit()
 	 *  @note    use the status/message properties for reporting/checking/logging
 	 */
 	public function quit()
@@ -305,7 +293,6 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	 *  @param   string email
 	 *  @param   bool   useVRFY [optional, default false]
 	 *  @return  bool success
-	 *  @syntax  void CoreNetworkProtocolSMTP->verify(string email [, bool useVRFY])
 	 *  @see     vrfy
 	 */
 	public function verify($sAddress, $bVRFY=false)
@@ -333,7 +320,6 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	 *  @param   string username (optional)
 	 *  @param   string password (optional)
 	 *  @return  bool success
-	 *  @syntax  void CoreNetworkProtocolSMTP->send()
 	 *  @note    use the status/message properties for reporting/checking/logging
 	 */
 	public function send($sUsername=null, $sPassword=null)
@@ -388,7 +374,6 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	 *  @param   string A
 	 *  @param   string B
 	 *  @return  int  order
-	 *  @syntax  void CoreNetworkProtocolSMTP->_headerSort(string A, string B)
 	 *  @note    used as array sort function
 	 */
 	protected function _headerSort($sA, $sB)

@@ -31,7 +31,6 @@ class CoreDocumentationBlock extends Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = &new CoreDocumentationBlock(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
 	function __construct(Konsolidate $parent)
@@ -59,7 +58,6 @@ class CoreDocumentationBlock extends Konsolidate
 	 *  @access  public
 	 *  @param   string documentation line
 	 *  @return  void
-	 *  @syntax  void CoreDocumentationBlock->append(string text)
 	 */
 	public function append($sPart)
 	{
@@ -112,7 +110,6 @@ class CoreDocumentationBlock extends Konsolidate
 	 *  @access  public
 	 *  @param   bool skip empty instructions
 	 *  @return  array instructions
-	 *  @syntax  array CoreDocumentationBlock->fetch(bool skipempty)
 	 */
 	public function fetch($bOmitEmpty=false)
 	{

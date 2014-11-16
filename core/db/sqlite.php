@@ -34,7 +34,6 @@ class CoreDBSQLite extends Konsolidate
 	 *  @access  public
 	 *  @param   object parent object
 	 *  @return  object
-	 *  @syntax  object = &new CoreDBQLite(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
 	public function __construct(Konsolidate $parent)
@@ -53,7 +52,6 @@ class CoreDBSQLite extends Konsolidate
 	 *  @param   string DSN URI
 	 *  @param   bool   force new link [optional, default false]
 	 *  @return  bool
-	 *  @syntax  bool CoreDBSQLite->setConnection(string DSN [, bool newlink])
 	 */
 	public function setConnection($sURI)
 	{
@@ -84,8 +82,8 @@ class CoreDBSQLite extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  bool
-	 *  @syntax  bool CoreDBSQLite->connect()
-	 *  @note    An explicit call to this method is not required, since the query method will create the connection if it isn't connected
+	 *  @note    An explicit call to this method is not required, since the query method will create the connection if
+	 *           it isn't connected
 	 */
 	public function connect()
 	{
@@ -104,7 +102,6 @@ class CoreDBSQLite extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  bool
-	 *  @syntax  bool CoreDBSQLite->disconnct()
 	 */
 	public function disconnect()
 	{
@@ -119,7 +116,6 @@ class CoreDBSQLite extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  bool
-	 *  @syntax  bool CoreDBSQLite->isConnected()
 	 */
 	public function isConnected()
 	{
@@ -134,7 +130,6 @@ class CoreDBSQLite extends Konsolidate
 	 *  @param   string query
 	 *  @paran   bool   usecache [optional, default true]
 	 *  @return  object result
-	 *  @syntax  object CoreDBSQLite->query(string query [, bool usecache])
 	 */
 	public function query($sQuery, $bUseCache=true)
 	{
@@ -163,7 +158,6 @@ class CoreDBSQLite extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  int id
-	 *  @syntax  int CoreDBSQLiteQuery->lastInsertID()
 	 */
 	public function lastInsertID()
 	{
@@ -178,7 +172,6 @@ class CoreDBSQLite extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  int id
-	 *  @syntax  int CoreDBSQLiteQuery->lastId()
 	 *  @note    alias for lastInsertID
 	 *  @see     lastInsertID
 	 */
@@ -194,7 +187,6 @@ class CoreDBSQLite extends Konsolidate
 	 *  @access  public
 	 *  @param   string input
 	 *  @return  string escaped input
-	 *  @syntax  string CoreDBSQLiteQuery->escape(string input)
 	 */
 	public function escape($sString)
 	{
@@ -208,7 +200,6 @@ class CoreDBSQLite extends Konsolidate
 	 *  @access  public
 	 *  @param   string input
 	 *  @return  string quoted escaped input
-	 *  @syntax  string CoreDBSQLiteQuery->quote(string input)
 	 */
 	public function quote($sString)
 	{
@@ -222,7 +213,6 @@ class CoreDBSQLite extends Konsolidate
 	 *  @access  protected
 	 *  @param   string query
 	 *  @return  bool   success
-	 *  @syntax  bool CoreDBSQLiteQuery->_isCachableQuery(string query)
 	 */
 	public function _isCachableQuery($sQuery)
 	{

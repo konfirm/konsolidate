@@ -66,7 +66,6 @@ class CoreDBMySQLQuery extends Konsolidate
 	 *  @param   string   query
 	 *  @param   resource connection
 	 *  @return void
-	 *  @syntax  void CoreDBMySQLQuery->execute(string query, resource connection)
 	 */
 	public function execute($sQuery, $rConnection)
 	{
@@ -92,7 +91,6 @@ class CoreDBMySQLQuery extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  bool success
-	 *  @syntax  bool CoreDBMySQLQuery->rewind()
 	 */
 	public function rewind()
 	{
@@ -107,7 +105,6 @@ class CoreDBMySQLQuery extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  object resultrow
-	 *  @syntax  object CoreDBMySQLQuery->next()
 	 */
 	public function next()
 	{
@@ -122,7 +119,6 @@ class CoreDBMySQLQuery extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  int id
-	 *  @syntax  int CoreDBMySQLQuery->lastInsertID()
 	 */
 	public function lastInsertID()
 	{
@@ -135,7 +131,6 @@ class CoreDBMySQLQuery extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  int id
-	 *  @syntax  int CoreDBMySQLQuery->lastId()
 	 *  @note    alias for lastInsertID
 	 *  @see     lastInsertID
 	 */
@@ -150,7 +145,6 @@ class CoreDBMySQLQuery extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  array result
-	 *  @syntax  array CoreDBMySQLQuery->fetchAll()
 	 */
 	public function fetchAll()
 	{

@@ -42,7 +42,6 @@ class CoreDBSQLiteQuery extends Konsolidate
 	 *  @param   string   query
 	 *  @param   resource connection
 	 *  @return  void
-	 *  @syntax  void CoreDBSQLiteQuery->execute(string query, resource connection)
 	 */
 	public function execute($sQuery, $rConnection)
 	{
@@ -69,7 +68,6 @@ class CoreDBSQLiteQuery extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  bool success
-	 *  @syntax  bool CoreDBSQLiteQuery->rewind()
 	 */
 	public function rewind()
 	{
@@ -84,7 +82,6 @@ class CoreDBSQLiteQuery extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  object resultrow
-	 *  @syntax  object CoreDBSQLiteQuery->next()
 	 */
 	public function next()
 	{
@@ -99,7 +96,6 @@ class CoreDBSQLiteQuery extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  int id
-	 *  @syntax  int CoreDBSQLiteQuery->lastInsertID()
 	 */
 	public function lastInsertID()
 	{
@@ -112,7 +108,6 @@ class CoreDBSQLiteQuery extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  int id
-	 *  @syntax  int CoreDBSQLiteQuery->lastId()
 	 *  @note    alias for lastInsertID
 	 *  @see     lastInsertID
 	 */
@@ -127,7 +122,6 @@ class CoreDBSQLiteQuery extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @return  array result
-	 *  @syntax  array CoreDBSQLiteQuery->fetchAll()
 	 */
 	public function fetchAll()
 	{

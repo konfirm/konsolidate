@@ -17,7 +17,6 @@ class CoreMailContent extends Konsolidate
 	 *  @access  public
 	 *  @param   string job name
 	 *  @return  bool   success
-	 *  @syntax  bool   CoreMailContent->load(string job)
 	 */
 	public function load($sJob)
 	{
