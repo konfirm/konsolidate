@@ -16,13 +16,16 @@ class CoreConfigXML extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @param   string  xml file
+	 *  @param   string  target [optional, default '/Config']
 	 *  @return  bool
 	 */
-	public function load($sFile)
+	public function load($file, $target='/Config')
 	{
-		$oConfig = simplexml_load_file($sFile);
-		if (is_object($oConfig))
-			return $this->_traverseXML($oConfig);
+		$dom = new DOMDocument();
+		$dom->preserveWhiteSpace = false;
+
+		if ($dom->load($file))
+			return $this->_traverseXML($dom->documentElement, $target ?: '/' . $dom->documentElement->nodeName);
 
 		return false;
 	}
@@ -36,12 +39,19 @@ class CoreConfigXML extends Konsolidate
 	 *  @param   string  xml file (optional, default null)
 	 *  @return  bool
 	 */
-	protected function _traverseXML($oNode, $sPath=null)
+	protected function _traverseXML($node, $target=null)
 	{
-		if ($oNode->children())
-			foreach ($oNode as $oChild)
-				$this->_traverseXML($oChild, "{$sPath}/" . $oNode->getName());
-		else
-			$this->set("{$sPath}/" . $oNode->getName(), (string) $oNode);
+		foreach ($node->childNodes as $child)
+			switch ($child->nodeType)
+			{
+				case 1:  //  DOMElement
+					$this->_traverseXML($child, $target . ($node->parentNode->nodeType === 9 ? '' : '/' . $node->nodeName));
+					break;
+
+				case 3:  //  DOMText
+				case 4:  //  DOMCDATASection
+					$this->set($target . '/' . $node->nodeName, $child->nodeValue);
+					break;
+			}
 	}
 }

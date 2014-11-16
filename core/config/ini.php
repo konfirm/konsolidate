@@ -64,7 +64,7 @@ class CoreConfigINI extends Konsolidate
 	 */
 	protected function _assign(Array $config, $target)
 	{
-		$result = Array();
+		$result = [];
 
 		foreach ($config as $key=>$value)
 		{
