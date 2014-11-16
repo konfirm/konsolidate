@@ -30,12 +30,14 @@ class CoreValidate extends Konsolidate
 	 *  @param   bool  unsigned [optional]
 	 *  @return  bool
 	 */
-	function isInteger($mValue, $bUnsigned=false)
+	function isInteger($value, $unsigned=false)
 	{
-		$nMin = $bUnsigned ? 0 : INT_MIN;
-		$nMax = $bUnsigned ? INT_MAX + (-INT_MIN) : INT_MAX;
-		if (is_null($mValue) || (!preg_match("/^[0-9]+$/", abs($mValue))) || $mValue < $nMin || $mValue > $nMax)
+		$min = $unsigned ? 0 : INT_MIN;
+		$max = $unsigned ? INT_MAX + (-INT_MIN) : INT_MAX;
+
+		if (is_null($value) || !preg_match('/^[0-9]+$/', abs($value)) || $value < $min || $value > $max)
 			return false;
+
 		return true;
 	}
 
@@ -48,9 +50,9 @@ class CoreValidate extends Konsolidate
 	 *  @param   bool  unsigned [optional]
 	 *  @return  bool
 	 */
-	function isPositiveInteger($mValue, $bUnsigned=false)
+	function isPositiveInteger($value, $unsigned=false)
 	{
-		return ($this->isInteger($mValue, $bUnsigned) && $mValue >= 0);
+		return $this->isInteger($value, $unsigned) && $value >= 0;
 	}
 
 	/**
@@ -61,9 +63,9 @@ class CoreValidate extends Konsolidate
 	 *  @param   mixed value
 	 *  @return  bool
 	 */
-	function isNegativeInteger($mValue)
+	function isNegativeInteger($value)
 	{
-		return ($this->isInteger($mValue) && $mValue < 0);
+		return $this->isInteger($value) && $value < 0;
 	}
 
 	/**
@@ -74,9 +76,9 @@ class CoreValidate extends Konsolidate
 	 *  @param   mixed value
 	 *  @return  bool
 	 */
-	function isNumber($mValue)
+	function isNumber($value)
 	{
-		return (is_numeric($mValue));
+		return is_numeric($value);
 	}
 
 	/**
@@ -90,22 +92,9 @@ class CoreValidate extends Konsolidate
 	 *  @param   bool  include min/max values [optional]
 	 *  @return  bool
 	 */
-	function isBetween($mValue, $iMin=null, $iMax=null, $bIncludeValues=true)
+	function isBetween($value, $min=null, $max=null, $inclusive=true)
 	{
-		if ($bIncludeValues)
-		{
-			if (!is_null($iMin))
-				$iMin -= 1;
-			if (!is_null($iMax))
-				$iMax += 1;
-		}
-
-		if (!is_null($iMin) && !is_null($iMax))
-			return ($mValue > $iMin && $mValue < $iMax);
-		else if (!is_null($iMin))
-			return ($mValue > $iMin);
-		else if (!is_null($iMax))
-			return ($mValue < $iMax);
+		return (is_null($min) || ($inclusive ? $value >= $min : $value > $min)) && (is_null($max) || ($inclusive ? $value <= $max : $value < $max));
 	}
 
 	/**
@@ -116,9 +105,9 @@ class CoreValidate extends Konsolidate
 	 *  @param   mixed value
 	 *  @return  bool
 	 */
-	function isFilled($mValue)
+	function isFilled($value)
 	{
-		return (!preg_match("/^$/", $mValue));
+		return !preg_match('/^$/', $value);
 	}
 
 	/**
@@ -131,8 +120,8 @@ class CoreValidate extends Konsolidate
 	 *  @note    This method does NOT verify the actual existing of the e-mail address, it merely verifies that it
 	 *           complies to common e-mail addresses
 	 */
-	function isEmail($mValue)
+	function isEmail($value)
 	{
-		return preg_match("/^[_a-z0-9-]+([a-z0-9\.\+_-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3}|.info)$/i", $mValue);
+		return (bool) preg_match('/^[_a-z0-9-]+([a-z0-9\.\+_-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,}$/i', $value);
 	}
 }
