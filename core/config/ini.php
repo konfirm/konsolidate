@@ -16,15 +16,16 @@ class CoreConfigINI extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @param   string  inifile
-	 *  @param   string  module to receive configuration [optional, default '/Config]
+	 *  @param   string  section to return
+	 *  @param   string  module to receive confirguration [optional, default '/Config]
 	 *  @return  Array   configured values
 	 */
-	public function load($file, $segment=null, $target='/Config')
+	public function load($file, $section=null, $target='/Config')
 	{
 		$result = $this->_assign(parse_ini_file($file, true), $target);
 
-		if (!is_null($segment) && array_key_exists($segment, $result))
-			return $result[$segment];
+		if (!is_null($section) && isset($result[$section]))
+			return $result[$section];
 
 		return $result;
 	}
@@ -75,7 +76,7 @@ class CoreConfigINI extends Konsolidate
 				continue;
 			}
 
-			$result[$key] = array_merge($this->_assign($value, $target . '/' . $key), []);
+			$result[$key] = $this->_assign($value, $target . '/' . $key);
 		}
 
 		return $result;
