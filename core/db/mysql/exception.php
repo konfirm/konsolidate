@@ -35,9 +35,9 @@ class CoreDBMySQLException extends Exception
 	 *  @return  object
 	 *  @note    This object is constructed by CoreDBMySQL as 'status report'
 	 */
-	public function __construct($rConnection)
+	public function __construct($connection)
 	{
-		$this->error = is_resource($rConnection) ? mysql_error($rConnection) : mysql_error();
-		$this->errno = is_resource($rConnection) ? mysql_errno($rConnection) : mysql_errno();
+		$this->error = is_resource($connection) ? mysql_error($connection) : mysql_error();
+		$this->errno = is_resource($connection) ? mysql_errno($connection) : mysql_errno();
 	}
 }

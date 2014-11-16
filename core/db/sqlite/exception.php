@@ -6,7 +6,7 @@
  *  @name    CoreDBSQLiteException
  *  @type    class
  *  @package Konsolidate
- *  @author  Rogier Spieker <rogier@klof.net>
+ *  @author  Rogier Spieker <rogier@konsolidate.nl>
  */
 class CoreDBSQLiteException extends Exception
 {
@@ -36,9 +36,9 @@ class CoreDBSQLiteException extends Exception
 	 *  @return  object
 	 *  @note    This object is constructed by CoreDBSQLite as 'status report'
 	 */
-	public function __construct($nError)
+	public function __construct($errno)
 	{
-		$this->error = sqlite_error_string($nError);
-		$this->errno = $nError;
+		$this->error = sqlite_error_string($errno);
+		$this->errno = $errno;
 	}
 }
