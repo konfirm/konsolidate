@@ -91,3 +91,9 @@ $K->call('/Config/INI/load', 'path/to/file.ini', null, '/Foo')`
 
 ###Config/XML
 When loading an XML file the name of the documentElement no longer becomes a module at the top level by default. The default behavior has been changed to be more in alignment with the `Config/INI` module, which gets all of its variables assign to `/Config/*` by default. In order to have similar behaviour, if a target module is specific (of omitted the default is `/Config`), you have to explicitly disable the target (by providing any value resolving to false-ish, e.g. `null` or `false`).
+The `load` method signature is now the same as the `Config/INI` where you can specify a 'section' to return and the target module path in which to configure is to be writter
+_Use the 'One'-tier to restore backward compatibility (having the XML-root element as target module path)_
+
+###Config/JSON
+Added means to use JSON config files, following the same nesting mechanics as `Config/XML`
+

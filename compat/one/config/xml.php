@@ -16,11 +16,12 @@ class OneConfigXML extends CoreConfigXML
 	 *  @type    method
 	 *  @access  public
 	 *  @param   string  xml file
-	 *  @param   string  target [optional, default null]
+	 *  @param   ignored placeholder
+	 *  @param   ignored placeholder
 	 *  @return  bool
 	 */
-	public function load($file, $target=null)
+	public function load($file, $section=null, $target=null)
 	{
-		return parent::load($file, $target);
+		return parent::load($file, $section, $target);
 	}
 }
