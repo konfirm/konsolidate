@@ -295,7 +295,7 @@ class Konsolidate implements Iterator
 		$constructed = false;
 		foreach ($this->_path as $name=>$path)
 		{
-			$className  = $name . ucFirst(strToLower($module));
+			$className = $name . ucFirst(strToLower($module));
 			if (class_exists($className))
 			{
 				$args = func_get_args();
@@ -311,6 +311,7 @@ class Konsolidate implements Iterator
 				{
 					$instance = new $className($this);
 				}
+
 				$constructed = is_object($instance);
 				break;
 			}
@@ -318,6 +319,9 @@ class Konsolidate implements Iterator
 
 		if (!$constructed)
 		{
+			if (!isset($className))
+				$className = get_class($this) . ucFirst(strToLower($module));
+
 			//  create class stubs on the fly
 			eval('class ' . $className . ' extends Konsolidate{public $_dynamicStubClass=true;}');
 			$instance    = new $className($this);
