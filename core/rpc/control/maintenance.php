@@ -92,7 +92,7 @@ class CoreRPCControlMaintenance extends Konsolidate implements CoreRPCControlInt
 		{
 			$bReturn = true;
 			$oDir    = new DirectoryIterator($sPath);
-			foreach($oDir as $oDirItem)
+			foreach ($oDir as $oDirItem)
 				if ($bReturn && !$oDirItem->isDot())
 				{
 					if ($oDirItem->isFile())

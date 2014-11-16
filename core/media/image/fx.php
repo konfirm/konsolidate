@@ -53,7 +53,7 @@ class CoreMediaImageFX extends Konsolidate
 							else
 								$aColor[] = imagecolorat($mImage, $k, $l);
 
-					foreach($aColor as $nColor)
+					foreach ($aColor as $nColor)
 					{
 						$nRed   += 0xFF & ($nColor >> 16);
 						$nGreen += 0xFF & ($nColor >> 8);

@@ -20,9 +20,9 @@ class CorePlugin extends Konsolidate
 	 *  @return  object
 	 *  @syntax  Object->hook(string modulename, object module);
 	 */
-	public function hook($sModule, $oModule)
+	public function hook($module, $instance)
 	{
-		return $this->_module[strToUpper($sModule)] = $oModule;
+		return $this->_module[strToUpper($module)] = $instance;
 	}
 
 	/**
@@ -41,37 +41,16 @@ class CorePlugin extends Konsolidate
 	 */
 	public function create()
 	{
-		$aArgument  = func_get_args();
-		$mModule    = array_shift($aArgument);
-		$sClassName = array_shift($aArgument);
-		$oObject    = null;
+		$args      = func_get_args();
+		$module    = array_shift($args);
+		$className = array_shift($args);
+		$object    = null;
 
-		if (!class_exists($sClassName))
+		if (!class_exists($className))
 			return false;
 
-		if (class_exists('ReflectionClass')) //  Can we use a sophisticated method of PHP5?
-		{
-			$oObject = call_user_func_array(
-				Array(
-					new ReflectionClass($sClassName),
-					'newInstance'
-				),
-				$aArgument
-			);
-		}
-		else // fall back onto the evil... erm eval method, should not happen, for Konsolidate is now PHP5 only
-		{
-			$sArgument = '';
-			foreach ($aArgument as $sKey=>$mValue)
-			{
-				$sParam     = "mParam{$sKey}";
-				$$sParam    = $mValue;
-				$sArgument .= (!empty($sArgument) ? ',' : '') . "\$$sParam";
-			}
-			$sConstructor = "\$oObject = new {$sClassName}({$sArgument});";
-			eval($sConstructor);
-		}
+		$object = call_user_func_array(Array(new ReflectionClass($className), 'newInstance'), $args);
 
-		return $this->hook(strToUpper($mModule), $oObject);
+		return $this->hook(strToUpper($module), $object);
 	}
 }

@@ -23,12 +23,12 @@ class CoreConfigINI extends Konsolidate
 	{
 		$aConfig = parse_ini_file($sFile, true);
 		$aReturn = Array();
-		foreach($aConfig as $sPrefix=>$mValue)
+		foreach ($aConfig as $sPrefix=>$mValue)
 		{
 			if (is_array($mValue))
 			{
 				$aReturn[$sPrefix] = array_key_exists('default', $aReturn) ? $aReturn['default'] : Array();
-				foreach($mValue as $sKey=>$sValue)
+				foreach ($mValue as $sKey=>$sValue)
 				{
 					$aReturn[$sPrefix][$sKey] = $sValue;
 					$this->set("/Config/{$sPrefix}/$sKey", $sValue);
@@ -60,8 +60,8 @@ class CoreConfigINI extends Konsolidate
 	public function loadAndDefine($sFile, $sSegment=null)
 	{
 		$aConfig = $this->load($sFile, $sSegment);
-		foreach($aConfig as $sPrefix=>$aValue)
-			foreach($aValue as $sKey=>$sValue)
+		foreach ($aConfig as $sPrefix=>$aValue)
+			foreach ($aValue as $sKey=>$sValue)
 			{
 				$sConstant = strToUpper("{$sPrefix}_{$sKey}");
 				if (!defined($sConstant))

@@ -99,7 +99,7 @@ class CoreSystemFileMIME extends Konsolidate
 	{
 		$aFilePart  = explode('.', $sFile);
 		$sExtension = array_pop($aFilePart);
-		switch(strToLower($sExtension))
+		switch (strToLower($sExtension))
 		{
 			//  Common image types
 			case 'ai':    case 'eps':

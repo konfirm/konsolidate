@@ -491,7 +491,7 @@ class Konsolidate implements Iterator
 			while(is_object($instance) && count($pathList))
 			{
 				$segment = array_shift($pathList);
-				switch(strToLower($segment))
+				switch (strToLower($segment))
 				{
 					case '':        //  root
 					case '_root':

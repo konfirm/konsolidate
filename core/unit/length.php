@@ -32,7 +32,7 @@ class CoreUnitLength extends Konsolidate
 	 */
 	protected function _convert($nValue, $sUnit, $nDirection=1)
 	{
-		switch($sUnit)
+		switch ($sUnit)
 		{
 			case 'in': case 'inch':
 				return $nValue * pow(self::INCH, $nDirection);

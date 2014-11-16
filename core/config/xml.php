@@ -24,6 +24,7 @@ class CoreConfigXML extends Konsolidate
 		$oConfig = simplexml_load_file($sFile);
 		if (is_object($oConfig))
 			return $this->_traverseXML($oConfig);
+
 		return false;
 	}
 
@@ -40,7 +41,7 @@ class CoreConfigXML extends Konsolidate
 	protected function _traverseXML($oNode, $sPath=null)
 	{
 		if ($oNode->children())
-			foreach($oNode as $oChild)
+			foreach ($oNode as $oChild)
 				$this->_traverseXML($oChild, "{$sPath}/" . $oNode->getName());
 		else
 			$this->set("{$sPath}/" . $oNode->getName(), (string) $oNode);

@@ -46,6 +46,7 @@ class CoreMailAttachment extends Konsolidate
 	 */
 	protected $_disposition;
 
+
 	/**
 	 *  dynamically set properties and take special care of them
 	 *  @name    __set
@@ -75,7 +76,7 @@ class CoreMailAttachment extends Konsolidate
 	 */
 	public function __get($sProperty)
 	{
-		switch($sProperty)
+		switch ($sProperty)
 		{
 			case 'data':
 				return !empty($this->_data) ? $this->_data : $this->call('/System/File/read', $this->_name);

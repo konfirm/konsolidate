@@ -40,6 +40,7 @@ class CoreSystemFileCSV extends Konsolidate
 	function __construct(Konsolidate $parent)
 	{
 		parent::__construct($parent);
+
 		$this->_fieldname = false;
 		$this->delimiter = ',';
 		$this->enclosure = '"';
@@ -56,14 +57,16 @@ class CoreSystemFileCSV extends Konsolidate
 	 *  @return  bool  success
 	 *  @syntax  string [object]->open(string filename [, string mode [, bool firstrowdefines]]);
 	 */
-	public function open($sFile, $sMode='r', $bFirstRowDefines=true)
+	public function open($file, $mode='r', $definitionRow=true)
 	{
-		if ($this->call('../open', $sFile, $sMode))
+		if ($this->call('../open', $file, $mode))
 		{
 			$this->_filepointer = $this->call('../getFilePointer');
-			$this->_fieldname   = $bFirstRowDefines;
+			$this->_fieldname   = $definitionRow;
+
 			return true;
 		}
+
 		return false;
 	}
 
@@ -76,28 +79,31 @@ class CoreSystemFileCSV extends Konsolidate
 	 *  @return  mixed  data
 	 *  @syntax  string [object]->get([int bytes]);
 	 *           mixed  [object]->get(string property);
-	 *  @note    If a string property is provided, the property value is returned, otherwise the next line of the opened file is returned.
+	 *  @note    If a string property is provided, the property value is returned, otherwise the next line of the
+	 *           opened file is returned.
 	 */
 	public function get()
 	{
 		//  in order to achieve compatiblity with Konsolidates set method in strict mode, the params are read 'manually'
-		$aArgument  = func_get_args();
-		$mLength    = (bool) count($aArgument) ? array_shift($aArgument) : 4096;
-		$mDelimiter = (bool) count($aArgument) ? array_shift($aArgument) : null;
-		$sEnclosure = (bool) count($aArgument) ? array_shift($aArgument) : null;
+		$args      = func_get_args();
+		$length    = (bool) count($args) ? array_shift($args) : 4096;
+		$delimiter = (bool) count($args) ? array_shift($args) : null;
+		$enclosure = (bool) count($args) ? array_shift($args) : null;
 
-		if (is_integer($mLength))
+		if (is_integer($length))
 		{
-			if (empty($mDelimiter))
-				$mDelimiter = $this->delimiter;
-			if (empty($sEnclosure))
-				$sEnclosure = $this->enclosure;
+			if (empty($delimiter))
+				$delimiter = $this->delimiter;
+			if (empty($enclosure))
+				$enclosure = $this->enclosure;
 
 			if ($this->_filepointer !== false && !feof($this->_filepointer))
-				return fgetcsv($this->_filepointer, $mLength, $mDelimiter, $sEnclosure);
+				return fgetcsv($this->_filepointer, $length, $delimiter, $enclosure);
+
 			return false;
 		}
-		return parent::get($mLength, $mDelimiter);
+
+		return parent::get($length, $delimiter);
 	}
 
 	/**
@@ -112,15 +118,16 @@ class CoreSystemFileCSV extends Konsolidate
 	 *  @return  bool  success
 	 *  @syntax  bool [object]->put(mixed data [, string delimiter [, string enclosure]]);
 	 */
-	public function put($mData, $sDelimiter=null, $sEnclosure=null)
+	public function put($data, $delimiter=null, $enclosure=null)
 	{
-		if (empty($sDelimiter))
-			$sDelimiter = $this->delimiter;
-		if (empty($sEnclosure))
-			$sEnclosure = $this->enclosure;
+		if (empty($delimiter))
+			$delimiter = $this->delimiter;
+		if (empty($enclosure))
+			$enclosure = $this->enclosure;
 
 		if ($this->_filepointer !== false)
-			return fputcsv($this->_filepointer, is_array($mData) ? $mData : Array($mData), $sDelimiter, $sEnclosure);
+			return fputcsv($this->_filepointer, is_array($data) ? $data : Array($data), $delimiter, $enclosure);
+
 		return false;
 	}
 
@@ -135,28 +142,31 @@ class CoreSystemFileCSV extends Konsolidate
 	 *  @return  mixed  object (if fieldnames are known), array (if fieldnames are not known)
 	 *  @syntax  mixed [object]->put(mixed data [, string delimiter [, string enclosure]]);
 	 */
-	public function next($nLength=4096, $sDelimiter=null, $sEncosure=null)
+	public function next($length=4096, $delimiter=null, $sEncosure=null)
 	{
-		if (empty($sDelimiter))
-			$sDelimiter = $this->delimiter;
-		if (empty($sEnclosure))
-			$sEnclosure = $this->enclosure;
+		if (empty($delimiter))
+			$delimiter = $this->delimiter;
+		if (empty($enclosure))
+			$enclosure = $this->enclosure;
 
 		if ($this->_fieldname === true)
-			$this->_fieldname = $this->get($nLength, $sDelimiter, $sEnclosure);
+			$this->_fieldname = $this->get($length, $delimiter, $enclosure);
 
-		$aResult = $this->get($nLength, $sDelimiter, $sEnclosure);
-		if ($aResult !== false)
+		$result = $this->get($length, $delimiter, $enclosure);
+		if ($result !== false)
 		{
 			if (is_array($this->_fieldname))
 			{
-				$oReturn = (object) null;
+				$return = (object) null;
 				for ($i = 0; $i < count($this->_fieldname); ++$i)
-					$oReturn->{$this->_fieldname[$i]} = $aResult[$i];
-				return $oReturn;
+					$return->{$this->_fieldname[$i]} = $result[$i];
+
+				return $return;
 			}
-			return $aResult;
+
+			return $result;
 		}
+
 		return false;
 	}
 
@@ -172,6 +182,7 @@ class CoreSystemFileCSV extends Konsolidate
 	{
 		if ($this->_filepointer !== false)
 			return fclose($this->_filepointer);
+
 		return false;
 	}
 }

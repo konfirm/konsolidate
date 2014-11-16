@@ -28,9 +28,10 @@ class CoreMediaImage extends Konsolidate
 	 *  @syntax  object = &new CoreImage(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
-	public function __construct(Konsolidate $oParent)
+	public function __construct(Konsolidate $parent)
 	{
 		parent::__construct($parent);
+
 		$this->_image = null;
 	}
 
@@ -210,7 +211,7 @@ class CoreMediaImage extends Konsolidate
 	 */
 	public function display($sType='JPEG', $nQuality=75, $sFile=null)
 	{
-		switch(strToUpper($sType))
+		switch (strToUpper($sType))
 		{
 			case 'GIF':
 			case IMAGETYPE_GIF:
@@ -401,7 +402,7 @@ class CoreMediaImage extends Konsolidate
 				return false;
 
 			$this->adjustMemoryUsage($aFile[0], $aFile[1]);
-			switch($aFile[2])
+			switch ($aFile[2])
 			{
 				case IMAGETYPE_GIF:
 					if (function_exists('imagecreatefromgif'))

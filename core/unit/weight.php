@@ -22,6 +22,7 @@ class CoreUnitWeight extends Konsolidate
 	const TROYOUNCE     = 31.1034768;
 	const TROYPOUND     = 373.2417216;
 
+
 	/**
 	 *  Convert non-SI units to SI units (grams)
 	 *  @name    load
@@ -35,7 +36,7 @@ class CoreUnitWeight extends Konsolidate
 	 */
 	protected function _convert($nValue, $sUnit, $nDirection=1)
 	{
-		switch($sUnit)
+		switch ($sUnit)
 		{
 			case 'grain': case 'gr':
 				return $nValue * pow(self::GRAIN, $nDirection);
@@ -64,6 +65,7 @@ class CoreUnitWeight extends Konsolidate
 			case 'troypound': case 'lbt': case 'lb t':
 				return $nValue * pow(self::TROYPOUND, $nDirection);
 		}
+
 		return null;
 	}
 
@@ -92,6 +94,7 @@ class CoreUnitWeight extends Konsolidate
 		{
 			$sUnit = substr($sUnit, 0, -1);
 		}
+
 		return $this->call('../SI/prefixToBase', $nValue, $sUnit) . ($bOmitSuffix ? '' : self::STANDARD);
 	}
 
@@ -102,6 +105,7 @@ class CoreUnitWeight extends Konsolidate
 		$nTemp   = $this->_convert($this->toBase($sSource, true), $sUnit, -1);
 		if (!is_null($nTemp))
 			return $nTemp;
+
 		return $this->call('../SI/baseToPrefix', $this->toBase($sSource, true), $sUnit);
 	}
 }

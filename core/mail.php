@@ -263,7 +263,7 @@ class CoreMail extends Konsolidate
 	public function send($bAllowEmptyContent=true, $bAllowEmptySubject=true)
 	{
 		$bRecipient = false;
-		foreach(Array('to', 'cc', 'bcc') as $sRecipient)
+		foreach (Array('to', 'cc', 'bcc') as $sRecipient)
 			if (count($this->{"_{$sRecipient}"}) > 0)
 				$bRecipient = true;
 		if (!$bRecipient)
@@ -332,7 +332,7 @@ class CoreMail extends Konsolidate
 		$sMailBody      = '';
 
 		if (count($this->_header))
-			foreach($this->_header as $key => $value)
+			foreach ($this->_header as $key => $value)
 				$oMail->addHeader($key, $value);
 
 		//  Set priority header if a priority was provided
@@ -394,7 +394,7 @@ class CoreMail extends Konsolidate
 			}
 
 			//  attach the actual file(s)
-			foreach($this->_attachment as $oFile)
+			foreach ($this->_attachment as $oFile)
 			{
 				$sMailBody .= $this->_createDataSegment($oFile->data, Array(
 					'encoding'=>'base64',
@@ -477,7 +477,7 @@ class CoreMail extends Konsolidate
 	 */
 	protected function _applyEncoding($sData, $sEncoding, $nLength=null)
 	{
-		switch(strToLower($sEncoding))
+		switch (strToLower($sEncoding))
 		{
 			case 'quoted-printable':
 				$fp = fopen('php://temp', 'r+');
@@ -676,7 +676,7 @@ class CoreMail extends Konsolidate
 	protected function _substitute($sValue)
 	{
 		if (is_array($this->_replace) && (bool) count($this->_replace))
-			foreach($this->_replace as $sPattern=>$sReplacement)
+			foreach ($this->_replace as $sPattern=>$sReplacement)
 				$sValue = str_replace($sPattern, $sReplacement, $sValue);
 		return $sValue;
 	}
@@ -761,7 +761,7 @@ class CoreMail extends Konsolidate
 			if (is_string($mValue))
 			{
 				$aTMP = explode(';', $mValue);
-				foreach($aTMP as $sField)
+				foreach ($aTMP as $sField)
 				{
 					preg_match('/([^<>]+)<?([^<>]*)>?/', $sField, $aMatch);
 					if (count($aMatch) >= 3)
@@ -773,9 +773,9 @@ class CoreMail extends Konsolidate
 					}
 				}
 			}
-			elseif (is_array($mValue))
+			else if (is_array($mValue))
 			{
-				foreach($mValue as $sKey=>$sValue)
+				foreach ($mValue as $sKey=>$sValue)
 				{
 					if (is_numeric($sKey))
 						$aRecipient[$sValue] = null;
@@ -835,7 +835,7 @@ class CoreMail extends Konsolidate
 		if (property_exists($this, "_{$sProperty}"))
 		{
 			if (!$this->_loading || ($this->_loading && empty($this->{"_{$sProperty}"})))
-				switch(strToLower($sProperty))
+				switch (strToLower($sProperty))
 				{
 					case 'to':
 					case 'cc':

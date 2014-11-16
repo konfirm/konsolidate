@@ -2,7 +2,8 @@
 
 
 /**
- *  Session support, aimed for use on WebFarms (Multiple webservers serving a single domain) by using the database as common resource
+ *  Session support, aimed for use on WebFarms (Multiple webservers serving a single domain) by using the database
+ *  as common resource
  *  @name    CoreSession
  *  @type    class
  *  @package Konsolidate
@@ -92,42 +93,43 @@ class CoreSession extends  Konsolidate
 	 *  @access  public
 	 *  @param   string sessionname, optional defaults to protected _sessionname
 	 *  @return  bool   success
-	 *  @syntax  bool CoreSession->start([string sessionname]);
 	 */
-	public function start($sSessionName=null)
+	public function start($name=null)
 	{
-		if (!empty($sSessionName) && $sSessionName != $this->_sessionname)
+		if (!empty($name) && $name != $this->_sessionname)
 		{
-			$this->_sessionname = $sSessionName;
+			$this->_sessionname = $name;
 			$this->_started     = false;
 		}
 
 		if (!$this->_started)
 		{
-			$sCookie        = $this->_getSessionCookie();
+			$cookie         = $this->_getSessionCookie();
 			$this->_started = $this->_setSessionCookie();
 
-			if ($sCookie === $this->_id)
+			if ($cookie === $this->_id)
 			{
-				$sQuery  = 'SELECT sesdata
+				$query  =  'SELECT sesdata
 							  FROM session
 							 WHERE ustid=' . $this->get('/User/Tracker/id') . '
-							   AND sescode=' . $this->call('/DB/quote', $this->_id) . "
-							   AND UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(sesmodifiedts) <= {$this->_duration}";
-				$oResult = $this->call('/DB/query', $sQuery);
-				if (is_object($oResult) && $oResult->errno <= 0 && $oResult->rows == 1)
+							   AND sescode=' . $this->call('/DB/quote', $this->_id) . '
+							   AND UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(sesmodifiedts) <= ' . $this->_duration;
+				$result = $this->call('/DB/query', $query);
+				if (is_object($result) && $result->errno <= 0 && $result->rows == 1)
 				{
-					$oRecord = $oResult->next();
-					$this->_property = unserialize($oRecord->sesdata);
+					$record = $result->next();
+					$this->_property = unserialize($record->sesdata);
 					if (!is_array($this->_property))
 					{
 						$this->_property = Array();
+
 						return false;
 					}
+
 					return true;
 				}
 			}
-			else if ($sCookie === false)
+			else if ($cookie === false)
 			{
 				return true;
 			}
@@ -150,19 +152,21 @@ class CoreSession extends  Konsolidate
 	 *  @syntax  void CoreSession->register([string variable [, string variable [, ...]]]);
 	 *  @note    Variables can also be assigned to a CoreSession directly using Konsolidate->set('/Session/variable', 'value');
 	 */
-	public function register($sModule)
+	public function register($module)
 	{
-		$aRegister = func_get_args();
-		if (count($aRegister) == 1 && is_string($sModule))
-			if ($this->checkModuleAvailability($sModule) || !array_key_exists($sModule, $GLOBALS))
-				return parent::register($sModule);
+		$args = func_get_args();
+		if (count($args) == 1 && is_string($module))
+			if ($this->checkModuleAvailability($module) || !array_key_exists($module, $GLOBALS))
+				return parent::register($module);
 
 		if ($this->start())
-			foreach($aRegister as $mVariable)
-				if (is_array($mVariable))
-					call_user_func_array(Array(&$this, 'register'), $mVariable);
+			foreach ($args as $variable)
+			{
+				if (is_array($variable))
+					call_user_func_array(Array($this, 'register'), $variable);
 				else
-					$this->$mVariable = $GLOBALS[$mVariable];
+					$this->$variable = $GLOBALS[$variable];
+			}
 	}
 
 	/**
@@ -178,16 +182,16 @@ class CoreSession extends  Konsolidate
 	{
 		if ($this->start())
 		{
-			$aRegister = func_get_args();
-			foreach($aRegister as $mVariable)
-				if (is_array($mVariable))
+			$args = func_get_args();
+			foreach ($args as $variable)
+				if (is_array($variable))
 				{
-					call_user_func_array(Array(&$this, 'unregister'), $mVariable);
+					call_user_func_array(Array($this, 'unregister'), $variable);
 				}
-				else if ($this->isRegistered($mVariable))
+				else if ($this->isRegistered($variable))
 				{
 					$this->_updated = true;
-					unset($this->_property[$mVariable]);
+					unset($this->_property[$variable]);
 				}
 		}
 	}
@@ -234,11 +238,11 @@ class CoreSession extends  Konsolidate
 	 *  @syntax  void CoreSession->destroy([bool removecookie]);
 	 *  @note    The cookie is kept by default
 	 */
-	public function destroy($bRemoveCookie=false)
+	public function destroy($removeCookie=false)
 	{
 		$this->_property = Array();
 		$this->_updated  = true;
-		if ($bRemoveCookie)
+		if ($removeCookie)
 			return setCookie(
 				$this->_sessionname,
 				'',
@@ -257,10 +261,11 @@ class CoreSession extends  Konsolidate
 	 *  @return  bool
 	 *  @syntax  bool CoreSession->isRegistered(string variablename);
 	 */
-	public function isRegistered($sVariable)
+	public function isRegistered($variable)
 	{
 		if ($this->start())
-			return array_key_exists($sVariable, $this->_property);
+			return array_key_exists($variable, $this->_property);
+
 		return false;
 	}
 
@@ -277,8 +282,8 @@ class CoreSession extends  Konsolidate
 	{
 		if ($this->start() && $this->_updated)
 		{
-			$sData   = serialize($this->_property);
-			$sQuery  = 'INSERT INTO session (
+			$data   = serialize($this->_property);
+			$query  = 'INSERT INTO session (
 							   ustid,
 							   sescode,
 							   sesdata,
@@ -288,20 +293,22 @@ class CoreSession extends  Konsolidate
 						VALUES (
 							   ' . $this->get('/User/Tracker/id') . ',
 							   ' . $this->call('/DB/quote', $this->_id) . ',
-							   ' . $this->call('/DB/quote', $sData) . ',
+							   ' . $this->call('/DB/quote', $data) . ',
 							   NOW(),
 							   NOW()
 						)
 						ON DUPLICATE KEY
 						UPDATE sesdata=VALUES(sesdata),
 							   sesmodifiedts=NOW()';
-			$oResult = $this->call('/DB/query', $sQuery);
-			if (is_object($oResult) && $oResult->errno <= 0)
+			$result = $this->call('/DB/query', $query);
+			if (is_object($result) && $result->errno <= 0)
 			{
 				$this->_updated = false;
+
 				return true;
 			}
 		}
+
 		return false;
 	}
 
@@ -319,17 +326,19 @@ class CoreSession extends  Konsolidate
 		return $this->writeClose();
 	}
 
-	function __set($sProperty, $mValue)
+	function __set($property, $value)
 	{
-		if ((!array_key_exists($sProperty, $this->_property) || (array_key_exists($sProperty, $this->_property) && $this->$sProperty !== $mValue)))
+		if ((!array_key_exists($property, $this->_property) || (array_key_exists($property, $this->_property) && $this->$property !== $value)))
 			$this->_updated = true;
-		parent::__set($sProperty, $mValue);
+
+		parent::__set($property, $value);
 	}
 
-	function __get($sProperty)
+	function __get($property)
 	{
 		$this->start();
-		return parent::__get($sProperty);
+
+		return parent::__get($property);
 	}
 
 	public function __destruct()

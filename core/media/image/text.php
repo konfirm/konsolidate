@@ -25,29 +25,19 @@ class CoreMediaImageText extends Konsolidate
 	 *  @access  public
 	 *  @return  resource image
 	 *  @note    this method examines the provided input and bridges the call to the most approproate method avaiable
-	 *           to handle your request based on the provided parameters. Refer to the method calls of _createFromStyle and _createFromArgument
-	 *           for an overview of possible arguments (the calls cannot be mixed, use either one of the calls)
+	 *           to handle your request based on the provided parameters. Refer to the method calls of _createFromStyle
+	 *           and _createFromArgument for an overview of possible arguments (the calls cannot be mixed, use either
+	 *           one of the calls)
 	 *  @see     _createFromStyle
 	 *  @see     _createFromArgument
 	 */
 	public function create()
 	{
-		$aArgument = func_get_args();
-		if (count($aArgument) > 3 || (isset($aArgument[2]) && !is_array($aArgument[2])))
-			return call_user_func_array(
-				Array(
-					$this,
-					'_createFromArgument'
-				),
-				$aArgument
-			);
-		return call_user_func_array(
-			Array(
-				$this,
-				'_createFromStyle'
-			),
-			$aArgument
-		);
+		$args = func_get_args();
+		if (count($args) > 3 || (isset($args[2]) && !is_array($args[2])))
+			return call_user_func_array(Array($this, '_createFromArgument'), $args);
+
+		return call_user_func_array(Array($this, '_createFromStyle'), $args);
 	}
 
 	/**
@@ -59,103 +49,102 @@ class CoreMediaImageText extends Konsolidate
 	 *  @param   string  text
 	 *  @param   array   style definition
 	 *  @return  resource image
-	 *  @syntax  CoreMediaImageText->_createFromStyle(resource image, string text, array style)
 	 *  @see     create
 	 */
-	protected function _createFromStyle($mImage, $sText, $aStyle)
+	protected function _createFromStyle($image, $text, $style)
 	{
-		$this->_style = $aStyle;
-		$bAntiAlias   = $this->_getStyle('anti-alias');
-		$nSize        = (int)    $this->_getStyle('font-size', 10);
-		$nAngle       = (int)    $this->_getStyle('angle', 0);
-		$nWidth       = (int)    $this->_getStyle('width');
-		$nHeight      = (int)    $this->_getStyle('height');
-		$nX           = (int)    $this->_getStyle('left', 0);
-		$nY           = (int)    $this->_getStyle('top', 0);
-		$sColor       = (string) $this->_getStyle('color', '#000');
-		$sBGColor     = (string) $this->_getStyle('background-color', '#fff');
-		$sBGImage     = (string) $this->_getStyle('background-image');
-		$sBGRepeat    = (string) $this->_getStyle('background-repeat', 'repeat');
-		$sFont        = DOCUMENT_ROOT . $this->_getStyle('font-family');
+		$this->_style = $style;
+		$antiAlias   = $this->_getStyle('anti-alias');
+		$size        = (int)    $this->_getStyle('font-size', 10);
+		$angle       = (int)    $this->_getStyle('angle', 0);
+		$width       = (int)    $this->_getStyle('width');
+		$height      = (int)    $this->_getStyle('height');
+		$x           = (int)    $this->_getStyle('left', 0);
+		$y           = (int)    $this->_getStyle('top', 0);
+		$color       = (string) $this->_getStyle('color', '#000');
+		$bgColor     = (string) $this->_getStyle('background-color', '#fff');
+		$bgImage     = (string) $this->_getStyle('background-image');
+		$bgRepeat    = (string) $this->_getStyle('background-repeat', 'repeat');
+		$font        = DOCUMENT_ROOT . $this->_getStyle('font-family');
 
-		if (is_null($bAntiAlias))
-			$bAntiAlias = $nSize > 24;
+		if (is_null($antiAlias))
+			$antiAlias = $size > 24;
 		else
-			$bAntiAlias = (bool) $bAntiAlias;
+			$antiAlias = (bool) $antiAlias;
 
-		$nBaseSize   = $bAntiAlias ? $nSize * ($nSize < 72 ? 4 : 2) : $nSize;
-		$aPoint      = imagettfbbox($nBaseSize, $nAngle, $sFont, $sText);
-		$nFontX      = min($aPoint[0], $aPoint[6]) * -1;
-		$nFontY      = min($aPoint[5], $aPoint[7]) * -1;
-		$nTextHeight = max($aPoint[1], $aPoint[3]) - min($aPoint[5], $aPoint[7]);
-		$nTextWidth  = max($aPoint[2], $aPoint[4]) - min($aPoint[0], $aPoint[6]);
-		$nRatio      = $nSize / $nBaseSize;
-		$nNewWidth   = !empty($nWidth) ? $nWidth : ceil(($nTextWidth + 8) * $nRatio);
-		$nNewHeight  = !empty($nHeight) ? $nHeight : ceil(($nTextHeight + 6) * $nRatio);
+		$baseSize   = $antiAlias ? $size * ($size < 72 ? 4 : 2) : $size;
+		$point      = imagettfbbox($baseSize, $angle, $font, $text);
+		$fontX      = min($point[0], $point[6]) * -1;
+		$fontY      = min($point[5], $point[7]) * -1;
+		$textHeight = max($point[1], $point[3]) - min($point[5], $point[7]);
+		$textWidth  = max($point[2], $point[4]) - min($point[0], $point[6]);
+		$ratio      = $size / $baseSize;
+		$newWidth   = !empty($width) ? $width : ceil(($textWidth + 8) * $ratio);
+		$newHeight  = !empty($height) ? $height : ceil(($textHeight + 6) * $ratio);
 
-		if (empty($nWidth))
-			$nWidth = $nTextWidth + 8;
+		if (empty($width))
+			$width = $textWidth + 8;
 
-		if (empty($nHeight))
-			$nHeight = $nTextHeight + 8;
+		if (empty($height))
+			$height = $textHeight + 8;
 
-		if (!empty($sBGImage))
+		if (!empty($bgImage))
 		{
-			$mImage      = &$this->call('../create', $nNewWidth, $nNewHeight, $sBGColor);
-			$rTile       = &$this->call('../_load', DOCUMENT_ROOT . $sBGImage);
-			$nTileWidth  = imagesx($rTile);
-			$nTileHeight = imagesy($rTile);
+			$image      = &$this->call('../create', $newWidth, $newHeight, $bgColor);
+			$tile       = &$this->call('../_load', DOCUMENT_ROOT . $bgImage);
+			$tileWidth  = imagesx($tile);
+			$tileHeight = imagesy($tile);
 
-			if (strToLower(substr($sBGRepeat, 0, 6)) == 'repeat')
+			if (strToLower(substr($bgRepeat, 0, 6)) == 'repeat')
 			{
-				imagesettile($mImage, $rTile);
-				imagefilledrectangle($mImage, 0, 0, strToLower($sBGRepeat) == 'repeat-y' ? $nTileWidth : $nNewWidth, strToLower($sBGRepeat) == 'repeat-x' ? $nTileHeight : $nNewHeight, IMG_COLOR_TILED);
+				imagesettile($image, $tile);
+				imagefilledrectangle($image, 0, 0, strToLower($bgRepeat) == 'repeat-y' ? $tileWidth : $newWidth, strToLower($bgRepeat) == 'repeat-x' ? $tileHeight : $newHeight, IMG_COLOR_TILED);
 			}
 			else
 			{
-				$mImage = $this->call('../copy', $mImage, $rTile);
+				$image = $this->call('../copy', $image, $tile);
 			}
 		}
-		elseif (!is_resource($mImage))
+		else if (!is_resource($image))
 		{
-			if ($sBGColor == 'transparent' || $sBGColor == 'none' || empty($sBGColor))
-				$mImage  = &$this->call('../create', $nNewWidth, $nNewHeight);
+			if ($bgColor == 'transparent' || $bgColor == 'none' || empty($bgColor))
+				$image  = &$this->call('../create', $newWidth, $newHeight);
 			else
-				$mImage  = &$this->call('../create', $nNewWidth, $nNewHeight, $sBGColor);
+				$image  = &$this->call('../create', $newWidth, $newHeight, $bgColor);
 		}
 
-		if ($bAntiAlias)
+		if ($antiAlias)
 		{
-			$rImage     = $this->call('../_create', $nTextWidth, $nTextHeight);
-			$rText      = $this->call('../_create', $nNewWidth, $nNewHeight);
-			$nTrans     = imagecolorallocatealpha($rImage, 0, 0, 0, 127);
-			$nColor     = $this->call('../getColor', $sColor, $rImage);
-			$nBGColor   = $this->call('../getColor', '#000', $rText);
+			$rework      = $this->call('../_create', $textWidth, $textHeight);
+			$textImage   = $this->call('../_create', $newWidth, $newHeight);
+			$transparent = imagecolorallocatealpha($rework, 0, 0, 0, 127);
+			$reworkColor = $this->call('../getColor', $color, $rework);
+			$reworkBG     = $this->call('../getColor', '#000', $textImage);
 
-			imagealphablending($rImage, false);
-			imagefilledrectangle($rImage, 0, 0, $nTextWidth, $nTextHeight, $nTrans);
+			imagealphablending($rework, false);
+			imagefilledrectangle($rework, 0, 0, $textWidth, $textHeight, $transparent);
 
-			imagealphablending($rImage, true);
-			imagettftext($rImage, $nBaseSize, $nAngle, $nFontX, $nFontY, $nColor, $sFont, $sText);
-			imagealphablending($rImage, false);
+			imagealphablending($rework, true);
+			imagettftext($rework, $baseSize, $angle, $fontX, $fontY, $reworkColor, $font, $text);
+			imagealphablending($rework, false);
 
-			imagecolortransparent($rText, $nBGColor);
-			imagealphablending($rText, false);
-			imagecopyresampled($rText, $rImage, 0, 0, 0, 0, $nNewWidth, $nNewHeight, $nWidth, $nHeight);
+			imagecolortransparent($textImage, $reworkBG);
+			imagealphablending($textImage, false);
+			imagecopyresampled($textImage, $rework, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 
-			imagealphablending($mImage, true);
-			imagecopy($mImage, $rText, $nX, $nY, 0, 0, $nNewWidth, $nNewHeight);
-			imagealphablending($mImage, false);
-			imagedestroy($rImage);
-			imagedestroy($rText);
+			imagealphablending($image, true);
+			imagecopy($image, $textImage, $x, $y, 0, 0, $newWidth, $newHeight);
+			imagealphablending($image, false);
+			imagedestroy($rework);
+			imagedestroy($textImage);
 		}
 		else
 		{
-			imagealphablending($mImage, true);
-			imagettftext($mImage, $nSize, $nAngle, $nX, $nFontY + $nY, $this->call('../getColor', $sColor), $sFont, $sText);
+			imagealphablending($image, true);
+			imagettftext($image, $size, $angle, $x, $fontY + $y, $this->call('../getColor', $color), $font, $text);
 		}
 
-		return $mImage;
+		return $image;
 	}
 
 	/**
@@ -174,65 +163,64 @@ class CoreMediaImageText extends Konsolidate
 	 *  @param   bool    antialias (optional, default false for text sizes < 24, true otherwise)
 	 *  @param   int     angle of rotation in degrees (optional, default 0)
 	 *  @return  resource image
-	 *  @syntax  CoreMediaImageText->_createFromArgument(resource image, string text, string fontfile [, int textsize [, int X [, int Y [, string color [, string backgroundcolor [, bool antialias [, float angle]]]]]]])
 	 *  @see     create
 	 */
-	protected function _createFromArgument($mImage, $sText, $sFont, $nSize=10, $nX=0, $nY=0, $sColor='#000', $sBGColor='#fff', $bAntiAlias=null, $nAngle=0)
+	protected function _createFromArgument($image, $text, $font, $size=10, $x=0, $y=0, $color='#000', $bgColor='#fff', $antiAlias=null, $angle=0)
 	{
-		if (is_null($bAntiAlias))
-			$bAntiAlias = $nSize > 24;
+		if (is_null($antiAlias))
+			$antiAlias = $size > 24;
 
-		if ($bAntiAlias === true)
+		if ($antiAlias === true)
 		{
-			$nBaseSize  = $nSize * ($nSize < 72 ? 4 : 2);
-			$aPoint     = imagettfbbox($nBaseSize, $nAngle, $sFont, $sText);
-			$nFontX     = min($aPoint[0], $aPoint[6]) * -1;
-			$nFontY     = min($aPoint[5], $aPoint[7]) * -1;
-			$nHeight    = max($aPoint[1], $aPoint[3]) - min($aPoint[5], $aPoint[7]);
-			$nWidth     = max($aPoint[2], $aPoint[4]) - min($aPoint[0], $aPoint[6]);
-			$nRatio     = $nSize / $nBaseSize;
-			$nNewWidth  = ceil($nWidth * $nRatio);
-			$nNewHeight = ceil($nHeight * $nRatio);
-			$rImage     = $this->call('../_create', $nWidth, $nHeight);
-			$rText      = $this->call('../_create', $nNewWidth, $nNewHeight);
-			$nTrans     = imagecolorallocatealpha($rImage, 0, 0, 0, 127);
-			$nColor     = $this->call('../getColor', $sColor, $rImage);
-			$nBGColor   = $this->call('../getColor', '#000', $rText);
-			if (!is_resource($mImage))
-				$mImage = &$this->call('../create', $nNewWidth + $nX, $nNewHeight + $nY, $sBGColor);
+			$baseSize    = $size * ($size < 72 ? 4 : 2);
+			$point       = imagettfbbox($baseSize, $angle, $font, $text);
+			$fontX       = min($point[0], $point[6]) * -1;
+			$fontY       = min($point[5], $point[7]) * -1;
+			$height      = max($point[1], $point[3]) - min($point[5], $point[7]);
+			$width       = max($point[2], $point[4]) - min($point[0], $point[6]);
+			$ratio       = $size / $baseSize;
+			$newWidth    = ceil($width * $ratio);
+			$newHeight   = ceil($height * $ratio);
+			$rework      = $this->call('../_create', $width, $height);
+			$textImage   = $this->call('../_create', $newWidth, $newHeight);
+			$transparent = imagecolorallocatealpha($rework, 0, 0, 0, 127);
+			$reworkColor = $this->call('../getColor', $color, $rework);
+			$reworkBG    = $this->call('../getColor', '#000', $textImage);
+			if (!is_resource($image))
+				$image = &$this->call('../create', $newWidth + $x, $newHeight + $y, $bgColor);
 
-			imagealphablending($rImage, false);
-			imagefilledrectangle($rImage, 0, 0, $nWidth, $nHeight, $nTrans);
-			imagealphablending($rImage, true);
-			imagettftext($rImage, $nBaseSize, $nAngle, $nFontX, $nFontY, $nColor, $sFont, $sText);
-			imagealphablending($rImage, false);
+			imagealphablending($rework, false);
+			imagefilledrectangle($rework, 0, 0, $width, $height, $transparent);
+			imagealphablending($rework, true);
+			imagettftext($rework, $baseSize, $angle, $fontX, $fontY, $reworkColor, $font, $text);
+			imagealphablending($rework, false);
 
-			imagecolortransparent($rText, $bkg);
-			imagealphablending($rText, false);
-			imagecopyresampled($rText, $rImage, 0, 0, 0, 0, $nNewWidth, $nNewHeight, $nWidth, $nHeight);
+			imagecolortransparent($textImage, $bkg);
+			imagealphablending($textImage, false);
+			imagecopyresampled($textImage, $rework, 0, 0, 0, 0, $newWidth, $newHeight, $width, $height);
 
-			imagealphablending($mImage, true);
-			imagecopy($mImage, $rText, $nX, $nY, 0, 0, $nNewWidth, $nNewHeight);
-			imagealphablending($mImage, false);
-			imagedestroy($rImage);
-			imagedestroy($rText);
+			imagealphablending($image, true);
+			imagecopy($image, $textImage, $x, $y, 0, 0, $newWidth, $newHeight);
+			imagealphablending($image, false);
+			imagedestroy($rework);
+			imagedestroy($textImage);
 		}
 		else
 		{
-			$aPoint  = imagettfbbox($nSize, $nAngle, $sFont, $sText);
-			$nFontY  = min($aPoint[5], $aPoint[7]) * -1;
-			$nHeight = 2 + (max($aPoint[1], $aPoint[3]) - min($aPoint[5], $aPoint[7]));
-			$nWidth  = 2 + (max($aPoint[2], $aPoint[4]) - min($aPoint[0], $aPoint[6]));
+			$point  = imagettfbbox($size, $angle, $font, $text);
+			$fontY  = min($point[5], $point[7]) * -1;
+			$height = 2 + (max($point[1], $point[3]) - min($point[5], $point[7]));
+			$width  = 2 + (max($point[2], $point[4]) - min($point[0], $point[6]));
 
-			if (!is_resource($mImage))
-				$mImage  = &$this->call('../create', $nWidth + $nX, $nHeight + $nY, $sBGColor);
+			if (!is_resource($image))
+				$image  = &$this->call('../create', $width + $x, $height + $y, $bgColor);
 			else
-				imagealphablending($mImage, true);
+				imagealphablending($image, true);
 
-			imagettftext($mImage, $nSize, $nAngle, $nX, $nFontY + $nY, $this->call('../getColor', $sColor), $sFont, $sText);
+			imagettftext($image, $size, $angle, $x, $fontY + $y, $this->call('../getColor', $color), $font, $text);
 		}
 
-		return $mImage;
+		return $image;
 	}
 
 	/**
@@ -245,10 +233,11 @@ class CoreMediaImageText extends Konsolidate
 	 *  @return  mixed property value
 	 *  @syntax  CoreMediaImageText->_getStyle(string property [, mixed default])
 	 */
-	protected function _getStyle($sProperty, $mDefault=null)
+	protected function _getStyle($property, $default=null)
 	{
-		if (array_key_exists($sProperty, $this->_style) && $this->_style[$sProperty] != 'auto')
-			return $this->_style[$sProperty];
-		return $mDefault;
+		if (array_key_exists($property, $this->_style) && $this->_style[$property] != 'auto')
+			return $this->_style[$property];
+
+		return $default;
 	}
 }

@@ -90,13 +90,13 @@ class CoreRequest extends Konsolidate
 		$this->_raw = trim(file_get_contents('php://input'));
 
 		//  Try to determine what kind of request triggered this class
-		switch(substr($this->_raw, 0, 1))
+		switch (substr($this->_raw, 0, 1))
 		{
 			case '<': // XML
 				// in-class for now
 				$this->_xml = new SimpleXMLElement($this->_raw);
 
-				foreach($this->_xml as $sParam=>$sValue)
+				foreach ($this->_xml as $sParam=>$sValue)
 					$this->$sParam = (string) $sValue;
 				$this->call('/Log/write', var_export($this->_property, true), 4);
 				break;
@@ -115,7 +115,7 @@ class CoreRequest extends Konsolidate
 	{
 		if (is_array($aCollection) && (bool) count($aCollection))
 		{
-			foreach($aCollection as $sParam=>$mValue)
+			foreach ($aCollection as $sParam=>$mValue)
 				$this->$sParam = $mValue;
 			return true;
 		}
@@ -159,7 +159,7 @@ class CoreRequest extends Konsolidate
 		{
 			$aReturn = Array();
 			for($i = 0; $i < strlen($this->_order); ++$i)
-				switch(strToUpper($this->_order{$i}))
+				switch (strToUpper($this->_order{$i}))
 				{
 					case 'G': $aReturn = array_merge($aReturn, $_GET);    break;
 					case 'P': $aReturn = array_merge($aReturn, $_POST);   break;
@@ -185,13 +185,13 @@ class CoreRequest extends Konsolidate
 	{
 		$this->_file          = Array();
 		$this->_filereference = Array();
-		foreach($_FILES as $sFieldName=>$aFile)
+		foreach ($_FILES as $sFieldName=>$aFile)
 			if (isset($aFile['error'])) // we have one or more file
 			{
 				if (is_array($aFile['error'])) // multiple files
 				{
 					$mFile = Array();
-					foreach($aFile['error'] as $sKey=>$mValue)
+					foreach ($aFile['error'] as $sKey=>$mValue)
 					{
 						$oFile = $this->_createFileInstance($aFile, $sFieldName, $sKey);
 						array_push($this->_file, $oFile);
@@ -222,7 +222,7 @@ class CoreRequest extends Konsolidate
 	{
 		$oTMP = $this->instance('File');
 		$oTMP->variable = $sVariable;
-		foreach($aFile as $sProperty=>$mValue)
+		foreach ($aFile as $sProperty=>$mValue)
 			$oTMP->{$sProperty} = is_null($sReference) ? $mValue : $mValue[$sReference];
 		return $oTMP;
 	}

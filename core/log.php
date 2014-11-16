@@ -128,7 +128,7 @@ class CoreLog extends Konsolidate
 	 */
 	protected function _translate($nVerbosity, $bUpperCase=true)
 	{
-		switch((int) $nVerbosity)
+		switch ((int) $nVerbosity)
 		{
 			case 0:  $sReturn = 'Critical'; break;
 			case 1:  $sReturn = 'Severe';   break;

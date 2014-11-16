@@ -40,7 +40,7 @@ class CoreRPCStatus extends Konsolidate
 	protected function _flattenArray($aSource, $sNumericKey='item')
 	{
 		$sReturn = '';
-		foreach($aSource as $sKey=>$mValue)
+		foreach ($aSource as $sKey=>$mValue)
 		{
 			if (is_numeric($sKey))
 				$sKey = $sNumericKey;

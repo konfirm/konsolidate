@@ -107,7 +107,7 @@ class CoreTemplate extends Konsolidate
 	{
 		if (is_array($mVariable))
 		{
-			foreach($mVariable as $sVariable=>$mValue)
+			foreach ($mVariable as $sVariable=>$mValue)
 				$this->append($sVariable, $mValue);
 		}
 		else
@@ -115,7 +115,7 @@ class CoreTemplate extends Konsolidate
 			$mCurrent = $this->$mVariable;
 			if (!is_null($mCurrent))
 			{
-				switch(getType($mCurrent))
+				switch (getType($mCurrent))
 				{
 					case 'boolean':
 						$mCurrent &= $mValue;
@@ -132,7 +132,7 @@ class CoreTemplate extends Konsolidate
 
 					case 'array':
 						if (is_array($mValue))
-							foreach($mValue as $sKey=>$mVal)
+							foreach ($mValue as $sKey=>$mVal)
 								if (is_int($sKey))
 									array_push($mCurrent, $mVal);
 								else
@@ -238,7 +238,7 @@ class CoreTemplate extends Konsolidate
 	{
 		$sCacheFile = $this->_getCompileName($sTemplate, $sReference);
 		//  prepare variables in the current scope
-		foreach($this->_property as $sVariable=>$sValue)
+		foreach ($this->_property as $sVariable=>$sValue)
 			$$sVariable = $sValue;
 
 		if ($bForce === true || $this->isUpdated($sTemplate, $sReference))
@@ -345,7 +345,7 @@ class CoreTemplate extends Konsolidate
 			return time();
 		$aDependency = unserialize(file_get_contents("{$this->_compilepath}/dep/" . md5($sCacheFile)));
 		$nLatest     = 0;
-		foreach($aDependency as $sFileName)
+		foreach ($aDependency as $sFileName)
 			$nLatest = max($nLatest, filemtime($sFileName));
 		return $nLatest;
 	}

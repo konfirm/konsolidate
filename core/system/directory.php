@@ -40,7 +40,7 @@ class CoreSystemDirectory extends Konsolidate
 		$aReturn = Array();
 		if (is_dir($sPath))
 		{
-			foreach(new DirectoryIterator($sPath) as $nIndex=>$oItem)
+			foreach (new DirectoryIterator($sPath) as $nIndex=>$oItem)
 			{
 				$sName = $oItem->getFilename();
 				if ($sName{0} != '.')

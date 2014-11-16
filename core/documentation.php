@@ -22,7 +22,7 @@ class CoreDocumentation extends Konsolidate
 	 *  @syntax  object = &new CoreDocumentation(object parent)
 	 *  @note    This object is constructed by one of Konsolidates modules
 	 */
-	public function __construct(Konsolidate $oParent)
+	public function __construct(Konsolidate $parent)
 	{
 		parent::__construct($parent);
 
@@ -46,7 +46,7 @@ class CoreDocumentation extends Konsolidate
 		preg_match_all('#/\*\*(.*?)\*/#s', $sBody, $aMatch);
 		if (count($aMatch) > 1)
 		{
-			foreach($aMatch[1] as $sComment)
+			foreach ($aMatch[1] as $sComment)
 			{
 				$nIndex                    = count($this->_collect);
 				$this->_collect[$nIndex] = $this->instance('Block');
@@ -54,7 +54,7 @@ class CoreDocumentation extends Konsolidate
 				$sComment = preg_replace('/([\r\t]+)\*([\r\t]+)/s', '', $sComment);
 				$aComment = explode(PHP_EOL, $sComment);
 
-				foreach($aComment as $sCommentLine)
+				foreach ($aComment as $sCommentLine)
 					$this->_collect[$nIndex]->append($sCommentLine);
 			}
 		}
@@ -73,7 +73,7 @@ class CoreDocumentation extends Konsolidate
 	public function fetch($bOmitEmpty=false)
 	{
 		$aReturn = Array();
-		foreach($this->_collect as $oDocBlock)
+		foreach ($this->_collect as $oDocBlock)
 			array_push($aReturn, $oDocBlock->fetch($bOmitEmpty));
 		return $aReturn;
 	}

@@ -37,7 +37,7 @@ class CoreMailContent extends Konsolidate
 		if (is_object($oResult) && $oResult->errno <= 0)
 		{
 			$oRecord = $oResult->next();
-			foreach($oRecord as $sKey=>$sValue)
+			foreach ($oRecord as $sKey=>$sValue)
 				$this->set('../' . $sKey, $sValue);
 			return true;
 		}

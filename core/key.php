@@ -130,7 +130,7 @@ class CoreKey extends Konsolidate
 	 */
 	public function __set($sProperty, $mValue)
 	{
-		switch($sProperty)
+		switch ($sProperty)
 		{
 			case 'lowercase':
 			case 'uppercase':

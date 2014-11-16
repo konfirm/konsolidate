@@ -133,7 +133,7 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	protected function _createRecipientList($aCollection)
 	{
 		$sReturn = '';
-		foreach($aCollection as $sEmail=>$sName)
+		foreach ($aCollection as $sEmail=>$sName)
 			$sReturn .= (!empty($sReturn) ? ',' : '') . (!is_null($sName) ? "{$sName}<{$sEmail}>" : $sEmail);
 		return $sReturn;
 	}
@@ -230,7 +230,7 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	{
 		$this->addHeader($sHeaderName, $this->_createRecipientList($aCollection));
 		$bReturn = true;
-		foreach($aCollection as $sEmail=>$sName)
+		foreach ($aCollection as $sEmail=>$sName)
 			$bReturn &= $this->_command("RCPT TO: {$sEmail}") == 250;
 		return $bReturn;
 	}
@@ -270,7 +270,7 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 		{
 			uksort($this->_header, Array($this, '_headerSort'));
 
-			foreach($this->_header as $sKey=>$sValue)
+			foreach ($this->_header as $sKey=>$sValue)
 				$this->_socket->write("{$sKey}: {$sValue}\r\n");
 
 			//  The SMTP protocol removes any dot which is the first character on a line, this is resolved by simply adding a dot.
@@ -338,18 +338,18 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 	 */
 	public function send($sUsername=null, $sPassword=null)
 	{
-		foreach($this->_property as $sKey=>$mValue)
+		foreach ($this->_property as $sKey=>$mValue)
 			if (!in_array(strToLower($sKey), $this->_noautoheader))
 			{
 				if (is_array($mValue))
 				{
 					$sHeader = '';
-					foreach($mValue as $sValue)
+					foreach ($mValue as $sValue)
 						$sHeader .= (!empty($sHeader) ? ', ' : '') . $sValue;
 					if (!empty($sHeader))
 						$this->addHeader($sKey, $sHeader);
 				}
-				elseif (!empty($mValue))
+				else if (!empty($mValue))
 				{
 					$this->addHeader($sKey, $mValue);
 				}
@@ -367,7 +367,7 @@ class CoreNetworkProtocolSMTP extends Konsolidate
 		if (!$this->mailFrom($this->from, $this->sender))
 			return false;
 
-		foreach(Array('to', 'cc', 'bcc') as $sType)
+		foreach (Array('to', 'cc', 'bcc') as $sType)
 		{
 			$mValue = $this->$sType;
 			if (!empty($mValue) && !$this->rcptTo($mValue, $sType))

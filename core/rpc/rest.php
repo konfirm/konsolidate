@@ -19,28 +19,28 @@ class CoreRPCREST extends CoreRPC
 	 *  @return  bool
 	 *  @syntax  bool CoreRPCREST(string configfile)
 	 */
-	public function process($sConfigFile=null)
+	public function process($configFile=null)
 	{
-		if (!is_null($sConfigFile))
-			$this->loadConfig($sConfigFile);
+		if (!is_null($configFile))
+			$this->loadConfig($configFile);
 
 		if (is_array($this->_config))
 		{
-			$aArgument = explode('/', trim(str_replace($_SERVER['SCRIPT_NAME'], '', $_SERVER['PHP_SELF']), '/'));
-			$sCommand  = array_shift($aArgument);
+			$args    = explode('/', trim(str_replace($_SERVER['SCRIPT_NAME'], '', $_SERVER['PHP_SELF']), '/'));
+			$command = array_shift($args);
 
-			if (array_key_exists('rest', $this->_config) && array_key_exists($sCommand, $this->_config['rest']))
+			if (array_key_exists('rest', $this->_config) && array_key_exists($command, $this->_config['rest']))
 			{
-				$sCommand = "../Control/{$this->_config['rest'][$sCommand]}";
-				$sModule  = dirName($sCommand);
+				$command = '../Control/' . $this->_config['rest'][$command];
+				$module  = dirname($command);
 
-				array_unshift($aArgument, $sCommand);
-				call_user_func_array(Array($this, 'call'), $aArgument);
+				array_unshift($args, $command);
+				call_user_func_array(Array($this, 'call'), $args);
 
 				$this->call('/RPC/Status/send',
-					$this->call("{$sModule}/getStatus"),
-					$this->call("{$sModule}/getMessage"),
-					$this->call("{$sModule}/getContent")
+					$this->call($module . '/getStatus'),
+					$this->call($module . '/getMessage'),
+					$this->call($module . '/getContent')
 				);
 
 				return true;

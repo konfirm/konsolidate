@@ -28,6 +28,7 @@ class CoreUserData extends Konsolidate
 	public function __construct(Konsolidate $parent)
 	{
 		parent::__construct($parent);
+
 		$this->_anticipation = $this->get('/Config/UserData/anticipation') == 1;
 		$this->_anticipated  = null;
 		$this->_change       = Array();
@@ -138,7 +139,7 @@ class CoreUserData extends Konsolidate
 				$sAnticipate = '';
 				$sScope      = $this->call('/DB/quote', $this->_anticipationScope());
 
-				foreach($this->_property as $sKey=>$mValue)
+				foreach ($this->_property as $sKey=>$mValue)
 					if (!in_array($sKey, $this->_anticipated))
 						$sAnticipate .= (!empty($sAnticipate) ? ',' : '') . '(' . $this->call('/DB/quote', $sKey) . ", {$sScope}, NOW())";
 
@@ -190,7 +191,7 @@ class CoreUserData extends Konsolidate
 		$sProperty   = '';
 		if ((bool) count($this->_change))
 		{
-			foreach($this->_change as $sKey=>$mValue)
+			foreach ($this->_change as $sKey=>$mValue)
 				$sProperty .= (!empty($sProperty) ? ',' : '') . "({$nID}, " . $this->call('/DB/quote', $sKey) . ', ' . $this->call('/DB/quote', $mValue) . ', NOW())';
 			$sQuery  = 'INSERT INTO ' . $this->_determineDataTable($nID) . " (usrid, usdproperty, usdvalue, usdcreatedts)
 						VALUES {$sProperty}

@@ -64,7 +64,7 @@ class CoreRequestFile extends Konsolidate
 		if (!empty($mValue) || $sProperty == 'error')
 		{
 			parent::__set($sProperty, $mValue);
-			switch($sProperty)
+			switch ($sProperty)
 			{
 				case 'error':
 					$this->_property['message'] = $this->_getErrorMessage($mValue);
@@ -119,7 +119,7 @@ class CoreRequestFile extends Konsolidate
 	 */
 	protected function _getErrorMessage($nError)
 	{
-		switch((int) $nError)
+		switch ((int) $nError)
 		{
 			case UPLOAD_ERR_OK:         return 'No error';
 			case UPLOAD_ERR_INI_SIZE:   return 'The file exceeds PHP maximum file size';
