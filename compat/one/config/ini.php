@@ -8,7 +8,7 @@
  *  @package Konsolidate
  *  @author  Rogier Spieker <rogier@konsolidate.nl>
  */
-class OneConfigINI extends Konsolidate
+class OneConfigINI extends CoreConfigINI
 {
 	/**
 	 *  Take a key/value array and assign the keys to the target module, if the value is an array, its values will be
