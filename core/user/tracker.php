@@ -45,7 +45,7 @@ class CoreUserTracker extends Konsolidate
 		if (!$this->loadFromCookie())
 		{
 			$nAttempt = 0;
-			while(!$this->create() && $nAttempt < 5)
+			while (!$this->create() && $nAttempt < 5)
 				++$nAttempt;
 		}
 		else

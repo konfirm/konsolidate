@@ -56,7 +56,7 @@ class CoreLanguageSwitch extends Konsolidate
 					 WHERE lsp.lspphrase=' . $this->call('/DB/quote', $sPhrase);
 		$oResult = $this->call('/DB/query', $sQuery);
 		if (is_object($oResult) && $oResult->errno <= 0 && $oResult->rows > 0)
-			while($oRecord = $oResult->next())
+			while ($oRecord = $oResult->next())
 				return $oRecord->translation;
 		return $sPhrase;
 	}

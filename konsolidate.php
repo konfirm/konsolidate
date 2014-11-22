@@ -480,7 +480,7 @@ class Konsolidate implements Iterator
 		{
 			$pathList   = explode($this->_objectseparator, $path);
 			$instance = $this;
-			while(is_object($instance) && count($pathList))
+			while (is_object($instance) && count($pathList))
 			{
 				$segment = array_shift($pathList);
 				switch (strToLower($segment))
@@ -715,7 +715,7 @@ class Konsolidate implements Iterator
 				if ($type === 'object')
 					$type = get_class($value);
 
-				$return[] = '<li><code>' . $key . '</code> = (' . $type . ') <code>' . var_export($value, true) . '</code></li>';
+				$return[] = '<li><code>' . $key . '</code> = (' . $type . ') ' . ($value instanceof Konsolidate ? '' . $value : '<code>' . var_export($value, true)) . '</code></li>';
 			}
 
 			$return[] = '</ul></div>';

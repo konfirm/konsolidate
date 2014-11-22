@@ -55,7 +55,7 @@ class CoreUserData extends Konsolidate
 		$oResult = $this->call('/DB/query', $sQuery);
 		if (is_object($oResult) && $oResult->errno <= 0)
 		{
-			while($oRecord = $oResult->next())
+			while ($oRecord = $oResult->next())
 				$this->_property[$oRecord->usdproperty] = $oRecord->usdvalue;
 			return true;
 		}
@@ -107,7 +107,7 @@ class CoreUserData extends Konsolidate
 					 WHERE uds.udsscope=" . $this->call('/DB/quote', $this->_anticipationScope());
 		$oResult = $this->call('/DB/query', $sQuery);
 		if (is_object($oResult) && $oResult->errno <= 0 && $oResult->rows > 0)
-			while($oRecord = $oResult->next())
+			while ($oRecord = $oResult->next())
 				if (!array_key_exists($oRecord->usdproperty, $this->_property))
 				{
 					array_push($this->_anticipated, $oRecord->usdproperty);

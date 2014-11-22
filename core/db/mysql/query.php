@@ -149,7 +149,7 @@ class CoreDBMySQLQuery extends Konsolidate
 	public function fetchAll()
 	{
 		$aReturn = Array();
-		while($oRecord = $this->next())
+		while ($oRecord = $this->next())
 			array_push($aReturn, $oRecord);
 		$this->rewind();
 		return $aReturn;

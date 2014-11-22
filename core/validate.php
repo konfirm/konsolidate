@@ -27,7 +27,7 @@ class CoreValidate extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @param   mixed value
-	 *  @param   bool  unsigned [optional]
+	 *  @param   bool  unsigned [optional, default false - signed integer]
 	 *  @return  bool
 	 */
 	function isInteger($value, $unsigned=false)
@@ -35,10 +35,7 @@ class CoreValidate extends Konsolidate
 		$min = $unsigned ? 0 : INT_MIN;
 		$max = $unsigned ? INT_MAX + (-INT_MIN) : INT_MAX;
 
-		if (is_null($value) || !preg_match('/^[0-9]+$/', abs($value)) || $value < $min || $value > $max)
-			return false;
-
-		return true;
+		return !(is_null($value) || !preg_match('/^[0-9]+$/', abs($value)) || $value < $min || $value > $max);
 	}
 
 	/**
@@ -47,7 +44,7 @@ class CoreValidate extends Konsolidate
 	 *  @type    method
 	 *  @access  public
 	 *  @param   mixed value
-	 *  @param   bool  unsigned [optional]
+	 *  @param   bool  unsigned [optional, default false - signed integer]
 	 *  @return  bool
 	 */
 	function isPositiveInteger($value, $unsigned=false)

@@ -497,7 +497,7 @@ class CoreNetworkProtocolHTTP extends Konsolidate
 			$bytes      = 1024;
 
 			fputs($fp, $request, strLen($request));
-			while(!feof($fp))
+			while (!feof($fp))
 			{
 				$data = fgets($fp, $bytes);
 				$trimmed = trim($data);

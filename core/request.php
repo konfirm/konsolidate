@@ -16,6 +16,7 @@ class CoreRequest extends Konsolidate
 	protected $_file;
 	protected $_filereference;
 
+
 	/**
 	 *  magic __construct, CoreRequest constructor
 	 *  @name    __construct
