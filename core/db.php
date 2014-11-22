@@ -160,10 +160,10 @@ class CoreDB extends Konsolidate
 	 *  @note    the optional cache is per pageview and in memory only, it merely prevents
 	 *           executing the exact same query over and over again
 	 */
-	public function query($query, $caching=true)
+	public function query($query, $caching=true, $addInfo=false, $extendInfo=false)
 	{
 		if ($this->_default && array_key_exists($this->_default, $this->_pool) && is_object($this->_pool[$this->_default]))
-			return $this->_pool[$this->_default]->query($query, $caching);
+			return $this->_pool[$this->_default]->query($query, $caching, $addInfo, $extendInfo);
 
 		return false;
 	}
@@ -223,5 +223,13 @@ class CoreDB extends Konsolidate
 			return call_user_func_array(Array($this->_pool[$reference], $call), $args);
 
 		return parent::__call($call, $args);
+	}
+
+	public function __get($property)
+	{
+		if (isset($this->_pool[strToUpper($property)]))
+			return $this->_pool[strToUpper($property)];
+
+		return parent::__get($property);
 	}
 }
