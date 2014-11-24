@@ -53,27 +53,33 @@ class CoreDBSQLite extends Konsolidate
 	 *  @param   bool   force new link [optional, default false]
 	 *  @return  bool
 	 */
-	public function setConnection($sURI)
+	public function setConnection($dsn)
 	{
-		assert(is_string($sURI));
+		assert(is_string($dsn));
 
-		preg_match('/([a-zA-Z]+):\/\/(.*)/', $sURI, $aParse);
-
-		if (is_array($aParse) && count($aParse) == 3)
+		if (preg_match('/([a-zA-Z]+):\/\/(.*)/', $dsn, $parse))
 		{
-			// 0 = $sURI
-			// 1 = scheme
-			// 2 = path (the remainder string)
+			$scheme = $parse[1];
+			$path = $parse[2];
 
-			$sBasePath = $this->get('/Config/SQLite/basepath');
-			$sDBPath   = realpath(substr($aParse[2], 0, 1) == '/' ? dirname($aParse[2]) : (!empty($sBasePath) ? $sBasePath : (defined('DOCUMENT_ROOT') ? DOCUMENT_ROOT : (array_key_exists('DOCUMENT_ROOT', $_SERVER) ? $_SERVER['DOCUMENT_ROOT'] : ''))) . '/' . dirname($aParse[2]));
-			$sDBFile   = basename($aParse[2]);
-			$this->_URI = Array(
-				'scheme' => $aParse[1],
-				'path'   => ($sDBPath ? "{$sDBPath}/{$sDBFile}" : false)
-			);
+			if (!in_array($path[0], Array('/', ':')))
+			{
+				$documentRoot = defined('DOCUMENT_ROOT') ? DOCUMENT_ROOT : (!empty($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] : '');
+				$path = realpath($this->get('/Config/SQLite/basepath', $documentRoot)) . '/' . $path;
+			}
+
+			if ($path)
+			{
+				$this->_URI = Array(
+					'scheme' => $scheme,
+					'path'   => $path
+				);
+
+				return true;
+			}
 		}
-		return true;
+
+		return false;
 	}
 
 	/**
@@ -87,13 +93,16 @@ class CoreDBSQLite extends Konsolidate
 	 */
 	public function connect()
 	{
-		if (!$this->isConnected() && $this->_URI['path'])
+		$connected = $this->isConnected();
+
+		if (!$connected && $this->_URI['path'])
 		{
-			$this->_conn = @sqlite_open($this->_URI['path'], 0766, $sMessage);
+			$this->_conn = new SQLite3($this->_URI['path']);
 
 			return $this->isConnected();
 		}
-		return true;
+
+		return $connected;
 	}
 
 	/**
@@ -106,7 +115,8 @@ class CoreDBSQLite extends Konsolidate
 	public function disconnect()
 	{
 		if ($this->isConnected())
-			return sqlite_close($this->_conn);
+			$this->_conn->close();
+
 		return true;
 	}
 
@@ -119,7 +129,7 @@ class CoreDBSQLite extends Konsolidate
 	 */
 	public function isConnected()
 	{
-		return is_resource($this->_conn);
+		return $this->_conn ? true : false;
 	}
 
 	/**
@@ -131,25 +141,33 @@ class CoreDBSQLite extends Konsolidate
 	 *  @paran   bool   usecache [optional, default true]
 	 *  @return  object result
 	 */
-	public function query($sQuery, $bUseCache=true)
+	public function query($query, $cache=true)
 	{
-		$sCacheKey = md5($sQuery);
-		if ($bUseCache && array_key_exists($sCacheKey, $this->_cache))
+		$cacheKey = md5($query);
+		if ($cache && isset($this->_cache[$cacheKey]))
 		{
-			$this->_cache[$sCacheKey]->rewind();
-			return $this->_cache[$sCacheKey];
+			$this->_cache[$cacheKey]->rewind();
+
+			return $this->_cache[$cacheKey];
 		}
 
 		if ($this->connect())
 		{
-			$oQuery = $this->instance('Query');
-			$oQuery->execute($sQuery, $this->_conn);
+			$instance = $this->instance('Query');
+			$instance->execute($query, $this->_conn);
 
-			if ($bUseCache && $this->_isCachableQuery($sQuery))
-				$this->_cache[$sCacheKey] = $oQuery;
-			return $oQuery;
+			if ($cache && $this->_isCachableQuery($query))
+				$this->_cache[$cacheKey] = $instance;
+
+			return $instance;
 		}
+
 		return false;
+	}
+
+	public function prepare($query)
+	{
+		return $this->instance('Statement', $this->_conn, $query);
 	}
 
 	/**
@@ -162,7 +180,8 @@ class CoreDBSQLite extends Konsolidate
 	public function lastInsertID()
 	{
 		if ($this->isConnected())
-			return sqlite_last_insert_rowid($this->_conn);
+			return $this->_conn->lastInsertRowID();
+
 		return false;
 	}
 
@@ -188,9 +207,9 @@ class CoreDBSQLite extends Konsolidate
 	 *  @param   string input
 	 *  @return  string escaped input
 	 */
-	public function escape($sString)
+	public function escape($string)
 	{
-		return sqlite_escape_string($sString);
+		return sqlite_escape_string($string);
 	}
 
 	/**
@@ -201,9 +220,9 @@ class CoreDBSQLite extends Konsolidate
 	 *  @param   string input
 	 *  @return  string quoted escaped input
 	 */
-	public function quote($sString)
+	public function quote($string)
 	{
-		return '\'' . $this->escape($sString) . '\'';
+		return '\'' . $this->escape($string) . '\'';
 	}
 
 	/**
@@ -214,8 +233,8 @@ class CoreDBSQLite extends Konsolidate
 	 *  @param   string query
 	 *  @return  bool   success
 	 */
-	public function _isCachableQuery($sQuery)
+	public function _isCachableQuery($query)
 	{
-		return (bool) preg_match('/^\s*SELECT /i', $sQuery);
+		return (bool) preg_match('/^\s*(?:SELECT|SHOW) /i', $query);
 	}
 }

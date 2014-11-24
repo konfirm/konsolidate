@@ -54,18 +54,18 @@ class CoreDB extends Konsolidate
 	 *  @note    the URI is formatted like: scheme://user:pass@host[:port]/database
 	 *           providing an unique reference provides you to ability to use more than one connection
 	 */
-	public function setConnection($reference, $DSN)
+	public function setConnection($reference, $dsn)
 	{
 		$reference = strToUpper($reference);
-		$uri       = parse_url($DSN);
+		$scheme    = substr($dsn, 0, strpos($dsn, ':'));
 
 		if ($this->_default === false)
 			$this->_default = $reference;
 
-		$this->_pool[$reference] = $this->instance($uri['scheme']);
+		$this->_pool[$reference] = $this->instance($scheme);
 
 		if (is_object($this->_pool[$reference]))
-			return $this->_pool[$reference]->setConnection($DSN, true);
+			return $this->_pool[$reference]->setConnection($dsn, true);
 
 		return false;
 	}

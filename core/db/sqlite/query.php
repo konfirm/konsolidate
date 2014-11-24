@@ -34,32 +34,53 @@ class CoreDBSQLiteQuery extends Konsolidate
 	 */
 	public $error;
 
+
+
 	/**
-	 *  execute given query on given connection
+	 *  CoreDBSQLiteQuery constructor
+	 *  @name    __construct
+	 *  @type    constructor
+	 *  @access  public
+	 *  @param   object        parent object
+	 *  @param   SQLite3       connection object
+	 *  @param   SQLite3Result result
+	 *  @return  object
+	 */
+	public function __construct(Konsolidate $parent, SQLite3 $connection=null, SQLite3Result $result=null)
+	{
+		parent::__construct($parent);
+
+		if ($connection)
+			$this->_conn = $connection;
+		if ($result)
+			$this->_result = $result;
+
+		if ($this->_conn && $this->_result)
+			$this->_populate();
+	}
+
+	/**
+	 *  execute query on connection
 	 *  @name    execute
 	 *  @type    method
 	 *  @access  public
 	 *  @param   string   query
-	 *  @param   resource connection
+	 *  @param   resource connection [optional, default null - use connection provided with construction]
 	 *  @return  void
 	 */
-	public function execute($sQuery, $rConnection)
+	public function execute($query, $connection=null)
 	{
 		$this->_replace = Array(
 			'NOW()'=>microtime(true)
 		);
-		$this->query   = str_replace(array_keys($this->_replace), array_values($this->_replace), $sQuery);
-		$this->_conn   = $rConnection;
-		$this->_result = @sqlite_query($this->query, $this->_conn, SQLITE_BOTH, $sError);
 
-		if (is_resource($this->_result))
-			$this->rows = sqlite_num_rows($this->_result);
+		if ($connection)
+			$this->_conn = $connection;
 
-		//  We want the exception object to tell us everything is going extremely well, don't throw it!
-		$this->import('../exception.php');
-		$this->exception = new CoreDBSQLiteException(sqlite_last_error($this->_conn));
-		$this->errno     = &$this->exception->errno;
-		$this->error     = &$this->exception->error;
+		$this->query   = str_replace(array_keys($this->_replace), array_values($this->_replace), $query);
+		$this->_result = $this->_conn->query($this->query);
+
+		$this->_populate();
 	}
 
 	/**
@@ -71,8 +92,9 @@ class CoreDBSQLiteQuery extends Konsolidate
 	 */
 	public function rewind()
 	{
-		if (is_resource($this->_result) && sqlite_num_rows($this->_result) > 0)
-			return sqlite_rewind($this->_result);
+		if ($this->_result instanceof SQLite3Result && $this->_result->numColumns() && $this->_result->columnType(0) !== SQLITE3_NULL)
+			return $this->_result->reset();
+
 		return false;
 	}
 
@@ -85,8 +107,13 @@ class CoreDBSQLiteQuery extends Konsolidate
 	 */
 	public function next()
 	{
-		if (is_resource($this->_result))
-			return sqlite_fetch_object($this->_result);
+		if ($this->_result instanceof SQLite3Result)
+		{
+			$record = $this->_result->fetchArray(SQLITE3_ASSOC);
+			if ($record)
+				return (object) $record;
+		}
+
 		return false;
 	}
 
@@ -99,7 +126,7 @@ class CoreDBSQLiteQuery extends Konsolidate
 	 */
 	public function lastInsertID()
 	{
-		return sqlite_last_insert_rowid($this->_conn);
+		return $this->isConnected() ? $this->_conn->lastInsertRowID() : false;
 	}
 
 	/**
@@ -125,10 +152,31 @@ class CoreDBSQLiteQuery extends Konsolidate
 	 */
 	public function fetchAll()
 	{
-		$aReturn = Array();
-		while ($oRecord = $this->next())
-			array_push($aReturn, $oRecord);
+		$return = Array();
+
+		while (($record = $this->next()))
+			array_push($return, $record);
 		$this->rewind();
-		return $aReturn;
+
+		return $return;
+	}
+
+	/**
+	 *  Populate some defaults (rows, errno and error properties)
+	 *  @name    _populate
+	 *  @type    method
+	 *  @access  protected
+	 *  @return  void
+	 */
+	protected function _populate()
+	{
+		if ($this->_result)
+			$this->rows = $this->_conn->changes();
+
+		//  We want the exception object to tell us everything is going extremely well, don't throw it!
+		$this->import('../exception.php');
+		$this->exception = new CoreDBSQLiteException($this->_conn);
+		$this->errno     = &$this->exception->errno;
+		$this->error     = &$this->exception->error;
 	}
 }

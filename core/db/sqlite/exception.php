@@ -31,14 +31,13 @@ class CoreDBSQLiteException extends Exception
 	 *  @name    __construct
 	 *  @type    constructor
 	 *  @access  public
-	 *  @param   string error
-	 *  @param   int    errornumber
+	 *  @param   SQLite  instance
 	 *  @return  object
 	 *  @note    This object is constructed by CoreDBSQLite as 'status report'
 	 */
-	public function __construct($errno)
+	public function __construct($sqlite)
 	{
-		$this->error = sqlite_error_string($errno);
-		$this->errno = $errno;
+		$this->error = $sqlite->lastErrorMsg();
+		$this->errno = $sqlite->lastErrorCode();
 	}
 }
