@@ -228,7 +228,7 @@
 		public function mailFrom( $sEmail, $sName=null )
 		{
 			$this->addHeader( "From", ( !is_null( $sName ) ? "{$sName} <{$sEmail}>" : $sEmail ) );
-			return $this->_command( "MAIL FROM: {$sEmail}" ) == 250;
+			return $this->_command( "MAIL FROM: <{$sEmail}>" ) == 250;
 		}
 
 		/**
@@ -247,7 +247,7 @@
 			$this->addHeader( $sHeaderName, $this->_createRecipientList( $aCollection ) );
 			$bReturn = true;
 			foreach( $aCollection as $sEmail=>$sName )
-				$bReturn &= $this->_command( "RCPT TO: {$sEmail}" ) == 250;
+				$bReturn &= $this->_command( "RCPT TO: <{$sEmail}>" ) == 250;
 			return $bReturn;
 		}
 
