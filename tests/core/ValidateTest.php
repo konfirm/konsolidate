@@ -10,6 +10,7 @@ class ValidateTest extends TestCase {
   /**
    * @covers /Validate/isInteger
    * @group Core
+   * @group Validate
    * @author john@konsolidate.nl
    */
   public function testIsInteger() {
@@ -18,15 +19,16 @@ class ValidateTest extends TestCase {
     $this->assertTrue($this->konsolidate->call('/Validate/isInteger', 42, true));
 
     // Negative tests
-    $this->assertFalse($this->konsolidate->call('/Validate/isInteger', M_PI), 'Float M_PI has been validated as an integer.');
-    $this->assertFalse($this->konsolidate->call('/Validate/isInteger', 'fortytwo'), 'String "fortytwo" has been validated as an integer.');
-    $this->assertFalse($this->konsolidate->call('/Validate/isInteger', '42'), 'String "42" has been validated as an integer.');
-    $this->assertFalse($this->konsolidate->call('/Validate/isInteger', array()), 'Empty array has been validated as an integer.');
+    $this->assertFalse($this->konsolidate->call('/Validate/isInteger', M_PI), 'Float M_PI has been validated as an integer');
+    $this->assertFalse($this->konsolidate->call('/Validate/isInteger', 'fortytwo'), 'String "fortytwo" has been validated as an integer');
+    $this->assertFalse($this->konsolidate->call('/Validate/isInteger', '42'), 'String "42" has been validated as an integer');
+    $this->assertFalse($this->konsolidate->call('/Validate/isInteger', array()), 'Empty array has been validated as an integer');
   }
 
   /**
    * @covers /Validate/isPositiveInteger
    * @group Core
+   * @group Validate
    * @author john@konsolidate.nl
    */
   public function testIsPositiveInteger() {
@@ -35,7 +37,7 @@ class ValidateTest extends TestCase {
     $this->assertTrue($this->konsolidate->call('/Validate/isPositiveInteger', 42, true));
 
     // Negative tests
-    $this->assertFalse($this->konsolidate->call('/Validate/isInteger', M_PI), 'Float M_PI has been validated as a positive integer.');
+    $this->assertFalse($this->konsolidate->call('/Validate/isInteger', M_PI), 'Float M_PI has been validated as a positive integer');
     $this->assertFalse($this->konsolidate->call('/Validate/isPositiveInteger', '42'), 'String "42" has been validated as a positive integer');
     $this->assertFalse($this->konsolidate->call('/Validate/isPositiveInteger', -42), '-42 has been validated as a positive integer');
     $this->assertFalse($this->konsolidate->call('/Validate/isPositiveInteger', -42, true), '-42 has been validated as a positive integer');
@@ -44,6 +46,7 @@ class ValidateTest extends TestCase {
   /**
    * @covers /Validate/isNegativeInteger
    * @group Core
+   * @group Validate
    * @author john@konsolidate.nl
    */
   public function testIsNegativeInteger() {
@@ -61,6 +64,7 @@ class ValidateTest extends TestCase {
   /**
    * @covers /Validate/isNumber
    * @group Core
+   * @group Validate
    * @author john@konsolidate.nl
    */
   public function testIsNumber() {
@@ -80,6 +84,7 @@ class ValidateTest extends TestCase {
   /**
    * @covers /Validate/isBetween
    * @group Core
+   * @group Validate
    * @author john@konsolidate.nl
    */
   public function testIsBetween() {
@@ -99,6 +104,7 @@ class ValidateTest extends TestCase {
   /**
    * @covers /Validate/isFilled
    * @group Core
+   * @group Validate
    * @author john@konsolidate.nl
    */
   public function testIsFilled() {
@@ -115,6 +121,7 @@ class ValidateTest extends TestCase {
   /**
    * @covers /Validate/isEmail
    * @group Core
+   * @group Validate
    * @author john@konsolidate.nl
    */
   public function testIsEmail() {
