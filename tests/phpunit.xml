@@ -1,0 +1,12 @@
+<phpunit bootstrap="bootstrap.php" backupGlobals="true" processIsolation="true" colors="true">
+  <testsuites>
+    <testsuite name="Core">
+      <directory suffix="Test.php">./core</directory>
+    </testsuite>
+  </testsuites>
+  <filter>
+    <whitelist processUncoveredFilesFromWhitelist="true">
+      <directory suffix="Test.php">./core</directory>
+    </whitelist>
+  </filter>
+</phpunit>

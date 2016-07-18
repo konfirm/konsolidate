@@ -1,0 +1,8 @@
+{
+  "name": "nl.coffeemedia/konsolidate",
+  "type": "project",
+  "description": "Konsolidate",
+  "require-dev" : {
+    "phpunit/phpunit": "^5.4"
+  }
+}
