@@ -60,6 +60,8 @@
 					$this->_traverseXML( $oChild, "{$sPath}/" . $oNode->getName() );
 			else
 				$this->set( "{$sPath}/" . $oNode->getName(), (string) $oNode );
+
+			return true;
 		}
 	}
 
