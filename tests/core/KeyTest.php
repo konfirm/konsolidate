@@ -3,7 +3,7 @@
 use PHPUnit\Framework\TestCase;
 
 class KeyTest extends TestCase {
-  public function setUp() {
+  protected function setUp() {
     $this->konsolidate = $GLOBALS['konsolidate'];
   }
 
