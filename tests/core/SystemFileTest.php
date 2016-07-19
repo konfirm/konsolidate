@@ -172,6 +172,7 @@ class SystemFileTest extends TestCase {
     // Unlink
     file_put_contents($this->directory . '/unlink.txt', 'Test file for SystemFileTest->testUnlink()');
 
+    // Rename
     if (file_exists($this->directory . '/rename-success.txt')) {
       rename($this->directory . '/rename-success.txt', $this->directory . '/rename.txt');
     }
