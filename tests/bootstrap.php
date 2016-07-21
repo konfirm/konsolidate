@@ -10,3 +10,9 @@ $konsolidate = new Konsolidate(array(
 ));
 
 $GLOBALS['konsolidate'] = $konsolidate;
+$GLOBALS['DB_CONNECTION_STRING'] = sprintf('mysql://%s:%s@%s/%s',
+  $GLOBALS['DB_USER'],
+  $GLOBALS['DB_PASSWD'],
+  $GLOBALS['DB_HOST'],
+  $GLOBALS['DB_DBNAME']
+);

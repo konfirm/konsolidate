@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dataset>
+    <table name="languageswitchphrase">
+      <column>lspid</column>
+      <column>lspphrase</column>
+      <column>lspcreatedts</column>
+      <row>
+        <value>1</value>
+        <value>konsolidate</value>
+        <value>CURRENT_TIMESTAMP</value>
+      </row>
+    </table>
+    <table name="languageswitchtranslation">
+      <column>lstid</column>
+      <column>lspid</column>
+      <column>lsttranslation</column>
+      <column>lstlocale</column>
+      <column>lstenabled</column>
+      <column>lstcreatedts</column>
+      <row>
+        <value>1</value>
+        <value>1</value>
+        <value>oK!</value>
+        <value>en_us</value>
+        <value>1</value>
+        <value>CURRENT_TIMESTAMP</value>
+      </row>
+    </table>
+</dataset>
