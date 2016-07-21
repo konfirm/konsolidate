@@ -75,9 +75,17 @@ class LanguageTest extends PHPUnit_Extensions_Database_TestCase {
     $this->konsolidate->call('/DB/setConnection', 'konsolidate', $GLOBALS['DB_CONNECTION_STRING']);
 
     // Positive tests
-    $this->konsolidate->call('/Language/setLocale', $this->locale);
-    $translated = $this->konsolidate->call('/Language/translate', 'konsolidate');
-    var_dump('TRANSLATED - ' . $translated);
-    // $translated = $this->konsolidate->call('/Language/Switch/translate', 'foo');
+    $this->konsolidate->call('/Language/setLocale', 'zh_cn');
+    $this->assertSame($this->konsolidate->call('/Language/translate', 'konsolidate'), '巩固');
+
+    $this->konsolidate->call('/Language/setLocale', 'ru_ru');
+    $this->assertSame($this->konsolidate->call('/Language/translate', 'konsolidate'), 'консолидировать');
+
+    // Negative tests
+    $this->konsolidate->call('/Language/setLocale', 'es_es');
+    $this->assertNotSame($this->konsolidate->call('/Language/translate', 'konsolidate'), 'perdonanos');
+
+    $this->konsolidate->call('/Language/setLocale', 'hi_in');
+    $this->assertSame($this->konsolidate->call('/Language/translate', 'समेकित'), 'समेकित');
   }
 }

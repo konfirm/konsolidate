@@ -20,8 +20,24 @@
       <row>
         <value>1</value>
         <value>1</value>
-        <value>oK!</value>
-        <value>en_us</value>
+        <value>巩固</value>
+        <value>zh_cn</value>
+        <value>1</value>
+        <value>CURRENT_TIMESTAMP</value>
+      </row>
+      <row>
+        <value>2</value>
+        <value>1</value>
+        <value>консолидировать</value>
+        <value>ru_ru</value>
+        <value>1</value>
+        <value>CURRENT_TIMESTAMP</value>
+      </row>
+      <row>
+        <value>3</value>
+        <value>1</value>
+        <value>consolidar</value>
+        <value>es_es</value>
         <value>1</value>
         <value>CURRENT_TIMESTAMP</value>
       </row>
